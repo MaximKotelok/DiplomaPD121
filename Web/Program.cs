@@ -1,4 +1,6 @@
 using DataAccess.Data;
+using DataAccess.Repository;
+using DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +15,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 				builder.Configuration.GetConnectionString("DefaultConnection"));
 		}
 		);
-
+builder.Services.AddSingleton<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 
