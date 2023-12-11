@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models
+namespace Domain.Models
 {
-	[Table("Medicine")]
-	public class Medicine:Product
-	{
-		public string? SpecialRow { get; set; }
-	}
+    [Table("Medicine")]
+    public class Medicine : Product
+    {
+        public string? SpecialRow { get; set; }
+    }
 }

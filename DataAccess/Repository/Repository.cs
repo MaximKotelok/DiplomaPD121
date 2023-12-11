@@ -1,5 +1,6 @@
 ﻿using DataAccess.Data;
 using DataAccess.Repository.IRepository;
+using Lab.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,66 +11,70 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repository
 {
-    public class Repository<T> : IRepository<T> where T : class
-    {
-        protected readonly ApplicationDbContext _db;
-        private DbSet<T> dbSet;
+	public class Repository<T> : IRepository<T> where T : BaseEntity
+	{
+		private readonly ApplicationDbContext _applicationDbContext;
+		private DbSet<T> entities;
 
-        public Repository(ApplicationDbContext db)
-        {
-            this._db = db;
-            dbSet = _db.Set<T>();
-        }
+		public Repository(ApplicationDbContext applicationDbContext)
+		{
+			_applicationDbContext = applicationDbContext;
+			entities = _applicationDbContext.Set<T>();
+		}
 
-        public void Add(T entity)
-        {
-            dbSet.Add(entity);
-        }
+		public void Delete(T entity)
+		{
+			if (entity == null)
+			{
+				throw new ArgumentNullException("entity");
+			}
+			entities.Remove(entity);
+			_applicationDbContext.SaveChanges();
+		}
 
-        public virtual T? Get(Expression<Func<T, bool>>? filter, string? includeProperties = null)
-        {
-            IQueryable<T> query = dbSet;
+		public T? Get(int? Id)
+		{
+			return entities.SingleOrDefault(c => c.Id == Id);
+		}
 
-            if(!string.IsNullOrEmpty(includeProperties))
-            {
-                foreach (var includeProp in includeProperties
-                      .Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries))
-                {
-                    query = query.Include(includeProp);
-                }
-            }
+		public IEnumerable<T> GetAll()
+		{
+			return entities.AsEnumerable();
+		}
 
-            return query.Where(filter).FirstOrDefault();
-        }
+		public void Insert(T entity)
+		{
+			if (entity == null)
+			{
+				throw new ArgumentNullException("entity");
+			}
+			entities.Add(entity);
+			_applicationDbContext.SaveChanges();
+		}
 
-        public virtual IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
-        {
-            IQueryable<T> query = dbSet;
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
+		public void Remove(T entity)
+		{
+			if (entity == null)
+			{
+				throw new ArgumentNullException("entity");
+			}
+			entities.Remove(entity);
+		}
 
-            if (!string.IsNullOrEmpty(includeProperties))
-            {
-                foreach (var includeProp in includeProperties
-                      .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                {
-                    query = query.Include(includeProp);
-                }
-            }
+		public void SaveChanges()
+		{
+			_applicationDbContext.SaveChanges();
+		}
 
-            return query.ToList();
-        }
+		public void Update(T entity)
+		{
+			if (entity == null)
+			{
+				throw new ArgumentNullException("entity");
+			}
+			entities.Update(entity);
+			_applicationDbContext.SaveChanges();
+		}
 
-        public void Remove(T entity)
-        {
-            dbSet.Remove(entity);
-        }
-
-        public void RemoveRange(IEnumerable<T> entity)
-        {
-            dbSet.RemoveRange(entity);
-        }
-    }
+	}
 }

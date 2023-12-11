@@ -2,12 +2,19 @@ using DataAccess.Data;
 using DataAccess.Repository;
 using DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
+using Services.PharmacyCompanyService;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddCors(c =>
+{
+	c.AddPolicy("AllowOrigin",
+		options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
 
 builder.Services.AddSwaggerGen();
 
@@ -17,7 +24,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 				builder.Configuration.GetConnectionString("DefaultConnection"));
 		}
 		);
-builder.Services.AddSingleton<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddTransient<IPharmaCompanyService, PharmaCompanyService>();
 
 
 var app = builder.Build();
@@ -33,6 +41,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.UseStaticFiles();
 app.UseRouting();
 

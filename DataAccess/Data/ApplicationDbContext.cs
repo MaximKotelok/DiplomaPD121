@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Models;
+﻿using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace DataAccess.Data
 {
-	public class ApplicationDbContext:DbContext
+    public class ApplicationDbContext:DbContext
 	{
 		public ApplicationDbContext(DbContextOptions options)
 			: base(options) { }
@@ -28,27 +28,27 @@ namespace DataAccess.Data
 
 			
 			modelBuilder.Entity<Category>().HasData(
-				new Category { CategoryID=1, Title="Каталог Товарів"  },
-				new Category { CategoryID=2, Title = "Ліки та профілактичні засоби", ParentCategoryID=1 },
-				new Category { CategoryID=3, Title = "Вітаміни", ParentCategoryID = 2 },
-				new Category { CategoryID = 4, Title = "Вітамін С", ParentCategoryID = 3 },
-				new Category { CategoryID = 5, Title = "Аскорбінка", ParentCategoryID = 4 },
-				new Category { CategoryID = 6, Title = "Аскорбінка-КВ", ParentCategoryID = 5 }
+				new Category { Id=1, Title="Каталог Товарів"  },
+				new Category { Id = 2, Title = "Ліки та профілактичні засоби", ParentCategoryID=1 },
+				new Category { Id = 3, Title = "Вітаміни", ParentCategoryID = 2 },
+				new Category { Id = 4, Title = "Вітамін С", ParentCategoryID = 3 },
+				new Category { Id = 5, Title = "Аскорбінка", ParentCategoryID = 4 },
+				new Category { Id = 6, Title = "Аскорбінка-КВ", ParentCategoryID = 5 }
 				);
 			modelBuilder.Entity<Medicine>().HasData(
-				new Medicine { ProductID=1, CategoryID=6, Title="Аскорбінка", Description= "Аскорбінка.", SpecialRow="Special Temp Row" }
+				new Medicine { Id = 1, CategoryID=6, Title="Аскорбінка", Description= "Аскорбінка.", SpecialRow="Special Temp Row" }
 				);
 
 			modelBuilder.Entity<PharmaCompany>().HasData(
-				new PharmaCompany { PharmaCompanyID=1, Title="АНЦ", Description="АНЦ."}
+				new PharmaCompany { Id = 1, Title="АНЦ", Description="АНЦ."}
 				);
 
 			modelBuilder.Entity<Pharmacy>().HasData(
-				new Pharmacy { PharmacyID=1, Address="Temp Address", Coord="Temp Coord", PharmaCompanyID=1 }
+				new Pharmacy { Id = 1, Address="Temp Address", Coord="Temp Coord", PharmaCompanyID=1 }
 				);
 
 			modelBuilder.Entity<ConcreteProduct>().HasData(
-				new ConcreteProduct { ConcreteProductID=1, Price=100, ProductID=1, Quantity=2}
+				new ConcreteProduct { Id = 1, Price=100, ProductID=1, Quantity=2}
 				);
 
 
