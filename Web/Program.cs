@@ -2,7 +2,11 @@ using DataAccess.Data;
 using DataAccess.Repository;
 using DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
+using Services.CategoryService;
+using Services.ConcreteProductService;
+using Services.MedicineService;
 using Services.PharmacyCompanyService;
+using Services.PharmacyService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +30,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 		);
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddTransient<IPharmaCompanyService, PharmaCompanyService>();
+builder.Services.AddTransient<ICategoryService, CategoryService>();
+builder.Services.AddTransient<IMedicineService, MedicineService>();
+builder.Services.AddTransient<IPharmacyService, PharmacyService>();
+builder.Services.AddTransient<IConcreteProductService, ConcreteProductService>();
 
 
 var app = builder.Build();

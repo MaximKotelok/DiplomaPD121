@@ -4,24 +4,25 @@ using Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Services.CategoryService;
 using Services.PharmacyCompanyService;
 
 namespace Web.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class PharmaCompanyController : ControllerBase
+	public class CategoryController : ControllerBase
 	{
-		private readonly IPharmaCompanyService _service;
+		private readonly ICategoryService _service;
 
-		public PharmaCompanyController(IPharmaCompanyService service) {
+		public CategoryController(ICategoryService service) {
 			this._service = service;
 		}
 
 		[HttpGet("")]
-		public IActionResult GetPharmaCompanies()
+		public IActionResult GetAllCategories()
 		{
-			var result = _service.GetAllPharmaCompanies();
+			var result = _service.GetAllCategories();
 			if (result is not null)
 			{
 				return Ok(result);
@@ -30,9 +31,9 @@ namespace Web.Controllers
 		}
 
 		[HttpGet("{id}")]
-		public IActionResult GetPharmaCompany(int id)
+		public IActionResult GetCategory(int id)
 		{
-			var result = _service.GetPharmaCompany(id);
+			var result = _service.GetCategory(id);
 			if (result is not null)
 			{
 				return Ok(result);
@@ -41,24 +42,24 @@ namespace Web.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult AddPharmCompany(PharmaCompany company)
+		public IActionResult AddCategory(Category category)
 		{
-			_service.InsertPharmaCompany(company);
+			_service.InsertCategory(category);
 			return Ok("Data inserted");
 		}
 
 		[HttpPut("{id}")]
-		public IActionResult UpdatePharmCompany(int id, PharmaCompany company)
+		public IActionResult UpdateCategory(int id, Category category)
 		{
-			company.Id = id;
-			_service.UpdatePharmaCompany(company);
+			category.Id = id;
+			_service.UpdateCategory(category);
 			return Ok("Updation done");
 		}
 
 		[HttpDelete("{id}")]
-		public IActionResult DeletePharmCompany(int id)
-		{
-			_service.DeletePharmaCompany(id);
+		public IActionResult DeleteCategory(int id)
+		{			
+			_service.DeleteCategory(id);
 			return Ok("Data Deleted");
 		}
 	}

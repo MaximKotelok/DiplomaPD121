@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    [Table("Product")]
+    [Table("Products")]
     public class Product: BaseEntity
     {
         [Required]

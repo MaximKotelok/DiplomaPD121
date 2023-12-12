@@ -10,7 +10,7 @@ namespace Services.PharmacyCompanyService
 {
 	public class PharmaCompanyService : IPharmaCompanyService
 	{
-		private IRepository<PharmaCompany> _repository;
+		private readonly IRepository<PharmaCompany> _repository;
 
 		public PharmaCompanyService(IRepository<PharmaCompany> repository)
 		{

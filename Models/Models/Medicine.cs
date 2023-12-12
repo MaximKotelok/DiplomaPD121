@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    [Table("Medicine")]
+    [Table("Medicines")]
     public class Medicine : Product
     {
         public string? SpecialRow { get; set; }

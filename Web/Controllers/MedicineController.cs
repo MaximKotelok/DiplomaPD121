@@ -4,24 +4,28 @@ using Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Services.CategoryService;
+using Services.ConcreteProductService;
+using Services.MedicineService;
 using Services.PharmacyCompanyService;
+using Services.PharmacyService;
 
 namespace Web.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class PharmaCompanyController : ControllerBase
+	public class MedicineController : ControllerBase
 	{
-		private readonly IPharmaCompanyService _service;
+		private readonly IMedicineService _service;
 
-		public PharmaCompanyController(IPharmaCompanyService service) {
+		public MedicineController(IMedicineService service) {
 			this._service = service;
 		}
 
 		[HttpGet("")]
-		public IActionResult GetPharmaCompanies()
+		public IActionResult GetAllMedicines()
 		{
-			var result = _service.GetAllPharmaCompanies();
+			var result = _service.GetAllMedicines();
 			if (result is not null)
 			{
 				return Ok(result);
@@ -30,9 +34,9 @@ namespace Web.Controllers
 		}
 
 		[HttpGet("{id}")]
-		public IActionResult GetPharmaCompany(int id)
+		public IActionResult GetMedicine(int id)
 		{
-			var result = _service.GetPharmaCompany(id);
+			var result = _service.GetMedicine(id);
 			if (result is not null)
 			{
 				return Ok(result);
@@ -41,24 +45,24 @@ namespace Web.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult AddPharmCompany(PharmaCompany company)
+		public IActionResult AddMedicine(Medicine medicine)
 		{
-			_service.InsertPharmaCompany(company);
+			_service.InsertMedicine(medicine);
 			return Ok("Data inserted");
 		}
 
 		[HttpPut("{id}")]
-		public IActionResult UpdatePharmCompany(int id, PharmaCompany company)
+		public IActionResult UpdateMedicine(int id, Medicine medicine)
 		{
-			company.Id = id;
-			_service.UpdatePharmaCompany(company);
+			medicine.Id = id;
+			_service.UpdateMedicine(medicine);
 			return Ok("Updation done");
 		}
 
 		[HttpDelete("{id}")]
-		public IActionResult DeletePharmCompany(int id)
-		{
-			_service.DeletePharmaCompany(id);
+		public IActionResult DeleteMedicine(int id)
+		{			
+			_service.DeleteMedicine(id);
 			return Ok("Data Deleted");
 		}
 	}
