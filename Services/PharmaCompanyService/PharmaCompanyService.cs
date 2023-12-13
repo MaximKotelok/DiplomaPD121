@@ -3,6 +3,7 @@ using Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,19 +20,19 @@ namespace Services.PharmacyCompanyService
 
 		public void DeletePharmaCompany(int id)
 		{
-			PharmaCompany? company = _repository.Get(id);
+			PharmaCompany? company = _repository.Get(x => x.Id == id);
 			_repository.Remove(company);
 			_repository.SaveChanges();
 		}
 
-		public IEnumerable<PharmaCompany> GetAllPharmaCompanies()
+		public IEnumerable<PharmaCompany> GetAllPharmaCompanies(Expression<Func<PharmaCompany, bool>>? filter = null, string? includeProperties = null)
 		{
-			return _repository.GetAll();
+			return _repository.GetAll(filter, includeProperties);
 		}
 
-		public PharmaCompany? GetPharmaCompany(int? id)
+		public PharmaCompany? GetPharmaCompany(Expression<Func<PharmaCompany, bool>> filter, string? includeProperties = null)
 		{
-			return _repository.Get(id);
+			return _repository.Get(filter, includeProperties);
 		}
 
 		public void InsertPharmaCompany(PharmaCompany company)

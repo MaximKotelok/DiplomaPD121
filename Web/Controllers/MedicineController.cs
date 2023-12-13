@@ -36,7 +36,7 @@ namespace Web.Controllers
 		[HttpGet("{id}")]
 		public IActionResult GetMedicine(int id)
 		{
-			var result = _service.GetMedicine(id);
+			var result = _service.GetMedicine(x => x.Id == id);
 			if (result is not null)
 			{
 				return Ok(result);
