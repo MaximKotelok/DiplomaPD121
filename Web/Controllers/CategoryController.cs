@@ -41,6 +41,18 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
+		[HttpGet("/path/{id}")]
+		public IActionResult GetCategoryPath(int id)
+		{
+
+			var result = _service.GetPathToCategory(id);
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+
 		[HttpPost]
 		public IActionResult AddCategory(Category category)
 		{

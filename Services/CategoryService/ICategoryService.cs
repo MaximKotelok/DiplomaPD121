@@ -15,5 +15,6 @@ namespace Services.CategoryService
 		void InsertCategory(Category category);
 		void UpdateCategory(Category category);
 		void DeleteCategory(int id);
+		List<Category> GetPathToCategory(int id);
 	}
 }

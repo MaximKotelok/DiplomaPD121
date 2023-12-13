@@ -45,5 +45,25 @@ namespace Services.CategoryService
 		{
 			_repository.Update(category);
 		}
+
+		public List<Category> GetPathToCategory(int id)
+		{
+			List<Category> path = new List<Category>();
+			
+			Category? category = GetCategory(x => x.Id == id, "ParentCategory");
+			if (category == null)
+				return null;
+
+			path.Add(category);
+
+			while (category != null && category.ParentCategoryID != null)
+			{
+				category = GetCategory(x=> x.Id == category.ParentCategoryID, "ParentCategory");
+
+				path.Insert(0, category);
+			}
+
+			return path;	
+		}
 	}
 }
