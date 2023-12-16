@@ -20,13 +20,15 @@ namespace DataAccess.Data
 		public DbSet<Category>? Categories { get; set; }
 		public DbSet<PharmaCompany>? PharmaCompanies { get; set; }
 		public DbSet<Pharmacy>? Pharmacies { get; set; }
+		public DbSet<ActiveSubstance>? ActiveSubstances { get; set; }
 
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
 
-			
+			modelBuilder.Entity<ActiveSubstance>().HasData(new ActiveSubstance { Id=1, Title= "аскорбінова кислота" });
+
 			modelBuilder.Entity<Category>().HasData(
 				new Category { Id=1, Title="Каталог Товарів"  },
 				new Category { Id = 2, Title = "Ліки та профілактичні засоби", ParentCategoryID=1 },
@@ -36,7 +38,7 @@ namespace DataAccess.Data
 				new Category { Id = 6, Title = "Аскорбінка-КВ", ParentCategoryID = 5 }
 				);
 			modelBuilder.Entity<Medicine>().HasData(
-				new Medicine { Id = 1, CategoryID=6, Title="Аскорбінка", Description= "Аскорбінка.", SpecialRow="Special Temp Row" }
+				new Medicine { Id = 1, CategoryID=6, Title="Аскорбінка", Description= "Аскорбінка.", SpecialRow="Special Temp Row", ActiveSubstanceID=1, PharmacyID=1 }
 				);
 
 			modelBuilder.Entity<PharmaCompany>().HasData(

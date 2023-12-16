@@ -19,5 +19,6 @@ namespace Domain.Models
         public int PharmaCompanyID { get; set; }
         [ForeignKey("PharmaCompanyID")]
         public PharmaCompany? PharmaCompany { get; set; }
+        public IEnumerable<Product>? Products { get; set; }
     }
 }
