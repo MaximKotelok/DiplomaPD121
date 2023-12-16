@@ -36,6 +36,11 @@ namespace Services.MedicineService
 			return _repository.Get(filter, includeProperties);
 		}
 
+		public IEnumerable<Medicine>? GetMedicineByStartOfTitle(string start)
+		{
+			return _repository.GetAll(a=>a.Title.StartsWith(start));
+		}
+
 		public void InsertMedicine(Medicine pharmacy)
 		{
 			_repository.Insert(pharmacy);

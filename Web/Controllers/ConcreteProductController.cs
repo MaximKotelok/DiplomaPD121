@@ -12,11 +12,11 @@ namespace Web.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class ConcreteProductConctroller : ControllerBase
+	public class ConcreteProductController : ControllerBase
 	{
 		private readonly IConcreteProductService _service;
 
-		public ConcreteProductConctroller(IConcreteProductService service) {
+		public ConcreteProductController(IConcreteProductService service) {
 			this._service = service;
 		}
 
