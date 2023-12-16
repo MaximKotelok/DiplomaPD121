@@ -1,6 +1,6 @@
-﻿using DataAccess.Repository.IRepository;
-using Domain.Models;
+﻿using Domain.Models;
 using Microsoft.EntityFrameworkCore.Query;
+using Repository.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Services.CategoryService
 {
-	public class CategoryService : ICategoryService
+    public class CategoryService : ICategoryService
 	{
 		private readonly IRepository<Category> _repository;
 

@@ -1,6 +1,4 @@
-﻿using DataAccess.Repository;
-using DataAccess.Repository.IRepository;
-using Domain.Models;
+﻿using Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
