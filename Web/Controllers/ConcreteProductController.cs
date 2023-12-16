@@ -34,7 +34,7 @@ namespace Web.Controllers
 		[HttpGet("{id}")]
 		public IActionResult GetConcreteProduct(int id)
 		{
-			var result = _service.GetConcreteProduct(id);
+			var result = _service.GetConcreteProduct(x => x.Id == id);
 			if (result is not null)
 			{
 				return Ok(result);

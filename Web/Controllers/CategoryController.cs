@@ -33,7 +33,19 @@ namespace Web.Controllers
 		[HttpGet("{id}")]
 		public IActionResult GetCategory(int id)
 		{
-			var result = _service.GetCategory(id);
+			var result = _service.GetCategory(x=> x.Id == id);
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+
+		[HttpGet("/path/{id}")]
+		public IActionResult GetCategoryPath(int id)
+		{
+
+			var result = _service.GetPathToCategory(id);
 			if (result is not null)
 			{
 				return Ok(result);

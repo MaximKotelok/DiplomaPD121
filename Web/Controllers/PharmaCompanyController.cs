@@ -32,7 +32,7 @@ namespace Web.Controllers
 		[HttpGet("{id}")]
 		public IActionResult GetPharmaCompany(int id)
 		{
-			var result = _service.GetPharmaCompany(id);
+			var result = _service.GetPharmaCompany(x => x.Id == id);
 			if (result is not null)
 			{
 				return Ok(result);

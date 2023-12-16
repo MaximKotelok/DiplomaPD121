@@ -32,14 +32,39 @@ namespace DataAccess.Repository
 			_applicationDbContext.SaveChanges();
 		}
 
-		public T? Get(int? Id)
+		public T? Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
 		{
-			return entities.SingleOrDefault(c => c.Id == Id);
+			IQueryable<T> query = entities;
+
+			if (!string.IsNullOrEmpty(includeProperties))
+			{
+				foreach (var inculdeProp in includeProperties
+					.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+				{
+					query = query.Include(inculdeProp);
+				}
+			}
+
+			return query.Where(filter).FirstOrDefault();
 		}
 
-		public IEnumerable<T> GetAll()
+		public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties = null)
 		{
-			return entities.AsEnumerable();
+			IQueryable<T> query = entities;
+			if (filter != null)
+			{
+				query = query.Where(filter);
+			}
+			if (!string.IsNullOrEmpty(includeProperties))
+			{
+				foreach (var inculdeProp in includeProperties
+					.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+				{
+					query = query.Include(inculdeProp);
+				}
+			}
+
+			return query.ToList();
 		}
 
 		public void Insert(T entity)

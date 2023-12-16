@@ -10,8 +10,8 @@ namespace DataAccess.Repository.IRepository
 {
 	public interface IRepository<T> where T : BaseEntity
 	{
-		IEnumerable<T> GetAll();
-		T? Get(int? Id);
+		IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null);
+		T? Get(Expression<Func<T, bool>> filter, string? includeProperties = null);
 		void Insert(T entity);
 		void Update(T entity);
 		void Delete(T entity);
