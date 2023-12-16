@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Dto;
+using Domain.Dtos;
 using Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -36,12 +37,12 @@ namespace Repository.Repository.Services
             return result;
         }
 
-        //public async Task<bool> ValidateUserAsync(UserLoginDto loginDto)
-        //{
-        //    _user = await _userManager.FindByNameAsync(loginDto.UserName);
-        //    var result = _user != null && await _userManager.CheckPasswordAsync(_user, loginDto.Password);
-        //    return result;
-        //}
+        public async Task<bool> ValidateUserAsync(UserLoginDto loginDto)
+        {
+            _user = await _userManager.FindByNameAsync(loginDto.UserName);
+            var result = _user != null && await _userManager.CheckPasswordAsync(_user, loginDto.Password);
+            return result;
+        }
 
         public async Task<string> CreateTokenAsync()
         {

@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -41,14 +42,16 @@ namespace Web.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult AddConcreteProduct(ConcreteProduct concreteProduct)
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public IActionResult AddConcreteProduct(ConcreteProduct concreteProduct)
 		{
 			_service.InsertConcreteProduct(concreteProduct);
 			return Ok("Data inserted");
 		}
 
 		[HttpPut("{id}")]
-		public IActionResult UpdateConcreteProduct(int id, ConcreteProduct concreteProduct)
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public IActionResult UpdateConcreteProduct(int id, ConcreteProduct concreteProduct)
 		{
 			concreteProduct.Id = id;
 			_service.UpdateConcreteProduct(concreteProduct);
@@ -56,7 +59,8 @@ namespace Web.Controllers
 		}
 
 		[HttpDelete("{id}")]
-		public IActionResult DeleteConcreteProduct(int id)
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public IActionResult DeleteConcreteProduct(int id)
 		{			
 			_service.DeleteConcreteProduct(id);
 			return Ok("Data Deleted");

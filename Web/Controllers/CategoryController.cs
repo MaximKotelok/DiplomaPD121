@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ namespace Web.Controllers
 		}
 
 		[HttpGet("")]
-		public IActionResult GetAllCategories()
+        public IActionResult GetAllCategories()
 		{
 			var result = _service.GetAllCategories();
 			if (result is not null)
@@ -51,15 +52,17 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-		[HttpPost]
-		public IActionResult AddCategory(Category category)
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public IActionResult AddCategory(Category category)
 		{
 			_service.InsertCategory(category);
 			return Ok("Data inserted");
 		}
 
 		[HttpPut("{id}")]
-		public IActionResult UpdateCategory(int id, Category category)
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public IActionResult UpdateCategory(int id, Category category)
 		{
 			category.Id = id;
 			_service.UpdateCategory(category);
@@ -67,7 +70,8 @@ namespace Web.Controllers
 		}
 
 		[HttpDelete("{id}")]
-		public IActionResult DeleteCategory(int id)
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public IActionResult DeleteCategory(int id)
 		{			
 			_service.DeleteCategory(id);
 			return Ok("Data Deleted");

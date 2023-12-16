@@ -1,4 +1,5 @@
 ﻿using Domain.Dto;
+using Domain.Dtos;
 using Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -12,5 +13,7 @@ namespace Repository.Repository.Interfaces
     public interface IUserAuthenticationRepository
     {
         Task<IdentityResult> RegisterUserAsync(UserRegistrationDto userForRegistration);
+        Task<bool> ValidateUserAsync(UserLoginDto loginDto);
+        Task<string> CreateTokenAsync();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -43,14 +44,16 @@ namespace Web.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult AddMedicine(Medicine medicine)
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public IActionResult AddMedicine(Medicine medicine)
 		{
 			_service.InsertMedicine(medicine);
 			return Ok("Data inserted");
 		}
 
 		[HttpPut("{id}")]
-		public IActionResult UpdateMedicine(int id, Medicine medicine)
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public IActionResult UpdateMedicine(int id, Medicine medicine)
 		{
 			medicine.Id = id;
 			_service.UpdateMedicine(medicine);
@@ -58,7 +61,8 @@ namespace Web.Controllers
 		}
 
 		[HttpDelete("{id}")]
-		public IActionResult DeleteMedicine(int id)
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public IActionResult DeleteMedicine(int id)
 		{			
 			_service.DeleteMedicine(id);
 			return Ok("Data Deleted");

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Dto;
+using Domain.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Repository.Interfaces;
 using Web.Filters;
@@ -27,5 +28,13 @@ namespace Web.Controllers
             return !userResult.Succeeded ? new BadRequestObjectResult(userResult) : StatusCode(201);
         }
 
+        [HttpPost("login")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> Authenticate([FromBody] UserLoginDto user)
+        {
+            return !await _repository.UserAuthentication.ValidateUserAsync(user)
+                ? Unauthorized()
+                : Ok(new { Token = await _repository.UserAuthentication.CreateTokenAsync() });
+        }
     }
 }
