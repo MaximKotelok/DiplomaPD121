@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Services.CategoryService;
 using Services.ConcreteProductService;
 using Services.PharmacyCompanyService;
+using Utility;
 
 namespace Web.Controllers
 {
@@ -42,7 +43,7 @@ namespace Web.Controllers
 		}
 
 		[HttpPost]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult AddConcreteProduct(ConcreteProduct concreteProduct)
 		{
 			_service.InsertConcreteProduct(concreteProduct);
@@ -50,7 +51,7 @@ namespace Web.Controllers
 		}
 
 		[HttpPut("{id}")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult UpdateConcreteProduct(int id, ConcreteProduct concreteProduct)
 		{
 			concreteProduct.Id = id;
@@ -59,7 +60,7 @@ namespace Web.Controllers
 		}
 
 		[HttpDelete("{id}")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult DeleteConcreteProduct(int id)
 		{			
 			_service.DeleteConcreteProduct(id);

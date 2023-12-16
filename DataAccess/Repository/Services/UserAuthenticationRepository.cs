@@ -13,18 +13,21 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Utility;
 
 namespace Repository.Repository.Services
 {
     internal sealed class UserAuthenticationRepository : IUserAuthenticationRepository
     {
         private readonly UserManager<User> _userManager;
+        RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
         private User? _user;
 
-        public UserAuthenticationRepository(UserManager<User> userManager, IConfiguration configuration, IMapper mapper)
+        public UserAuthenticationRepository(RoleManager<IdentityRole> roleManager,UserManager<User> userManager, IConfiguration configuration, IMapper mapper)
         {
+            _roleManager = roleManager;
             _userManager = userManager;
             _configuration = configuration;
             _mapper = mapper;
@@ -34,6 +37,7 @@ namespace Repository.Repository.Services
         {
             var user = _mapper.Map<User>(userRegistration);
             var result = await _userManager.CreateAsync(user, userRegistration.Password);
+            await _userManager.AddToRolesAsync(user, new List<string> { SD.Role_Customer });
             return result;
         }
 

@@ -8,6 +8,7 @@ using Services.ConcreteProductService;
 using Services.MedicineService;
 using Services.PharmacyCompanyService;
 using Services.PharmacyService;
+using Utility;
 
 namespace Web.Controllers
 {
@@ -44,7 +45,7 @@ namespace Web.Controllers
 		}
 
 		[HttpPost]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult AddMedicine(Medicine medicine)
 		{
 			_service.InsertMedicine(medicine);
@@ -52,7 +53,7 @@ namespace Web.Controllers
 		}
 
 		[HttpPut("{id}")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult UpdateMedicine(int id, Medicine medicine)
 		{
 			medicine.Id = id;
@@ -61,7 +62,7 @@ namespace Web.Controllers
 		}
 
 		[HttpDelete("{id}")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult DeleteMedicine(int id)
 		{			
 			_service.DeleteMedicine(id);

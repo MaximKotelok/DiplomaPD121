@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Domain.Dto;
 using Domain.Dtos;
+using Domain.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Repository.Interfaces;
 using Web.Filters;
@@ -13,10 +15,12 @@ namespace Web.Controllers
     {
         private readonly IRepositoryManager _repository;
         private readonly IMapper _mapper;
-        public AuthController(IRepositoryManager repository, IMapper mapper)
+        UserManager<User> _userManager;
+        public AuthController(IRepositoryManager repository, IMapper mapper, UserManager<User> userManager)
         {
             _repository = repository;
             _mapper = mapper;
+            _userManager = userManager;
         }
 
         [HttpPost]

@@ -2,9 +2,11 @@ using AutoMapper;
 using DataAccess.Data;
 using Domain.Mappings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Repository.DbInitializer;
 using Repository.Repository.Interfaces;
 using Repository.Repository.Services;
 using Services.CategoryService;
@@ -102,6 +104,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(
         }
         );
 
+builder.Services.ConfigureIdentity();
+
 var mapperConfig = new MapperConfiguration(map =>
 {
     map.AddProfile<UserMappingProfile>();
@@ -116,10 +120,9 @@ builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<IMedicineService, MedicineService>();
 builder.Services.AddTransient<IPharmacyService, PharmacyService>();
 builder.Services.AddTransient<IConcreteProductService, ConcreteProductService>();
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 builder.Services.AddEndpointsApiExplorer();
-
-builder.Services.ConfigureIdentity();
 
 var app = builder.Build();
 
@@ -141,6 +144,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+SeedDatabase();
 
 app.MapControllerRoute(
     name: "default",
@@ -149,4 +153,14 @@ app.MapControllerRoute(
 app.MapFallbackToFile("index.html");
 
 app.Run();
-//Test
+
+
+void SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        dbInitializer.Initialize();
+    }
+
+}

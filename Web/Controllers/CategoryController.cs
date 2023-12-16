@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Services.CategoryService;
 using Services.PharmacyCompanyService;
+using Utility;
 
 namespace Web.Controllers
 {
@@ -53,7 +54,7 @@ namespace Web.Controllers
 		}
 
         [HttpPost]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult AddCategory(Category category)
 		{
 			_service.InsertCategory(category);
@@ -61,7 +62,7 @@ namespace Web.Controllers
 		}
 
 		[HttpPut("{id}")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult UpdateCategory(int id, Category category)
 		{
 			category.Id = id;
@@ -70,7 +71,7 @@ namespace Web.Controllers
 		}
 
 		[HttpDelete("{id}")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult DeleteCategory(int id)
 		{			
 			_service.DeleteCategory(id);

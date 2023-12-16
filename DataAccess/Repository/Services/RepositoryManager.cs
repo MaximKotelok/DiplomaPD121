@@ -20,20 +20,22 @@ namespace Repository.Repository.Services
         private UserManager<User> _userManager;
         private IMapper _mapper;
         private IConfiguration _configuration;
+        RoleManager<IdentityRole> _roleManager;
 
-        public RepositoryManager(ApplicationDbContext repositoryContext, UserManager<User> userManager, IMapper mapper, IConfiguration configuration)
+        public RepositoryManager(RoleManager<IdentityRole> roleManager, ApplicationDbContext repositoryContext, UserManager<User> userManager, IMapper mapper, IConfiguration configuration)
         {
             _repositoryContext = repositoryContext;
             _userManager = userManager;
             _mapper = mapper;
             _configuration = configuration;
+            _roleManager = roleManager;
         }
         public IUserAuthenticationRepository UserAuthentication
         {
             get
             {
                 if (_userAuthenticationRepository is null)
-                    _userAuthenticationRepository = new UserAuthenticationRepository(_userManager, _configuration, _mapper);
+                    _userAuthenticationRepository = new UserAuthenticationRepository(_roleManager,_userManager, _configuration, _mapper);
                 return _userAuthenticationRepository;
             }
         }

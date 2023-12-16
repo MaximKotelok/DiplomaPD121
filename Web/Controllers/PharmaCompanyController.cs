@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Services.PharmacyCompanyService;
+using Utility;
 
 namespace Web.Controllers
 {
@@ -40,7 +41,7 @@ namespace Web.Controllers
 		}
 
 		[HttpPost]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult AddPharmCompany(PharmaCompany company)
 		{
 			_service.InsertPharmaCompany(company);
@@ -48,7 +49,7 @@ namespace Web.Controllers
 		}
 
 		[HttpPut("{id}")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult UpdatePharmCompany(int id, PharmaCompany company)
 		{
 			company.Id = id;
@@ -57,7 +58,7 @@ namespace Web.Controllers
 		}
 
 		[HttpDelete("{id}")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult DeletePharmCompany(int id)
 		{
 			_service.DeletePharmaCompany(id);
