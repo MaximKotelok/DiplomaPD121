@@ -12,6 +12,8 @@ namespace Services.CategoryService
 	{
 		IEnumerable<Category> GetAllCategories(Expression<Func<Category, bool>>? filter = null, string? includeProperties = null);
 		Category? GetCategory(Expression<Func<Category, bool>> filter, string? includeProperties = null);
+		IEnumerable<Product>? GetProductsFromCategory(int id);
+		IEnumerable<Category>? GetSubCategoryFromCategory(int id);
 		void InsertCategory(Category category);
 		void UpdateCategory(Category category);
 		void DeleteCategory(int id);

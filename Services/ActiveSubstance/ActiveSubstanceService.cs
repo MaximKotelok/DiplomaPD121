@@ -3,6 +3,7 @@ using Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -20,48 +21,42 @@ namespace Services.ActiveSubstanceService
 
 		public void DeleteActiveSubstance(int id)
 		{
-			ActiveSubstance? activeSubstance = _repository.Get(id);
+			ActiveSubstance? activeSubstance = _repository.Get(a=>a.Id == id);
 			_repository.Remove(activeSubstance);
 			_repository.SaveChanges();
 		}
-		public ActiveSubstance? GetActiveSubstance(int? id)
+		public ActiveSubstance? GetActiveSubstance(Expression<Func<ActiveSubstance, bool>>? filter = null, string? includeProperties = null)
 		{
-			return _repository.Get(id);
+			return _repository.Get(filter, includeProperties);
 		}
 
-		public IEnumerable<ActiveSubstance> GetAllActiveSubstances()
+		public IEnumerable<ActiveSubstance> GetAllActiveSubstances(Expression<Func<ActiveSubstance, bool>>? filter = null, string? includeProperties = null)
 		{
-			return _repository.GetAll();
+			return _repository.GetAll(filter, includeProperties);
 		}
 
-		public IEnumerator<Medicine>? GetListOfMedicineOfActiveSubstance(int? id)
+		public IEnumerable<Medicine>? GetListOfMedicineOfActiveSubstance(int id)
 		{
-			return _repository.Get(id);
+			var res = _repository.Get(a => a.Id == id, "Medicines");
+			if(res is not null)
+				return res?.Medicines;
+			return new List<Medicine>();
 		}
 
-		public IEnumerator<Medicine>? GetListOfMedicineOfActiveSubstance(ActiveSubstance activeSubstance)
+		public IEnumerable<Medicine>? GetListOfMedicineOfActiveSubstance(ActiveSubstance activeSubstance)
 		{
-			throw new NotImplementedException();
+			return GetListOfMedicineOfActiveSubstance(activeSubstance.Id);
 		}
 
-		public void InsertActiveSubstance(ActiveSubstance category)
+		public void InsertActiveSubstance(ActiveSubstance activeSubstance)
 		{
-			throw new NotImplementedException();
-		}
-
-		public void InsertCategory(Category category)
-		{
-			_repository.Insert(category);
+			_repository.Insert(activeSubstance);
 		}
 
 		public void UpdateActiveSubstance(ActiveSubstance category)
 		{
-			throw new NotImplementedException();
-		}
-
-		public void UpdateCategory(Category category)
-		{
 			_repository.Update(category);
 		}
+		
 	}
 }

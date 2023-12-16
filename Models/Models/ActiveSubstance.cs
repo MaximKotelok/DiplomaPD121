@@ -13,7 +13,6 @@ namespace Domain.Models
 	{
 		[Required]
 		public string? Title { get; set; }
-		public int? ParentCategoryID { get; set; }
 		public IEnumerable<Medicine>? Medicines { get; set; }
 	}
 }

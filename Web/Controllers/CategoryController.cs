@@ -41,6 +41,27 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
+		[HttpGet("/GetSubCategories/{id}")]
+		public IActionResult GetSubCategories(int id)
+		{
+			var result = _service.GetSubCategoryFromCategory(id);
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+		[HttpGet("/GetProductsFromCategory/{id}")]
+		public IActionResult GetProductsFromCategory(int id)
+		{
+			var result = _service.GetProductsFromCategory(id);
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+
 		[HttpGet("/path/{id}")]
 		public IActionResult GetCategoryPath(int id)
 		{
