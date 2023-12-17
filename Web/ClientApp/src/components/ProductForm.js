@@ -1,81 +1,119 @@
-import React, { Component } from 'react';
-import { postToServer } from '../utils/Queries';
+import { postToServer, postPhotoToServer } from '../utils/Queries';
+import React, { useState } from 'react';
 
-class ProductForm extends Component {
+const CombinedComponent = () => {
+    const [product, setProduct] = useState({
+        title: '',
+        description: '',
+        categoryId: '',
+        specialRow: '',
+    });
 
-    
+    const [selectedFile, setSelectedFile] = useState();
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: '',
-      description: '',
-      categoryId: '',
-      specialRow: '',
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setProduct((prevProduct) => ({ ...prevProduct, [name]: value }));
     };
-  }
 
- 
-  handleInputChange = (e) => {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
-  };
- 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    const { title, description, categoryId, specialRow } = this.state;
-    const data = postToServer("Medicine", 
-    {
-        Title: title, 
-        Description: description, 
-        CategoryId: categoryId, 
-        SpecialRow: specialRow
-    });
+    const handlePhotoSelect = (e) => {
+        const selectedFile = e.target.files[0];
+        setSelectedFile(selectedFile);
+    };
 
-    console.log(data);
+    const handleProductSubmit = async (e) => {
+        e.preventDefault();
 
-    this.setState({
-      title: '',
-      description: '',
-      categoryId: '',
-      specialRow: '',
-    });
-    
-  };
+        const { title, description, categoryId, specialRow } = product;
+        let pathToPhoto = "";
 
-  render() {
-    const { title, description, categoryId, specialRow } = this.state;
+        const formData = new FormData();
+        formData.append("file", selectedFile);
+        let a = await postPhotoToServer("Photo/Product", formData);
+        pathToPhoto = a.data;
+
+        const data = await postToServer('Medicine', {
+            Title: title,
+            Description: description,
+            CategoryId: categoryId,
+            SpecialRow: specialRow,
+            PathToPhoto: pathToPhoto,
+        });
+
+        console.log(data);
+
+        setProduct({
+            title: '',
+            description: '',
+            categoryId: '',
+            specialRow: '',
+
+        });
+    };
 
     return (
-      <form>
         <div>
-          <label>
-            Title:
-            <input name="title" type="text" value={title} onChange={this.handleInputChange} />
-          </label>
-        </div>
-        <div>
-          <label>
-            Description:
-            <textarea name="description" value={description} onChange={this.handleInputChange} />
-          </label>
-        </div>
-        <div>
-          <label>
-            CategoryId:
-            <input name="categoryId" type="text" value={categoryId} onChange={this.handleInputChange} />
-          </label>
-        </div>
-        <div>
-          <label>
-            SpecialRow:
-            <input name="specialRow" type="text" value={specialRow} onChange={this.handleInputChange} />
-          </label>
-        </div>
-        <button onClick={this.handleSubmit}>Send</button>
-      </form>
-    );
-  }
-}
+            <form enctype="multipart/form-data">
+                <div>
+                    <label>
+                        Title:
+                        <input
+                            name="title"
+                            type="text"
+                            value={product.title}
+                            onChange={handleInputChange}
+                        />
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Description:
+                        <textarea
+                            name="description"
+                            value={product.description}
+                            onChange={handleInputChange}
+                        />
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        CategoryId:
+                        <input
+                            name="categoryId"
+                            type="text"
+                            value={product.categoryId}
+                            onChange={handleInputChange}
+                        />
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        SpecialRow:
+                        <input
+                            name="specialRow"
+                            type="text"
+                            value={product.specialRow}
+                            onChange={handleInputChange}
+                        />
+                    </label>
+                </div>
 
-export default ProductForm;
+                <div>
+                    <label>
+                        Select Photo:
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handlePhotoSelect}
+                        />
+                    </label>
+                </div>
+
+                <button type="button" onClick={handleProductSubmit}>
+                    Send
+                </button>
+            </form>
+        </div>
+    );
+};
+export default CombinedComponent;

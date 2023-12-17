@@ -24,6 +24,27 @@ export function postToServer(url, data) {
     });
 }
 
+export async function postPhotoToServer(url, photo) {
+    let res = {};
+
+    await axios({
+        method: 'post',
+        url: `${globalUrl}/${url}`,
+        data: photo,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    })
+    .then((response) => {
+        res = { status: 'Success', data: response.data };
+    })
+    .catch((error) => {
+        res = { status: 'Error', error };
+    });
+
+    return res
+}
+
 export function getFromServer(url, data) {
   let res = {};
   axios({
