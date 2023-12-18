@@ -35,6 +35,7 @@ builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<IMedicineService, MedicineService>();
 builder.Services.AddTransient<IPharmacyService, PharmacyService>();
 builder.Services.AddTransient<IConcreteProductService, ConcreteProductService>();
+builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<IActiveSubstanceService, ActiveSubstanceService>();
 
 
@@ -54,6 +55,7 @@ app.UseHttpsRedirection();
 app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.UseStaticFiles();
 app.UseRouting();
+app.UseStaticFiles();
 
 
 app.MapControllerRoute(

@@ -16,6 +16,8 @@ namespace Domain.Models
         public string? Title { get; set; }
         public string? Description { get; set; }
         public int? CategoryID { get; set; }
+        public string? PathToPhoto { get; set; }
+
         [ForeignKey("CategoryID")]
         public Category? Category { get; set; }
 		public int? PharmacyID { get; set; }

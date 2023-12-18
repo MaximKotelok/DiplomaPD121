@@ -4,16 +4,19 @@ using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Repository.Migrations
+namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231216124314_addPhoto")]
+    partial class addPhoto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,30 +24,6 @@ namespace Repository.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Domain.Models.ActiveSubstance", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ActiveSubstances");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Title = "аскорбінова кислота"
-                        });
-                });
 
             modelBuilder.Entity("Domain.Models.Category", b =>
                 {
@@ -102,40 +81,6 @@ namespace Repository.Migrations
                             Id = 6,
                             ParentCategoryID = 5,
                             Title = "Аскорбінка-КВ"
-                        });
-                });
-
-            modelBuilder.Entity("Domain.Models.City", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Latitude")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Longitude")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NameCity")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Citys");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Latitude = "213213",
-                            Longitude = "214124124",
-                            NameCity = "Львів"
                         });
                 });
 
@@ -212,9 +157,6 @@ namespace Repository.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CityID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Coord")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -223,8 +165,6 @@ namespace Repository.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CityID");
 
                     b.HasIndex("PharmaCompanyID");
 
@@ -235,7 +175,6 @@ namespace Repository.Migrations
                         {
                             Id = 1,
                             Address = "Temp Address",
-                            CityID = 1,
                             Coord = "Temp Coord",
                             PharmaCompanyID = 1
                         });
@@ -255,9 +194,6 @@ namespace Repository.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PharmacyID")
-                        .HasColumnType("int");
-
                     b.Property<string>("PathToPhoto")
                         .HasColumnType("nvarchar(max)");
 
@@ -269,8 +205,6 @@ namespace Repository.Migrations
 
                     b.HasIndex("CategoryID");
 
-                    b.HasIndex("PharmacyID");
-
                     b.ToTable("Products");
 
                     b.UseTptMappingStrategy();
@@ -280,13 +214,8 @@ namespace Repository.Migrations
                 {
                     b.HasBaseType("Domain.Models.Product");
 
-                    b.Property<int>("ActiveSubstanceID")
-                        .HasColumnType("int");
-
                     b.Property<string>("SpecialRow")
                         .HasColumnType("nvarchar(max)");
-
-                    b.HasIndex("ActiveSubstanceID");
 
                     b.ToTable("Medicines");
 
@@ -296,9 +225,7 @@ namespace Repository.Migrations
                             Id = 1,
                             CategoryID = 6,
                             Description = "Аскорбінка.",
-                            PharmacyID = 1,
                             Title = "Аскорбінка",
-                            ActiveSubstanceID = 1,
                             SpecialRow = "Special Temp Row"
                         });
                 });
@@ -306,7 +233,7 @@ namespace Repository.Migrations
             modelBuilder.Entity("Domain.Models.Category", b =>
                 {
                     b.HasOne("Domain.Models.Category", "ParentCategory")
-                        .WithMany("SubCategories")
+                        .WithMany()
                         .HasForeignKey("ParentCategoryID");
 
                     b.Navigation("ParentCategory");
@@ -325,19 +252,11 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Domain.Models.Pharmacy", b =>
                 {
-                    b.HasOne("Domain.Models.City", "City")
-                        .WithMany()
-                        .HasForeignKey("CityID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Models.PharmaCompany", "PharmaCompany")
                         .WithMany()
                         .HasForeignKey("PharmaCompanyID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("City");
 
                     b.Navigation("PharmaCompany");
                 });
@@ -348,45 +267,19 @@ namespace Repository.Migrations
                         .WithMany("Products")
                         .HasForeignKey("CategoryID");
 
-                    b.HasOne("Domain.Models.Pharmacy", "Pharmacy")
-                        .WithMany("Products")
-                        .HasForeignKey("PharmacyID");
-
                     b.Navigation("Category");
-
-                    b.Navigation("Pharmacy");
                 });
 
             modelBuilder.Entity("Domain.Models.Medicine", b =>
                 {
-                    b.HasOne("Domain.Models.ActiveSubstance", "ActiveSubstance")
-                        .WithMany("Medicines")
-                        .HasForeignKey("ActiveSubstanceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Models.Product", null)
                         .WithOne()
                         .HasForeignKey("Domain.Models.Medicine", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ActiveSubstance");
-                });
-
-            modelBuilder.Entity("Domain.Models.ActiveSubstance", b =>
-                {
-                    b.Navigation("Medicines");
                 });
 
             modelBuilder.Entity("Domain.Models.Category", b =>
-                {
-                    b.Navigation("Products");
-
-                    b.Navigation("SubCategories");
-                });
-
-            modelBuilder.Entity("Domain.Models.Pharmacy", b =>
                 {
                     b.Navigation("Products");
                 });
