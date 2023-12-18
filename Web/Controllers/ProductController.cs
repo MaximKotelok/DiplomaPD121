@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Services.CategoryService;
+using Services.CityService;
 using Services.ConcreteProductService;
 using Services.PharmacyCompanyService;
 
@@ -16,19 +17,43 @@ namespace Web.Controllers
 	[ApiController]
 	public class ProductController : ControllerBase
 	{
-		private readonly IProductService _service;
+		private readonly IProductService _productService;
+		private readonly ICityService _cityService;
+		private readonly IConcreteProductService _concreteProductService;
 		private readonly IWebHostEnvironment _webHostEnvironment;
 
-		public ProductController(IProductService service) {
-			this._service = service;
+		public ProductController(
+			IProductService productService, 
+			ICityService cityService, 
+			IConcreteProductService concreteProductService
+			) {
+			this._productService = productService;
+			this._cityService = cityService;
+			this._concreteProductService = concreteProductService;
 		}
 
 		[HttpGet("")]
 		public IActionResult GetAllProducts()
 		{
-			var result = _service.GetAllProducts();
+			var result = _productService.GetAllProducts();
 			if (result is not null)
 			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+
+		[HttpGet("GetListOfConcreteProductInYourCity/{cityName}/{productId}")]
+		public IActionResult GetListOfConcreteProductInYourCity(int productId, string cityName)
+		{
+			var city = _cityService.GetCity(a => a.NameCity == cityName);
+			if (city is not null)
+			{				
+				var result = _concreteProductService.GetAllConcreteProducts(
+					a => a.ProductID == productId
+					&&
+					a.Pharmacy.CityID == city.Id, "Pharmacy");
+
 				return Ok(result);
 			}
 			return BadRequest("No records found");
@@ -37,7 +62,7 @@ namespace Web.Controllers
 		[HttpGet("{id}")]
 		public IActionResult GetProduct(int id)
 		{
-			var result = _service.GeteProduct(x => x.Id == id);
+			var result = _productService.GeteProduct(x => x.Id == id);
 			if (result is not null)
 			{
 				return Ok(result);
@@ -48,22 +73,22 @@ namespace Web.Controllers
 		[HttpPost("")]
 		public IActionResult AddProduct(Product product)
 		{
-			_service.InsertProduct(product);
+			_productService.InsertProduct(product);
 			return Ok("Data inserted");
 		}
 
 		[HttpPut("{id}")]
-		public IActionResult UpdateeProduct(int id, Product product)
+		public IActionResult UpdateProduct(int id, Product product)
 		{
 			product.Id = id;
-			_service.UpdateProduct(product);
+			_productService.UpdateProduct(product);
 			return Ok("Updation done");
 		}
 
 		[HttpDelete("{id}")]
 		public IActionResult DeleteProduct(int id)
 		{			
-			_service.DeleteProduct(id);
+			_productService.DeleteProduct(id);
 			return Ok("Data Deleted");
 		}
 	}

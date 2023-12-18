@@ -40,7 +40,7 @@ namespace DataAccess.Data
 				new Category { Id = 6,Title = "Аскорбінка-КВ", ParentCategoryID = 5 }
 				);
 			modelBuilder.Entity<Medicine>().HasData(
-				new Medicine { Id = 1, CategoryID=6, Title="Аскорбінка", Description= "Аскорбінка.", SpecialRow="Special Temp Row", ActiveSubstanceID=1, PharmacyID=1 }
+				new Medicine { Id = 1, CategoryID=6, Title="Аскорбінка", Description= "Аскорбінка.", SpecialRow="Special Temp Row", ActiveSubstanceID=1 }
 				);
 
 			modelBuilder.Entity<PharmaCompany>().HasData(
@@ -52,7 +52,7 @@ namespace DataAccess.Data
 				);
 
 			modelBuilder.Entity<ConcreteProduct>().HasData(
-				new ConcreteProduct { Id = 1, Price=100, ProductID=1, Quantity=2}
+				new ConcreteProduct { Id = 1, Price=100, ProductID=1, Quantity=2, PharmacyID = 1 }
 				);
 
 

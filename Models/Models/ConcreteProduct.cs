@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Domain.Models
@@ -18,6 +19,10 @@ namespace Domain.Models
         [Required]
         public int ProductID { get; set; }
         [ForeignKey("ProductID")]
-        public Product? Product { get; set; }
-    }
+		[JsonIgnore]
+		public Product? Product { get; set; }
+		public int? PharmacyID { get; set; }
+		[ForeignKey("PharmacyID")]        
+		public Pharmacy? Pharmacy { get; set; }
+	}
 }

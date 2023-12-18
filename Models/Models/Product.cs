@@ -19,9 +19,6 @@ namespace Domain.Models
         public string? PathToPhoto { get; set; }
 
         [ForeignKey("CategoryID")]
-        public Category? Category { get; set; }
-		public int? PharmacyID { get; set; }
-		[ForeignKey("PharmacyID")]
-		public Pharmacy? Pharmacy { get; set; }
+        public Category? Category { get; set; }		
 	}
 }
