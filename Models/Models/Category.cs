@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Domain.Models
@@ -15,8 +16,12 @@ namespace Domain.Models
         public string? Title { get; set; }
         public int? ParentCategoryID { get; set; }
         [ForeignKey("ParentCategoryID")]
-        public Category? ParentCategory { get; set; }
-        public IEnumerable<Product>? Products { get; set; }
+		[JsonIgnore]
+		public Category? ParentCategory { get; set; }
+		[JsonIgnore]
+		public IEnumerable<Product>? Products { get; set; }
+        [JsonIgnore]
+		public IEnumerable<Category>? SubCategories { get; set; }
 
-    }
+	}
 }

@@ -32,6 +32,16 @@ namespace Web.Controllers
 			}
 			return BadRequest("No records found");
 		}
+		[HttpGet("/GetMedicineByStartOfTitle/{startOfTitle}")]
+		public IActionResult GetMedicineByStartOfTitle(string startOfTitle)
+		{
+			var result = _service.GetMedicineByStartOfTitle(startOfTitle);
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
 
 		[HttpGet("{id}")]
 		public IActionResult GetMedicine(int id)

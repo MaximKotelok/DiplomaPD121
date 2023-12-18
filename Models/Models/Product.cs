@@ -18,5 +18,8 @@ namespace Domain.Models
         public int? CategoryID { get; set; }
         [ForeignKey("CategoryID")]
         public Category? Category { get; set; }
-    }
+		public int? PharmacyID { get; set; }
+		[ForeignKey("PharmacyID")]
+		public Pharmacy? Pharmacy { get; set; }
+	}
 }
