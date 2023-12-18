@@ -35,7 +35,7 @@ namespace Web.Controllers
 		[HttpGet("/GetMedicineByStartOfTitle/{startOfTitle}")]
 		public IActionResult GetMedicineByStartOfTitle(string startOfTitle)
 		{
-			var result = _service.GetMedicineByStartOfTitle(startOfTitle);
+			var result = _service.GetAllMedicines(a => a.Title.StartsWith(startOfTitle));
 			if (result is not null)
 			{
 				return Ok(result);

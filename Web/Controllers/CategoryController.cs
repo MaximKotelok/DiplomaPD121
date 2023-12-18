@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Services.CategoryService;
 using Services.PharmacyCompanyService;
+using System.Collections.Generic;
 using Utility;
 
 namespace Web.Controllers
@@ -66,20 +67,26 @@ namespace Web.Controllers
 		[HttpGet("/GetSubCategories/{id}")]
 		public IActionResult GetSubCategories(int id)
 		{
-			var result = _service.GetSubCategoryFromCategory(id);
-			if (result is not null)
+			var category = _service.GetCategory(a => a.Id == id, "SubCategories");
+			IEnumerable<Category> categories = null;
+			if (category is not null)
+				categories = category?.SubCategories;
+			if (categories is not null)
 			{
-				return Ok(result);
+				return Ok(categories);
 			}
 			return BadRequest("No records found");
 		}
 		[HttpGet("/GetProductsFromCategory/{id}")]
 		public IActionResult GetProductsFromCategory(int id)
 		{
-			var result = _service.GetProductsFromCategory(id);
-			if (result is not null)
+			var category = _service.GetCategory(a => a.Id == id, "Products");
+			IEnumerable<Product> products = null;
+			if (category is not null)
+				products = category?.Products;
+			if (products is not null)
 			{
-				return Ok(result);
+				return Ok(products);
 			}
 			return BadRequest("No records found");
 		}
@@ -87,11 +94,24 @@ namespace Web.Controllers
 		[HttpGet("/path/{id}")]
 		public IActionResult GetCategoryPath(int id)
 		{
+			List<Category> path = new List<Category>();
 
-			var result = _service.GetPathToCategory(id);
-			if (result is not null)
+			Category? category = _service.GetCategory(x => x.Id == id, "ParentCategory");
+			if (category == null)
+				return null;
+
+			path.Add(category);
+
+			while (category != null && category.ParentCategoryID != null)
 			{
-				return Ok(result);
+				category = _service.GetCategory(x => x.Id == category.ParentCategoryID, "ParentCategory");
+
+				path.Insert(0, category);
+			}
+			
+			if (path is not null)
+			{
+				return Ok(path);
 			}
 			return BadRequest("No records found");
 		}
