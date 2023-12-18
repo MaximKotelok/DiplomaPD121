@@ -1,7 +1,6 @@
 ﻿using DataAccess.Migrations;
-using DataAccess.Repository;
-using DataAccess.Repository.IRepository;
 using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -10,6 +9,7 @@ using Services.CategoryService;
 using Services.CityService;
 using Services.ConcreteProductService;
 using Services.PharmacyCompanyService;
+using Utility;
 
 namespace Web.Controllers
 {
@@ -71,6 +71,7 @@ namespace Web.Controllers
 		}
 
 		[HttpPost("")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
 		public IActionResult AddProduct(Product product)
 		{
 			_productService.InsertProduct(product);
@@ -78,6 +79,7 @@ namespace Web.Controllers
 		}
 
 		[HttpPut("{id}")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
 		public IActionResult UpdateProduct(int id, Product product)
 		{
 			product.Id = id;
@@ -86,6 +88,7 @@ namespace Web.Controllers
 		}
 
 		[HttpDelete("{id}")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
 		public IActionResult DeleteProduct(int id)
 		{			
 			_productService.DeleteProduct(id);

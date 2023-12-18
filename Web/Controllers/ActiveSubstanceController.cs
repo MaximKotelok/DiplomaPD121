@@ -1,7 +1,9 @@
 ﻿using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.ActiveSubstanceService;
 using Services.CategoryService;
+using Utility;
 
 namespace Web.Controllers
 {
@@ -39,6 +41,7 @@ namespace Web.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
 		public IActionResult AddActiveSubstance(ActiveSubstance activeSubstance)
 		{
 			_service.InsertActiveSubstance(activeSubstance);
@@ -46,6 +49,7 @@ namespace Web.Controllers
 		}
 
 		[HttpPut("{id}")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
 		public IActionResult UpdateActiveSubstance(int id, ActiveSubstance activeSubstance)
 		{
 			activeSubstance.Id = id;
@@ -54,6 +58,7 @@ namespace Web.Controllers
 		}
 
 		[HttpDelete("{id}")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
 		public IActionResult DeleteActiveSubstance(int id)
 		{
 			_service.DeleteActiveSubstance(id);

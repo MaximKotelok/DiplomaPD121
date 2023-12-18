@@ -1,7 +1,9 @@
 ﻿using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.CategoryService;
 using Services.CityService;
+using Utility;
 
 namespace Web.Controllers
 {
@@ -41,14 +43,16 @@ namespace Web.Controllers
 
 
         [HttpPost]
-        public IActionResult AddCity(City city)
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		public IActionResult AddCity(City city)
         {
             _service.InsertCity(city);
             return Ok("Data inserted");
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateCity(int id, City city)
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		public IActionResult UpdateCity(int id, City city)
         {
             city.Id = id;
             _service.UpdateCity(city);
@@ -56,6 +60,7 @@ namespace Web.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult DeleteCity(int id)
         {
             _service.DeleteCity(id);
