@@ -30,6 +30,28 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
+		[HttpGet("Main/All")]
+		public IActionResult GetAllMainCategories()
+		{
+			var result = _service.GetCategory(x => x.ParentCategory == null, "SubCategories" );
+			if (result is not null)
+			{
+				return Ok(result.SubCategories);
+			}
+			return BadRequest("No records found");
+		}
+
+		[HttpGet("Main")]
+		public IActionResult GetMainCategory() 
+		{
+			var result = _service.GetCategory(x => x.ParentCategory == null);
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+
 		[HttpGet("{id}")]
 		public IActionResult GetCategory(int id)
 		{
