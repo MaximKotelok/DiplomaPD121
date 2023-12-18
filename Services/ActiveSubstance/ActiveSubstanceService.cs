@@ -35,19 +35,7 @@ namespace Services.ActiveSubstanceService
 			return _repository.GetAll(filter, includeProperties);
 		}
 
-		public IEnumerable<Medicine>? GetListOfMedicineOfActiveSubstance(int id)
-		{
-			var res = _repository.Get(a => a.Id == id, "Medicines");
-			if(res is not null)
-				return res?.Medicines;
-			return new List<Medicine>();
-		}
-
-		public IEnumerable<Medicine>? GetListOfMedicineOfActiveSubstance(ActiveSubstance activeSubstance)
-		{
-			return GetListOfMedicineOfActiveSubstance(activeSubstance.Id);
-		}
-
+		
 		public void InsertActiveSubstance(ActiveSubstance activeSubstance)
 		{
 			_repository.Insert(activeSubstance);

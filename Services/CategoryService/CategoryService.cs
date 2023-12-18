@@ -36,23 +36,8 @@ namespace Services.CategoryService
 			return _repository.Get(filter, includeProperties);
 		}
 
-		public IEnumerable<Product>? GetProductsFromCategory(int id)
-		{
-			var res = _repository.Get(a => a.Id == id, "Products");
-			if(res is not null)
-				return res?.Products;
-			return new List<Product>();
-			
-		}
 		
-		public IEnumerable<Category>? GetSubCategoryFromCategory(int id)
-		{
-			var res = _repository.Get(a => a.Id == id, "SubCategories");
-			if (res is not null)
-				return res?.SubCategories;
-			return new List<Category>();	
-		}
-
+	
 		public void InsertCategory(Category category)
 		{
 			_repository.Insert(category);
@@ -63,24 +48,5 @@ namespace Services.CategoryService
 			_repository.Update(category);
 		}
 
-		public List<Category> GetPathToCategory(int id)
-		{
-			List<Category> path = new List<Category>();
-			
-			Category? category = GetCategory(x => x.Id == id, "ParentCategory");
-			if (category == null)
-				return null;
-
-			path.Add(category);
-
-			while (category != null && category.ParentCategoryID != null)
-			{
-				category = GetCategory(x=> x.Id == category.ParentCategoryID, "ParentCategory");
-
-				path.Insert(0, category);
-			}
-
-			return path;	
-		}
 	}
 }

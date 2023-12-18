@@ -68,10 +68,10 @@ namespace Web.Controllers
 		[HttpGet("/GetListOfMedicineOfActiveSubstance/{id}")]
 		public IActionResult GetListOfMedicineOfActiveSubstance(int id)
 		{
-			var result = _service.GetListOfMedicineOfActiveSubstance(id);
+			var result = _service.GetActiveSubstance(a => a.Id == id, "Medicines");
 			if (result is not null)
 			{
-				return Ok(result);
+				return Ok(result?.Medicines);
 			}
 			return BadRequest("No records found");			
 		}

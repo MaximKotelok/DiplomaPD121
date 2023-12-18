@@ -11,9 +11,7 @@ namespace Services.ActiveSubstanceService
 	public interface IActiveSubstanceService
 	{
 		IEnumerable<ActiveSubstance> GetAllActiveSubstances(Expression<Func<ActiveSubstance, bool>>? filter = null, string? includeProperties = null);
-		ActiveSubstance? GetActiveSubstance(Expression<Func<ActiveSubstance, bool>>? filter = null, string? includeProperties = null);
-		IEnumerable<Medicine>? GetListOfMedicineOfActiveSubstance(int id);
-		IEnumerable<Medicine>? GetListOfMedicineOfActiveSubstance(ActiveSubstance activeSubstance);
+		ActiveSubstance? GetActiveSubstance(Expression<Func<ActiveSubstance, bool>>? filter = null, string? includeProperties = null);		
 		void InsertActiveSubstance(ActiveSubstance activeSubstance);
 		void UpdateActiveSubstance(ActiveSubstance activeSubstance);
 		void DeleteActiveSubstance(int id);
