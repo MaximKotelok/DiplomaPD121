@@ -21,6 +21,7 @@ namespace DataAccess.Data
 		public DbSet<PharmaCompany>? PharmaCompanies { get; set; }
 		public DbSet<Pharmacy>? Pharmacies { get; set; }
 		public DbSet<ActiveSubstance>? ActiveSubstances { get; set; }
+		public DbSet<City>? Citys { get; set; }
 
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -28,14 +29,15 @@ namespace DataAccess.Data
 			base.OnModelCreating(modelBuilder);
 
 			modelBuilder.Entity<ActiveSubstance>().HasData(new ActiveSubstance { Id=1, Title= "аскорбінова кислота" });
+			modelBuilder.Entity<City>().HasData(new City{ Id=1, NameCity= "Львів", Latitude="213213", Longitude="214124124" });
 
 			modelBuilder.Entity<Category>().HasData(
-				new Category { Id=1, Title="Каталог Товарів"  },
-				new Category { Id = 2, Title = "Ліки та профілактичні засоби", ParentCategoryID=1 },
-				new Category { Id = 3, Title = "Вітаміни", ParentCategoryID = 2 },
-				new Category { Id = 4, Title = "Вітамін С", ParentCategoryID = 3 },
-				new Category { Id = 5, Title = "Аскорбінка", ParentCategoryID = 4 },
-				new Category { Id = 6, Title = "Аскорбінка-КВ", ParentCategoryID = 5 }
+				new Category { Id=1,Title="Каталог Товарів"  },
+				new Category { Id = 2,Title = "Ліки та профілактичні засоби", ParentCategoryID=1 },
+				new Category { Id = 3,Title = "Вітаміни", ParentCategoryID = 2 },
+				new Category { Id = 4,Title = "Вітамін С", ParentCategoryID = 3 },
+				new Category { Id = 5,Title = "Аскорбінка", ParentCategoryID = 4 },
+				new Category { Id = 6,Title = "Аскорбінка-КВ", ParentCategoryID = 5 }
 				);
 			modelBuilder.Entity<Medicine>().HasData(
 				new Medicine { Id = 1, CategoryID=6, Title="Аскорбінка", Description= "Аскорбінка.", SpecialRow="Special Temp Row", ActiveSubstanceID=1, PharmacyID=1 }
@@ -46,7 +48,7 @@ namespace DataAccess.Data
 				);
 
 			modelBuilder.Entity<Pharmacy>().HasData(
-				new Pharmacy { Id = 1, Address="Temp Address", Coord="Temp Coord", PharmaCompanyID=1 }
+				new Pharmacy { Id = 1, Address="Temp Address", Coord="Temp Coord", PharmaCompanyID=1, CityID=1}
 				);
 
 			modelBuilder.Entity<ConcreteProduct>().HasData(
