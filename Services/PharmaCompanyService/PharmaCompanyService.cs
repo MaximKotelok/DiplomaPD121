@@ -1,5 +1,5 @@
-﻿using DataAccess.Repository.IRepository;
-using Domain.Models;
+﻿using Domain.Models;
+using Repository.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Services.PharmacyCompanyService
 {
-	public class PharmaCompanyService : IPharmaCompanyService
+    public class PharmaCompanyService : IPharmaCompanyService
 	{
 		private readonly IRepository<PharmaCompany> _repository;
 

@@ -1,12 +1,12 @@
-﻿using DataAccess.Repository;
-using DataAccess.Repository.IRepository;
-using Domain.Models;
+﻿using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Services.CategoryService;
 using Services.ConcreteProductService;
 using Services.PharmacyCompanyService;
+using Utility;
 
 namespace Web.Controllers
 {
@@ -43,14 +43,16 @@ namespace Web.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult AddConcreteProduct(ConcreteProduct concreteProduct)
+                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+        public IActionResult AddConcreteProduct(ConcreteProduct concreteProduct)
 		{
 			_service.InsertConcreteProduct(concreteProduct);
 			return Ok("Data inserted");
 		}
 
 		[HttpPut("{id}")]
-		public IActionResult UpdateConcreteProduct(int id, ConcreteProduct concreteProduct)
+                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+        public IActionResult UpdateConcreteProduct(int id, ConcreteProduct concreteProduct)
 		{
 			concreteProduct.Id = id;
 			_service.UpdateConcreteProduct(concreteProduct);
@@ -58,7 +60,8 @@ namespace Web.Controllers
 		}
 
 		[HttpDelete("{id}")]
-		public IActionResult DeleteConcreteProduct(int id)
+                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+        public IActionResult DeleteConcreteProduct(int id)
 		{			
 			_service.DeleteConcreteProduct(id);
 			return Ok("Data Deleted");

@@ -1,6 +1,5 @@
-﻿using DataAccess.Repository;
-using DataAccess.Repository.IRepository;
-using Domain.Models;
+﻿using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +7,7 @@ using Services.CategoryService;
 using Services.ConcreteProductService;
 using Services.PharmacyCompanyService;
 using Services.PharmacyService;
+using Utility;
 
 namespace Web.Controllers
 {
@@ -44,14 +44,16 @@ namespace Web.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult AddPharmacy(Pharmacy pharmacy)
+                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+        public IActionResult AddPharmacy(Pharmacy pharmacy)
 		{
 			_service.InsertPharmacy(pharmacy);
 			return Ok("Data inserted");
 		}
 
 		[HttpPut("{id}")]
-		public IActionResult UpdatePharmacy(int id, Pharmacy pharmacy)
+                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+        public IActionResult UpdatePharmacy(int id, Pharmacy pharmacy)
 		{
 			pharmacy.Id = id;
 			_service.UpdatePharmacy(pharmacy);
@@ -59,7 +61,8 @@ namespace Web.Controllers
 		}
 
 		[HttpDelete("{id}")]
-		public IActionResult DeletePharmacy(int id)
+                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+        public IActionResult DeletePharmacy(int id)
 		{			
 			_service.DeletePharmacy(id);
 			return Ok("Data Deleted");

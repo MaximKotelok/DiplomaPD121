@@ -1,6 +1,5 @@
-﻿using DataAccess.Repository;
-using DataAccess.Repository.IRepository;
-using Domain.Models;
+﻿using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +8,7 @@ using Services.ConcreteProductService;
 using Services.MedicineService;
 using Services.PharmacyCompanyService;
 using Services.PharmacyService;
+using Utility;
 
 namespace Web.Controllers
 {
@@ -55,14 +55,16 @@ namespace Web.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult AddMedicine(Medicine medicine)
+                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+        public IActionResult AddMedicine(Medicine medicine)
 		{
 			_service.InsertMedicine(medicine);
 			return Ok("Data inserted");
 		}
 
 		[HttpPut("{id}")]
-		public IActionResult UpdateMedicine(int id, Medicine medicine)
+                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+        public IActionResult UpdateMedicine(int id, Medicine medicine)
 		{
 			medicine.Id = id;
 			_service.UpdateMedicine(medicine);
@@ -70,7 +72,8 @@ namespace Web.Controllers
 		}
 
 		[HttpDelete("{id}")]
-		public IActionResult DeleteMedicine(int id)
+                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+        public IActionResult DeleteMedicine(int id)
 		{			
 			_service.DeleteMedicine(id);
 			return Ok("Data Deleted");

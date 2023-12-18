@@ -1,5 +1,5 @@
-﻿using DataAccess.Repository.IRepository;
-using Domain.Models;
+﻿using Domain.Models;
+using Repository.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Services.ConcreteProductService
 {
-	public class ConcreteProductService : IConcreteProductService
+    public class ConcreteProductService : IConcreteProductService
 	{
 		private readonly IRepository<ConcreteProduct> _repository;
 
