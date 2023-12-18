@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231216124314_addPhoto")]
-    partial class addPhoto
+    [Migration("20231211170150_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,13 +25,13 @@ namespace DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Models.Category", b =>
+            modelBuilder.Entity("Models.Category", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CategoryID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryID"));
 
                     b.Property<int?>("ParentCategoryID")
                         .HasColumnType("int");
@@ -40,7 +40,7 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("CategoryID");
 
                     b.HasIndex("ParentCategoryID");
 
@@ -49,48 +49,48 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            CategoryID = 1,
                             Title = "Каталог Товарів"
                         },
                         new
                         {
-                            Id = 2,
+                            CategoryID = 2,
                             ParentCategoryID = 1,
                             Title = "Ліки та профілактичні засоби"
                         },
                         new
                         {
-                            Id = 3,
+                            CategoryID = 3,
                             ParentCategoryID = 2,
                             Title = "Вітаміни"
                         },
                         new
                         {
-                            Id = 4,
+                            CategoryID = 4,
                             ParentCategoryID = 3,
                             Title = "Вітамін С"
                         },
                         new
                         {
-                            Id = 5,
+                            CategoryID = 5,
                             ParentCategoryID = 4,
                             Title = "Аскорбінка"
                         },
                         new
                         {
-                            Id = 6,
+                            CategoryID = 6,
                             ParentCategoryID = 5,
                             Title = "Аскорбінка-КВ"
                         });
                 });
 
-            modelBuilder.Entity("Domain.Models.ConcreteProduct", b =>
+            modelBuilder.Entity("Models.ConcreteProduct", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ConcreteProductID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ConcreteProductID"));
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
@@ -101,7 +101,7 @@ namespace DataAccess.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("ConcreteProductID");
 
                     b.HasIndex("ProductID");
 
@@ -110,20 +110,20 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            ConcreteProductID = 1,
                             Price = 100.0,
                             ProductID = 1,
                             Quantity = 2
                         });
                 });
 
-            modelBuilder.Entity("Domain.Models.PharmaCompany", b =>
+            modelBuilder.Entity("Models.PharmaCompany", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("PharmaCompanyID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PharmaCompanyID"));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -132,26 +132,26 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("PharmaCompanyID");
 
                     b.ToTable("PharmaCompanies");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            PharmaCompanyID = 1,
                             Description = "АНЦ.",
                             Title = "АНЦ"
                         });
                 });
 
-            modelBuilder.Entity("Domain.Models.Pharmacy", b =>
+            modelBuilder.Entity("Models.Pharmacy", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("PharmacyID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PharmacyID"));
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -164,7 +164,7 @@ namespace DataAccess.Migrations
                     b.Property<int>("PharmaCompanyID")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("PharmacyID");
 
                     b.HasIndex("PharmaCompanyID");
 
@@ -173,20 +173,20 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            PharmacyID = 1,
                             Address = "Temp Address",
                             Coord = "Temp Coord",
                             PharmaCompanyID = 1
                         });
                 });
 
-            modelBuilder.Entity("Domain.Models.Product", b =>
+            modelBuilder.Entity("Models.Product", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ProductID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductID"));
 
                     b.Property<int?>("CategoryID")
                         .HasColumnType("int");
@@ -194,25 +194,22 @@ namespace DataAccess.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PathToPhoto")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ProductID");
 
                     b.HasIndex("CategoryID");
 
-                    b.ToTable("Products");
+                    b.ToTable("Product");
 
                     b.UseTptMappingStrategy();
                 });
 
-            modelBuilder.Entity("Domain.Models.Medicine", b =>
+            modelBuilder.Entity("Models.Medicines", b =>
                 {
-                    b.HasBaseType("Domain.Models.Product");
+                    b.HasBaseType("Models.Product");
 
                     b.Property<string>("SpecialRow")
                         .HasColumnType("nvarchar(max)");
@@ -222,7 +219,7 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            ProductID = 1,
                             CategoryID = 6,
                             Description = "Аскорбінка.",
                             Title = "Аскорбінка",
@@ -230,18 +227,18 @@ namespace DataAccess.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Domain.Models.Category", b =>
+            modelBuilder.Entity("Models.Category", b =>
                 {
-                    b.HasOne("Domain.Models.Category", "ParentCategory")
+                    b.HasOne("Models.Category", "ParentCategory")
                         .WithMany()
                         .HasForeignKey("ParentCategoryID");
 
                     b.Navigation("ParentCategory");
                 });
 
-            modelBuilder.Entity("Domain.Models.ConcreteProduct", b =>
+            modelBuilder.Entity("Models.ConcreteProduct", b =>
                 {
-                    b.HasOne("Domain.Models.Product", "Product")
+                    b.HasOne("Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -250,9 +247,9 @@ namespace DataAccess.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Domain.Models.Pharmacy", b =>
+            modelBuilder.Entity("Models.Pharmacy", b =>
                 {
-                    b.HasOne("Domain.Models.PharmaCompany", "PharmaCompany")
+                    b.HasOne("Models.PharmaCompany", "PharmaCompany")
                         .WithMany()
                         .HasForeignKey("PharmaCompanyID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -261,25 +258,25 @@ namespace DataAccess.Migrations
                     b.Navigation("PharmaCompany");
                 });
 
-            modelBuilder.Entity("Domain.Models.Product", b =>
+            modelBuilder.Entity("Models.Product", b =>
                 {
-                    b.HasOne("Domain.Models.Category", "Category")
+                    b.HasOne("Models.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryID");
 
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("Domain.Models.Medicine", b =>
+            modelBuilder.Entity("Models.Medicines", b =>
                 {
-                    b.HasOne("Domain.Models.Product", null)
+                    b.HasOne("Models.Product", null)
                         .WithOne()
-                        .HasForeignKey("Domain.Models.Medicine", "Id")
+                        .HasForeignKey("Models.Medicines", "ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Models.Category", b =>
+            modelBuilder.Entity("Models.Category", b =>
                 {
                     b.Navigation("Products");
                 });

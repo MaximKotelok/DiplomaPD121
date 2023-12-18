@@ -4,6 +4,7 @@ using DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 using Services.ActiveSubstanceService;
 using Services.CategoryService;
+using Services.CityService;
 using Services.ConcreteProductService;
 using Services.MedicineService;
 using Services.PharmacyCompanyService;
@@ -37,6 +38,7 @@ builder.Services.AddTransient<IPharmacyService, PharmacyService>();
 builder.Services.AddTransient<IConcreteProductService, ConcreteProductService>();
 builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<IActiveSubstanceService, ActiveSubstanceService>();
+builder.Services.AddTransient<ICityService, CityService>();
 
 
 var app = builder.Build();
