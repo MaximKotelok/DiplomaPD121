@@ -17,6 +17,6 @@ namespace Domain.Models
         [ForeignKey("ParentCategoryID")]
         public Category? ParentCategory { get; set; }
         public IEnumerable<Product>? Products { get; set; }
-
-    }
+        public IEnumerable<Category>? SubCategories { get; set; }
+	}
 }
