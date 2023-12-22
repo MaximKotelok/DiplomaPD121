@@ -3,9 +3,9 @@ import { splitByClass, getTagContentFromString, wrapTagIntoDiv } from '../utils/
 import { Link, Element } from 'react-scroll';
 export function Description({ content }) {
 
-    const html = wrapTagIntoDiv(content, "b", "description-item");
-    const subContent = splitByClass(html, "b", "description-item");
-    const contentsOfB = getTagContentFromString(html, "b");
+    const html = wrapTagIntoDiv(content, "h1", "description-item");
+    const subContent = splitByClass(html, "h1", "description-item");
+    const contentsOfB = getTagContentFromString(html, "h1");
 
     const ids = [];
 

@@ -1,12 +1,19 @@
 ﻿import { Element } from "react-scroll";
 
 export function wrapTagIntoDiv(text, tag, className){
-    const regex = new RegExp(`(<${tag}>.*?<\\/${tag}>)([^<]*)`, 'g');
+    let updatedText;
+
+    updatedText = text.replaceAll(`<${tag}>`, `</div><div class="${className}"><${tag}>`);
+    updatedText = updatedText.replaceAll(`</${tag}>`, `</${tag}>`);
+    updatedText = updatedText.replace(`</div><${tag}>`, `<${tag}>`);
+    updatedText = `${updatedText}</div>`;
 
     const parser = new DOMParser();
-    const doc = parser.parseFromString(text.replace(regex, `<div class="${className}">$1$2</div>`), 'text/html');
+    const doc = parser.parseFromString(updatedText, 'text/html');
+    console.log(doc);
     return doc;
 }
+
 
 export function splitByClass(doc, tag,className) {
     
