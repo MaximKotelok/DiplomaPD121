@@ -42,6 +42,17 @@ namespace Web.Controllers
 			}
 			return BadRequest("No records found");
 		}
+		[HttpGet("/GetMedicineContainsOfTitle/{containsOfTitle}")]
+		public IActionResult GetMedicineByContainsOfTitle(string containsOfTitle)
+		{
+			var result = _service.GetAllMedicines(a => a.Title.Contains(containsOfTitle));
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+
 
 		[HttpGet("{id}")]
 		public IActionResult GetMedicine(int id)
