@@ -41,8 +41,18 @@ namespace Web.Controllers
             return BadRequest("No records found");
         }
 
+		[HttpGet("/GetCityByStartOfTitle/{startOfTitle}")]
+		public IActionResult GetCityByStartOfTitle(string startOfTitle)
+		{
+			var result = _service.GetAllCitys(a => a.NameCity.StartsWith(startOfTitle));
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
 
-        [HttpPost]
+		[HttpPost]
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
 		public IActionResult AddCity(City city)
         {
