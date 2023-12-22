@@ -91,6 +91,17 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
+		[HttpGet("/GetActualCategories")]
+		public IActionResult GetActualCategories()
+		{
+			var categories = _service.GetAllCategories(a => a.isActual != null && a.isActual.Value);
+			if (categories is not null)
+			{
+				return Ok(categories);
+			}
+			return BadRequest("No records found");
+		}
+
 		[HttpGet("/path/{id}")]
 		public IActionResult GetCategoryPath(int id)
 		{

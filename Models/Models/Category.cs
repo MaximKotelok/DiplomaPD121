@@ -21,7 +21,7 @@ namespace Domain.Models
 		[JsonIgnore]
 		public IEnumerable<Product>? Products { get; set; }
         [JsonIgnore]
-		public IEnumerable<Category>? SubCategories { get; set; }
-
+		public IEnumerable<Category>? SubCategories { get; set; }        
+        public bool? isActual { get; set; }
 	}
 }
