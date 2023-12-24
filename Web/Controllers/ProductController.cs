@@ -71,7 +71,7 @@ namespace Web.Controllers
 		}
 
 		[HttpPost("")]
-		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		//[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
 		public IActionResult AddProduct(Product product)
 		{
 			_productService.InsertProduct(product);

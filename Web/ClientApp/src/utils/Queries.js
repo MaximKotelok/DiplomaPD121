@@ -24,13 +24,13 @@ export function postToServer(url, data) {
         });
 }
 
-export async function postPhotoToServer(url, photo) {
+export async function postPhotoToServer(url, path, photo) {
     let res = {};
 
     await axios({
         method: 'post',
         url: `${globalUrl}/${url}`,
-        data: photo,
+        data: { path, photo },
         headers: {
             'Content-Type': 'multipart/form-data',
         },

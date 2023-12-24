@@ -29,7 +29,7 @@ const CombinedComponent = () => {
 
         const formData = new FormData();
         formData.append("file", selectedFile);
-        let a = await postPhotoToServer("Photo/Product", formData);
+        let a = await postPhotoToServer("Photo/Add", "product", formData);
         pathToPhoto = a.data;
 
         const data = await postToServer('Medicine', {

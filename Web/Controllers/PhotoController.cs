@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Web.Controllers
 {
@@ -8,12 +9,12 @@ namespace Web.Controllers
 	[ApiController]
 	public class PhotoController : ControllerBase
 	{
-		[HttpPost("Product")]
-		public IActionResult AddProductPhoto([FromForm] IFormFile file)
+		[HttpPost("Add")]
+		public IActionResult AddPhoto(string relativePath, [FromForm] IFormFile file)
 		{
 			if (file != null)
 			{
-				string imageFolderPath = Path.Combine("wwwroot", "images", "product");
+				string imageFolderPath = Path.Combine("wwwroot/images", relativePath);
 
 				Directory.CreateDirectory(imageFolderPath);
 
@@ -23,22 +24,46 @@ namespace Web.Controllers
 				using var fileStream = new FileStream(imagePath, FileMode.Create);
 				file.CopyTo(fileStream);
 
-				return Ok($"/images/product/{fileName}");
+				return Ok($"{fileName}");
 			}
 			return NoContent();
 		}
 
+		[HttpPost("Update")]
+		public IActionResult UpdatePhoto(string relativePath,  IFormFile file)
+		{
+			if (!relativePath.IsNullOrEmpty())
+			{
+				var oldImagePath =
+				Path.Combine("wwwroot", "images", relativePath);
+
+				if (System.IO.File.Exists(oldImagePath))
+				{
+					System.IO.File.Delete(oldImagePath);
+				}
+			}
+			else
+			{
+				return NoContent();
+			}
+			return AddPhoto(relativePath: Path.GetDirectoryName(relativePath), file);
+		}
+
+		[HttpPost("Delete")]
+		public ActionResult DeletePhoto(string relativePath)
+		{
+			if (!relativePath.IsNullOrEmpty())
+			{
+				var oldImagePath =
+				Path.Combine("wwwroot/images", relativePath);
+
+				if (System.IO.File.Exists(oldImagePath))
+				{
+					System.IO.File.Delete(oldImagePath);
+					return Ok("Deleted");
+				}
+			}
+			return NoContent();
+		}
 	}
 }
-/*if (!string.IsNullOrEmpty(productViewModel?.Product?.ImageUrl))
-		{
-			// delete the old image
-			var oldImagePath =
-				Path.Combine(wwwRootPath, productViewModel.Product.ImageUrl.TrimStart('\\'));
-
-			if (System.IO.File.Exists(oldImagePath))
-			{
-				System.IO.File.Delete(oldImagePath);
-			}
-
-		}*/

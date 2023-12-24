@@ -1,11 +1,23 @@
 import React, { Component } from 'react';
 import ProductForm from './ProductForm';
-
+import { showPosition } from '../utils/Location';
 export class Home extends Component {
   static displayName = Home.name;
 
-  render() {
-    return (<ProductForm></ProductForm>)
+    render() {
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            console.log("Geolocation is not supported by this browser.");
+        }
+
+      return (
+          <div>
+              <ProductForm></ProductForm>
+          </div>
+
+      )
 
     // return (
     //   <div>
