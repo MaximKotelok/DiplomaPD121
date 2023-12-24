@@ -65,7 +65,7 @@ namespace Web.Controllers
 			return Ok("Data Deleted");
 		}
 
-		[HttpGet("/GetListOfMedicineOfActiveSubstance/{id}")]
+		[HttpGet("GetListOfMedicineOfActiveSubstance/{id}")]
 		public IActionResult GetListOfMedicineOfActiveSubstance(int id)
 		{
 			var result = _service.GetActiveSubstance(a => a.Id == id, "Medicines");

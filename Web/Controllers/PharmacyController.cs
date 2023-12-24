@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Services.CategoryService;
+using Services.CityService;
 using Services.ConcreteProductService;
 using Services.PharmacyCompanyService;
 using Services.PharmacyService;
@@ -15,16 +16,18 @@ namespace Web.Controllers
 	[ApiController]
 	public class PharmacyController : ControllerBase
 	{
-		private readonly IPharmacyService _service;
+		private readonly IPharmacyService _pharmacyService;
+		private readonly ICityService _cityService;
 
-		public PharmacyController(IPharmacyService service) {
-			this._service = service;
+		public PharmacyController(IPharmacyService service, ICityService _cityService) {
+			this._pharmacyService = service;
+			this._cityService = _cityService;
 		}
 
 		[HttpGet("")]
 		public IActionResult GetAllPharmacies()
 		{
-			var result = _service.GetAllPharmacies();
+			var result = _pharmacyService.GetAllPharmacies();
 			if (result is not null)
 			{
 				return Ok(result);
@@ -35,9 +38,22 @@ namespace Web.Controllers
 		[HttpGet("{id}")]
 		public IActionResult GetPharmacy(int id)
 		{
-			var result = _service.GetPharmacy(x => x.Id == id);
+			var result = _pharmacyService.GetPharmacy(x => x.Id == id);
 			if (result is not null)
 			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+
+		[HttpGet("GetListOfPharmacyInYourCity/{cityName}")]
+		public IActionResult GetListOfPharmacyInYourCity(string cityName)
+		{
+			var city = _cityService.GetCity(a => a.NameCity == cityName);
+			if (city is not null)
+			{
+				var result = _pharmacyService.GetAllPharmacies(a => a.CityID == city.Id);
+
 				return Ok(result);
 			}
 			return BadRequest("No records found");
@@ -47,7 +63,7 @@ namespace Web.Controllers
                 [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult AddPharmacy(Pharmacy pharmacy)
 		{
-			_service.InsertPharmacy(pharmacy);
+			_pharmacyService.InsertPharmacy(pharmacy);
 			return Ok("Data inserted");
 		}
 
@@ -56,15 +72,15 @@ namespace Web.Controllers
         public IActionResult UpdatePharmacy(int id, Pharmacy pharmacy)
 		{
 			pharmacy.Id = id;
-			_service.UpdatePharmacy(pharmacy);
+			_pharmacyService.UpdatePharmacy(pharmacy);
 			return Ok("Updation done");
 		}
 
 		[HttpDelete("{id}")]
                 [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult DeletePharmacy(int id)
-		{			
-			_service.DeletePharmacy(id);
+		{
+			_pharmacyService.DeletePharmacy(id);
 			return Ok("Data Deleted");
 		}
 	}

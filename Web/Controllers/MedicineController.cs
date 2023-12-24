@@ -32,7 +32,7 @@ namespace Web.Controllers
 			}
 			return BadRequest("No records found");
 		}
-		[HttpGet("/GetMedicineByStartOfTitle/{startOfTitle}")]
+		[HttpGet("GetMedicineByStartOfTitle/{startOfTitle}")]
 		public IActionResult GetMedicineByStartOfTitle(string startOfTitle)
 		{
 			var result = _service.GetAllMedicines(a => a.Title.StartsWith(startOfTitle));
@@ -42,7 +42,7 @@ namespace Web.Controllers
 			}
 			return BadRequest("No records found");
 		}
-		[HttpGet("/GetMedicineContainsOfTitle/{containsOfTitle}")]
+		[HttpGet("GetMedicineContainsOfTitle/{containsOfTitle}")]
 		public IActionResult GetMedicineByContainsOfTitle(string containsOfTitle)
 		{
 			var result = _service.GetAllMedicines(a => a.Title.Contains(containsOfTitle));

@@ -30,7 +30,7 @@ namespace DataAccess.Data
 			base.OnModelCreating(modelBuilder);
 
 			modelBuilder.Entity<ActiveSubstance>().HasData(new ActiveSubstance { Id=1, Title= "аскорбінова кислота" });
-			modelBuilder.Entity<City>().HasData(new City{ Id=1, NameCity= "Львів", Latitude="213213", Longitude="214124124" });
+			modelBuilder.Entity<City>().HasData(new City{ Id=1, NameCity= "Львів", Latitude = "49.842957", Longitude = "24.031111" });
 
 			modelBuilder.Entity<Category>().HasData(
 				new Category { Id=1,Title="Каталог Товарів"  },
@@ -49,7 +49,7 @@ namespace DataAccess.Data
 				);
 
 			modelBuilder.Entity<Pharmacy>().HasData(
-				new Pharmacy { Id = 1, Address="Temp Address", Coord="Temp Coord", PharmaCompanyID=1, CityID=1}
+				new Pharmacy { Id = 1, Address="Temp Address", Latitude= "49.842957", Longitude= "24.031111", PharmaCompanyID=1, CityID=1}
 				);
 
 			modelBuilder.Entity<ConcreteProduct>().HasData(

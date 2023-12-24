@@ -27,14 +27,14 @@ export function postToServer(url, data) {
 export async function postPhotoToServer(url, path, photo) {
     let res = {};
 
-    await axios({
-        method: 'post',
-        url: `${globalUrl}/${url}`,
-        data: { path, photo },
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-    })
+     await axios({
+            method: 'post',
+            url: `${globalUrl}/${url}`,
+            data: { path, photo },
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
         .then((response) => {
             res = { status: 'Success', data: response.data };
         })
@@ -45,24 +45,24 @@ export async function postPhotoToServer(url, path, photo) {
     return res
 }
 
-export function getFromServer(url, data) {
+export async function getFromServer(url) {
     let res = {};
-    axios({
-        method: "get",
-        url: `${globalUrl}/${url}`,
-        data,
-        config: {
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
+    await axios({
+            method: "get",
+            url: `${globalUrl}/${url}`,
+            config: {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
             },
-        },
-    })
+        })
         .then((response) => {
-            res = { status: "Success", data: response.json() };
+            res = { status: "Success", data: response.data};
         })
         .catch((error) => {
             res = { status: "Error", error };
         });
+    return res
 }
     

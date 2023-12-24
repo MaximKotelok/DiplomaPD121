@@ -14,10 +14,14 @@ namespace Domain.Models
 	{
         [Required]
         public string? Address { get; set; }
-        [Required]
-        public string? Coord { get; set; }
-        
-        [Required]
+
+		[Required]
+		public string? Longitude { get; set; }
+
+		[Required]
+		public string? Latitude { get; set; }
+
+		[Required]
         public int PharmaCompanyID { get; set; }
         [ForeignKey("PharmaCompanyID")]
         public PharmaCompany? PharmaCompany { get; set; }

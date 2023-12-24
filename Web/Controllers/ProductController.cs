@@ -20,7 +20,6 @@ namespace Web.Controllers
 		private readonly IProductService _productService;
 		private readonly ICityService _cityService;
 		private readonly IConcreteProductService _concreteProductService;
-		private readonly IWebHostEnvironment _webHostEnvironment;
 
 		public ProductController(
 			IProductService productService, 

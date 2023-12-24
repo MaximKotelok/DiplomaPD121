@@ -31,7 +31,7 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-		[HttpGet("/GetMinPriceForProductInYourCity/{city}/{id}")]
+		[HttpGet("GetMinPriceForProductInYourCity/{city}/{id}")]
 		public IActionResult GetMinPriceForProductInYourCity(string city, int id)
 		{
 			var result = _service.GetAllConcreteProducts(a=>a.ProductID==id 

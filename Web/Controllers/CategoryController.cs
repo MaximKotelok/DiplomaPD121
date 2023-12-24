@@ -64,7 +64,7 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-		[HttpGet("/GetSubCategories/{id}")]
+		[HttpGet("GetSubCategories/{id}")]
 		public IActionResult GetSubCategories(int id)
 		{
 			var category = _service.GetCategory(a => a.Id == id, "SubCategories");
@@ -77,7 +77,7 @@ namespace Web.Controllers
 			}
 			return BadRequest("No records found");
 		}
-		[HttpGet("/GetProductsFromCategory/{id}")]
+		[HttpGet("GetProductsFromCategory/{id}")]
 		public IActionResult GetProductsFromCategory(int id)
 		{
 			var category = _service.GetCategory(a => a.Id == id, "Products");
@@ -91,7 +91,7 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-		[HttpGet("/path/{id}")]
+		[HttpGet("PathToCategory/{id}")]
 		public IActionResult GetCategoryPath(int id)
 		{
 			List<Category> path = new List<Category>();

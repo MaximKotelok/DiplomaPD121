@@ -41,7 +41,18 @@ namespace Web.Controllers
             return BadRequest("No records found");
         }
 
-		[HttpGet("/GetCityByStartOfTitle/{startOfTitle}")]
+		[HttpGet("Name/{cityName}")]
+		public IActionResult GetCityByName(string cityName)
+		{
+			var result = _service.GetCity(x => x.NameCity == cityName);
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+
+		[HttpGet("GetCityByStartOfTitle/{startOfTitle}")]
 		public IActionResult GetCityByStartOfTitle(string startOfTitle)
 		{
 			var result = _service.GetAllCitys(a => a.NameCity.StartsWith(startOfTitle));
