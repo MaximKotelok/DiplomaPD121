@@ -49,7 +49,7 @@ namespace DataAccess.Data
 				);
 
 			modelBuilder.Entity<Pharmacy>().HasData(
-				new Pharmacy { Id = 1, Address="Temp Address", Coord="Temp Coord", PharmaCompanyID=1, CityID=1}
+				new Pharmacy { Id = 1, Address="Temp Address", Coord="Temp Coord", PharmaCompanyID=1, CityID=1, Email= "kotelokmax2003@gmail.com" }
 				);
 
 			modelBuilder.Entity<ConcreteProduct>().HasData(

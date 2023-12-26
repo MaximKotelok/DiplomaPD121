@@ -32,6 +32,17 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
+		[HttpGet("/GetAllConcreteProductsFromPharmacy/{id}")]
+		public IActionResult GetAllConcreteProductsFromPharmacy(int id)
+		{
+			var result = _service.GetPharmacy(a=>a.Id==id, "ConcreteProducts");
+			if (result is not null)
+			{
+				return Ok(result.ConcreteProducts);
+			}
+			return BadRequest("Pharmacy not found");
+		}
+
 		[HttpGet("{id}")]
 		public IActionResult GetPharmacy(int id)
 		{
