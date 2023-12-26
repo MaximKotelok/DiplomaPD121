@@ -30,7 +30,7 @@ namespace Services.ConcreteProductService
 			return _repository.GetAll(filter, includeProperties);
 		}
 
-		public Product? GeteProduct(Expression<Func<Product, bool>> filter, string? includeProperties = null)
+		public Product? GetProduct(Expression<Func<Product, bool>> filter, string? includeProperties = null)
 		{
 			return _repository.Get(filter, includeProperties);
 		}

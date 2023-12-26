@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Services.CategoryService;
 using Services.CityService;
 using Services.ConcreteProductService;
@@ -19,8 +20,7 @@ namespace Web.Controllers
 	{
 		private readonly IProductService _productService;
 		private readonly ICityService _cityService;
-		private readonly IConcreteProductService _concreteProductService;
-		private readonly IWebHostEnvironment _webHostEnvironment;
+		private readonly IConcreteProductService _concreteProductService;		
 
 		public ProductController(
 			IProductService productService, 
@@ -43,6 +43,25 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
+
+		[HttpPost("/GetAllProductsFromIdArray")]
+		public IActionResult GetAllProductsFromIdArray(int[] idArray)
+		{
+			if (idArray.IsNullOrEmpty())
+				return Ok("idArray is empty");
+
+
+			var result = _productService
+				.GetAllProducts(a=> idArray.Contains(a.Id))
+				.OrderBy(a => Array.IndexOf(idArray, a.Id));
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+
+
 		[HttpGet("GetListOfConcreteProductInYourCity/{cityName}/{productId}")]
 		public IActionResult GetListOfConcreteProductInYourCity(int productId, string cityName)
 		{
@@ -62,7 +81,7 @@ namespace Web.Controllers
 		[HttpGet("{id}")]
 		public IActionResult GetProduct(int id)
 		{
-			var result = _productService.GeteProduct(x => x.Id == id);
+			var result = _productService.GetProduct(x => x.Id == id);
 			if (result is not null)
 			{
 				return Ok(result);

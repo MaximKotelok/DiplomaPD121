@@ -11,7 +11,7 @@ namespace Services.ConcreteProductService
 	public interface IProductService
 	{
 		IEnumerable<Product> GetAllProducts(Expression<Func<Product, bool>>? filter = null, string? includeProperties = null);
-		Product? GeteProduct(Expression<Func<Product, bool>> filter, string? includeProperties = null);
+		Product? GetProduct(Expression<Func<Product, bool>> filter, string? includeProperties = null);
 		void InsertProduct(Product product);
 		void UpdateProduct(Product product);
 		void DeleteProduct(int id);
