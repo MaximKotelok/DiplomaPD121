@@ -1,5 +1,6 @@
 ﻿import { getFromServer } from "./Queries"
-import { setCookie } from "../utils/Cookies"
+import { setCookie } from "./Cookies"
+import L from 'leaflet';
 
 export function getCity(position) {
     const latitude = position.coords.latitude;

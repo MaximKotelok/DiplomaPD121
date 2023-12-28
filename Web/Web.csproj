@@ -34,6 +34,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\public\images\icons\marker-icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ClientApp\public\images\icons\marker-icon.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DataAccess\Repository.csproj" />
     <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>

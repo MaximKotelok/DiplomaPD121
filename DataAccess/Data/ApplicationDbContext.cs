@@ -49,7 +49,16 @@ namespace DataAccess.Data
 				);
 
 			modelBuilder.Entity<Pharmacy>().HasData(
-				new Pharmacy { Id = 1, Address="Temp Address", Latitude= "49.842957", Longitude= "24.031111", PharmaCompanyID=1, CityID=1}
+				new Pharmacy { Id = 1, Address="Temp Address", Latitude= "49.842957", Longitude= "24.031511", PharmaCompanyID=1, CityID=1}
+				);
+			modelBuilder.Entity<Pharmacy>().HasData(
+				new Pharmacy { Id = 2, Address = "Temp Address2", Latitude = "49.842757", Longitude = "24.031211", PharmaCompanyID = 1, CityID = 1 }
+				);
+			modelBuilder.Entity<Pharmacy>().HasData(
+				new Pharmacy { Id = 3, Address = "Temp Address3", Latitude = "49.842157", Longitude = "24.031611", PharmaCompanyID = 1, CityID = 1 }
+				);
+			modelBuilder.Entity<Pharmacy>().HasData(
+				new Pharmacy { Id = 4, Address = "Temp Address4", Latitude = "49.842557", Longitude = "24.031411", PharmaCompanyID = 1, CityID = 1 }
 				);
 
 			modelBuilder.Entity<ConcreteProduct>().HasData(

@@ -46,6 +46,18 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
+		[HttpGet("Coords/{latitude}/{longitude}")]
+
+		public IActionResult GetPharmacyByCoords(string latitude, string longitude)
+		{
+			var result = _pharmacyService.GetPharmacy(x => x.Latitude == latitude && x.Longitude == longitude);
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+
 		[HttpGet("GetListOfPharmacyInYourCity/{cityName}")]
 		public IActionResult GetListOfPharmacyInYourCity(string cityName)
 		{

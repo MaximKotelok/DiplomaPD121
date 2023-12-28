@@ -4,6 +4,7 @@ using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231228114718_city-coordinates")]
+    partial class citycoordinates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -247,34 +250,7 @@ namespace DataAccess.Migrations
                             Address = "Temp Address",
                             CityID = 1,
                             Latitude = "49.842957",
-                            Longitude = "24.031511",
-                            PharmaCompanyID = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Address = "Temp Address2",
-                            CityID = 1,
-                            Latitude = "49.842757",
-                            Longitude = "24.031211",
-                            PharmaCompanyID = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Address = "Temp Address3",
-                            CityID = 1,
-                            Latitude = "49.842157",
-                            Longitude = "24.031611",
-                            PharmaCompanyID = 1
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Address = "Temp Address4",
-                            CityID = 1,
-                            Latitude = "49.842557",
-                            Longitude = "24.031411",
+                            Longitude = "24.031111",
                             PharmaCompanyID = 1
                         });
                 });
