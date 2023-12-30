@@ -1,12 +1,16 @@
-import 'leaflet/dist/leaflet.css';
+﻿import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { showLocation, getCity } from '../utils/Location';
 import { getFromServer } from '../utils/Queries';
 import React, { useState, useEffect } from 'react';
 import { getCookie } from "../utils/Cookies"
+import ListPharmacies from "./ListPharmacies"
 
 const Map = (props) => {
     const [map, setMap] = useState(null);
+    const [selectedPharmacy, setSelectedPharmacy] = useState(null);
+    const [mapMarkers, setMapMarkers] = useState({});
+    const [selectedMarker, setSelectedMarker] = useState(null);
 
     let defaultIcon = L.icon({
         iconUrl: '/images/icons/marker-icon.png',
@@ -19,7 +23,7 @@ const Map = (props) => {
         iconAnchor: [17, 45]
     });
 
-    let selectedMarker = null;
+    //let selectedMarker = null;
 
     useEffect(() => {
         if (navigator.geolocation) {
@@ -47,33 +51,54 @@ const Map = (props) => {
     const setPharmacyOfTown = async (city, map) => {
         let pharmacy = (await getFromServer(`Pharmacy/GetListOfPharmacyInYourCity/${city}`)).data;
 
+        const markers = {};
         pharmacy.forEach((element) => {
-            L.marker([element.latitude, element.longitude], { icon: defaultIcon }).addTo(map)
+            const marker = L.marker([element.latitude, element.longitude], { icon: defaultIcon }).addTo(map)
                 .openPopup()
-                .on('mouseup', getCurrentPharmacy);
-        });
+                .on('click', getCurrentPharmacy);
 
+            markers[element.id] = marker;
+        });
+        setMapMarkers(markers);
     }
 
     const getCurrentPharmacy = async (e) => {
+
         var clickedMarker = e.target;
 
         let pharmacy = (await getFromServer(`Pharmacy/Coords/${clickedMarker._latlng.lat}/${clickedMarker._latlng.lng}`)).data;
+        setSelectedPharmacy(pharmacy);
 
-        //SELECT JQUERRY PHARMACY IN LIST
+        await setSelectedMarker((prevMarker) => {
+            if (prevMarker) {
+                prevMarker.setIcon(defaultIcon);
+            }
+            clickedMarker.setIcon(clickedIcon);
+            return clickedMarker;
+        });
+    }
 
-
+    const handleMapSelect = async (pharmacy) => {
         if (selectedMarker) {
             selectedMarker.setIcon(defaultIcon);
         }
-
-        selectedMarker = clickedMarker;
-        clickedMarker.setIcon(clickedIcon);
-    }
+        const newMarker = mapMarkers[pharmacy.id];
+        newMarker.setIcon(clickedIcon);
+        //ТУТ МОЖЕ БУТИ ПРОБЛЕМА НО ПОКИ ЇЇ НЕМА
+        setSelectedMarker(newMarker);
+    };
 
     return (
         <div>
             <div id="map" style={{ height: '400px' }}></div>
+            <ListPharmacies
+                city={getCookie("city")}
+                selectedPharmacy={selectedPharmacy}
+                onPharmacyClick={pharmacy => {
+                    setSelectedPharmacy(pharmacy);
+                }}
+                onMapSelect={handleMapSelect}
+            ></ListPharmacies>
         </div>
     );
 };
