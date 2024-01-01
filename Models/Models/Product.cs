@@ -20,5 +20,7 @@ namespace Domain.Models
 
         [ForeignKey("CategoryID")]
         public Category? Category { get; set; }		
+
+        public IEnumerable<ProductProperty>? Properties { get; set; }   
 	}
 }
