@@ -1,6 +1,7 @@
 import 'leaflet/dist/leaflet.css';
-import { getFromServer } from '../utils/Queries';
+import { getFromServer } from '../../utils/Queries';
 import React, { useState, useEffect } from 'react';
+import ConreteProductSearchComponent from "./ConreteProductSearchComponent"
 
 const ListPharmacies = (props) => {
     const [pharmacies, setPharmacies] = useState([]);
@@ -26,7 +27,11 @@ const ListPharmacies = (props) => {
                 {pharmacies.map(pharmacy => (
                     <li
                         key={pharmacy.id}
-                        style={{ color: props.selectedPharmacy && props.selectedPharmacy.id === pharmacy.id ? 'red' : 'black' }}
+                        style={{
+                            border: '2px solid #000',
+                            padding: '10px',
+                            color: props.selectedPharmacy && props.selectedPharmacy.id === pharmacy.id ? 'red' : 'black'
+                        }}
                         onClick={() => { 
                             props.onPharmacyClick(pharmacy)
                             if (props.onMapSelect) {
@@ -34,7 +39,12 @@ const ListPharmacies = (props) => {
                             }
                         }}
                     >
-                        {pharmacy.address}, {pharmacy.longitude},  {pharmacy.latitude}
+                        <p>{pharmacy.address}, {pharmacy.longitude},{pharmacy.latitude}</p>
+                        <ConreteProductSearchComponent pharmacyId={pharmacy.id}></ConreteProductSearchComponent>
+                        <button onClick={() => {
+                            const mapsUrl = `https://www.google.com/maps?q=${pharmacy.latitude},${pharmacy.longitude}&z=15&t=m`;
+                            window.open(mapsUrl, '_blank');
+                        }}>Open Map</button>
                     </li>
                 ))}
             </ul>

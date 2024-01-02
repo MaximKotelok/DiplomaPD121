@@ -56,6 +56,17 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
+		[HttpGet("Search/{pharmacyId}/{title}")]
+		public IActionResult SearchConcreteProductByPharmacy(int pharmacyId, string title)
+		{
+			var result = _service.GetAllConcreteProducts(x => x.PharmacyID == pharmacyId && x.Product.Title.StartsWith(title), "Product");
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+
 		[HttpPost]
                 [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult AddConcreteProduct(ConcreteProduct concreteProduct)

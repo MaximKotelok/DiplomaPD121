@@ -1,9 +1,9 @@
 ﻿import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { showLocation, getCity } from '../utils/Location';
-import { getFromServer } from '../utils/Queries';
+import { showLocation, getCity } from '../../utils/Location';
+import { getFromServer } from '../../utils/Queries';
 import React, { useState, useEffect } from 'react';
-import { getCookie } from "../utils/Cookies"
+import { getCookie, setCookie } from "../../utils/Cookies"
 import ListPharmacies from "./ListPharmacies"
 
 const Map = (props) => {
@@ -25,13 +25,7 @@ const Map = (props) => {
 
     //let selectedMarker = null;
 
-    useEffect(() => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(getCity);
-        } else {
-            console.log("Geolocation is not supported by this browser.");
-        }
-    }, [])
+    
 
     useEffect(() => {
         const myMap = L.map('map').setView([0, 0], 13);
@@ -47,6 +41,36 @@ const Map = (props) => {
 
         setPharmacyOfTown(city, myMap);
     }, []);
+
+   /* useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                // Call the function to get city based on the position
+                getCity(position)
+                    .then(city => {
+                        // Initialize the map and perform other actions
+                        const myMap = L.map('map').setView([0, 0], 13);
+
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                        }).addTo(myMap);
+
+                        // Use the city obtained from the first part
+                        showLocation(city, myMap);
+
+                        setMap(myMap);
+
+                        setPharmacyOfTown(city, myMap);
+
+                        // Set the cookie now that the city is available
+                        setCookie("city", city);
+                    })
+                    .catch(error => console.error('Error getting city:', error));
+            });
+        } else {
+            console.log("Geolocation is not supported by this browser.");
+        }
+    }, []);*/
 
     const setPharmacyOfTown = async (city, map) => {
         let pharmacy = (await getFromServer(`Pharmacy/GetListOfPharmacyInYourCity/${city}`)).data;
