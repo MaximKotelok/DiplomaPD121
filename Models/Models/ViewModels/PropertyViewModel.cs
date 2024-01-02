@@ -8,7 +8,6 @@ namespace Domain.Models.ViewModels
 {
 	public class PropertyViewModel
 	{
-		public int? AttributeId { get; set; }	
 		public string? Name { get; set; }
 		public string? Value { get; set; }
 	}

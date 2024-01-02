@@ -23,7 +23,6 @@ namespace DataAccess.Data
 		public DbSet<Pharmacy>? Pharmacies { get; set; }
 		public DbSet<ActiveSubstance>? ActiveSubstances { get; set; }
 		public DbSet<City>? Citys { get; set; }
-		public DbSet<Zooproduct>? Zooproducts { get; set; }
 		public DbSet<ProductAttribute>? Attributes { get; set; }
 		public DbSet<ProductProperty>? Properties { get; set; }
 
@@ -39,9 +38,8 @@ namespace DataAccess.Data
 			modelBuilder.Entity<ProductAttribute>().HasData(
 				new ProductAttribute { Id=1, Index=1, Name="SpecialRow1"},
 				new ProductAttribute { Id = 2, Index = 2, Name = "SpecialRow2" },
-				new ProductAttribute { Id = 3, Index = 3, Name = "SpecialRow3" },
-				new ProductAttribute { Id = 4, Index = 1, Name = "Zoorow" }
-
+				new ProductAttribute { Id = 3, Index = 3, Name = "SpecialRow3" }
+				
 				);
 
 			modelBuilder.Entity<ActiveSubstance>().HasData(new ActiveSubstance { Id=1, Title= "аскорбінова кислота" });
@@ -59,15 +57,11 @@ namespace DataAccess.Data
 				new Medicine { Id = 1, CategoryID=6, Title="Аскорбінка", Description= "Аскорбінка.", ActiveSubstanceID=1 }
 				);
 
-			modelBuilder.Entity<Zooproduct>().HasData(
-				new Zooproduct { Id=10, Title="Zooproduct", ForTest="Test", Description="1", CategoryID=6, PathToPhoto="1" }
-				);
-
+			
 			modelBuilder.Entity<ProductProperty>().HasData(
 				new ProductProperty { AttributeId = 1, ProductId = 1, Value = "Some data 1" },
 				new ProductProperty { AttributeId = 2, ProductId = 1, Value = "Some data 2" },
-				new ProductProperty { AttributeId = 3, ProductId = 1, Value = "Some data 3" },
-				new ProductProperty { AttributeId = 4, ProductId = 10, Value = "Some data 4" }
+				new ProductProperty { AttributeId = 3, ProductId = 1, Value = "Some data 3" }			
 				);
 
 			modelBuilder.Entity<PharmaCompany>().HasData(

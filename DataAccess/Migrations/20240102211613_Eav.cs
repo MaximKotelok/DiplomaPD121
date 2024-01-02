@@ -7,7 +7,7 @@
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class eav : Migration
+    public partial class Eav : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,7 +17,7 @@ namespace DataAccess.Migrations
                 table: "Medicines");
 
             migrationBuilder.CreateTable(
-                name: "ProductAttribute",
+                name: "Attributes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -27,11 +27,11 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductAttribute", x => x.Id);
+                    table.PrimaryKey("PK_Attributes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductProperty",
+                name: "Properties",
                 columns: table => new
                 {
                     ProductId = table.Column<int>(type: "int", nullable: false),
@@ -40,15 +40,15 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductProperty", x => new { x.ProductId, x.AttributeId });
+                    table.PrimaryKey("PK_Properties", x => new { x.ProductId, x.AttributeId });
                     table.ForeignKey(
-                        name: "FK_ProductProperty_ProductAttribute_AttributeId",
+                        name: "FK_Properties_Attributes_AttributeId",
                         column: x => x.AttributeId,
-                        principalTable: "ProductAttribute",
+                        principalTable: "Attributes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProductProperty_Products_ProductId",
+                        name: "FK_Properties_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -56,7 +56,7 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "ProductAttribute",
+                table: "Attributes",
                 columns: new[] { "Id", "Index", "Name" },
                 values: new object[,]
                 {
@@ -66,7 +66,7 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "ProductProperty",
+                table: "Properties",
                 columns: new[] { "AttributeId", "ProductId", "Value" },
                 values: new object[,]
                 {
@@ -76,8 +76,8 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductProperty_AttributeId",
-                table: "ProductProperty",
+                name: "IX_Properties_AttributeId",
+                table: "Properties",
                 column: "AttributeId");
         }
 
@@ -85,10 +85,10 @@ namespace DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ProductProperty");
+                name: "Properties");
 
             migrationBuilder.DropTable(
-                name: "ProductAttribute");
+                name: "Attributes");
 
             migrationBuilder.AddColumn<string>(
                 name: "SpecialRow",

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240101155405_testZooproducts")]
-    partial class testZooproducts
+    [Migration("20240102211613_Eav")]
+    partial class Eav
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -325,12 +325,6 @@ namespace DataAccess.Migrations
                             Id = 3,
                             Index = 3,
                             Name = "SpecialRow3"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Index = 1,
-                            Name = "Zoorow"
                         });
                 });
 
@@ -370,12 +364,6 @@ namespace DataAccess.Migrations
                             ProductId = 1,
                             AttributeId = 3,
                             Value = "Some data 3"
-                        },
-                        new
-                        {
-                            ProductId = 10,
-                            AttributeId = 4,
-                            Value = "Some data 4"
                         });
                 });
 
@@ -605,28 +593,6 @@ namespace DataAccess.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Domain.Models.Zooproduct", b =>
-                {
-                    b.HasBaseType("Domain.Models.Product");
-
-                    b.Property<string>("ForTest")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("Zooproducts");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 10,
-                            CategoryID = 6,
-                            Description = "1",
-                            PathToPhoto = "1",
-                            Title = "Zooproduct",
-                            ForTest = "Test"
-                        });
-                });
-
             modelBuilder.Entity("Domain.Models.Category", b =>
                 {
                     b.HasOne("Domain.Models.Category", "ParentCategory")
@@ -766,15 +732,6 @@ namespace DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("ActiveSubstance");
-                });
-
-            modelBuilder.Entity("Domain.Models.Zooproduct", b =>
-                {
-                    b.HasOne("Domain.Models.Product", null)
-                        .WithOne()
-                        .HasForeignKey("Domain.Models.Zooproduct", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Models.ActiveSubstance", b =>
