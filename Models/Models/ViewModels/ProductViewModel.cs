@@ -15,5 +15,7 @@ namespace Domain.Models.ViewModels
 		public int? CategoryID { get; set; }
 		public string? PathToPhoto { get; set; }
 		public List<PropertyViewModel>? Properties { get; set; }
+		public int? SimilarGroupId { get; set; }
+		public List<ProductViewModel>? SimilarProductsGroup { get; set; }
 	}
 }

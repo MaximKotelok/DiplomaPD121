@@ -20,6 +20,9 @@ namespace Domain.Models
 
         [ForeignKey("CategoryID")]
         public Category? Category { get; set; }		
+        public int? SimilarProductGroupId { get; set; }
+		[ForeignKey("SimilarProductGroupId")]
+		public SimilarProductGroup? SimilarProductGroup { get; set; }
         public IEnumerable<ProductProperty>? Properties { get; set; }   
 	}
 }

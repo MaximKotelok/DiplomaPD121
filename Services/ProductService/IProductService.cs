@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Domain.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace Services.ConcreteProductService
 		void InsertProduct(Product product);
 		void UpdateProduct(Product product);
 		void DeleteProduct(int id);
+		ProductViewModel? GetProductViewModel(int id);
 	}
 }

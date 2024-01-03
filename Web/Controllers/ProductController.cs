@@ -47,36 +47,23 @@ namespace Web.Controllers
 			this._concreteProductService = concreteProductService;
 		}
 
-		private ProductViewModel? _getProductViewModel(int id)
-		{
-			var baseProduct = _productService.GetProduct(a => a.Id == id, "Properties,Properties.Attribute");
-			if (baseProduct is null)
-				return null;
-			ProductViewModel baseViewModel = new ProductViewModel
-			{
-				Id = baseProduct.Id,
-				Description = baseProduct.Description,
-				Title = baseProduct.Title,
-				PathToPhoto = baseProduct.PathToPhoto,
-				CategoryID = baseProduct.CategoryID,
-				Properties = baseProduct.Properties.OrderBy(a => a.Attribute.Index).Select(a => new PropertyViewModel { Value = a.Value, Name = a.Attribute.Name }).ToList()
-			};
-			return baseViewModel;
-
-		}
 
 
 		private IEnumerable<ProductProperty> _convertProperties(List<PropertyViewModel> properties)
 		{
-			var names = properties.Select(a => a.Name).ToList();
-			IEnumerable<ProductAttribute> productsAttributes = _attributeService
-				.GetAllAttributes(a => names.Contains(a.Name));
+			if (!properties.IsNullOrEmpty())
+			{
 
-			if (productsAttributes.Count() != properties.Count())
-				throw new Exception();
+				var names = properties.Select(a => a.Name).ToList();
+				IEnumerable<ProductAttribute> productsAttributes = _attributeService
+					.GetAllAttributes(a => names.Contains(a.Name));
 
-			return productsAttributes.Select(a => new ProductProperty { Attribute = a, Value = properties.FirstOrDefault(b => b.Name == a.Name).Value });
+				if (productsAttributes.Count() != properties.Count())
+					throw new Exception();
 
+				return productsAttributes.Select(a => new ProductProperty { Attribute = a, Value = properties.FirstOrDefault(b => b.Name == a.Name).Value });
+			}
+			return new List<ProductProperty>();
 
 
 		}
@@ -86,7 +73,7 @@ namespace Web.Controllers
 		public IActionResult GetProduct(int id)
 		{
 			Product product;
-			ProductViewModel productView = _getProductViewModel(id);
+			ProductViewModel productView = _productService.GetProductViewModel(id);
 			if (productView is not null)
 			{
 
@@ -161,8 +148,6 @@ namespace Web.Controllers
 		public IActionResult AddMedicine(MedicineViewModel medicineViewModel)
 		{
 			var props = _convertProperties(medicineViewModel.Product.Properties);
-
-
 
 
 			Medicine medicine = new Medicine

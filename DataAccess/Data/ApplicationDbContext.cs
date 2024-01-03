@@ -25,6 +25,7 @@ namespace DataAccess.Data
 		public DbSet<City>? Citys { get; set; }
 		public DbSet<ProductAttribute>? Attributes { get; set; }
 		public DbSet<ProductProperty>? Properties { get; set; }
+		public DbSet<SimilarProductGroup>? SimilarProductGroups { get; set; }
 
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -34,6 +35,8 @@ namespace DataAccess.Data
 				table.ProductId,
 				table.AttributeId
 			});
+
+
 
 			modelBuilder.Entity<ProductAttribute>().HasData(
 				new ProductAttribute { Id=1, Index=1, Name="SpecialRow1"},
