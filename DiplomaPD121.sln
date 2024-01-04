@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Models\Domain.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "DataAccess\Repository.csproj", "{F23A30B7-1B69-4CFA-8568-E79F0B324722}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{E2FA5F62-7A79-4F20-9D40-05EC8AC39671}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{E2FA5F62-7A79-4F20-9D40-05EC8AC39671}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

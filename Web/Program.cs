@@ -13,10 +13,13 @@ using Services.ActiveSubstanceService;
 using Services.CategoryService;
 using Services.CityService;
 using Services.ConcreteProductService;
+using Services.EmailService;
+using Services.MailService;
 using Services.MedicineService;
 using Services.PharmacyCompanyService;
 using Services.PharmacyService;
 using System.Text;
+using Utility.Models;
 using Web.Extension;
 using Web.Filters;
 
@@ -126,6 +129,11 @@ builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<IActiveSubstanceService, ActiveSubstanceService>();
 builder.Services.AddTransient<ICityService, CityService>();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IMailKitService, MailKitService>();
+
+builder.Services.Configure<SendGridSettings>(builder.Configuration.GetSection("SendGridSettings"));
+
 
 builder.Services.AddEndpointsApiExplorer();
 
