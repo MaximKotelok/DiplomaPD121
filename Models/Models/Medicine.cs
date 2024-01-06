@@ -17,6 +17,5 @@ namespace Domain.Models
         [JsonIgnore]
 		[ForeignKey("ActiveSubstanceID")]
 		public ActiveSubstance? ActiveSubstance { get; set; }
-        public string? SpecialRow { get; set; }
     }
 }

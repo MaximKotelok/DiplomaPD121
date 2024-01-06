@@ -23,11 +23,27 @@ namespace DataAccess.Data
 		public DbSet<Pharmacy>? Pharmacies { get; set; }
 		public DbSet<ActiveSubstance>? ActiveSubstances { get; set; }
 		public DbSet<City>? Citys { get; set; }
+		public DbSet<ProductAttribute>? Attributes { get; set; }
+		public DbSet<ProductProperty>? Properties { get; set; }
+		public DbSet<SimilarProductGroup>? SimilarProductGroups { get; set; }
 
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
+			modelBuilder.Entity<ProductProperty>().HasKey(table => new {
+				table.ProductId,
+				table.AttributeId
+			});
+
+
+
+			modelBuilder.Entity<ProductAttribute>().HasData(
+				new ProductAttribute { Id=1, Index=1, Name="SpecialRow1"},
+				new ProductAttribute { Id = 2, Index = 2, Name = "SpecialRow2" },
+				new ProductAttribute { Id = 3, Index = 3, Name = "SpecialRow3" }
+				
+				);
 
 			modelBuilder.Entity<ActiveSubstance>().HasData(new ActiveSubstance { Id=1, Title= "аскорбінова кислота" });
 			modelBuilder.Entity<City>().HasData(new City{ Id=1, NameCity= "Львів", Latitude="213213", Longitude="214124124" });
@@ -41,7 +57,14 @@ namespace DataAccess.Data
 				new Category { Id = 6,Title = "Аскорбінка-КВ", ParentCategoryID = 5 }
 				);
 			modelBuilder.Entity<Medicine>().HasData(
-				new Medicine { Id = 1, CategoryID=6, Title="Аскорбінка", Description= "Аскорбінка.", SpecialRow="Special Temp Row", ActiveSubstanceID=1 }
+				new Medicine { Id = 1, CategoryID=6, Title="Аскорбінка", Description= "Аскорбінка.", ActiveSubstanceID=1 }
+				);
+
+			
+			modelBuilder.Entity<ProductProperty>().HasData(
+				new ProductProperty { AttributeId = 1, ProductId = 1, Value = "Some data 1" },
+				new ProductProperty { AttributeId = 2, ProductId = 1, Value = "Some data 2" },
+				new ProductProperty { AttributeId = 3, ProductId = 1, Value = "Some data 3" }			
 				);
 
 			modelBuilder.Entity<PharmaCompany>().HasData(
@@ -49,7 +72,7 @@ namespace DataAccess.Data
 				);
 
 			modelBuilder.Entity<Pharmacy>().HasData(
-				new Pharmacy { Id = 1, Address="Temp Address", Coord="Temp Coord", PharmaCompanyID=1, CityID=1}
+				new Pharmacy { Id = 1, Address="Temp Address", Coord="Temp Coord", PharmaCompanyID=1, CityID=1, Email= "kotelokmax2003@gmail.com" }
 				);
 
 			modelBuilder.Entity<ConcreteProduct>().HasData(

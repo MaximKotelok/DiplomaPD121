@@ -13,6 +13,9 @@ namespace Domain.Models
     public class Pharmacy: BaseEntity
 	{
         [Required]
+		[EmailAddress]
+		public string? Email { get; set; }
+		[Required]
         public string? Address { get; set; }
         [Required]
         public string? Coord { get; set; }

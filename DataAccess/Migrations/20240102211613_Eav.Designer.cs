@@ -4,6 +4,7 @@ using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240102211613_Eav")]
+    partial class Eav
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -272,9 +275,6 @@ namespace DataAccess.Migrations
                     b.Property<string>("PathToPhoto")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SimilarProductGroupId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -282,8 +282,6 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryID");
-
-                    b.HasIndex("SimilarProductGroupId");
 
                     b.ToTable("Products");
 
@@ -367,27 +365,6 @@ namespace DataAccess.Migrations
                             AttributeId = 3,
                             Value = "Some data 3"
                         });
-                });
-
-            modelBuilder.Entity("Domain.Models.SimilarProductGroup", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SimilarBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SimilarProductGroups");
                 });
 
             modelBuilder.Entity("Domain.Models.User", b =>
@@ -667,13 +644,7 @@ namespace DataAccess.Migrations
                         .WithMany("Products")
                         .HasForeignKey("CategoryID");
 
-                    b.HasOne("Domain.Models.SimilarProductGroup", "SimilarProductGroup")
-                        .WithMany("Products")
-                        .HasForeignKey("SimilarProductGroupId");
-
                     b.Navigation("Category");
-
-                    b.Navigation("SimilarProductGroup");
                 });
 
             modelBuilder.Entity("Domain.Models.ProductProperty", b =>
@@ -783,11 +754,6 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.Models.Product", b =>
                 {
                     b.Navigation("Properties");
-                });
-
-            modelBuilder.Entity("Domain.Models.SimilarProductGroup", b =>
-                {
-                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }
