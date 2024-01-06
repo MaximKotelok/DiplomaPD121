@@ -13,10 +13,10 @@ namespace Web.Controllers
         {
             _emailService = emailService;
         }
-        [HttpGet]
-        public IActionResult Index()
+        [HttpPost]
+        public IActionResult Index(string? email)
         {
-            _emailService.SendBookingInfo("zella.kris7@ethereal.email", new ProductDto { Id = 1, Name = "Vit C" }).GetAwaiter().GetResult();
+            _emailService.SendBookingInfo(email!, new ProductDto { Id = 1, Name = "Vit C" }).GetAwaiter().GetResult();
             return new EmptyResult();
         }
     }
