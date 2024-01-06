@@ -1,6 +1,5 @@
 ﻿import { getFromServer } from "./Queries"
-import { setCookie } from "./Cookies"
-import L from 'leaflet';
+import { getCookie, setCookie } from "./Cookies"
 
 export function getCity(position) {
     return new Promise((resolve, reject) => {
@@ -23,6 +22,32 @@ export function getCity(position) {
     });
 }
 
+export function setupLocation() {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let cCity = getCookie("city");
+            if (cCity === "") {
+                if (navigator.geolocation) {
+                    const position = await new Promise((innerResolve, innerReject) => {
+                        navigator.geolocation.getCurrentPosition(innerResolve, innerReject);
+                    });
+
+                    const city = await getCity(position);
+
+                    console.log("City:", city);
+
+                    setCookie("city", city);
+                } else {
+                    console.log("Geolocation is not supported by this browser.");
+                }
+            }
+            resolve(); 
+        } catch (error) {
+            console.error("Error getting location:", error);
+            reject(error);
+        }
+    });
+}
 
 export async function showLocation(city, map) {
 
