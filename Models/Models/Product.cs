@@ -14,15 +14,23 @@ namespace Domain.Models
     {
         [Required]
         public string? Title { get; set; }
-        public string? Description { get; set; }
+		public string? PathToPhoto { get; set; }
+		public string? Description { get; set; }
         public int? CategoryID { get; set; }
-        public string? PathToPhoto { get; set; }
-
-        [ForeignKey("CategoryID")]
-        public Category? Category { get; set; }		
+		[ForeignKey("CategoryID")]
+		public Category? Category { get; set; }
+		public int? ManufacturerID { get; set; }
+		[ForeignKey("ManufacturerID")]
+		public Manufacturer? Manufacturer { get; set; }
         public int? SimilarProductGroupId { get; set; }
 		[ForeignKey("SimilarProductGroupId")]
 		public SimilarProductGroup? SimilarProductGroup { get; set; }
-        public IEnumerable<ProductProperty>? Properties { get; set; }   
+		public int? BrandId { get; set; }
+		[ForeignKey("BrandId")]
+		public Brand? Brand { get; set; }
+		public int? SeriesId { get; set; }
+		[ForeignKey("SeriesId")]
+		public Series? Series { get; set; }
+		public IEnumerable<ProductProperty>? Properties { get; set; }   
 	}
 }

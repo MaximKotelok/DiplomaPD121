@@ -1,16 +1,18 @@
 ﻿using Domain.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Repository.Data.Configs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace DataAccess.Data
 {
-    public class ApplicationDbContext:IdentityDbContext<User>
+	public class ApplicationDbContext : IdentityDbContext<User>
 	{
 		public ApplicationDbContext(DbContextOptions options)
 			: base(options) { }
@@ -24,63 +26,51 @@ namespace DataAccess.Data
 		public DbSet<ActiveSubstance>? ActiveSubstances { get; set; }
 		public DbSet<City>? Citys { get; set; }
 		public DbSet<ProductAttribute>? Attributes { get; set; }
+		public DbSet<ProductAttributeGroup>? ProductAttributeGroups { get; set; }
 		public DbSet<ProductProperty>? Properties { get; set; }
 		public DbSet<SimilarProductGroup>? SimilarProductGroups { get; set; }
+		public DbSet<Country>? Countries { get; set; }
+		public DbSet<Brand>? Brands { get; set; }
+		public DbSet<Series>? Series { get; set; }
+		public DbSet<Manufacturer>? Manufacturers { get; set; }
+		public DbSet<Reservation>? Reservations { get; set; }
+		public DbSet<ReservationStatus>? ReservationStatuses { get; set; }
 
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-			modelBuilder.Entity<ProductProperty>().HasKey(table => new {
-				table.ProductId,
-				table.AttributeId
-			});
-
-
-
-			modelBuilder.Entity<ProductAttribute>().HasData(
-				new ProductAttribute { Id=1, Index=1, Name="SpecialRow1"},
-				new ProductAttribute { Id = 2, Index = 2, Name = "SpecialRow2" },
-				new ProductAttribute { Id = 3, Index = 3, Name = "SpecialRow3" }
-				
-				);
-
-			modelBuilder.Entity<ActiveSubstance>().HasData(new ActiveSubstance { Id=1, Title= "аскорбінова кислота" });
-			modelBuilder.Entity<City>().HasData(new City{ Id=1, NameCity= "Львів", Latitude="213213", Longitude="214124124" });
-
-			modelBuilder.Entity<Category>().HasData(
-				new Category { Id=1,Title="Каталог Товарів"  },
-				new Category { Id = 2,Title = "Ліки та профілактичні засоби", ParentCategoryID=1 },
-				new Category { Id = 3,Title = "Вітаміни", ParentCategoryID = 2 },
-				new Category { Id = 4,Title = "Вітамін С", ParentCategoryID = 3 },
-				new Category { Id = 5,Title = "Аскорбінка", ParentCategoryID = 4 },
-				new Category { Id = 6,Title = "Аскорбінка-КВ", ParentCategoryID = 5 }
-				);
-			modelBuilder.Entity<Medicine>().HasData(
-				new Medicine { Id = 1, CategoryID=6, Title="Аскорбінка", Description= "Аскорбінка.", ActiveSubstanceID=1 }
-				);
-
 			
-			modelBuilder.Entity<ProductProperty>().HasData(
-				new ProductProperty { AttributeId = 1, ProductId = 1, Value = "Some data 1" },
-				new ProductProperty { AttributeId = 2, ProductId = 1, Value = "Some data 2" },
-				new ProductProperty { AttributeId = 3, ProductId = 1, Value = "Some data 3" }			
-				);
+			new ProductPropertyConfiguration().Configure(modelBuilder.Entity<ProductProperty>());
+			
+			new ProductAttributeGroupConfiguration().Configure(modelBuilder.Entity<ProductAttributeGroup>());
+			
+			new ProductAttributeConfiguration().Configure(modelBuilder.Entity<ProductAttribute>());
+			
+			new CountryConfiguration().Configure(modelBuilder.Entity<Country>());
 
-			modelBuilder.Entity<PharmaCompany>().HasData(
-				new PharmaCompany { Id = 1, Title="АНЦ", Description="АНЦ."}
-				);
+			new BrandConfiguration().Configure(modelBuilder.Entity<Brand>());
 
-			modelBuilder.Entity<Pharmacy>().HasData(
-				new Pharmacy { Id = 1, Address="Temp Address", Coord="Temp Coord", PharmaCompanyID=1, CityID=1, Email= "kotelokmax2003@gmail.com" }
-				);
+			new ManufacturerConfiguration().Configure(modelBuilder.Entity<Manufacturer>());
+			
+			new SeriesConfiguration().Configure(modelBuilder.Entity<Series>());
 
-			modelBuilder.Entity<ConcreteProduct>().HasData(
-				new ConcreteProduct { Id = 1, Price=100, ProductID=1, Quantity=2, PharmacyID = 1 }
-				);
+			new ActiveSubstanceConfiguration().Configure(modelBuilder.Entity<ActiveSubstance>());
+			
+			new CityConfiguration().Configure(modelBuilder.Entity<City>());
+			
+			new CategoryConfiguration().Configure(modelBuilder.Entity<Category>());
+			
+			new MedicineConfiguration().Configure(modelBuilder.Entity<Medicine>());
+			
+			new PharmaCompanyConfiguration().Configure(modelBuilder.Entity<PharmaCompany>());
 
-
-
+			new PharmacyConfiguration().Configure(modelBuilder.Entity<Pharmacy>());
+			
+			new ConcreteProductConfiguration().Configure(modelBuilder.Entity<ConcreteProduct>());
+			
+			new ReservationStatusConfiguration().Configure(modelBuilder.Entity<ReservationStatus>());
+		
 		}
 	}
 }

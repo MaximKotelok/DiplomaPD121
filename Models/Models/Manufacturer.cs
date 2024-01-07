@@ -9,14 +9,15 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-	public class ProductAttribute:BaseEntity
+	public class Manufacturer:BaseEntity
 	{
 		[Required]
-		public string? Name { get; set; }
+		public string? Name { get; set; }	
 		[Required]
-		public int Index { get; set; }
-		public int ProductAttributeGroupID { get; set; }
-		[ForeignKey("ProductAttributeGroupID")]
-		public ProductAttributeGroup? ProductAttributeGroup { get; set; }
+		public string? Address { get; set; }	
+		public string? URLSite { get; set; }
+		public int? CountryManufactureID { get; set; }
+		[ForeignKey("CountryManufactureID")]
+		public Country? CountryManufacture { get; set; }
 	}
 }

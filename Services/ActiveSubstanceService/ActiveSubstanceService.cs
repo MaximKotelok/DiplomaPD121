@@ -41,9 +41,9 @@ namespace Services.ActiveSubstanceService
 			_repository.Insert(activeSubstance);
 		}
 
-		public void UpdateActiveSubstance(ActiveSubstance category)
+		public void UpdateActiveSubstance(ActiveSubstance activeSubstance)
 		{
-			_repository.Update(category);
+			_repository.Update(activeSubstance);
 		}
 		
 	}
