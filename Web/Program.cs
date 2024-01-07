@@ -9,6 +9,7 @@ using Microsoft.OpenApi.Models;
 using Repository.DbInitializer;
 using Repository.Repository.Interfaces;
 using Repository.Repository.Services;
+using SendGrid.Extensions.DependencyInjection;
 using Services.ActiveSubstanceService;
 using Services.AttributeService;
 using Services.CategoryService;
@@ -21,6 +22,7 @@ using Services.PharmacyCompanyService;
 using Services.PharmacyService;
 using Services.PropertyService;
 using Services.SimilarProductGroupService;
+using Services.SMTPService;
 using System.Text;
 using Utility.Models;
 using Web.Extension;
@@ -137,7 +139,15 @@ builder.Services.AddTransient<IActiveSubstanceService, ActiveSubstanceService>()
 builder.Services.AddTransient<ICityService, CityService>();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<IEmailService, EmailService>();
-builder.Services.AddScoped<IMailKitService, MailKitService>();
+//builder.Services.AddScoped<IMailKitService, MailKitService>();
+builder.Services.AddScoped<IEmailSenderService, EmailSenderService>();
+
+builder.Services.AddSendGrid(options =>
+{
+    options.ApiKey = builder.Configuration.GetSection("SendGridSettings")
+    .GetValue<string>("ApiKey");
+});
+
 
 builder.Services.Configure<SendGridSettings>(builder.Configuration.GetSection("SendGridSettings"));
 

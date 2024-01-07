@@ -1,4 +1,5 @@
 ﻿using Services.MailService;
+using Services.SMTPService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,10 @@ namespace Services.EmailService
 {
     public class EmailService : IEmailService
     {
-        private readonly IMailKitService _mailKitService;
-        public EmailService(IMailKitService mailKitService)
+        private readonly IEmailSenderService _sMTPService;
+        public EmailService(IEmailSenderService sMTPService)
         {
-            _mailKitService = mailKitService;
+            _sMTPService = sMTPService;
         }
         public Task SendBookingInfo(string email, ProductDto productDto)
         {
@@ -38,7 +39,7 @@ namespace Services.EmailService
         </html>
     ";
 
-            return _mailKitService.SendEmailAsync(email, "Підтвердження бронювання", message);
+            return _sMTPService.SendEmailAsync(email, "Підтвердження бронювання", message);
         }
     }
 }
