@@ -1,11 +1,32 @@
 import React, { Component } from 'react';
 import ProductForm from './ProductForm';
+import ProductCard from './ProductCard/ProductCard';
 
 export class Home extends Component {
   static displayName = Home.name;
 
   render() {
-    return (<ProductForm></ProductForm>)
+      return (
+          <>
+          <ProductCard 
+          title="Алохол" 
+          description="таблетки, вкриті плівковою оболонкою блістер у пачці, №50"
+          manufacturer='ПАО НПЦ "Борщаговский ХФЗ"'
+          countOfPharmacies={1204}
+          minPrice={285.51}
+          imageUrl="https://img.zdorovi.ua/500-375/png/11189-alohol-tabl-v-o-50-10h5.png"
+          />
+              <ProductCard 
+                title='Аскорбінка-КВ'
+                description='таблетки зі смак. полун. по 25 мг №10 в етикет. лалалалалалалалалалла'
+                manufacturer='АТ «КИЇВСЬКИЙ ВІТАМІННИЙ ЗАВОД».'
+                minPrice={7.46}
+                countOfPharmacies={375}
+                imageUrl='https://www.add.ua/media/catalog/product/cache/0cb86aa621afec2b43f6f8736c54c157/_/-/_-_-__2_33_1.jpg'
+              ></ProductCard>
+              <ProductCard isFavorite={true}></ProductCard>
+          </>
+      )
 
     // return (
     //   <div>
