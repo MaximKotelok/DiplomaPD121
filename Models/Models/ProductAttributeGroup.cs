@@ -10,6 +10,6 @@ namespace Domain.Models
 	public class ProductAttributeGroup:BaseEntity
 	{
 		public string? Name { get; set; }	
-		public IEnumerable<ProductAttribute> AttributesInFamily { get; set; }
+		public IEnumerable<ProductAttribute>? AttributesInGroup { get; set; }
 	}
 }
