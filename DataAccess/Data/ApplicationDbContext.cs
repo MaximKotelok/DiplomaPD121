@@ -11,7 +11,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 namespace DataAccess.Data
 {
     public class ApplicationDbContext:IdentityDbContext<User>
-	{
+    {
 		public ApplicationDbContext(DbContextOptions options)
 			: base(options) { }
 
@@ -64,9 +64,6 @@ namespace DataAccess.Data
 			modelBuilder.Entity<ConcreteProduct>().HasData(
 				new ConcreteProduct { Id = 1, Price=100, ProductID=1, Quantity=2, PharmacyID = 1 }
 				);
-
-
-
-		}
+        }
 	}
 }

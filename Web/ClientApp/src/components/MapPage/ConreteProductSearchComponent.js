@@ -1,4 +1,3 @@
-import 'leaflet/dist/leaflet.css';
 import { getFromServer } from '../../utils/Queries';
 import React, { useState, useEffect } from 'react';
 
