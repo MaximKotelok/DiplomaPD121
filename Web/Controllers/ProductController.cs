@@ -96,12 +96,26 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-
-		[HttpGet("")]
-		public IActionResult GetAllProducts()
+		[HttpGet("GetAll")]
+		public IActionResult GetAll()
 		{
 			var result = _productService
 				.GetAllProducts(includeProperties: "Manufacturer");
+			if (result is not null)
+			{				
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+
+
+
+
+		[HttpGet("")]
+		public IActionResult GetProductOffer(int count)
+		{
+			var result = _productService
+				.GetAllProducts(includeProperties: "Manufacturer").TakeLast(count);
 			if (result is not null)
 			{
 				var products =
@@ -111,7 +125,8 @@ namespace Web.Controllers
 						Id = a.Id,
 						Manufacturer = a.Manufacturer.Name,
 						Title = a.Title,
-						ShortDescription = a.Description
+						ShortDescription = a.ShortDescription,
+						PathToPhoto=a.PathToPhoto
 					}
 					);
 				return Ok(products);

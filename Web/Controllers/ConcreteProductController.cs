@@ -37,7 +37,7 @@ namespace Web.Controllers
 		{
 			var result = _service.GetAllConcreteProducts(a=>a.ProductID==id 
 			&& 
-			a.Pharmacy.City.NameCity == city, "Pharmacy,Pharmacy.City");
+			a.Pharmacy.City.NameCity == city && a.Quantity > 0, "Pharmacy,Pharmacy.City");
 			if (!result.IsNullOrEmpty())
 			{
 				return Ok(new { minPrice = result.Min(a => a.Price), count=result.Count() });

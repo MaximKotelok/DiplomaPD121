@@ -9,7 +9,7 @@ namespace Web.Controllers
 	public class PhotoController : ControllerBase
 	{
 		[HttpPost("Product")]
-		public IActionResult AddProductPhoto([FromForm] IFormFile file)
+		public IActionResult AddProductPhoto(IFormFile file)
 		{
 			if (file != null)
 			{
