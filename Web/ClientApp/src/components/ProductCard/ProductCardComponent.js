@@ -1,16 +1,16 @@
 import React from 'react';
 import { Check2, Heart, HeartFill } from 'react-bootstrap-icons';
 import FavoriteButton from '../FavoriteButton/FavoriteButton.js';
-
+import { ApiPath } from '../../utils/Constants.js';
 import 'bootstrap/dist/css/bootstrap.css';
 import './ProductCardComponent.css';
 
 const ProductCardComponent =
     ({
         id,
+        imageUrl,
         title = "...",
         minPrice = 0.0,
-        imageUrl = "https://elements-cover-images-0.imgix.net/eae8629b-05a5-4956-a1d8-cb9f310ca850?auto=compress%2Cformat&w=866&fit=max&s=b89cf910fa6a03955819e9b2b8210108",
         isFavorite = false,
         countOfPharmacies = 0,
         manufacturer = "...",
@@ -33,12 +33,15 @@ const ProductCardComponent =
                     <img
                         width={183}
                         height={170}
-                        src={imageUrl}
+                        src={`${ApiPath}${imageUrl}`}
                         className='product-image'
                         alt={title} />
                 </div>
+                <div className='product-info'>
+
                 <p className='product-title'>{minimizeText(title,20)}</p>
                 <p className='product-description'>{minimizeText(description, 57)}</p>
+                </div>
                 <p className='product-manufacturer'>{minimizeText(manufacturer, 26)}</p>
                 <p className='count-of-pharmacies'>
                     <Check2 className="check-in-count-of-pharmacies" />{countOfPharmacies} аптек

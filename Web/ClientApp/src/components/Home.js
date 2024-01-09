@@ -12,7 +12,7 @@ export const Home = ()=> {
   const [products, setProducts] = useState({});
 
   async function initProducts() {
-    let getProducts = (await getFromServer("Product"));    
+    let getProducts = (await getFromServer("Product", {count: 4}));    
     await Promise.all(getProducts.data.map(async a=>{
       var res = await getFromServer(GetSupInfoForProductInYourCity, {city: "Львів", id: a.id});
       if(res.status === Success){
@@ -31,7 +31,10 @@ export const Home = ()=> {
 
     
     return (
-      products.data&& <ProductsListComponent products={products.data} />
+      products.data&& <ProductsListComponent 
+      caption="Пропозиції / Нещодавно переглянуті товари" 
+      products={products.data} 
+      />
       // <>
       //   <ProductCardComponent
       //     title="Алохол"

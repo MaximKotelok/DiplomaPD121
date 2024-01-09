@@ -15,6 +15,7 @@ namespace Domain.Models
         [Required]
         public string? Title { get; set; }
 		public string? PathToPhoto { get; set; }
+		public string? ShortDescription { get; set; }
 		public string? Description { get; set; }
         public int? CategoryID { get; set; }
 		[ForeignKey("CategoryID")]

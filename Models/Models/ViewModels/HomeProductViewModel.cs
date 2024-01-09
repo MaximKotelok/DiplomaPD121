@@ -12,6 +12,7 @@ namespace Domain.Models.ViewModels
 		public string? Title { get; set; }
 		public string? ShortDescription { get; set; }
 		public string? Manufacturer { get; set; }
+		public string? PathToPhoto { get; set; }
 		
 	}
 }

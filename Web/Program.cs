@@ -154,7 +154,6 @@ app.UseHttpsRedirection();
 app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.UseStaticFiles();
 app.UseRouting();
-app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();
