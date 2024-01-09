@@ -3,21 +3,23 @@
     display: inline-block;
     font-family: 'Mulish', sans-serif;
     padding: 10px;
-    max-width: 203px;
+    width: 203px;
+    
 }
 
 .product-image {
 
-    max-height: 168px;
-    max-width: 182px;
+    height: 168px;    
+    width: 182px;    
     object-fit: cover;
 }
 
 .product-title {
     color: #0E3E75;
     font-weight: 700;
-    font-size: 16px;
-    margin-bottom: 4px,
+    font-size: 15px;
+    margin-bottom: 4px;
+    height: 24px;    
 }
 
 .product-description {
@@ -25,7 +27,7 @@
     font-size: 16px;
     font-weight: 500;
     margin-bottom: 4px;
-    min-height: 72px;
+    height: 72px;
 }
 
 .count-of-pharmacies {
@@ -58,7 +60,7 @@
     font-weight: 300;
     color: #535353;
     margin-bottom: 4px;    
-    min-height: 48px;
+    height: 48px;
 }
 
 .product-button{
@@ -78,7 +80,7 @@
         display: none; 
     }
     .product-image {
-        max-height: 148px;
-        max-width: 162px;       
+        height: 148px;
+        width: 162px;       
     }
 }

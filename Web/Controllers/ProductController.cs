@@ -100,10 +100,21 @@ namespace Web.Controllers
 		[HttpGet("")]
 		public IActionResult GetAllProducts()
 		{
-			var result = _productService.GetAllProducts();
+			var result = _productService
+				.GetAllProducts(includeProperties: "Manufacturer");
 			if (result is not null)
 			{
-				return Ok(result);
+				var products =
+					result.Select(a =>
+					new HomeProductViewModel
+					{
+						Id = a.Id,
+						Manufacturer = a.Manufacturer.Name,
+						Title = a.Title,
+						ShortDescription = a.Description
+					}
+					);
+				return Ok(products);
 			}
 			return BadRequest("No records found");
 		}

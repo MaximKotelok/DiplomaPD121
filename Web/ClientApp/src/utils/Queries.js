@@ -1,7 +1,7 @@
 import axios from "axios";
+import { ServerURL,Success } from "./Constants";
 
-
-const globalUrl = 'https://localhost:7133/api';
+const globalUrl = `${ServerURL}/api`;
 
 export function postToServer(url, data) {
     let res = {};
@@ -17,7 +17,7 @@ export function postToServer(url, data) {
         },
     })
         .then((response) => {
-            res = { status: "Success", data: response.json() };
+            res = { status: Success, data: response.json() };
         })
         .catch((error) => {
             res = { status: "Error" };
@@ -36,7 +36,7 @@ export async function postPhotoToServer(url, photo) {
         },
     })
         .then((response) => {
-            res = { status: 'Success', data: response.data };
+            res = { status: Success, data: response.data };
         })
         .catch((error) => {
             res = { status: 'Error', error };
@@ -45,24 +45,21 @@ export async function postPhotoToServer(url, photo) {
     return res
 }
 
-export function getFromServer(url, data) {
-    let res = {};
-    axios({
-        method: "get",
-        url: `${globalUrl}/${url}`,
-        data,
-        config: {
+export async function getFromServer(url, params) {
+    
+    try {
+        
+        const response = await axios.get(`${globalUrl}/${url}`, {
+            params: params,
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
             },
-        },
-    })
-        .then((response) => {
-            res = { status: "Success", data: response.json() };
-        })
-        .catch((error) => {
-            res = { status: "Error", error };
-        });
-}
-    
+        });        
+        
+        return { status: Success, data: response.data };
+    } catch (error) {
+        console.log(error);
+        return { status: "Error", error };
+    }
+}    

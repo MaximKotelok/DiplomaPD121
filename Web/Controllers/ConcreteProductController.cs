@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Services.CategoryService;
 using Services.ConcreteProductService;
 using Services.PharmacyCompanyService;
@@ -31,18 +32,17 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-		[HttpGet("/GetMinPriceForProductInYourCity/{city}/{id}")]
-		public IActionResult GetMinPriceForProductInYourCity(string city, int id)
+		[HttpGet("GetSupInfoForProductInYourCity")]
+		public IActionResult GetSupInfoForProductInYourCity(string city, int id)
 		{
 			var result = _service.GetAllConcreteProducts(a=>a.ProductID==id 
 			&& 
-			a.Pharmacy.City.NameCity == city, "Pharmacy,Pharmacy.City")
-				.MinBy(a=>a.Price);
-			if (result is not null)
+			a.Pharmacy.City.NameCity == city, "Pharmacy,Pharmacy.City");
+			if (!result.IsNullOrEmpty())
 			{
-				return Ok(result);
+				return Ok(new { minPrice = result.Min(a => a.Price), count=result.Count() });
 			}
-			return BadRequest("No records found");
+			return Ok(new { minPrice = 0.0, count = 0 });
 		}
 
 		[HttpGet("{id}")]
@@ -57,7 +57,7 @@ namespace Web.Controllers
 		}
 
 		[HttpPost]
-                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+//                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult AddConcreteProduct(ConcreteProduct concreteProduct)
 		{
 			_service.InsertConcreteProduct(concreteProduct);
