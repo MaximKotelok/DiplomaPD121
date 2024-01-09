@@ -32,5 +32,6 @@ namespace Domain.Models
 		[ForeignKey("SeriesId")]
 		public Series? Series { get; set; }
 		public IEnumerable<ProductProperty>? Properties { get; set; }   
+		public IEnumerable<ConcreteProduct>? ConcreteProducts { get; set; }   
 	}
 }

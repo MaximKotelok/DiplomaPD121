@@ -17,5 +17,8 @@ namespace Domain.Models.ViewModels
 		public List<PropertyViewModel>? Properties { get; set; }
 		public int? SimilarGroupId { get; set; }
 		public List<ProductViewModel>? SimilarProductsGroup { get; set; }
+
+
+		
 	}
 }
