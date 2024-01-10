@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class ProductDone : Migration
+    public partial class fixDbInitialize : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -28,6 +28,23 @@ namespace DataAccess.Migrations
                 keyColumns: new[] { "AttributeId", "ProductId" },
                 keyValues: new object[] { 3, 1 });
 
+            migrationBuilder.AlterColumn<string>(
+                name: "SimilarBy",
+                table: "SimilarProductGroups",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "",
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)",
+                oldNullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "Name",
+                table: "SimilarProductGroups",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "");
+
             migrationBuilder.AddColumn<int>(
                 name: "BrandId",
                 table: "Products",
@@ -44,6 +61,12 @@ namespace DataAccess.Migrations
                 name: "SeriesId",
                 table: "Products",
                 type: "int",
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "ShortDescription",
+                table: "Products",
+                type: "nvarchar(max)",
                 nullable: true);
 
             migrationBuilder.AddColumn<int>(
@@ -228,8 +251,8 @@ namespace DataAccess.Migrations
                 table: "Products",
                 keyColumn: "Id",
                 keyValue: 1,
-                columns: new[] { "BrandId", "ManufacturerID", "SeriesId" },
-                values: new object[] { 3, 3, 1 });
+                columns: new[] { "BrandId", "ManufacturerID", "PathToPhoto", "SeriesId", "ShortDescription" },
+                values: new object[] { 3, 3, "/images/product/787f9b1f-f81c-4089-9382-57fd0cf0be15.webp", 1, "таблетки зі смак. полун. по 25 мг №10 в етикет." });
 
             migrationBuilder.InsertData(
                 table: "ReservationStatuses",
@@ -676,6 +699,10 @@ namespace DataAccess.Migrations
                 keyValue: 50);
 
             migrationBuilder.DropColumn(
+                name: "Name",
+                table: "SimilarProductGroups");
+
+            migrationBuilder.DropColumn(
                 name: "BrandId",
                 table: "Products");
 
@@ -688,8 +715,20 @@ namespace DataAccess.Migrations
                 table: "Products");
 
             migrationBuilder.DropColumn(
+                name: "ShortDescription",
+                table: "Products");
+
+            migrationBuilder.DropColumn(
                 name: "ProductAttributeGroupID",
                 table: "Attributes");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "SimilarBy",
+                table: "SimilarProductGroups",
+                type: "nvarchar(max)",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)");
 
             migrationBuilder.UpdateData(
                 table: "Attributes",
@@ -711,6 +750,13 @@ namespace DataAccess.Migrations
                 keyValue: 3,
                 column: "Name",
                 value: "SpecialRow3");
+
+            migrationBuilder.UpdateData(
+                table: "Products",
+                keyColumn: "Id",
+                keyValue: 1,
+                column: "PathToPhoto",
+                value: null);
 
             migrationBuilder.InsertData(
                 table: "Properties",

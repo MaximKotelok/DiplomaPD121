@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240103171027_SimilarProductGroupsAddName")]
-    partial class SimilarProductGroupsAddName
+    [Migration("20240110111552_fixDbInitialize")]
+    partial class fixDbInitialize
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,6 +46,52 @@ namespace DataAccess.Migrations
                         {
                             Id = 1,
                             Title = "аскорбінова кислота"
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Models.Brand", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CountryBrandID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryBrandID");
+
+                    b.ToTable("Brands");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CountryBrandID = 3,
+                            Name = "Brand 1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CountryBrandID = 3,
+                            Name = "Brand 2"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CountryBrandID = 1,
+                            Description = "Best brand",
+                            Name = "Brand 3"
                         });
                 });
 
@@ -184,6 +230,95 @@ namespace DataAccess.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Domain.Models.Country", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Countries");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Ukraine"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Poland"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "USA"
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Models.Manufacturer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CountryManufactureID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("URLSite")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryManufactureID");
+
+                    b.ToTable("Manufacturers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "Some address 1",
+                            CountryManufactureID = 3,
+                            Name = "Manufacturer 1",
+                            URLSite = "google.com"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "Some address 2",
+                            CountryManufactureID = 2,
+                            Name = "Manufacturer 2",
+                            URLSite = "google.com"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Address = "Some address 3",
+                            CountryManufactureID = 1,
+                            Name = "Manufacturer 3",
+                            URLSite = "google.com"
+                        });
+                });
+
             modelBuilder.Entity("Domain.Models.PharmaCompany", b =>
                 {
                     b.Property<int>("Id")
@@ -266,13 +401,25 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("BrandId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("CategoryID")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ManufacturerID")
+                        .HasColumnType("int");
+
                     b.Property<string>("PathToPhoto")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SeriesId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ShortDescription")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("SimilarProductGroupId")
@@ -284,7 +431,13 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BrandId");
+
                     b.HasIndex("CategoryID");
+
+                    b.HasIndex("ManufacturerID");
+
+                    b.HasIndex("SeriesId");
 
                     b.HasIndex("SimilarProductGroupId");
 
@@ -308,7 +461,12 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ProductAttributeGroupID")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductAttributeGroupID");
 
                     b.ToTable("Attributes");
 
@@ -317,19 +475,375 @@ namespace DataAccess.Migrations
                         {
                             Id = 1,
                             Index = 1,
-                            Name = "SpecialRow1"
+                            Name = "Види тварин",
+                            ProductAttributeGroupID = 3
                         },
                         new
                         {
                             Id = 2,
                             Index = 2,
-                            Name = "SpecialRow2"
+                            Name = "Вага",
+                            ProductAttributeGroupID = 3
                         },
                         new
                         {
                             Id = 3,
                             Index = 3,
-                            Name = "SpecialRow3"
+                            Name = "Тип іграшки",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Index = 4,
+                            Name = "Матеріал виготовлення",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Index = 5,
+                            Name = "Додаткові функції",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Index = 6,
+                            Name = "Призначення",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Index = 7,
+                            Name = "Серія/Лінійка",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Index = 8,
+                            Name = "Об'єм",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Index = 9,
+                            Name = "Вік тварини",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Index = 10,
+                            Name = "Розмір",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Index = 11,
+                            Name = "Дозування (ветеринарія)",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Index = 12,
+                            Name = "Діюча речовина (ветеринарія)",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Index = 13,
+                            Name = "Вага тварини",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Index = 14,
+                            Name = "Клас корму",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Index = 15,
+                            Name = "Інгредієнти",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Index = 16,
+                            Name = "Розмір тварини",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Index = 17,
+                            Name = "Тип корму",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Index = 18,
+                            Name = "Довжина",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Index = 19,
+                            Name = "Ширина",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Index = 20,
+                            Name = "Особливість",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Index = 21,
+                            Name = "Колір",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 22,
+                            Index = 22,
+                            Name = "Максимальне навантаження",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 23,
+                            Index = 23,
+                            Name = "Тип",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 24,
+                            Index = 24,
+                            Name = "Тип туалету",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 25,
+                            Index = 25,
+                            Name = "Види риб",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 26,
+                            Index = 26,
+                            Name = "Вид наповнювача за складом",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 27,
+                            Index = 27,
+                            Name = "Види тварин",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 28,
+                            Index = 28,
+                            Name = "Види птахів",
+                            ProductAttributeGroupID = 3
+                        },
+                        new
+                        {
+                            Id = 30,
+                            Index = 1,
+                            Name = "Гарантія виробника",
+                            ProductAttributeGroupID = 4
+                        },
+                        new
+                        {
+                            Id = 31,
+                            Index = 2,
+                            Name = "Тип",
+                            ProductAttributeGroupID = 4
+                        },
+                        new
+                        {
+                            Id = 32,
+                            Index = 3,
+                            Name = "Колір",
+                            ProductAttributeGroupID = 4
+                        },
+                        new
+                        {
+                            Id = 33,
+                            Index = 4,
+                            Name = "Ступінь втрати слуху",
+                            ProductAttributeGroupID = 4
+                        },
+                        new
+                        {
+                            Id = 34,
+                            Index = 5,
+                            Name = "Характеристики",
+                            ProductAttributeGroupID = 4
+                        },
+                        new
+                        {
+                            Id = 35,
+                            Index = 6,
+                            Name = "Тип вимірювання",
+                            ProductAttributeGroupID = 4
+                        },
+                        new
+                        {
+                            Id = 36,
+                            Index = 7,
+                            Name = "Різновид інгаляторів",
+                            ProductAttributeGroupID = 4
+                        },
+                        new
+                        {
+                            Id = 37,
+                            Index = 8,
+                            Name = "Тип вимірювання тиску",
+                            ProductAttributeGroupID = 4
+                        },
+                        new
+                        {
+                            Id = 38,
+                            Index = 9,
+                            Name = "Розмір манжети",
+                            ProductAttributeGroupID = 4
+                        },
+                        new
+                        {
+                            Id = 39,
+                            Index = 10,
+                            Name = "Властивості",
+                            ProductAttributeGroupID = 4
+                        },
+                        new
+                        {
+                            Id = 40,
+                            Index = 11,
+                            Name = "Зовнішній діаметр голки, мм",
+                            ProductAttributeGroupID = 4
+                        },
+                        new
+                        {
+                            Id = 41,
+                            Index = 12,
+                            Name = "Довжина голки",
+                            ProductAttributeGroupID = 4
+                        },
+                        new
+                        {
+                            Id = 42,
+                            Index = 13,
+                            Name = "Зовнішній діаметр голки, мм",
+                            ProductAttributeGroupID = 4
+                        },
+                        new
+                        {
+                            Id = 43,
+                            Index = 14,
+                            Name = "Концентрація інсуліна (U)",
+                            ProductAttributeGroupID = 4
+                        },
+                        new
+                        {
+                            Id = 44,
+                            Index = 15,
+                            Name = "Тип голки в комплекті",
+                            ProductAttributeGroupID = 4
+                        },
+                        new
+                        {
+                            Id = 45,
+                            Index = 16,
+                            Name = "Кількість елементів",
+                            ProductAttributeGroupID = 4
+                        },
+                        new
+                        {
+                            Id = 46,
+                            Index = 17,
+                            Name = "Термін використання",
+                            ProductAttributeGroupID = 4
+                        },
+                        new
+                        {
+                            Id = 47,
+                            Index = 18,
+                            Name = "Вимірювання показників",
+                            ProductAttributeGroupID = 4
+                        },
+                        new
+                        {
+                            Id = 49,
+                            Index = 19,
+                            Name = "Обсяг забору крові",
+                            ProductAttributeGroupID = 4
+                        },
+                        new
+                        {
+                            Id = 50,
+                            Index = 20,
+                            Name = "Калібрування",
+                            ProductAttributeGroupID = 4
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Models.ProductAttributeGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductAttributeGroups");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Загальні"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Таблетки"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Товари для тварин"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Медична техніка"
                         });
                 });
 
@@ -350,25 +864,106 @@ namespace DataAccess.Migrations
                     b.HasIndex("AttributeId");
 
                     b.ToTable("Properties");
+                });
+
+            modelBuilder.Entity("Domain.Models.Reservation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ConcreteProductID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ReservedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ToGetReservationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConcreteProductID");
+
+                    b.HasIndex("StatusId");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Reservations");
+                });
+
+            modelBuilder.Entity("Domain.Models.ReservationStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ReservationStatuses");
 
                     b.HasData(
                         new
                         {
-                            ProductId = 1,
-                            AttributeId = 1,
-                            Value = "Some data 1"
+                            Id = 1,
+                            Status = "В очікуванні"
                         },
                         new
                         {
-                            ProductId = 1,
-                            AttributeId = 2,
-                            Value = "Some data 2"
+                            Id = 2,
+                            Status = "Підтверджено"
                         },
                         new
                         {
-                            ProductId = 1,
-                            AttributeId = 3,
-                            Value = "Some data 3"
+                            Id = 3,
+                            Status = "Скасовано"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Status = "Завершено"
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Models.Series", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Series");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Some desc",
+                            Title = "Some title"
                         });
                 });
 
@@ -612,11 +1207,25 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1,
+                            BrandId = 3,
                             CategoryID = 6,
                             Description = "Аскорбінка.",
+                            ManufacturerID = 3,
+                            PathToPhoto = "/images/product/787f9b1f-f81c-4089-9382-57fd0cf0be15.webp",
+                            SeriesId = 1,
+                            ShortDescription = "таблетки зі смак. полун. по 25 мг №10 в етикет.",
                             Title = "Аскорбінка",
                             ActiveSubstanceID = 1
                         });
+                });
+
+            modelBuilder.Entity("Domain.Models.Brand", b =>
+                {
+                    b.HasOne("Domain.Models.Country", "CountryBrand")
+                        .WithMany()
+                        .HasForeignKey("CountryBrandID");
+
+                    b.Navigation("CountryBrand");
                 });
 
             modelBuilder.Entity("Domain.Models.Category", b =>
@@ -635,7 +1244,7 @@ namespace DataAccess.Migrations
                         .HasForeignKey("PharmacyID");
 
                     b.HasOne("Domain.Models.Product", "Product")
-                        .WithMany()
+                        .WithMany("ConcreteProducts")
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -643,6 +1252,15 @@ namespace DataAccess.Migrations
                     b.Navigation("Pharmacy");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Domain.Models.Manufacturer", b =>
+                {
+                    b.HasOne("Domain.Models.Country", "CountryManufacture")
+                        .WithMany()
+                        .HasForeignKey("CountryManufactureID");
+
+                    b.Navigation("CountryManufacture");
                 });
 
             modelBuilder.Entity("Domain.Models.Pharmacy", b =>
@@ -666,17 +1284,46 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Domain.Models.Product", b =>
                 {
+                    b.HasOne("Domain.Models.Brand", "Brand")
+                        .WithMany()
+                        .HasForeignKey("BrandId");
+
                     b.HasOne("Domain.Models.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryID");
+
+                    b.HasOne("Domain.Models.Manufacturer", "Manufacturer")
+                        .WithMany()
+                        .HasForeignKey("ManufacturerID");
+
+                    b.HasOne("Domain.Models.Series", "Series")
+                        .WithMany()
+                        .HasForeignKey("SeriesId");
 
                     b.HasOne("Domain.Models.SimilarProductGroup", "SimilarProductGroup")
                         .WithMany("Products")
                         .HasForeignKey("SimilarProductGroupId");
 
+                    b.Navigation("Brand");
+
                     b.Navigation("Category");
 
+                    b.Navigation("Manufacturer");
+
+                    b.Navigation("Series");
+
                     b.Navigation("SimilarProductGroup");
+                });
+
+            modelBuilder.Entity("Domain.Models.ProductAttribute", b =>
+                {
+                    b.HasOne("Domain.Models.ProductAttributeGroup", "ProductAttributeGroup")
+                        .WithMany("AttributesInGroup")
+                        .HasForeignKey("ProductAttributeGroupID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductAttributeGroup");
                 });
 
             modelBuilder.Entity("Domain.Models.ProductProperty", b =>
@@ -696,6 +1343,33 @@ namespace DataAccess.Migrations
                     b.Navigation("Attribute");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Domain.Models.Reservation", b =>
+                {
+                    b.HasOne("Domain.Models.ConcreteProduct", "ConcreteProduct")
+                        .WithMany()
+                        .HasForeignKey("ConcreteProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.ReservationStatus", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ConcreteProduct");
+
+                    b.Navigation("Status");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -785,7 +1459,14 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Domain.Models.Product", b =>
                 {
+                    b.Navigation("ConcreteProducts");
+
                     b.Navigation("Properties");
+                });
+
+            modelBuilder.Entity("Domain.Models.ProductAttributeGroup", b =>
+                {
+                    b.Navigation("AttributesInGroup");
                 });
 
             modelBuilder.Entity("Domain.Models.SimilarProductGroup", b =>

@@ -1,6 +1,4 @@
 import React from 'react';
-import { Check2, Heart, HeartFill } from 'react-bootstrap-icons';
-import FavoriteButton from '../FavoriteButton/FavoriteButton.js';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import './ProductsListComponent.css';

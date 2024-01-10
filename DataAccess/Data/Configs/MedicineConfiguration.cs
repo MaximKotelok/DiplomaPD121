@@ -14,7 +14,7 @@ namespace Repository.Data.Configs
 		public void Configure(EntityTypeBuilder<Medicine> builder)
 		{
 			builder.HasData(
-				new Medicine { Id = 1, CategoryID = 6, Title = "Аскорбінка", Description = "Аскорбінка.", ActiveSubstanceID = 1, BrandId = 3, ManufacturerID = 3, SeriesId = 1, ShortDescription= "таблетки зі смак. полун. по 25 мг №10 в етикет." }
+				new Medicine { Id = 1, CategoryID = 6, Title = "Аскорбінка", Description = "Аскорбінка.", ActiveSubstanceID = 1, BrandId = 3, ManufacturerID = 3, SeriesId = 1, ShortDescription= "таблетки зі смак. полун. по 25 мг №10 в етикет.", PathToPhoto= "/images/product/787f9b1f-f81c-4089-9382-57fd0cf0be15.webp" }
 				);
 		}
 	}

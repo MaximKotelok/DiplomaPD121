@@ -1208,6 +1208,7 @@ namespace DataAccess.Migrations
                             CategoryID = 6,
                             Description = "Аскорбінка.",
                             ManufacturerID = 3,
+                            PathToPhoto = "/images/product/787f9b1f-f81c-4089-9382-57fd0cf0be15.webp",
                             SeriesId = 1,
                             ShortDescription = "таблетки зі смак. полун. по 25 мг №10 в етикет.",
                             Title = "Аскорбінка",
