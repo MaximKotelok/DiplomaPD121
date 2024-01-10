@@ -18,7 +18,8 @@ namespace Web.Controllers
 	{
 		private readonly IMedicineService _service;
 
-		public MedicineController(IMedicineService service) {
+		public MedicineController(IMedicineService service)
+		{
 			this._service = service;
 		}
 
@@ -55,16 +56,16 @@ namespace Web.Controllers
 		}
 
 		[HttpPost]
-                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
-        public IActionResult AddMedicine(Medicine medicine)
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		public IActionResult AddMedicine(Medicine medicine)
 		{
 			_service.InsertMedicine(medicine);
 			return Ok("Data inserted");
 		}
 
 		[HttpPut("{id}")]
-                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
-        public IActionResult UpdateMedicine(int id, Medicine medicine)
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		public IActionResult UpdateMedicine(int id, Medicine medicine)
 		{
 			medicine.Id = id;
 			_service.UpdateMedicine(medicine);
@@ -72,9 +73,9 @@ namespace Web.Controllers
 		}
 
 		[HttpDelete("{id}")]
-                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
-        public IActionResult DeleteMedicine(int id)
-		{			
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		public IActionResult DeleteMedicine(int id)
+		{
 			_service.DeleteMedicine(id);
 			return Ok("Data Deleted");
 		}

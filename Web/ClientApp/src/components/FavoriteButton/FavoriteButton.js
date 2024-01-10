@@ -13,8 +13,8 @@ const FavoriteButton = ({isFavorite}) => {
     }
         
          return (favoriteState?
-            <i className="bi bi-heart position-absolute top-0 end-0 favorite-icon" onClick={handleClick}></i>:
-            <i className="bi bi-heart-fill position-absolute top-0 end-0 favorite-icon" onClick={handleClick}></i>
+            <i className="bi bi-heart-fill position-absolute top-0 end-0 favorite-icon" onClick={handleClick}></i>:
+            <i className="bi bi-heart position-absolute top-0 end-0 favorite-icon" onClick={handleClick}></i>
          )
     };
 

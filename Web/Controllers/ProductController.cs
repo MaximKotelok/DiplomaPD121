@@ -135,19 +135,31 @@ namespace Web.Controllers
 		}
 
 
-		[HttpPost("/GetAllProductsFromIdArray")]
-		public IActionResult GetAllProductsFromIdArray(int[] idArray)
+		[HttpPost("GetAllProductsFromIdArray")]
+		public IActionResult GetAllProductsFromIdArray(IEnumerable<int> ids)
 		{
+			int[] idArray = ids.ToArray();
 			if (idArray.IsNullOrEmpty())
 				return Ok("idArray is empty");
 
 
 			var result = _productService
-				.GetAllProducts(a => idArray.Contains(a.Id))
+				.GetAllProducts(a => idArray.Contains(a.Id), includeProperties: "Manufacturer")
 				.OrderBy(a => Array.IndexOf(idArray, a.Id));
 			if (result is not null)
 			{
-				return Ok(result);
+				var products =
+					result.Select(a =>
+					new HomeProductViewModel
+					{
+						Id = a.Id,
+						Manufacturer = a.Manufacturer.Name,
+						Title = a.Title,
+						ShortDescription = a.ShortDescription,
+						PathToPhoto = a.PathToPhoto
+					}
+					);
+				return Ok(products);
 			}
 			return BadRequest("No records found");
 		}

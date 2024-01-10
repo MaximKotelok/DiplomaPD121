@@ -3,26 +3,27 @@ import { ServerURL,Success } from "./Constants";
 
 const globalUrl = `${ServerURL}/api`;
 
-export function postToServer(url, data) {
-    let res = {};
-    axios({
-        method: "post",
-        url: `${globalUrl}/${url}`,
-        data,
-        config: {
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-        },
-    })
-        .then((response) => {
-            res = { status: Success, data: response.json() };
-        })
-        .catch((error) => {
-            res = { status: "Error" };
-        });
-}
+export async function postToServer(url, data) {
+console.log(`${globalUrl}/${url}`);
+console.log(data);
+    try {
+        const response = await axios.post(
+            `${globalUrl}/${url}`,
+            data,
+            {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        console.log(response.data);    
+        return { status: 'Success', data: response.data };
+    } catch (error) {
+        console.log(error);
+        return { status: 'Error', error };
+    }
+    }
 
 export async function postPhotoToServer(url, photo) {
     let res = {};
