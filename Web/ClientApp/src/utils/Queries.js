@@ -8,7 +8,7 @@ export async function getProducts(url, data, getFunction){
     let getProducts = (await getFunction(url, data));
     
     await Promise.all(getProducts.data.map(async a => {
-      var res = await getFromServer(GetSupInfoForProductInYourCity, { city: "����", id: a.id });
+      var res = await getFromServer(GetSupInfoForProductInYourCity, { city: "Львів", id: a.id });
       if (res.status === Success) {
         a.count = res.data.count;
         a.minPrice = res.data.minPrice;
@@ -61,8 +61,11 @@ export async function postPhotoToServer(url, path, photo) {
     return res
 }
 
-export async function getFromServer(url, params) {
-    
+export async function getFromServer(url, params = {}) {
+
+    console.log(url)
+    console.log(params)
+
     try {
         
         const response = await axios.get(`${globalUrl}/${url}`, {

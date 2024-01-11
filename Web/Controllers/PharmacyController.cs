@@ -38,7 +38,7 @@ namespace Web.Controllers
 		[HttpGet("/GetAllConcreteProductsFromPharmacy/{id}")]
 		public IActionResult GetAllConcreteProductsFromPharmacy(int id)
 		{
-			var result = _service.GetPharmacy(a=>a.Id==id, "ConcreteProducts");
+			var result = _pharmacyService.GetPharmacy(a=>a.Id==id, "ConcreteProducts");
 			if (result is not null)
 			{
 				return Ok(result.ConcreteProducts);
