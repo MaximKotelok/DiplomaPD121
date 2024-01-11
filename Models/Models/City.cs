@@ -13,12 +13,14 @@ namespace Domain.Models
     {
         [Required]
         public string? NameCity { get; set; }
+		[Required]
+		public string? Latitude { get; set; }
 
-        [Required]
-        public string? Longitude { get; set; }
+		[Required]
+		public string? Longitude { get; set; }
 
-        [Required]
-        public string? Latitude { get; set; }
-    }
+		
+
+	}
 
 }

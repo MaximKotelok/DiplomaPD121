@@ -8,7 +8,7 @@ export async function getProducts(url, data, getFunction){
     let getProducts = (await getFunction(url, data));
     
     await Promise.all(getProducts.data.map(async a => {
-      var res = await getFromServer(GetSupInfoForProductInYourCity, { city: "Львів", id: a.id });
+      var res = await getFromServer(GetSupInfoForProductInYourCity, { city: "����", id: a.id });
       if (res.status === Success) {
         a.count = res.data.count;
         a.minPrice = res.data.minPrice;
@@ -40,17 +40,17 @@ export async function postToServer(url, data) {
     }
     }
 
-export async function postPhotoToServer(url, photo) {
+export async function postPhotoToServer(url, path, photo) {
     let res = {};
 
-    await axios({
-        method: 'post',
-        url: `${globalUrl}/${url}`,
-        data: photo,
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-    })
+     await axios({
+            method: 'post',
+            url: `${globalUrl}/${url}`,
+            data: { path, photo },
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
         .then((response) => {
             res = { status: Success, data: response.data };
         })

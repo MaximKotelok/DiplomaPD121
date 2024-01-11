@@ -33,7 +33,7 @@ namespace Web.Controllers
 			}
 			return BadRequest("No records found");
 		}
-		[HttpGet("/GetMedicineByStartOfTitle/{startOfTitle}")]
+		[HttpGet("GetMedicineByStartOfTitle/{startOfTitle}")]
 		public IActionResult GetMedicineByStartOfTitle(string startOfTitle)
 		{
 			var result = _service.GetAllMedicines(a => a.Title.StartsWith(startOfTitle));
@@ -43,6 +43,17 @@ namespace Web.Controllers
 			}
 			return BadRequest("No records found");
 		}
+		[HttpGet("GetMedicineContainsOfTitle/{containsOfTitle}")]
+		public IActionResult GetMedicineByContainsOfTitle(string containsOfTitle)
+		{
+			var result = _service.GetAllMedicines(a => a.Title.Contains(containsOfTitle));
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+
 
 		[HttpGet("{id}")]
 		public IActionResult GetMedicine(int id)
@@ -56,8 +67,8 @@ namespace Web.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
-		public IActionResult AddMedicine(Medicine medicine)
+                //[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+        public IActionResult AddMedicine(Medicine medicine)
 		{
 			_service.InsertMedicine(medicine);
 			return Ok("Data inserted");

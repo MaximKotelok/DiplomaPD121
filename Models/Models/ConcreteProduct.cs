@@ -19,7 +19,6 @@ namespace Domain.Models
         [Required]
         public int ProductID { get; set; }
         [ForeignKey("ProductID")]
-		[JsonIgnore]
 		public Product? Product { get; set; }
 		public int? PharmacyID { get; set; }
 		[ForeignKey("PharmacyID")]        

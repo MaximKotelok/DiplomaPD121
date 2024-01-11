@@ -11,6 +11,7 @@
     <SpaProxyServerUrl>https://localhost:44411</SpaProxyServerUrl>
     <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>df8847c1-b0f7-4827-9a31-31f8982f2bcc</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,6 +34,17 @@
     <Content Remove="$(SpaRoot)**" />
     <None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ClientApp\public\images\icons\marker-icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ClientApp\public\images\icons\marker-icon.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

@@ -182,8 +182,8 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            Latitude = "213213",
-                            Longitude = "214124124",
+                            Latitude = "49.842957",
+                            Longitude = "24.031111",
                             NameCity = "Львів"
                         });
                 });
@@ -359,11 +359,15 @@ namespace DataAccess.Migrations
                     b.Property<int>("CityID")
                         .HasColumnType("int");
 
-                    b.Property<string>("Coord")
+                    b.Property<string>("Latitude")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Longitude")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -384,8 +388,35 @@ namespace DataAccess.Migrations
                             Id = 1,
                             Address = "Temp Address",
                             CityID = 1,
-                            Coord = "Temp Coord",
-                            Email = "kotelokmax2003@gmail.com",
+                            Latitude = "49.842957",
+                            Longitude = "24.031511",
+                            PharmaCompanyID = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "Temp Address2",
+                            CityID = 1,
+                            Latitude = "49.842757",
+                            Longitude = "24.031211",
+                            PharmaCompanyID = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Address = "Temp Address3",
+                            CityID = 1,
+                            Latitude = "49.842157",
+                            Longitude = "24.031611",
+                            PharmaCompanyID = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Address = "Temp Address4",
+                            CityID = 1,
+                            Latitude = "49.842557",
+                            Longitude = "24.031411",
                             PharmaCompanyID = 1
                         });
                 });
