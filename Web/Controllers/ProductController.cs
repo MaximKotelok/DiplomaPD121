@@ -72,10 +72,21 @@ namespace Web.Controllers
 		[HttpGet("{id}")]
 		public IActionResult GetProduct(int id)
 		{
-			Product product;
-			ProductViewModel productView = _productService.GetProductViewModel(id);
-			if (productView is not null)
+			Product product = _productService.GetProduct(a => a.Id == id, includeProperties: "Properties,Properties,Properties.Attribute");
+
+			if (product is not null)
 			{
+				ProductViewModel productView = new ProductViewModel
+				{
+					Id = product.Id,
+					CategoryID = product.Id,
+					Title = product.Title + product.ShortDescription,
+					Description = product.Description,
+					PathToPhoto = product.PathToPhoto,
+					SimilarGroupId = product.SimilarProductGroupId,
+					Properties = product.Properties.Select(a=>new PropertyViewModel { Value=a.Value, Name=a.Attribute.Name}).ToList()
+
+				};
 
 				product = _medicineService.GetMedicine(a => a.Id == id, "ActiveSubstance");
 
@@ -102,7 +113,7 @@ namespace Web.Controllers
 			var result = _productService
 				.GetAllProducts(includeProperties: "Manufacturer");
 			if (result is not null)
-			{				
+			{
 				return Ok(result);
 			}
 			return BadRequest("No records found");
@@ -126,7 +137,7 @@ namespace Web.Controllers
 						Manufacturer = a.Manufacturer.Name,
 						Title = a.Title,
 						ShortDescription = a.ShortDescription,
-						PathToPhoto=a.PathToPhoto
+						PathToPhoto = a.PathToPhoto
 					}
 					);
 				return Ok(products);

@@ -1,6 +1,6 @@
 .caption{
     font-weight: 700;
     font-size: 32px;
-    font-family: 'Mulish', sans-serif;
+    font-family: var(--standart-font);
     margin: 4px;
 }

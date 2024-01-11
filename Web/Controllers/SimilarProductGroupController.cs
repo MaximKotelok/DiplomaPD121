@@ -48,7 +48,14 @@ namespace Web.Controllers
 					{
 						Name = result.Name,
 						SimilarBy = result.SimilarBy,
-						Products = result.Products.Select(a => _productService.GetProductViewModel(a.Id))
+						Products = result.Products.Select(a => 
+						new ProductViewModel { 
+							Id= a.Id, 
+							CategoryID=a.CategoryID, 
+							Description=a.ShortDescription, 
+							PathToPhoto=a.PathToPhoto, 
+							SimilarGroupId=a.SimilarProductGroupId, 
+							Title=a.Title})
 					}
 					);
 			}

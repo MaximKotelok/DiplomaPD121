@@ -1,11 +1,26 @@
 import axios from "axios";
-import { ServerURL,Success } from "./Constants";
+import { GetSupInfoForProductInYourCity, ServerURL,Success } from "./Constants";
 
 const globalUrl = `${ServerURL}/api`;
 
+export async function getProducts(url, data, getFunction){
+    
+    let getProducts = (await getFunction(url, data));
+    
+    await Promise.all(getProducts.data.map(async a => {
+      var res = await getFromServer(GetSupInfoForProductInYourCity, { city: "Львів", id: a.id });
+      if (res.status === Success) {
+        a.count = res.data.count;
+        a.minPrice = res.data.minPrice;
+      } else {
+        console.error("Error");
+      }
+    }));
+    return getProducts;
+}
+
+
 export async function postToServer(url, data) {
-console.log(`${globalUrl}/${url}`);
-console.log(data);
     try {
         const response = await axios.post(
             `${globalUrl}/${url}`,

@@ -35,8 +35,6 @@ namespace Services.AttributeGroupService
 		{
 			return _repository.Get(filter, includeProperties);
 		}
-
-		
 	
 		public void InsertProductAttributeGroup(ProductAttributeGroup group)
 		{

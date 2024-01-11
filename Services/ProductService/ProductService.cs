@@ -45,24 +45,6 @@ namespace Services.ConcreteProductService
 			_repository.Update(product);
 		}
 
-		public ProductViewModel? GetProductViewModel(int id)
-		{
-			var baseProduct = _repository.Get(a => a.Id == id, "Properties,Properties.Attribute");
-			if (baseProduct is null)
-				return null;
-			ProductViewModel baseViewModel = new ProductViewModel
-			{
-				Id = baseProduct.Id,
-				Description = baseProduct.Description,
-				Title = baseProduct.Title,
-				PathToPhoto = baseProduct.PathToPhoto,
-				CategoryID = baseProduct.CategoryID,
-				Properties = baseProduct.Properties.OrderBy(a => a.Attribute.Index).Select(a => new PropertyViewModel { Value = a.Value, Name = a.Attribute.Name }).ToList(),
-				SimilarGroupId = baseProduct.SimilarProductGroupId
-			};
-			return baseViewModel;
-
-		}
 
 	}
 }
