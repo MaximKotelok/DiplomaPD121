@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Services.CategoryService;
+using Services.CityService;
 using Services.ConcreteProductService;
 using Services.PharmacyCompanyService;
 using Utility;
@@ -14,16 +15,19 @@ namespace Web.Controllers
 	[ApiController]
 	public class ConcreteProductController : ControllerBase
 	{
-		private readonly IConcreteProductService _service;
+		private readonly IConcreteProductService _concreteProductService;
+        private readonly ICityService _cityService;
 
-		public ConcreteProductController(IConcreteProductService service) {
-			this._service = service;
-		}
+
+        public ConcreteProductController(IConcreteProductService concreteProductService, ICityService cityService) {
+			this._concreteProductService = concreteProductService;
+			this._cityService = cityService;
+        }
 
 		[HttpGet("")]
 		public IActionResult GetAllConcreteProducts()
 		{
-			var result = _service.GetAllConcreteProducts();
+			var result = _concreteProductService.GetAllConcreteProducts();
 			if (result is not null)
 			{
 				return Ok(result);
@@ -34,7 +38,7 @@ namespace Web.Controllers
 		[HttpGet("GetMinPriceForProductInYourCity/{city}/{id}")]
 		public IActionResult GetMinPriceForProductInYourCity(string city, int id)
 		{
-			var result = _service.GetAllConcreteProducts(a=>a.ProductID==id 
+			var result = _concreteProductService.GetAllConcreteProducts(a=>a.ProductID==id 
 			&& 
 			a.Pharmacy.City.NameCity == city, "Pharmacy,Pharmacy.City")
 				.MinBy(a=>a.Price);
@@ -45,10 +49,26 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-		[HttpGet("{id}")]
+        [HttpGet("GetListOfConcreteProductInYourCity/{cityName}/{productId}")]
+        public IActionResult GetListOfConcreteProductInYourCity(string city, int id)
+        {
+            var cityRes = _cityService.GetCity(a => a.NameCity == city);
+            if (cityRes is not null)
+            {
+                var result = _concreteProductService.GetAllConcreteProducts(
+                  a => a.ProductID == id
+                  &&
+                  a.Pharmacy.CityID == cityRes.Id, "Pharmacy");
+
+                return Ok(result);
+            }
+            return BadRequest("No records found");
+        }
+
+        [HttpGet("{id}")]
 		public IActionResult GetConcreteProduct(int id)
 		{
-			var result = _service.GetConcreteProduct(x => x.Id == id);
+			var result = _concreteProductService.GetConcreteProduct(x => x.Id == id);
 			if (result is not null)
 			{
 				return Ok(result);
@@ -59,7 +79,7 @@ namespace Web.Controllers
 		[HttpGet("Search/{pharmacyId}/{title}")]
 		public IActionResult SearchConcreteProductByPharmacy(int pharmacyId, string title)
 		{
-			var result = _service.GetAllConcreteProducts(x => x.PharmacyID == pharmacyId && x.Product.Title.StartsWith(title), "Product");
+			var result = _concreteProductService.GetAllConcreteProducts(x => x.PharmacyID == pharmacyId && x.Product.Title.StartsWith(title), "Product");
 			if (result is not null)
 			{
 				return Ok(result);
@@ -71,7 +91,7 @@ namespace Web.Controllers
                 [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult AddConcreteProduct(ConcreteProduct concreteProduct)
 		{
-			_service.InsertConcreteProduct(concreteProduct);
+            _concreteProductService.InsertConcreteProduct(concreteProduct);
 			return Ok("Data inserted");
 		}
 
@@ -80,15 +100,15 @@ namespace Web.Controllers
         public IActionResult UpdateConcreteProduct(int id, ConcreteProduct concreteProduct)
 		{
 			concreteProduct.Id = id;
-			_service.UpdateConcreteProduct(concreteProduct);
+            _concreteProductService.UpdateConcreteProduct(concreteProduct);
 			return Ok("Updation done");
 		}
 
 		[HttpDelete("{id}")]
                 [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult DeleteConcreteProduct(int id)
-		{			
-			_service.DeleteConcreteProduct(id);
+		{
+            _concreteProductService.DeleteConcreteProduct(id);
 			return Ok("Data Deleted");
 		}
 	}
