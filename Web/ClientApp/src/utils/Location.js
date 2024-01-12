@@ -7,7 +7,7 @@ export function getCity(position) {
         const longitude = position.coords.longitude;
 
         const apiKey = '2308afc1d1d64a2c841d5c0dd1f2ce66';
-        const apiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${apiKey}`;
+        const apiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${apiKey}&language=uk`;
 
         fetch(apiUrl)
             .then(response => response.json())

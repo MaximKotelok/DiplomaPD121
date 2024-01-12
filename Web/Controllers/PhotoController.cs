@@ -9,7 +9,29 @@ namespace Web.Controllers
 	[ApiController]
 	public class PhotoController : ControllerBase
 	{
-		[HttpPost("Add")]
+        private readonly IWebHostEnvironment _hostingEnvironment;
+
+        public PhotoController(IWebHostEnvironment hostingEnvironment)
+        {
+            _hostingEnvironment = hostingEnvironment;
+        }
+
+
+        [HttpGet("images/{folder}/{name}")]
+        public IActionResult Index(string folder, string name)
+        {
+            var filePath = Path.Combine(_hostingEnvironment.WebRootPath, $"images/{folder}/{name}");
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound();
+            }
+
+            var fileBytes = System.IO.File.ReadAllBytes(filePath);
+            return File(fileBytes, "application/octet-stream");
+        }
+
+        [HttpPost("Add")]
 		public IActionResult AddPhoto(string relativePath, [FromForm] IFormFile file)
 		{
 			if (file != null)

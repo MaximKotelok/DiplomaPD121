@@ -51,7 +51,7 @@ export class NavMenu extends Component {
                         </NavItem>
 
                         <NavItem>
-                            <NavLink tag={Link} className="text-dark" to="/counter">
+                            <NavLink tag={Link} className="text-dark" to="/map">
                                 <IconButton iconPath={ServiceIcon} text="Геолокація" />
                             </NavLink>
                         </NavItem>
