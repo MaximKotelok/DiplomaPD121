@@ -1,6 +1,6 @@
 import React from 'react';
 import FavoriteButton from '../FavoriteButton/FavoriteButton.js';
-import { ApiPath } from '../../utils/Constants.js';
+import { PhotoPath } from '../../utils/Constants.js';
 import 'bootstrap/dist/css/bootstrap.css';
 import "bootstrap-icons/font/bootstrap-icons.css";
 import './ProductCardComponent.css';
@@ -28,7 +28,7 @@ const ProductCardComponent =
         }
 
         if (imageUrl && imageUrl[0] == '\\' || imageUrl[0] == '/')
-            imageUrl = `${ApiPath}${imageUrl}`;
+            imageUrl = `${PhotoPath}${imageUrl}`;
 
         return (
             <div className="border m-1 product-card">

@@ -13,7 +13,7 @@ namespace Repository.Data.Configs
 	{
 		public void Configure(EntityTypeBuilder<City> builder)
 		{
-			builder.HasData(new City { Id = 1, NameCity = "Львів", Latitude = "213213", Longitude = "214124124" });
+			builder.HasData(new City { Id = 1, NameCity = "Львів", Latitude = "49.842957", Longitude = "24.031111" });
 
 		}
 	}

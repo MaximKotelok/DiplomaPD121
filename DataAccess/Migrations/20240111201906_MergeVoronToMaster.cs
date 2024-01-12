@@ -19,7 +19,7 @@ namespace DataAccess.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "Latitude", "Longitude" },
-                values: new object[] { "213213", "214124124" });
+                values: new object[] { "49.842957", "24.031111" });
         }
 
         /// <inheritdoc />

@@ -4,9 +4,9 @@ import { showLocation, setupLocation } from '../../utils/Location';
 import { getFromServer } from '../../utils/Queries';
 import React, { useState, useEffect } from 'react';
 import { getCookie } from "../../utils/Cookies"
-import ListPharmacies from "./ListPharmacies"
+import ListPharmacies from "../ListPharmacies/ListPharmacies"
 
-const Map = (props) => {
+const MapProducts = (props) => {
     const [map, setMap] = useState(null);
     const [selectedPharmacy, setSelectedPharmacy] = useState(null);
     const [mapMarkers, setMapMarkers] = useState({});
@@ -88,7 +88,7 @@ const Map = (props) => {
     return (
         <div>
             <div id="map" style={{ height: '400px' }}></div>
-            {city !== "" ? (
+            {/*{city !== "" ? (
                 <ListPharmacies
                     city={city}
                     selectedPharmacy={selectedPharmacy}
@@ -99,8 +99,8 @@ const Map = (props) => {
                 />
             ) : (
                 <p>Loading...</p>
-            )}
+            )}*/}
         </div>
     );
 };
-export default Map;
+export default MapProducts;

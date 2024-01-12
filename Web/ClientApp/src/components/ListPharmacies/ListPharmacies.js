@@ -1,6 +1,6 @@
 import { getFromServer } from '../../utils/Queries';
-import React, { useState, useEffect } from 'react';/
-import ConreteProductSearchComponent from "./ConreteProductSearchComponent"
+import React, { useState, useEffect } from 'react';
+import ConreteProductSearchComponent from "../ConreteProductSearchComponent/ConreteProductSearchComponent"
 
 const ListPharmacies = (props) => {
     const [pharmacies, setPharmacies] = useState([]);
