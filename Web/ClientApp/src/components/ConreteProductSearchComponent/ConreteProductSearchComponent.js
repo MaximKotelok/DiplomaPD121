@@ -9,6 +9,9 @@ const ConreteProductSearchComponent = (props) => {
         const value = event.target.value;
         setInputValue(value);
 
+        if (value == "")
+            return;
+
         const response = await getFromServer(`ConcreteProduct/Search/${props.pharmacyId}/${value}`);
 
         if (Array.isArray(response.data)) {
