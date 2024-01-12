@@ -12,10 +12,10 @@ export const Map = (props) => {
 
     return (
         <div>
-            {id !== null ? (
-                <MapPharmacies></MapPharmacies>
-            ) : (
+            {id != null ? (
                 <MapProduct id={id}></MapProduct>
+            ) : (
+                <MapPharmacies></MapPharmacies>
             )}
         </div>
     );
