@@ -10,12 +10,12 @@ import MapProduct  from "../../MapProducts/MapProducts"
 export const Map = (props) => {
     const { id } = useParams();
 
-    return (
+     return (
         <div>
-            {id !== null ? (
+            {id != null ? (
+                 <MapProduct id={id}></MapProduct>
+             ):(
                 <MapPharmacies></MapPharmacies>
-            ) : (
-                <MapProduct id={id}></MapProduct>
             )}
         </div>
     );
