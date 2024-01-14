@@ -10,12 +10,11 @@ import MiniProductCardComponent from '../MiniProductCard/MiniProductCardComponen
 import { isWidthDown } from '../../utils/Functions.js';
 
 const ProductsListComponent =
-    ({
-        caption,
+    ({      
         products,
         mdDisplayCount = 2,
         lgDisplayCount = 3,
-        xlDisplayCount = 5
+        xlDisplayCount = 4
     }) => {
         const [count, setCount] = useState(1);
         useLayoutEffect(() => {
@@ -38,14 +37,10 @@ const ProductsListComponent =
         }, []);
 
 
-        useEffect(() => {
-            console.log(count)
-        }, [count])
         return (
-            <>
-                <p className='caption'>{caption}</p>
+            <>    
                 <Carousel cellAlign="left" slidesToShow={count}>
-                    {products.map((a) => (
+                    {products&&products.map?products.map((a) => (
                         <MiniProductCardComponent
                             key={a.id}
                             id={a.id}
@@ -56,7 +51,9 @@ const ProductsListComponent =
                             manufacturer={a.manufacturer}
                             imageUrl={a.pathToPhoto}
                         />
-                    ))}
+                    )):new Array(15).fill(null).map((_, index) => (
+                        <MiniProductCardComponent key={index}/>))
+                        }
                 </Carousel>
             </>
         );

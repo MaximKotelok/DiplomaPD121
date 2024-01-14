@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 // // import "bootstrap/dist/css/bootstrap.min.css";
 import "./accordionQuestion.css";
 import setupAccordion from "./jqueryAccordion.js";
+import $ from "jquery"
 
 const accordionQuestion = ({ id, title, content }) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks

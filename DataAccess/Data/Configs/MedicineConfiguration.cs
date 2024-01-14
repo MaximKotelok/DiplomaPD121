@@ -14,7 +14,10 @@ namespace Repository.Data.Configs
 		public void Configure(EntityTypeBuilder<Medicine> builder)
 		{
 			builder.HasData(
-				new Medicine { Id = 1, CategoryID = 6, Title = "Аскорбінка", Description = "Аскорбінка.", ActiveSubstanceID = 1, BrandId = 3, ManufacturerID = 3, SeriesId = 1, ShortDescription= "таблетки зі смак. полун. по 25 мг №10 в етикет.", PathToPhoto= "/images/product/787f9b1f-f81c-4089-9382-57fd0cf0be15.webp" }
+				new Medicine { Id = 1, CategoryID = 6, Title = "Аскорбінка-КВ", ShortDescription = "таблетки зі смак. апельсину по 25 мг №10 в етикет.", Description = "...", ActiveSubstanceID = 1, BrandId = 3, ManufacturerID = 3, SeriesId = 1, PathToPhoto= "/images/product/Аскорбінка 1.webp" },
+				new Medicine { Id = 2, CategoryID = 6, Title = "Аскорбінка-КВ", ShortDescription = "таблетки зі смак. манго по 25 мг №10 в етикет.", Description = "..", ActiveSubstanceID = 1, BrandId = 3, ManufacturerID = 3, SeriesId = 1,  PathToPhoto= "/images/product/Аскорбінка 2.webp" },
+				new Medicine { Id = 3, CategoryID = 6, Title = "Аскорбінка-КВ", ShortDescription = "таблетки зі смак. полуниці по 25 мг №10 в етикет.", Description = "..", ActiveSubstanceID = 1, BrandId = 3, ManufacturerID = 3, SeriesId = 1,  PathToPhoto= "/images/product/Аскорбінка 3.jpg" },
+				new Medicine { Id = 4, CategoryID = 6, Title = "Аскорбінка-КВ", ShortDescription = "таблетки зі смак. тутті-фруті по 25 мг №10 в етикет.", Description = "..", ActiveSubstanceID = 1, BrandId = 3, ManufacturerID = 3, SeriesId = 1,  PathToPhoto= "/images/product/Аскорбінка 4.jpg" }
 				);
 		}
 	}

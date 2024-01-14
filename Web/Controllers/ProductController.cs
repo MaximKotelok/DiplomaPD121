@@ -83,7 +83,6 @@ namespace Web.Controllers
 					Title = product.Title + product.ShortDescription,
 					Description = product.Description,
 					PathToPhoto = product.PathToPhoto,
-					SimilarGroupId = product.SimilarProductGroupId,
 					Properties = product.Properties.Select(a=>new PropertyViewModel { Value=a.Value, Name=a.Attribute.Name}).ToList()
 
 				};

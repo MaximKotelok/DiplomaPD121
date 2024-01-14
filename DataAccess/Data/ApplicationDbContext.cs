@@ -29,6 +29,7 @@ namespace DataAccess.Data
         public DbSet<ProductAttributeGroup>? ProductAttributeGroups { get; set; }
         public DbSet<ProductProperty>? Properties { get; set; }
         public DbSet<SimilarProductGroup>? SimilarProductGroups { get; set; }
+        public DbSet<SimilarProductItem>? SimilarProductItems { get; set; }
         public DbSet<Country>? Countries { get; set; }
         public DbSet<Brand>? Brands { get; set; }
         public DbSet<Series>? Series { get; set; }
@@ -72,6 +73,12 @@ namespace DataAccess.Data
             new ReservationStatusConfiguration().Configure(modelBuilder.Entity<ReservationStatus>());
 
             new ProductStatusConfiguration().Configure(modelBuilder.Entity<ProductStatus>());
+            
+            new SimilarGroupConfiguration().Configure(modelBuilder.Entity<SimilarProductGroup>());
+            
+            new SimilarItemConfiguration().Configure(modelBuilder.Entity<SimilarProductItem>());
+            
+            new ProductConfiguration().Configure(modelBuilder.Entity<Product>());
         }
     }
 }

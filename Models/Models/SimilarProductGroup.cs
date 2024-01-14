@@ -14,6 +14,6 @@ namespace Domain.Models
 		public string? Name { get; set; }
 		[Required]
 		public string? SimilarBy { get; set; }
-		public IEnumerable<Product>? Products { get; set;}
+		public IEnumerable<SimilarProductItem>? Similar { get; set;}
 	}
 }

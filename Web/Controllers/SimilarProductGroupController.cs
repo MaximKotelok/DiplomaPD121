@@ -9,6 +9,7 @@ using Services.ConcreteProductService;
 using Services.PharmacyCompanyService;
 using Services.PharmacyService;
 using Services.SimilarProductGroupService;
+using Services.SimilarProductItemService;
 using Utility;
 
 namespace Web.Controllers
@@ -18,12 +19,14 @@ namespace Web.Controllers
 	public class SimilarProductGroupController : ControllerBase
 	{
 		private readonly ISimilarProductGroupService _similarService;
+		private readonly ISimilarProductItemService _similarProductItemService;
 		private readonly IProductService _productService;
 
-		public SimilarProductGroupController(ISimilarProductGroupService similarService, IProductService productService)
+		public SimilarProductGroupController(ISimilarProductGroupService similarService, IProductService productService, ISimilarProductItemService similarProductItemService)
 		{
 			this._similarService = similarService;
 			this._productService = productService;
+			this._similarProductItemService = similarProductItemService;
 		}
 
 		[HttpGet("")]
@@ -40,7 +43,7 @@ namespace Web.Controllers
 		[HttpGet("/GetAllSimilarProductsFromGroup/{id}")]
 		public IActionResult GetAllSimilarProductsFromGroup(int id)
 		{
-			var result = _similarService.GetSimilarProductGroup(a => a.Id == id, "Products");
+			var result = _similarService.GetSimilarProductGroup(a => a.Id == id, "Similar,Similar.Product");
 			if (result is not null)
 			{
 				return Ok(
@@ -48,14 +51,11 @@ namespace Web.Controllers
 					{
 						Name = result.Name,
 						SimilarBy = result.SimilarBy,
-						Products = result.Products.Select(a => 
-						new ProductViewModel { 
-							Id= a.Id, 
-							CategoryID=a.CategoryID, 
-							Description=a.ShortDescription, 
-							PathToPhoto=a.PathToPhoto, 
-							SimilarGroupId=a.SimilarProductGroupId, 
-							Title=a.Title})
+						Products = result.Similar.Select(a => 
+						new SimilarProductViewModel {
+							ProductId = a.Id, 
+							TitleOfSimilar=a.Title}
+						)
 					}
 					);
 			}
@@ -69,18 +69,23 @@ namespace Web.Controllers
 			{
 				Name = viewModel.Name,
 				SimilarBy = viewModel.SimilarBy,
-				Products = new List<Product>()
+				Similar = new List<SimilarProductItem>()
 			};
 
 
             foreach (var item in viewModel.Products)
             {
-				var product = _productService.GetProduct(a => a.Id == item.Id);
+				var product = _productService.GetProduct(a => a.Id == item.ProductId, includeProperties: "SimilarProductItems");
 				if(product is not null)
 				{
-
-				product.SimilarProductGroup = group;
-				group.Products.Prepend(product);
+					var newSimilar = new SimilarProductItem
+					{
+						ProductID = product.Id,
+						SimilarProductGroup = group
+					};
+					product.SimilarProductItems.Append(newSimilar);
+				
+					group.Similar.Prepend(newSimilar);
 				}
             }
 
@@ -90,16 +95,30 @@ namespace Web.Controllers
 
 
 		[HttpPost("AddProductToGroup")]
-		public IActionResult AddProductToGroup(int productId, int groupId)
+		public IActionResult AddProductToGroup(int productId, int groupId, string title)
 		{
 			if (_similarService.GetSimilarProductGroup(a => a.Id == groupId) != null)
 			{
-				var res = _productService.GetProduct(a => a.Id == productId);
-				res.SimilarProductGroupId = groupId;
-				_productService.UpdateProduct(res);
+				_similarProductItemService.InsertSimilarProductItem(
+					new SimilarProductItem { SimilarProductGroupId = groupId, ProductID=productId, Title= title }
+					);
 				return Ok("Data inserted");
 			}
 			return BadRequest("Group not found");
+		}
+		
+		[HttpDelete("RemoveProductFromGroup")]
+		public IActionResult RemoveProductFromGroup(int productId, int groupId)
+		{
+			var res = _similarProductItemService.GetSimilarProductItem(a => a.SimilarProductGroupId == groupId && a.ProductID == productId);
+
+			if(res != null)
+			{
+				_similarProductItemService.DeleteSimilarProductItem(res.Id);
+				return Ok("Data removed");
+			}
+
+			return BadRequest("Not found");
 		}
 
 		[HttpPut("{id}")]
