@@ -31,3 +31,16 @@ export function getTagContentFromString(doc,tag) {
   
     return bTagContent;
   }
+
+export const breakpoints = {
+    xs: 0,
+    sm: 576,
+    md: 768,
+    lg: 992,
+    xl: 1200,
+};
+
+export function isWidthDown(breakpoint, width){
+    const breakpointWidth = breakpoints[breakpoint];
+    return width <= breakpointWidth;
+};
