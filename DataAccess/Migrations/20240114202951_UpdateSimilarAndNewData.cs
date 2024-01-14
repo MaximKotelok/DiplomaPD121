@@ -56,15 +56,14 @@ namespace DataAccess.Migrations
                 columns: new[] { "Id", "ParentCategoryID", "Title", "isActual" },
                 values: new object[,]
                 {
-                    { 7, 1, "Ліки та профілактичні засоби", null },
-                    { 8, 1, "Вітаміни та мінерали", null },
-                    { 9, 1, "Краса та догляд", null },
-                    { 10, 1, "Спорт та здоров'я", null },
-                    { 11, 1, "Товари для дітей та мам", null },
-                    { 12, 1, "Вироби медичного призначення", null },
-                    { 13, 1, "Ортопедія та реабілітація", null },
-                    { 14, 1, "Медична техніка", null },
-                    { 15, 1, "Товари для тварин", null }
+                    { 7, 1, "Вітаміни та мінерали", null },
+                    { 8, 1, "Краса та догляд", null },
+                    { 9, 1, "Спорт та здоров'я", null },
+                    { 10, 1, "Товари для дітей та мам", null },
+                    { 11, 1, "Вироби медичного призначення", null },
+                    { 12, 1, "Ортопедія та реабілітація", null },
+                    { 13, 1, "Медична техніка", null },
+                    { 14, 1, "Товари для тварин", null }
                 });
 
             migrationBuilder.UpdateData(
@@ -94,8 +93,8 @@ namespace DataAccess.Migrations
                 columns: new[] { "Id", "ParentCategoryID", "Title", "isActual" },
                 values: new object[,]
                 {
-                    { 16, 14, "Тонометри", null },
-                    { 17, 14, "Глюкометри", null }
+                    { 15, 14, "Тонометри", null },
+                    { 16, 14, "Глюкометри", null }
                 });
 
             migrationBuilder.InsertData(
@@ -124,8 +123,8 @@ namespace DataAccess.Migrations
                 columns: new[] { "Id", "BrandId", "CategoryID", "Description", "ManufacturerID", "PathToPhoto", "ProductStatusID", "SeriesId", "ShortDescription", "Title" },
                 values: new object[,]
                 {
-                    { 5, 3, 16, "..", 3, "/images/product/Тонометр.jpg", null, 1, "Медхауз Свіс ГмбХ, ТОВ", "Тонометр ProMedica Classic автоматичний" },
-                    { 6, 3, 17, "..", 3, "/images/product/Глюкометр.jpg", null, 1, "Infopia Co. Ltd.", "Глюкометр GluNeo Lite" }
+                    { 5, 3, 15, "..", 3, "/images/product/Тонометр.jpg", null, 1, "Медхауз Свіс ГмбХ, ТОВ", "Тонометр ProMedica Classic автоматичний" },
+                    { 6, 3, 16, "..", 3, "/images/product/Глюкометр.jpg", null, 1, "Infopia Co. Ltd.", "Глюкометр GluNeo Lite" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -181,11 +180,6 @@ namespace DataAccess.Migrations
                 keyValue: 13);
 
             migrationBuilder.DeleteData(
-                table: "Categories",
-                keyColumn: "Id",
-                keyValue: 15);
-
-            migrationBuilder.DeleteData(
                 table: "Medicines",
                 keyColumn: "Id",
                 keyValue: 2);
@@ -218,12 +212,12 @@ namespace DataAccess.Migrations
             migrationBuilder.DeleteData(
                 table: "Categories",
                 keyColumn: "Id",
-                keyValue: 16);
+                keyValue: 15);
 
             migrationBuilder.DeleteData(
                 table: "Categories",
                 keyColumn: "Id",
-                keyValue: 17);
+                keyValue: 16);
 
             migrationBuilder.DeleteData(
                 table: "Products",

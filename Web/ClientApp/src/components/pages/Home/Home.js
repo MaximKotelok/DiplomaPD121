@@ -2,7 +2,7 @@ import React, { Component, useEffect, useState } from 'react';
 import ProductCardComponent from '../../ProductCard/ProductCardComponent';
 import ProductsListComponent from '../../ProductsList/ProductsListComponent';
 import { GetAllProductsFromIdArray, GetSupInfoForProductInYourCity } from '../../../utils/Constants';
-import { Success } from '../../../utils/Constants';
+import { Success, GetMainCategories } from '../../../utils/Constants';
 import { getFromServer, getProducts, postToServer } from '../../../utils/Queries';
 import { getRecentlyViewedProductsIds } from '../../../utils/SessionStorage';
 import VitaminCardComponnent from '../../HomeComponent/VitaminCardComponnent';
@@ -20,10 +20,15 @@ export const Home = () => {
 
   const [products, setProducts] = useState({});
   const [recently, setRecently] = useState({});
+  const [categories, setCategories] = useState({});
 
   async function initProducts() {
 
     setProducts(await getProducts("Product", { count: 8 }, getFromServer))
+  }
+  async function initCategories() {
+
+    setCategories(await getFromServer(GetMainCategories, {count: 9}))
   }
   async function initRecentlyViewed() {
     let ids = getRecentlyViewedProductsIds();
@@ -36,6 +41,7 @@ export const Home = () => {
   useEffect(() => {
     initProducts();
     initRecentlyViewed();
+    initCategories();
   }, [])
 
 
@@ -52,7 +58,7 @@ export const Home = () => {
           className="col-4"
 
         >
-          <CustomList />
+          <CustomList data={categories.data} />
           <MoreLink link="." />
         </div>
 

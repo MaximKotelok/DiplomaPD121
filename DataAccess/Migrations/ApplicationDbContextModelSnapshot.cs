@@ -156,65 +156,59 @@ namespace DataAccess.Migrations
                         {
                             Id = 7,
                             ParentCategoryID = 1,
-                            Title = "Ліки та профілактичні засоби"
+                            Title = "Вітаміни та мінерали"
                         },
                         new
                         {
                             Id = 8,
                             ParentCategoryID = 1,
-                            Title = "Вітаміни та мінерали"
+                            Title = "Краса та догляд"
                         },
                         new
                         {
                             Id = 9,
                             ParentCategoryID = 1,
-                            Title = "Краса та догляд"
+                            Title = "Спорт та здоров'я"
                         },
                         new
                         {
                             Id = 10,
                             ParentCategoryID = 1,
-                            Title = "Спорт та здоров'я"
+                            Title = "Товари для дітей та мам"
                         },
                         new
                         {
                             Id = 11,
                             ParentCategoryID = 1,
-                            Title = "Товари для дітей та мам"
+                            Title = "Вироби медичного призначення"
                         },
                         new
                         {
                             Id = 12,
                             ParentCategoryID = 1,
-                            Title = "Вироби медичного призначення"
+                            Title = "Ортопедія та реабілітація"
                         },
                         new
                         {
                             Id = 13,
                             ParentCategoryID = 1,
-                            Title = "Ортопедія та реабілітація"
+                            Title = "Медична техніка"
                         },
                         new
                         {
                             Id = 14,
                             ParentCategoryID = 1,
-                            Title = "Медична техніка"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            ParentCategoryID = 1,
                             Title = "Товари для тварин"
                         },
                         new
                         {
-                            Id = 16,
+                            Id = 15,
                             ParentCategoryID = 14,
                             Title = "Тонометри"
                         },
                         new
                         {
-                            Id = 17,
+                            Id = 16,
                             ParentCategoryID = 14,
                             Title = "Глюкометри"
                         });
@@ -547,7 +541,7 @@ namespace DataAccess.Migrations
                         {
                             Id = 5,
                             BrandId = 3,
-                            CategoryID = 16,
+                            CategoryID = 15,
                             Description = "..",
                             ManufacturerID = 3,
                             PathToPhoto = "/images/product/Тонометр.jpg",
@@ -559,7 +553,7 @@ namespace DataAccess.Migrations
                         {
                             Id = 6,
                             BrandId = 3,
-                            CategoryID = 17,
+                            CategoryID = 16,
                             Description = "..",
                             ManufacturerID = 3,
                             PathToPhoto = "/images/product/Глюкометр.jpg",

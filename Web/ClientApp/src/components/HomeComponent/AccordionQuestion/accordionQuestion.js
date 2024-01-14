@@ -22,7 +22,8 @@ const accordionQuestion = ({ id, title, content }) => {
     };
   }, []);
 
-  return (
+  return (    
+
     <div className="my-accordion-item">
       <div className="d-flex align-items-center">
         <img
