@@ -1,0 +1,21 @@
+.circle-card {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .circle-image {
+    width: 140px; /* Розмір можна змінити за вашим вибором */
+    height: 140px; /* Розмір можна змінити за вашим вибором */
+    border-radius: 100px;
+    margin-bottom: 14px;
+  }
+  
+  .card-text {
+line-height: 20px;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
