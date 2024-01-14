@@ -4,6 +4,7 @@ using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240114102022_AddOneToOneUserToPharmacy")]
+    partial class AddOneToOneUserToPharmacy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -447,9 +450,6 @@ namespace DataAccess.Migrations
                     b.Property<string>("PathToPhoto")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProductStatusID")
-                        .HasColumnType("int");
-
                     b.Property<int?>("SeriesId")
                         .HasColumnType("int");
 
@@ -470,8 +470,6 @@ namespace DataAccess.Migrations
                     b.HasIndex("CategoryID");
 
                     b.HasIndex("ManufacturerID");
-
-                    b.HasIndex("ProductStatusID");
 
                     b.HasIndex("SeriesId");
 
@@ -900,39 +898,6 @@ namespace DataAccess.Migrations
                     b.HasIndex("AttributeId");
 
                     b.ToTable("Properties");
-                });
-
-            modelBuilder.Entity("Domain.Models.ProductStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ProductStatuses");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Status = "Підтверджено"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Status = "На розгляді"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Status = "Відхилено"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Models.Reservation", b =>
@@ -1371,10 +1336,6 @@ namespace DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("ManufacturerID");
 
-                    b.HasOne("Domain.Models.ProductStatus", "ProductStatus")
-                        .WithMany()
-                        .HasForeignKey("ProductStatusID");
-
                     b.HasOne("Domain.Models.Series", "Series")
                         .WithMany()
                         .HasForeignKey("SeriesId");
@@ -1388,8 +1349,6 @@ namespace DataAccess.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Manufacturer");
-
-                    b.Navigation("ProductStatus");
 
                     b.Navigation("Series");
 

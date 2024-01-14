@@ -33,7 +33,10 @@ namespace Domain.Models
 		public int? SeriesId { get; set; }
 		[ForeignKey("SeriesId")]
 		public Series? Series { get; set; }
-		public IEnumerable<ProductProperty>? Properties { get; set; }   
+        public int? ProductStatusID { get; set; }
+		[ForeignKey(nameof(ProductStatusID))]
+        public ProductStatus? ProductStatus { get; set; }
+        public IEnumerable<ProductProperty>? Properties { get; set; }   
 		public IEnumerable<ConcreteProduct>? ConcreteProducts { get; set; }   
 	}
 }

@@ -12,5 +12,9 @@ namespace Utility
         public const string Role_Company = "PharmaCompany";
         public const string Role_Admin = "Admin";
         public const string Role_Pharmacist = "Pharmacist";
+
+        public const string ProductStatusConfirmed = "Підтверджено";
+        public const string ProductStatusUnderConsideration = "На розгляді";
+        public const string ProductStatusRejected = "Відхилено";
     }
 }

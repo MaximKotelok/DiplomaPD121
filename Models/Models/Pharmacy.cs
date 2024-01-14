@@ -32,7 +32,8 @@ namespace Domain.Models
         public int CityID { get; set; }
         [ForeignKey("CityID")]
         public City? City { get; set; }
-
-
+        public string? UserId { get; set; }
+        [ForeignKey("UserId")]
+        public User? User { get; set; }
     }
 }
