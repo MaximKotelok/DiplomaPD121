@@ -10,5 +10,6 @@ namespace Services.EmailService
     public interface IEmailService
     {
         Task SendBookingInfo(string email, ProductDto productDto);
+        Task SendChangeProductStatus(string email, ProductDto productDto, string newStatus);
     }
 }

@@ -41,5 +41,30 @@ namespace Services.EmailService
 
             return _sMTPService.SendEmailAsync(email, "Підтвердження бронювання", message);
         }
+        public Task SendChangeProductStatus(string email, ProductDto productDto, string newStatus)
+        {
+            string currentDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+            string message = $@"
+    <html>
+    <head>
+        <title>Зміна статусу продукту</title>
+    </head>
+    <body>
+        <p>Шановний виробнику,</p>
+        
+        <p>Статус вашого продукту {productDto.Name} з id {productDto.Id} був змінений. Новий статус: <strong>{newStatus}</strong>.</p>
+        
+        <p>Дата зміни статусу: <strong>{currentDate}</strong></p>
+
+        <p>Дякуємо, що обрали наші послуги.</p>
+
+        <p>З найкращими побажаннями,<br>Адміністрація</p>
+    </body>
+    </html>
+";
+
+            return _sMTPService.SendEmailAsync(email, "Зміна статусу продукту", message);
+        }
     }
 }
