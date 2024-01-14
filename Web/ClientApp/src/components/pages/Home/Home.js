@@ -2,44 +2,157 @@ import React, { Component, useEffect, useState } from 'react';
 import ProductCardComponent from '../../ProductCard/ProductCardComponent';
 import ProductsListComponent from '../../ProductsList/ProductsListComponent';
 import { GetAllProductsFromIdArray, GetSupInfoForProductInYourCity } from '../../../utils/Constants';
-import { Success } from '../../../utils/Constants';
+import { Success, GetMainCategories } from '../../../utils/Constants';
 import { getFromServer, getProducts, postToServer } from '../../../utils/Queries';
 import { getRecentlyViewedProductsIds } from '../../../utils/SessionStorage';
+import VitaminCardComponnent from '../../HomeComponent/VitaminCardComponnent';
+import MoreLink from '../../HomeComponent/MoreLink ';
+import PopularButtonComponnent from '../../HomeComponent/PopularButtonComponnent';
+import CircleCard from '../../HomeComponent/CircleCard';
+import CustomList from '../../HomeComponent/CustomList';
+import AccordionComponnent from "../../HomeComponent/AccordionQuestion/accordionComponnent";
 
+import homePageImg from "../../../styles/images/homePageImg.png";
+
+import "./Home.css"
 export const Home = () => {
   var displayName = Home.name;
 
   const [products, setProducts] = useState({});
   const [recently, setRecently] = useState({});
+  const [categories, setCategories] = useState({});
 
   async function initProducts() {
-    
-    setProducts(await getProducts("Product", { count: 4 }, getFromServer))
+
+    setProducts(await getProducts("Product", { count: 8 }, getFromServer))
+  }
+  async function initCategories() {
+
+    setCategories(await getFromServer(GetMainCategories, {count: 9}))
   }
   async function initRecentlyViewed() {
     let ids = getRecentlyViewedProductsIds();
     if (ids.length == 0)
       return;
-    
+
     setRecently(await getProducts(GetAllProductsFromIdArray, ids, postToServer))
   }
 
   useEffect(() => {
     initProducts();
     initRecentlyViewed();
+    initCategories();
   }, [])
 
 
   return (<>
-    {products.data && <ProductsListComponent
-      caption="Пропозиції"
-      products={products.data}
-    />}
-    {recently.data &&
-      <ProductsListComponent
-        caption="Нещодавно переглянуті товари"
-        products={recently.data}
-      />}
+    <div className="row">
+      <img src={homePageImg} />
+
+
+      <div
+        className="row"
+
+      >
+        <div
+          className="col-4"
+
+        >
+          <CustomList data={categories.data} />
+          <MoreLink link="." />
+        </div>
+
+        <div className="col-8">
+          <div
+            className="row"
+            style={{ margin: 0, padding: 0 }}
+          >
+            <div >
+              <div className='d-flex justify-content-between'>
+
+                <h3 className="text-title">Пропозиції</h3>
+                <MoreLink link="." />
+              </div>
+              <ProductsListComponent products={products.data} />
+            </div>
+          </div>
+          <div
+            className="row"
+            style={{ margin: 0, padding: 0 }}
+          >
+            {recently.data &&
+              <div>
+                <h3 className="text-title">Нещодавно переглянуті товари</h3>
+                <ProductsListComponent products={recently.data} />
+              </div>}
+          </div>
+        </div>
+      </div>
+
+      <div className="col-12" >
+        <div className='d-flex justify-content-between'>
+          <h3 className="text-title">Бренд</h3>
+          <MoreLink link="." />
+        </div>
+        <div className="flex-container d-flex">
+          {new Array(7).fill(null).map((_, index) => {
+            return <CircleCard
+            key={index}
+              text="Name"
+            />
+          })
+          }
+
+        </div>
+
+      </div>
+      <div className="col-12">
+        <div className='d-flex justify-content-between'>
+          <h3 className="text-title">Популярні товари</h3>
+          <MoreLink link="." />
+        </div>
+        <div className="d-flex justify-content-start">
+          <PopularButtonComponnent text="Вітаміни" />
+          <PopularButtonComponnent text="Вітаміни" />
+          <PopularButtonComponnent text="Вітаміни" />
+          <PopularButtonComponnent text="Вітаміни" />
+        </div>
+        <ProductsListComponent xlDisplayCount={6} products={null} />
+
+      </div>
+      <div className="col-12 baner-bottom"></div>
+
+    </div>
+    <div className="col-12">
+      <div className=' d-flex justify-content-between'>
+        <h3 className="text-title">Вітаміни та мінерали</h3>
+        <MoreLink link="." />
+      </div>
+      <div className='d-flex' >
+        <VitaminCardComponnent imageUrl="https://content.rozetka.com.ua/goods/images/big/262512727.png" text="Текст" color="#E0E0E0" />
+        <VitaminCardComponnent imageUrl="https://content.rozetka.com.ua/goods/images/big/262512727.png" text="Текст" color="#E0E0E0" />
+        <VitaminCardComponnent imageUrl="https://content.rozetka.com.ua/goods/images/big/262512727.png" text="Текст" color="#E0E0E0" />
+        <VitaminCardComponnent imageUrl="https://content.rozetka.com.ua/goods/images/big/262512727.png" text="Текст" color="#E0E0E0" />
+        <VitaminCardComponnent imageUrl="https://content.rozetka.com.ua/goods/images/big/262512727.png" text="Текст" color="#E0E0E0" />
+      </div>
+
+
+    </div>
+
+    <div
+      className="row "
+      style={{ margin: 0, padding: 0 }}
+    >
+      <div className="col-12 col-md-6">
+        <AccordionComponnent />
+      </div>
+
+      <div className="col-12 col-md-6">
+        7
+      </div>
+    </div>
+
+
   </>
 
     // <>

@@ -23,10 +23,8 @@ namespace Domain.Models
 		public Category? Category { get; set; }
 		public int? ManufacturerID { get; set; }
 		[ForeignKey("ManufacturerID")]
-		public Manufacturer? Manufacturer { get; set; }
-        public int? SimilarProductGroupId { get; set; }
-		[ForeignKey("SimilarProductGroupId")]
-		public SimilarProductGroup? SimilarProductGroup { get; set; }
+		public Manufacturer? Manufacturer { get; set; }        
+		public IEnumerable<SimilarProductItem>? SimilarProductItems { get; set; }
 		public int? BrandId { get; set; }
 		[ForeignKey("BrandId")]
 		public Brand? Brand { get; set; }

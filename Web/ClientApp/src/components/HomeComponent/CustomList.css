@@ -33,14 +33,14 @@
         /* Додано стилі для верхнього бордюру */
       
         .my-list-group-item{
-        border-radius: 16px;
+        border-radius: 12px;
         padding: 16px 20px;
         border: 1px solid #000;
         margin-bottom: 20px;
-
+        font-family: var(--standart-font);
         }   
         
-        .icon {
+        .category-icon {
             width: 24px;
             height: 24px;
             margin-right: 10px;

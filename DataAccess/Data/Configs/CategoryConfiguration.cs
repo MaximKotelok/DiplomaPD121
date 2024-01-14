@@ -19,7 +19,17 @@ namespace Repository.Data.Configs
 				new Category { Id = 3, Title = "Вітаміни", ParentCategoryID = 2 },
 				new Category { Id = 4, Title = "Вітамін С", ParentCategoryID = 3 },
 				new Category { Id = 5, Title = "Аскорбінка", ParentCategoryID = 4 },
-				new Category { Id = 6, Title = "Аскорбінка-КВ", ParentCategoryID = 5 }
+				new Category { Id = 6, Title = "Аскорбінка-КВ", ParentCategoryID = 5 },				
+				new Category { Id = 7, Title = "Вітаміни та мінерали", ParentCategoryID = 1 },
+				new Category { Id = 8, Title = "Краса та догляд", ParentCategoryID = 1 },
+				new Category { Id = 9, Title = "Спорт та здоров'я", ParentCategoryID = 1 },
+				new Category { Id = 10, Title = "Товари для дітей та мам", ParentCategoryID = 1 },
+				new Category { Id = 11, Title = "Вироби медичного призначення", ParentCategoryID = 1 },
+				new Category { Id = 12, Title = "Ортопедія та реабілітація", ParentCategoryID = 1 },
+				new Category { Id = 13, Title = "Медична техніка", ParentCategoryID = 1 },
+				new Category { Id = 14, Title = "Товари для тварин", ParentCategoryID = 1 },
+				new Category { Id = 15, Title = "Тонометри", ParentCategoryID = 14 },
+				new Category { Id = 16, Title = "Глюкометри", ParentCategoryID = 14 }
 				);
 
 		}

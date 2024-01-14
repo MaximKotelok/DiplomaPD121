@@ -32,12 +32,12 @@ namespace Web.Controllers
 		}
 
 		[HttpGet("Main/All")]
-		public IActionResult GetAllMainCategories()
+		public IActionResult GetAllMainCategories(int count)
 		{
 			var result = _service.GetCategory(x => x.ParentCategory == null, "SubCategories" );
 			if (result is not null)
 			{
-				return Ok(result.SubCategories);
+				return Ok(result.SubCategories.Take(count));
 			}
 			return BadRequest("No records found");
 		}
@@ -92,16 +92,6 @@ namespace Web.Controllers
 		}
 
 		
-		[HttpGet("/GetActualCategories")]
-		public IActionResult GetActualCategories()
-		{
-			var categories = _service.GetAllCategories(a => a.isActual != null && a.isActual.Value);
-			if (categories is not null)
-			{
-				return Ok(categories);
-			}
-			return BadRequest("No records found");
-		}
 
 		[HttpGet("PathToCategory/{id}")]
 		public IActionResult GetCategoryPath(int id)
