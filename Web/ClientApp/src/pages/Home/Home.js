@@ -15,7 +15,7 @@ export const Home = () => {
   async function initProducts() {
     let getProducts = (await getFromServer("Product", { count: 4 }));
     await Promise.all(getProducts.data.map(async a => {
-      var res = await getFromServer(GetSupInfoForProductInYourCity, { city: "Львів", id: a.id });
+      var res = await getFromServer(GetSupInfoForProductInYourCity, { city: getCookie("city"), id: a.id });
       if (res.status === Success) {
         a.count = res.data.count;
         a.minPrice = res.data.minPrice;

@@ -1,56 +1,65 @@
-import React from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import './ProductsListComponent.css';
 import ProductCardComponent from '../ProductCard/ProductCardComponent.js';
 
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import { Carousel } from 'react-responsive-carousel';
+import Carousel from "nuka-carousel"
+import MiniProductCardComponent from '../MiniProductCard/MiniProductCardComponent.js';
+
+import { isWidthDown } from '../../utils/Functions.js';
 
 const ProductsListComponent =
     ({
         caption,
         products,
-        displayCount=4
+        mdDisplayCount = 2,
+        lgDisplayCount = 3,
+        xlDisplayCount = 5
     }) => {
+        const [count, setCount] = useState(1);
+        useLayoutEffect(() => {
+            function updateSize() {
+                let width = window.innerWidth;
 
-        // return (
-        //     <Carousel 
-        //     autoPlay={false} 
-        //     showStatus={false} 
-        //     centerMode
-        //     centerSlidePercentage={100 / displayCount}
-        //     >
-             
-        //             <ProductCardComponent></ProductCardComponent>
-        //             <ProductCardComponent></ProductCardComponent>
-        //             <ProductCardComponent></ProductCardComponent>
-        //             <ProductCardComponent></ProductCardComponent>
-        //         <ProductCardComponent></ProductCardComponent>
-        //         <ProductCardComponent></ProductCardComponent>
-        //         <ProductCardComponent></ProductCardComponent>
-        //         <ProductCardComponent></ProductCardComponent>
-             
-        //     </Carousel>
-
-        // );
-
-        return (<div>
-            <p className='caption'>{caption}</p>
-            {
-                products.map(a => <ProductCardComponent
-                        key={a.id}
-                        id={a.id}
-                        title={a.title}
-                        description={a.shortDescription}
-                        minPrice={a.minPrice}
-                        countOfPharmacies={a.count}
-                        manufacturer={a.manufacturer}
-                        imageUrl={a.pathToPhoto}
-                    />
-                )
+                if (isWidthDown("md", width)) {
+                    setCount(mdDisplayCount);
+                }
+                else if (isWidthDown("lg", width)) {
+                    setCount(lgDisplayCount);
+                } else {
+                    setCount(xlDisplayCount);
+                }
             }
-        </div>)
+
+            window.addEventListener('resize', updateSize);
+            updateSize();
+            return () => window.removeEventListener('resize', updateSize);
+        }, []);
+
+
+        useEffect(() => {
+            console.log(count)
+        }, [count])
+        return (
+            <>
+                <p className='caption'>{caption}</p>
+                <Carousel cellAlign="left" slidesToShow={count}>
+                    {products.map((a) => (
+                        <MiniProductCardComponent
+                            key={a.id}
+                            id={a.id}
+                            title={a.title}
+                            description={a.shortDescription}
+                            minPrice={a.minPrice}
+                            countOfPharmacies={a.count}
+                            manufacturer={a.manufacturer}
+                            imageUrl={a.pathToPhoto}
+                        />
+                    ))}
+                </Carousel>
+            </>
+        );
     };
 
 export default ProductsListComponent;
