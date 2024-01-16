@@ -1,6 +1,6 @@
 import React from 'react';
-import FavoriteButton from '../FavoriteButton/FavoriteButton.js';
-import { ApiPath } from '../../utils/Constants.js';
+import FavoriteButton from '../../FavoriteButton/FavoriteButton.js';
+import { ApiPath } from '../../../utils/Constants.js';
 import 'bootstrap/dist/css/bootstrap.css';
 import "bootstrap-icons/font/bootstrap-icons.css";
 import './MiniProductCardComponent.css';

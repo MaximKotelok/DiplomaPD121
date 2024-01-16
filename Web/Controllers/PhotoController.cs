@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Domain.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -9,6 +10,12 @@ namespace Web.Controllers
 	[ApiController]
 	public class PhotoController : ControllerBase
 	{
+		private readonly IWebHostEnvironment _hostingEnvironment;
+
+		public PhotoController(IWebHostEnvironment hostingEnvironment)
+		{
+			_hostingEnvironment = hostingEnvironment;
+		}
 		[HttpPost("Add")]
 		public IActionResult AddPhoto(string relativePath, [FromForm] IFormFile file)
 		{
@@ -64,6 +71,20 @@ namespace Web.Controllers
 				}
 			}
 			return NoContent();
+		}
+		
+		[HttpGet("/api/images/{folder}/{name}")]
+		public IActionResult GetPhoto(string folder, string name)
+		{
+			var filePath = Path.Combine(_hostingEnvironment.WebRootPath, $"images/{folder}/{name}");
+
+			if (!System.IO.File.Exists(filePath))
+			{
+				return NotFound();
+			}
+
+			var fileBytes = System.IO.File.ReadAllBytes(filePath);
+			return File(fileBytes, "application/octet-stream");
 		}
 	}
 }

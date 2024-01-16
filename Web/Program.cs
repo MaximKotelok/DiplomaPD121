@@ -13,6 +13,7 @@ using SendGrid.Extensions.DependencyInjection;
 using Services.ActiveSubstanceService;
 using Services.AttributeGroupService;
 using Services.AttributeService;
+using Services.BrandService;
 using Services.CategoryService;
 using Services.CityService;
 using Services.ConcreteProductService;
@@ -143,6 +144,7 @@ builder.Services.AddTransient<IActiveSubstanceService, ActiveSubstanceService>()
 builder.Services.AddTransient<ICityService, CityService>();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IBrandService, BrandService>();
 //builder.Services.AddScoped<IMailKitService, MailKitService>();
 builder.Services.AddScoped<IEmailSenderService, EmailSenderService>();
 
@@ -151,6 +153,8 @@ builder.Services.AddSendGrid(options =>
     options.ApiKey = builder.Configuration.GetSection("SendGridSettings")
     .GetValue<string>("ApiKey");
 });
+
+
 
 
 builder.Services.Configure<SendGridSettings>(builder.Configuration.GetSection("SendGridSettings"));

@@ -127,7 +127,7 @@ namespace Web.Controllers
 		}
 
 		[HttpPut("{id}")]
-                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult UpdateCategory(int id, Category category)
 		{
 			category.Id = id;
@@ -136,7 +136,7 @@ namespace Web.Controllers
 		}
 
 		[HttpDelete("{id}")]
-                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult DeleteCategory(int id)
 		{			
 			_service.DeleteCategory(id);

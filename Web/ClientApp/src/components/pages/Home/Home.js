@@ -1,15 +1,14 @@
 import React, { Component, useEffect, useState } from 'react';
 import ProductCardComponent from '../../ProductCard/ProductCardComponent';
-import ProductsListComponent from '../../ProductsList/ProductsListComponent';
-import { GetAllProductsFromIdArray, GetSupInfoForProductInYourCity } from '../../../utils/Constants';
-import { Success, GetMainCategories } from '../../../utils/Constants';
+import ProductsListComponent from '../../HomeComponent/ProductsList/ProductsListComponent';
+import { GetAllProductsFromIdArray, GetRecomendedBrands, GetMainCategories, ApiPath } from '../../../utils/Constants';
 import { getFromServer, getProducts, postToServer } from '../../../utils/Queries';
 import { getRecentlyViewedProductsIds } from '../../../utils/SessionStorage';
-import VitaminCardComponnent from '../../HomeComponent/VitaminCardComponnent';
-import MoreLink from '../../HomeComponent/MoreLink ';
-import PopularButtonComponnent from '../../HomeComponent/PopularButtonComponnent';
-import CircleCard from '../../HomeComponent/CircleCard';
-import CustomList from '../../HomeComponent/CustomList';
+import VitaminCardComponnent from '../../HomeComponent/VitaminCard/VitaminCardComponnent';
+import MoreLink from '../../HomeComponent/MoreLink/MoreLink';
+import PopularButtonComponnent from '../../HomeComponent/PopularButton/PopularButtonComponnent';
+import CircleCard from '../../HomeComponent/CircleCard/CircleCard';
+import CustomList from '../../HomeComponent/CustomList/CustomList';
 import AccordionComponnent from "../../HomeComponent/AccordionQuestion/accordionComponnent";
 
 import homePageImg from "../../../styles/images/homePageImg.png";
@@ -21,6 +20,7 @@ export const Home = () => {
   const [products, setProducts] = useState({});
   const [recently, setRecently] = useState({});
   const [categories, setCategories] = useState({});
+  const [brands, setBrands] = useState({});
 
   async function initProducts() {
 
@@ -30,6 +30,7 @@ export const Home = () => {
 
     setCategories(await getFromServer(GetMainCategories, {count: 9}))
   }
+  
   async function initRecentlyViewed() {
     let ids = getRecentlyViewedProductsIds();
     if (ids.length == 0)
@@ -37,11 +38,17 @@ export const Home = () => {
 
     setRecently(await getProducts(GetAllProductsFromIdArray, ids, postToServer))
   }
+  
+  async function initBrands() {  
+    setBrands(await getFromServer(GetRecomendedBrands, {count: 7}))
+  }
 
+  console.log(brands);
   useEffect(() => {
     initProducts();
     initRecentlyViewed();
     initCategories();
+    initBrands();
   }, [])
 
 
@@ -95,7 +102,16 @@ export const Home = () => {
           <MoreLink link="." />
         </div>
         <div className="flex-container d-flex">
-          {new Array(7).fill(null).map((_, index) => {
+          {
+          brands.data&&brands.data.map? 
+          brands.data.map(a=> {
+            return <CircleCard
+            key={a.id}
+              text={a.name}
+              imageUrl={`${ApiPath}${a.pathToPhoto}`}
+            />
+          })
+          :new Array(7).fill(null).map((_, index) => {
             return <CircleCard
             key={index}
               text="Name"
