@@ -5,13 +5,9 @@ const VitaminCardComponnent = ({ imageUrl, text, color }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="category-card"
-      //   className={`card ${isHovered ? "hovered" : ""}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <div className="category-card">
       <div
-        className={` image-container ${isHovered ? "hovered " : ""}position-relative`}
+        className={`image-container position-relative`}
         //   className="image-container"
       >
         <img className="image-vitamins" src={imageUrl} alt="Card Image" />

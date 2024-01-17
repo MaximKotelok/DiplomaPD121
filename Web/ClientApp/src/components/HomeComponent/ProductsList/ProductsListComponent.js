@@ -12,8 +12,8 @@ import { isWidthDown } from '../../../utils/Functions.js';
 const ProductsListComponent =
     ({      
         products,
-        mdDisplayCount = 2,
-        lgDisplayCount = 3,
+        mdDisplayCount = 1,
+        lgDisplayCount = 2,
         xlDisplayCount = 4
     }) => {
         const [count, setCount] = useState(1);

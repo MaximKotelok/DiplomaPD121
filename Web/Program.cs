@@ -136,7 +136,6 @@ builder.Services.AddTransient<IPharmaCompanyService, PharmaCompanyService>();
 builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<ISimilarProductGroupService, SimilarProductGroupService>();
 builder.Services.AddTransient<ISimilarProductItemService, SimilarProductItemService>();
-builder.Services.AddTransient<IMedicineService, MedicineService>();
 builder.Services.AddTransient<IPharmacyService, PharmacyService>();
 builder.Services.AddTransient<IConcreteProductService, ConcreteProductService>();
 builder.Services.AddTransient<IProductService, ProductService>();
@@ -145,6 +144,7 @@ builder.Services.AddTransient<ICityService, CityService>();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
+//builder.Services.AddTransient<IMedicineService, MedicineService>();
 //builder.Services.AddScoped<IMailKitService, MailKitService>();
 builder.Services.AddScoped<IEmailSenderService, EmailSenderService>();
 

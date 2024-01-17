@@ -21,7 +21,7 @@
     display: inline;
   }
   
-  .background-category-png.hovered {
+  .image-container:hover .background-category-png {
     background-color: orange!important;
   }
   

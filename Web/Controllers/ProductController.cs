@@ -24,15 +24,14 @@ namespace Web.Controllers
 	public class ProductController : ControllerBase
 	{
 		private readonly IProductService _productService;
-		private readonly IMedicineService _medicineService;
+		//private readonly IMedicineService _medicineService;
 		private readonly IAttributeService _attributeService;
 		private readonly IPropertyService _propertyService;
 		private readonly ICityService _cityService;
 		private readonly IConcreteProductService _concreteProductService;
 
 		public ProductController(
-			IProductService productService,
-			 IMedicineService medicineService,
+			IProductService productService,			
 			 IAttributeService attributeService,
 			 IPropertyService propertyService,
 			ICityService cityService,
@@ -41,7 +40,7 @@ namespace Web.Controllers
 		{
 			this._productService = productService;
 			this._cityService = cityService;
-			this._medicineService = medicineService;
+			//this._medicineService = medicineService;
 			this._attributeService = attributeService;
 			this._propertyService = propertyService;
 			this._concreteProductService = concreteProductService;
@@ -72,7 +71,7 @@ namespace Web.Controllers
 		[HttpGet("{id}")]
 		public IActionResult GetProduct(int id)
 		{
-			Product product = _productService.GetProduct(a => a.Id == id, includeProperties: "Properties,Properties,Properties.Attribute");
+			Product product = _productService.GetProduct(a => a.Id == id, includeProperties: "Properties,Properties,Properties.Attribute,ActiveSubstance");
 
 			if (product is not null)
 			{
@@ -85,13 +84,11 @@ namespace Web.Controllers
 					PathToPhoto = product.PathToPhoto,
 					Properties = product.Properties.Select(a=>new PropertyViewModel { Value=a.Value, Name=a.Attribute.Name}).ToList()
 
-				};
-
-				product = _medicineService.GetMedicine(a => a.Id == id, "ActiveSubstance");
+				};				
 
 
 
-				if (product is not null)
+				if (product.ActiveSubstanceID is not null)
 				{
 					MedicineViewModel res = new MedicineViewModel { Product = productView };
 					res.ActiveSubstance = ((Medicine)product).ActiveSubstance.Title;
@@ -194,11 +191,11 @@ namespace Web.Controllers
 
 		[HttpPost("AddMedicine")]
 		public IActionResult AddMedicine(MedicineViewModel medicineViewModel)
-		{
+		{/*
 			var props = _convertProperties(medicineViewModel.Product.Properties);
 
 
-			Medicine medicine = new Medicine
+			Product product = new Product
 			{
 				Title = medicineViewModel.Product.Title,
 				CategoryID = medicineViewModel.Product.CategoryID,
@@ -207,22 +204,22 @@ namespace Web.Controllers
 				ActiveSubstanceID = medicineViewModel.ActiveSubstanceId
 			};
 
-			_medicineService.InsertMedicine(medicine);
+			_productService.InsertProduct(product);
 
 
 			foreach (var item in props)
 			{
-				item.Product = medicine;
+				item.Product = product;
 				_propertyService.InsertProperty(item);
 			}
-
-			return Ok("Data inserted");
+*/
+			return BadRequest("Old path");
 		}
 
 
 		[HttpPut("UpdateMedicine")]
 		public IActionResult UpdateMedicine(MedicineViewModel medicineViewModel)
-		{
+		{/*
 			var props = _convertProperties(medicineViewModel.Product.Properties);
 			_propertyService.DeleteProperty(medicineViewModel.Product.Id.Value);
 
@@ -236,7 +233,7 @@ namespace Web.Controllers
 				ActiveSubstanceID = medicineViewModel.ActiveSubstanceId
 			};
 
-			_medicineService.UpdateMedicine(medicine);
+			//_medicineService.UpdateMedicine(medicine);
 
 
 			foreach (var item in props)
@@ -244,8 +241,8 @@ namespace Web.Controllers
 				item.Product = medicine;
 				_propertyService.InsertProperty(item);
 			}
-
-			return Ok("Data updated");
+*/
+			return BadRequest("Old path");
 		}
 
 		[HttpPut("{id}")]

@@ -16,7 +16,7 @@ namespace Web.Controllers
 	[ApiController]
 	public class MedicineController : ControllerBase
 	{
-		private readonly IMedicineService _service;
+		/*private readonly IMedicineService _service;
 
 		public MedicineController(IMedicineService service)
 		{
@@ -89,6 +89,6 @@ namespace Web.Controllers
 		{
 			_service.DeleteMedicine(id);
 			return Ok("Data Deleted");
-		}
+		}*/
 	}
 }

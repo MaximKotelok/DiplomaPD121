@@ -19,7 +19,7 @@ namespace DataAccess.Data
 
         public DbSet<ConcreteProduct>? ConcreteProducts { get; set; }
         public DbSet<Product>? Products { get; set; }
-        public DbSet<Medicine>? Medicines { get; set; }
+        //public DbSet<Medicine>? Medicines { get; set; }
         public DbSet<Category>? Categories { get; set; }
         public DbSet<PharmaCompany>? PharmaCompanies { get; set; }
         public DbSet<Pharmacy>? Pharmacies { get; set; }
@@ -62,7 +62,7 @@ namespace DataAccess.Data
 
             new CategoryConfiguration().Configure(modelBuilder.Entity<Category>());
 
-            new MedicineConfiguration().Configure(modelBuilder.Entity<Medicine>());
+            //new MedicineConfiguration().Configure(modelBuilder.Entity<Medicine>());
 
             new PharmaCompanyConfiguration().Configure(modelBuilder.Entity<PharmaCompany>());
 
