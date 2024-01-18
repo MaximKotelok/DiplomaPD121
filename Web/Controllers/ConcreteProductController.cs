@@ -50,16 +50,30 @@ namespace Web.Controllers
 		}
 
         [HttpGet("GetListOfConcreteProductInYourCity/{cityName}/{productId}")]
-        public IActionResult GetListOfConcreteProductInYourCity(string city, int id)
+        public IActionResult GetListOfConcreteProductInYourCity(string cityName, int productId)
         {
-            var cityRes = _cityService.GetCity(a => a.NameCity == city);
+            var cityRes = _cityService.GetCity(a => a.NameCity == cityName);
             if (cityRes is not null)
             {
                 var result = _concreteProductService.GetAllConcreteProducts(
-                  a => a.ProductID == id
+                  a => a.ProductID == productId
                   &&
-                  a.Pharmacy.CityID == cityRes.Id, "Pharmacy");
+                  a.Pharmacy.CityID == cityRes.Id, "Pharmacy,Product,Product.Manufacturer");
 
+                return Ok(result);
+            }
+            return BadRequest("No records found");
+        }
+
+        [HttpGet("Coords/{latitude}/{longitude}/{productId}")]
+
+        public IActionResult GetProductByCoords(string latitude, string longitude, int productId)
+        {
+            var result = _concreteProductService.GetConcreteProduct(x => x.ProductID == productId
+			&& x.Pharmacy.Latitude == latitude 
+			&& x.Pharmacy.Longitude == longitude);
+            if (result is not null)
+            {
                 return Ok(result);
             }
             return BadRequest("No records found");
