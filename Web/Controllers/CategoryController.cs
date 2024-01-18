@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Services.CategoryService;
 using Services.PharmacyCompanyService;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Utility;
 
 namespace Web.Controllers
@@ -18,6 +20,36 @@ namespace Web.Controllers
 
 		public CategoryController(ICategoryService service) {
 			this._service = service;
+		}
+
+		[HttpGet("GetRecomendedCategoryById")]
+		public IActionResult GetRecomendedCategoryById(int id, int count)
+		{
+			var result = _service.GetCategory(a =>
+				a.Id == id, includeProperties: "SubCategories");
+
+			if (result is not null)
+			{
+				return Ok(new { result=result.SubCategories.Take(count), id});
+			}
+			return BadRequest("No records found");
+		}
+
+		[HttpGet("GetRecomendedCategory")]
+		public IActionResult GetRecomendedCategory(string typeOfPhoto, int count)
+		{
+			var result = _service.GetAllCategories(a=> 
+				(a.IsRecomended != null && a.IsRecomended.Value && a.SubCategoriesTypeOfPhoto == Enum.Parse<TypeOfPhoto>(typeOfPhoto)));
+
+			
+			if (result is not null && result.Count()>0)
+			{
+				var randomId = result.ElementAt(new Random().Next(0, result.Count())).Id;
+				var randomRes = _service.GetCategory(a => a.Id == randomId,
+					includeProperties: "SubCategories").SubCategories.Take(count);
+				return Ok(new { result=randomRes, id=randomId });
+			}
+			return BadRequest("No records found");
 		}
 
 		[HttpGet("")]

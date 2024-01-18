@@ -13,8 +13,8 @@
   }
 
   .image-vitamins{
-    width: 186px; 
-    background-size: cover;
+    width: 186px!important; 
+    height: 186px!important; 
   }
 
   .category-card-text{

@@ -4,6 +4,7 @@ using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240117165020_TmpIcons")]
+    partial class TmpIcons
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,7 +109,7 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool?>("IsRecomended")
+                    b.Property<bool?>("IsActual")
                         .HasColumnType("bit");
 
                     b.Property<int?>("ParentCategoryID")
@@ -133,7 +136,6 @@ namespace DataAccess.Migrations
                         {
                             Id = 1,
                             PathToPhoto = "",
-                            SubCategoriesTypeOfPhoto = 0,
                             Title = "Каталог Товарів"
                         },
                         new
@@ -141,22 +143,18 @@ namespace DataAccess.Migrations
                             Id = 2,
                             ParentCategoryID = 1,
                             PathToPhoto = "/images/category/icon/Medicines.png",
-                            SubCategoriesTypeOfPhoto = 3,
                             Title = "Ліки та профілактичні засоби"
                         },
                         new
                         {
                             Id = 3,
-                            IsRecomended = true,
                             ParentCategoryID = 2,
-                            SubCategoriesTypeOfPhoto = 1,
                             Title = "Вітаміни"
                         },
                         new
                         {
                             Id = 4,
                             ParentCategoryID = 3,
-                            PathToPhoto = "/images/category/png/C.png",
                             Title = "Вітамін С"
                         },
                         new
@@ -238,34 +236,6 @@ namespace DataAccess.Migrations
                             Id = 16,
                             ParentCategoryID = 14,
                             Title = "Глюкометри"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            ParentCategoryID = 3,
-                            PathToPhoto = "/images/category/png/B.png",
-                            Title = "Вітаміни групи В"
-                        },
-                        new
-                        {
-                            Id = 18,
-                            ParentCategoryID = 3,
-                            PathToPhoto = "/images/category/png/Biotin.png",
-                            Title = "Біотин"
-                        },
-                        new
-                        {
-                            Id = 19,
-                            ParentCategoryID = 3,
-                            PathToPhoto = "/images/category/png/D.png",
-                            Title = "Вітамін D"
-                        },
-                        new
-                        {
-                            Id = 20,
-                            ParentCategoryID = 3,
-                            PathToPhoto = "/images/category/png/K.png",
-                            Title = "Вітамін К"
                         });
                 });
 
@@ -456,12 +426,6 @@ namespace DataAccess.Migrations
                             Id = 1,
                             Description = "АНЦ.",
                             Title = "АНЦ"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "Подорожник.",
-                            Title = "Подорожник"
                         });
                 });
 
@@ -609,6 +573,30 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
+                            Id = 5,
+                            BrandId = 3,
+                            CategoryID = 15,
+                            Description = "..",
+                            ManufacturerID = 3,
+                            PathToPhoto = "/images/product/Тонометр.jpg",
+                            SeriesId = 1,
+                            ShortDescription = "Медхауз Свіс ГмбХ, ТОВ",
+                            Title = "Тонометр ProMedica Classic автоматичний"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            BrandId = 3,
+                            CategoryID = 16,
+                            Description = "..",
+                            ManufacturerID = 3,
+                            PathToPhoto = "/images/product/Глюкометр.jpg",
+                            SeriesId = 1,
+                            ShortDescription = "Infopia Co. Ltd.",
+                            Title = "Глюкометр GluNeo Lite"
+                        },
+                        new
+                        {
                             Id = 1,
                             ActiveSubstanceID = 1,
                             BrandId = 3,
@@ -658,30 +646,6 @@ namespace DataAccess.Migrations
                             SeriesId = 1,
                             ShortDescription = "таблетки зі смак. тутті-фруті по 25 мг №10 в етикет.",
                             Title = "Аскорбінка-КВ"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            BrandId = 3,
-                            CategoryID = 15,
-                            Description = "..",
-                            ManufacturerID = 3,
-                            PathToPhoto = "/images/product/Тонометр.jpg",
-                            SeriesId = 1,
-                            ShortDescription = "Медхауз Свіс ГмбХ, ТОВ",
-                            Title = "Тонометр ProMedica Classic автоматичний"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            BrandId = 3,
-                            CategoryID = 16,
-                            Description = "..",
-                            ManufacturerID = 3,
-                            PathToPhoto = "/images/product/Глюкометр.jpg",
-                            SeriesId = 1,
-                            ShortDescription = "Infopia Co. Ltd.",
-                            Title = "Глюкометр GluNeo Lite"
                         });
                 });
 

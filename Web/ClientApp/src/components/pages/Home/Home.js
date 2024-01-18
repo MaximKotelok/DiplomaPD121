@@ -1,9 +1,9 @@
 import React, { Component, useEffect, useState } from 'react';
 import ProductCardComponent from '../../ProductCard/ProductCardComponent';
 import ProductsListComponent from '../../HomeComponent/ProductsList/ProductsListComponent';
-import { GetAllProductsFromIdArray, GetRecomendedBrands, GetMainCategories, ApiPath } from '../../../utils/Constants';
+import { GetAllProductsFromIdArray, GetRecomendedBrands, GetMainCategories, ApiPath, GetRecomendedCategoryById, GetRecomendedCategory } from '../../../utils/Constants';
 import { getFromServer, getProducts, postToServer } from '../../../utils/Queries';
-import { getRecentlyViewedProductsIds } from '../../../utils/SessionStorage';
+import { getRecentlyViewedProductsIds, getRecomendedRandomCategory, setRecomendedRandomCategory } from '../../../utils/SessionStorage';
 import VitaminCardComponnent from '../../HomeComponent/VitaminCard/VitaminCardComponnent';
 import MoreLink from '../../HomeComponent/MoreLink/MoreLink';
 import PopularButtonComponnent from '../../HomeComponent/PopularButton/PopularButtonComponnent';
@@ -13,6 +13,7 @@ import AccordionComponnent from "../../HomeComponent/AccordionQuestion/accordion
 
 import homePageImg from "../../../styles/images/homePageImg.png";
 
+
 import "./Home.css"
 export const Home = () => {
   var displayName = Home.name;
@@ -21,6 +22,22 @@ export const Home = () => {
   const [recently, setRecently] = useState({});
   const [categories, setCategories] = useState({});
   const [brands, setBrands] = useState({});
+  const [pngCards, setPngCards] = useState({});
+
+  async function initPngCards() {
+    let id = getRecomendedRandomCategory("PNG")
+    const count = 5;
+    if (id) {
+      
+      let pngCards = await getFromServer(GetRecomendedCategoryById, { id: id, count: count });
+      setPngCards(pngCards.data.result);
+    }
+    else {
+      let pngCards = await getFromServer(GetRecomendedCategory, { typeOfPhoto: "PNG", count: count });
+      setRecomendedRandomCategory("PNG",pngCards.data.id);
+      setPngCards(pngCards.data.result);
+    }
+  }
 
   async function initProducts() {
 
@@ -28,9 +45,9 @@ export const Home = () => {
   }
   async function initCategories() {
 
-    setCategories(await getFromServer(GetMainCategories, {count: 9}))
+    setCategories(await getFromServer(GetMainCategories, { count: 9 }))
   }
-  
+
   async function initRecentlyViewed() {
     let ids = getRecentlyViewedProductsIds();
     if (ids.length == 0)
@@ -38,19 +55,19 @@ export const Home = () => {
 
     setRecently(await getProducts(GetAllProductsFromIdArray, ids, postToServer))
   }
-  
-  async function initBrands() {  
-    setBrands(await getFromServer(GetRecomendedBrands, {count: 7}))
+
+  async function initBrands() {
+    setBrands(await getFromServer(GetRecomendedBrands, { count: 7 }))
   }
 
-  console.log(brands);
   useEffect(() => {
     initProducts();
     initRecentlyViewed();
     initCategories();
     initBrands();
+    initPngCards();
+    
   }, [])
-
 
   return (<>
     <div className="row">
@@ -103,20 +120,20 @@ export const Home = () => {
         </div>
         <div className="flex-container d-flex">
           {
-          brands.data&&brands.data.map? 
-          brands.data.map(a=> {
-            return <CircleCard
-            key={a.id}
-              text={a.name}
-              imageUrl={`${ApiPath}${a.pathToPhoto}`}
-            />
-          })
-          :new Array(7).fill(null).map((_, index) => {
-            return <CircleCard
-            key={index}
-              text="Name"
-            />
-          })
+            brands.data && brands.data.map ?
+              brands.data.map(a => {
+                return <CircleCard
+                  key={a.id}
+                  text={a.name}
+                  imageUrl={`${ApiPath}${a.pathToPhoto}`}
+                />
+              })
+              : new Array(7).fill(null).map((_, index) => {
+                return <CircleCard
+                  key={index}
+                  text="Name"
+                />
+              })
           }
 
         </div>
@@ -139,21 +156,29 @@ export const Home = () => {
       <div className="col-12 baner-bottom"></div>
 
     </div>
-    <div className="col-12">
-      <div className=' d-flex justify-content-between'>
-        <h3 className="text-title">Вітаміни та мінерали</h3>
-        <MoreLink link="." />
-      </div>
-      <div className='d-flex' >
-        <VitaminCardComponnent imageUrl="https://content.rozetka.com.ua/goods/images/big/262512727.png" text="Текст" color="#E0E0E0" />
-        <VitaminCardComponnent imageUrl="https://content.rozetka.com.ua/goods/images/big/262512727.png" text="Текст" color="#E0E0E0" />
-        <VitaminCardComponnent imageUrl="https://content.rozetka.com.ua/goods/images/big/262512727.png" text="Текст" color="#E0E0E0" />
-        <VitaminCardComponnent imageUrl="https://content.rozetka.com.ua/goods/images/big/262512727.png" text="Текст" color="#E0E0E0" />
-        <VitaminCardComponnent imageUrl="https://content.rozetka.com.ua/goods/images/big/262512727.png" text="Текст" color="#E0E0E0" />
-      </div>
+
+    {pngCards && pngCards.map &&
+      <div className="col-12">
+        <div className=' d-flex justify-content-between'>
+          <h3 className="text-title">Вітаміни та мінерали</h3>
+          <MoreLink link="." />
+        </div>
+
+        <div className='d-flex' >
+          {pngCards.map(a => {
+
+            return (<VitaminCardComponnent
+              key={a.id}
+              imageUrl={`${ApiPath}${a.pathToPhoto}`}
+              text={a.title} color="#E0E0E0"
+            />)
+          }
+          )}
+
+        </div>
+      </div>}
 
 
-    </div>
 
     <div
       className="row "

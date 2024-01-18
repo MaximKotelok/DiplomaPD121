@@ -14,7 +14,8 @@ namespace Repository.Data.Configs
 		public void Configure(EntityTypeBuilder<PharmaCompany> builder)
 		{
 			builder.HasData(
-				new PharmaCompany { Id = 1, Title = "АНЦ", Description = "АНЦ." }
+				new PharmaCompany { Id = 1, Title = "АНЦ", Description = "АНЦ." },
+				new PharmaCompany { Id = 2, Title = "Подорожник", Description = "Подорожник." }
 				);
 
 		}

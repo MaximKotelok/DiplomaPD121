@@ -17,6 +17,8 @@ namespace Repository.Data.Configs
 				new ConcreteProduct { Id = 1, Price = 100, ProductID = 1, Quantity = 2, PharmacyID = 1 }
 				);
 
+
 		}
 	}
 }
+

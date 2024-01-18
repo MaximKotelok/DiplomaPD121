@@ -11,7 +11,11 @@ const saveObjectToSession = (key, obj) => {
 
 const getObjectFromSession = (key) => {
     const serializedObj = sessionStorage.getItem(key);
-    return JSON.parse(serializedObj);
+
+    if(serializedObj){
+        return JSON.parse(serializedObj);
+    }
+    return null;
 };
 
 export const addToRecentlyViewedProduct = (id) => {
@@ -32,3 +36,16 @@ export const getRecentlyViewedProductsIds = () => {
         return arr;
     return [];
 }
+
+
+export const getRecomendedRandomCategory = (type) => {         
+    return getObjectFromSession(`${type}RecomendedRandomCategoryId`);
+}
+
+export const setRecomendedRandomCategory = (type,id) => {         
+    if(id)
+        saveObjectToSession(`${type}RecomendedRandomCategoryId`,id);
+    else 
+    saveObjectToSession(`${type}RecomendedRandomCategoryId`,0);
+}
+

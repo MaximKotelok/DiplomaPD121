@@ -2,14 +2,15 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./CustomList.css"; // Файл для власних стилів
 import placeholder from "../../../styles/images/placeholder.png"
+import { ApiPath } from "../../../utils/Constants";
 const CustomList = ({ data }) => {
-  
+  console.log(data)
   return (
     <ul className="category-list">
       {data && data.map ? data.map(a => {
         return <li key={a.id} className="my-list-group-item">
         <div className="d-flex align-items-center">
-          <img className="category-icon" height={24} width={24} src={placeholder}/>          
+          <img className="category-icon" height={24} width={24} src={a.pathToPhoto?`${ApiPath}${a.pathToPhoto}`:placeholder}/>          
           <span className="label">{a.title}</span>
         </div>
       </li>

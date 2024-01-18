@@ -66,19 +66,19 @@ namespace DataAccess.Data
 
             new PharmaCompanyConfiguration().Configure(modelBuilder.Entity<PharmaCompany>());
 
-            new PharmacyConfiguration().Configure(modelBuilder.Entity<Pharmacy>());
-
-            new ConcreteProductConfiguration().Configure(modelBuilder.Entity<ConcreteProduct>());
+            new PharmacyConfiguration().Configure(modelBuilder.Entity<Pharmacy>());          
 
             new ReservationStatusConfiguration().Configure(modelBuilder.Entity<ReservationStatus>());
 
             new ProductStatusConfiguration().Configure(modelBuilder.Entity<ProductStatus>());
             
+            new ProductConfiguration().Configure(modelBuilder.Entity<Product>());
+
             new SimilarGroupConfiguration().Configure(modelBuilder.Entity<SimilarProductGroup>());
             
-            new SimilarItemConfiguration().Configure(modelBuilder.Entity<SimilarProductItem>());
-            
-            new ProductConfiguration().Configure(modelBuilder.Entity<Product>());
-        }
+            new SimilarItemConfiguration().Configure(modelBuilder.Entity<SimilarProductItem>());                        
+
+			new ConcreteProductConfiguration().Configure(modelBuilder.Entity<ConcreteProduct>());
+		}
     }
 }

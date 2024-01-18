@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Domain.Models
 {
     public enum TypeOfPhoto { 
-        ICON, SQUARE, PNG, LARGE
+        ICON, PNG, SQUARE, NONE
     };
 
     public class Category : BaseEntity
@@ -26,7 +26,7 @@ namespace Domain.Models
 		public IEnumerable<Product>? Products { get; set; }
         [JsonIgnore]
 		public IEnumerable<Category>? SubCategories { get; set; }        
-        public bool? IsActual { get; set; }        
+        public bool? IsRecomended { get; set; }
         public string? PathToPhoto { get;set; }        
         public TypeOfPhoto? SubCategoriesTypeOfPhoto { get; set; }
 	}
