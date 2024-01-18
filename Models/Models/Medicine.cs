@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    [Table("Medicines")]
+    //[Table("Medicines")] // Застаріла версія
     public class Medicine : Product
     {
-		[Required]
+/*		[Required]
 		public int ActiveSubstanceID { get; set; }
         [JsonIgnore]
 		[ForeignKey("ActiveSubstanceID")]
-		public ActiveSubstance? ActiveSubstance { get; set; }
+		public ActiveSubstance? ActiveSubstance { get; set; }*/ 
     }
 }

@@ -18,15 +18,17 @@ namespace Domain.Models
 		public string? PathToPhoto { get; set; }
 		public string? ShortDescription { get; set; }
 		public string? Description { get; set; }
-        public int? CategoryID { get; set; }
+		public int? ActiveSubstanceID { get; set; }
+		[JsonIgnore]
+		[ForeignKey("ActiveSubstanceID")]
+		public ActiveSubstance? ActiveSubstance { get; set; }
+		public int? CategoryID { get; set; }
 		[ForeignKey("CategoryID")]
 		public Category? Category { get; set; }
 		public int? ManufacturerID { get; set; }
 		[ForeignKey("ManufacturerID")]
-		public Manufacturer? Manufacturer { get; set; }
-        public int? SimilarProductGroupId { get; set; }
-		[ForeignKey("SimilarProductGroupId")]
-		public SimilarProductGroup? SimilarProductGroup { get; set; }
+		public Manufacturer? Manufacturer { get; set; }        
+		public IEnumerable<SimilarProductItem>? SimilarProductItems { get; set; }
 		public int? BrandId { get; set; }
 		[ForeignKey("BrandId")]
 		public Brand? Brand { get; set; }

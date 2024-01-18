@@ -12,7 +12,7 @@ namespace Domain.Models.ViewModels
 		
 		public string? Name { get; set; }
 		public string? SimilarBy { get; set; }
-		public IEnumerable<ProductViewModel>? Products { get; set; }
+		public IEnumerable<SimilarProductViewModel>? Products { get; set; }
 		
 		
 	}

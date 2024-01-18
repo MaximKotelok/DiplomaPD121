@@ -1,0 +1,53 @@
+/* .list-group-item {
+    border: 1px solid #000;
+    border-radius: 16px 16px 12px 12px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+  }
+  
+  .icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+  }
+  
+  .label {
+}
+    /* Додайте стилі для вашого тексту тут */
+
+
+/* 
+    .list-group-item {
+        border: 1px solid #000;
+        border-radius: 16px;
+        padding: 16px 20px;
+        margin-bottom: 10px;
+      }
+      
+
+      
+      .list-group-item {
+          border-top: 1px solid #000;
+        }
+        
+        /* Додано стилі для верхнього бордюру */
+      
+        .my-list-group-item{
+        border-radius: 12px;
+        padding: 16px 20px;
+        border: 1px solid #000;
+        margin-bottom: 20px;
+        font-family: var(--standart-font);
+        }   
+        
+        .category-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+          }
+
+          .category-list {
+            list-style: none; /* Видаляє крапочки */
+            padding: 0; /* Забирає внутрішні відступи */
+            margin: 0; /* Забирає зовнішні відступи */
+          }

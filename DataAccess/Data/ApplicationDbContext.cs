@@ -19,7 +19,7 @@ namespace DataAccess.Data
 
         public DbSet<ConcreteProduct>? ConcreteProducts { get; set; }
         public DbSet<Product>? Products { get; set; }
-        public DbSet<Medicine>? Medicines { get; set; }
+        //public DbSet<Medicine>? Medicines { get; set; }
         public DbSet<Category>? Categories { get; set; }
         public DbSet<PharmaCompany>? PharmaCompanies { get; set; }
         public DbSet<Pharmacy>? Pharmacies { get; set; }
@@ -29,6 +29,7 @@ namespace DataAccess.Data
         public DbSet<ProductAttributeGroup>? ProductAttributeGroups { get; set; }
         public DbSet<ProductProperty>? Properties { get; set; }
         public DbSet<SimilarProductGroup>? SimilarProductGroups { get; set; }
+        public DbSet<SimilarProductItem>? SimilarProductItems { get; set; }
         public DbSet<Country>? Countries { get; set; }
         public DbSet<Brand>? Brands { get; set; }
         public DbSet<Series>? Series { get; set; }
@@ -61,17 +62,23 @@ namespace DataAccess.Data
 
             new CategoryConfiguration().Configure(modelBuilder.Entity<Category>());
 
-            new MedicineConfiguration().Configure(modelBuilder.Entity<Medicine>());
+            //new MedicineConfiguration().Configure(modelBuilder.Entity<Medicine>());
 
             new PharmaCompanyConfiguration().Configure(modelBuilder.Entity<PharmaCompany>());
 
-            new PharmacyConfiguration().Configure(modelBuilder.Entity<Pharmacy>());
-
-            new ConcreteProductConfiguration().Configure(modelBuilder.Entity<ConcreteProduct>());
+            new PharmacyConfiguration().Configure(modelBuilder.Entity<Pharmacy>());          
 
             new ReservationStatusConfiguration().Configure(modelBuilder.Entity<ReservationStatus>());
 
             new ProductStatusConfiguration().Configure(modelBuilder.Entity<ProductStatus>());
-        }
+            
+            new ProductConfiguration().Configure(modelBuilder.Entity<Product>());
+
+            new SimilarGroupConfiguration().Configure(modelBuilder.Entity<SimilarProductGroup>());
+            
+            new SimilarItemConfiguration().Configure(modelBuilder.Entity<SimilarProductItem>());                        
+
+			new ConcreteProductConfiguration().Configure(modelBuilder.Entity<ConcreteProduct>());
+		}
     }
 }

@@ -14,12 +14,26 @@ namespace Repository.Data.Configs
 		public void Configure(EntityTypeBuilder<Category> builder)
 		{
 			builder.HasData(
-				new Category { Id = 1, Title = "Каталог Товарів" },
-				new Category { Id = 2, Title = "Ліки та профілактичні засоби", ParentCategoryID = 1 },
-				new Category { Id = 3, Title = "Вітаміни", ParentCategoryID = 2 },
-				new Category { Id = 4, Title = "Вітамін С", ParentCategoryID = 3 },
+				new Category { Id = 1, Title = "Каталог Товарів", SubCategoriesTypeOfPhoto = TypeOfPhoto.ICON, PathToPhoto = "" },
+				new Category { Id = 2, Title = "Ліки та профілактичні засоби", ParentCategoryID = 1, PathToPhoto = "/images/category/icon/Medicines.png", SubCategoriesTypeOfPhoto = TypeOfPhoto.NONE },
+				new Category { Id = 3, Title = "Вітаміни", ParentCategoryID = 2, IsRecomended = true, SubCategoriesTypeOfPhoto = TypeOfPhoto.PNG },
+				new Category { Id = 4, Title = "Вітамін С", ParentCategoryID = 3, PathToPhoto = "/images/category/png/C.png" },
 				new Category { Id = 5, Title = "Аскорбінка", ParentCategoryID = 4 },
-				new Category { Id = 6, Title = "Аскорбінка-КВ", ParentCategoryID = 5 }
+				new Category { Id = 6, Title = "Аскорбінка-КВ", ParentCategoryID = 5 },
+				new Category { Id = 7, Title = "Вітаміни та мінерали", ParentCategoryID = 1, PathToPhoto = "/images/category/icon/Vitamines.png" },
+				new Category { Id = 8, Title = "Краса та догляд", ParentCategoryID = 1, PathToPhoto = "/images/category/icon/Care.png" },
+				new Category { Id = 9, Title = "Спорт та здоров'я", ParentCategoryID = 1, PathToPhoto = "/images/category/icon/Sport.png" },
+				new Category { Id = 10, Title = "Товари для дітей та мам", ParentCategoryID = 1, PathToPhoto = "/images/category/icon/Kids.png" },
+				new Category { Id = 11, Title = "Вироби медичного призначення", ParentCategoryID = 1, PathToPhoto = "/images/category/icon/Medicine staff.png" },
+				new Category { Id = 12, Title = "Ортопедія та реабілітація", ParentCategoryID = 1, PathToPhoto = "/images/category/icon/Reabilitation.png" },
+				new Category { Id = 13, Title = "Медична техніка", ParentCategoryID = 1, PathToPhoto = "/images/category/icon/Medicine technic.png" },
+				new Category { Id = 14, Title = "Товари для тварин", ParentCategoryID = 1, PathToPhoto = "/images/category/icon/Animals.png" },
+				new Category { Id = 15, Title = "Тонометри", ParentCategoryID = 14 },
+				new Category { Id = 16, Title = "Глюкометри", ParentCategoryID = 14 },
+				new Category { Id = 17, Title = "Вітаміни групи В", ParentCategoryID = 3, PathToPhoto = "/images/category/png/B.png" },				
+				new Category { Id = 18, Title = "Біотин", ParentCategoryID = 3, PathToPhoto = "/images/category/png/Biotin.png" },
+				new Category { Id = 19, Title = "Вітамін D", ParentCategoryID = 3, PathToPhoto = "/images/category/png/D.png" },
+				new Category { Id = 20, Title = "Вітамін К", ParentCategoryID = 3, PathToPhoto = "/images/category/png/K.png" }
 				);
 
 		}

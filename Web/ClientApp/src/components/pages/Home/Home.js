@@ -1,45 +1,199 @@
 import React, { Component, useEffect, useState } from 'react';
 import ProductCardComponent from '../../ProductCard/ProductCardComponent';
-import ProductsListComponent from '../../ProductsList/ProductsListComponent';
-import { GetAllProductsFromIdArray, GetSupInfoForProductInYourCity } from '../../../utils/Constants';
-import { Success } from '../../../utils/Constants';
+import ProductsListComponent from '../../HomeComponent/ProductsList/ProductsListComponent';
+import { GetAllProductsFromIdArray, GetRecomendedBrands, GetMainCategories, ApiPath, GetRecomendedCategoryById, GetRecomendedCategory } from '../../../utils/Constants';
 import { getFromServer, getProducts, postToServer } from '../../../utils/Queries';
-import { getRecentlyViewedProductsIds } from '../../../utils/SessionStorage';
+import { getRecentlyViewedProductsIds, getRecomendedRandomCategory, setRecomendedRandomCategory } from '../../../utils/SessionStorage';
+import VitaminCardComponnent from '../../HomeComponent/VitaminCard/VitaminCardComponnent';
+import MoreLink from '../../HomeComponent/MoreLink/MoreLink';
+import PopularButtonComponnent from '../../HomeComponent/PopularButton/PopularButtonComponnent';
+import CircleCard from '../../HomeComponent/CircleCard/CircleCard';
+import CustomList from '../../HomeComponent/CustomList/CustomList';
+import AccordionComponnent from "../../HomeComponent/AccordionQuestion/accordionComponnent";
 
+import homePageImg from "../../../styles/images/homePageImg.png";
+
+
+import "./Home.css"
 export const Home = () => {
   var displayName = Home.name;
 
   const [products, setProducts] = useState({});
   const [recently, setRecently] = useState({});
+  const [categories, setCategories] = useState({});
+  const [brands, setBrands] = useState({});
+  const [pngCards, setPngCards] = useState({});
+
+  async function initPngCards() {
+    let id = getRecomendedRandomCategory("PNG")
+    const count = 5;
+    if (id) {
+      
+      let pngCards = await getFromServer(GetRecomendedCategoryById, { id: id, count: count });
+      setPngCards(pngCards.data.result);
+    }
+    else {
+      let pngCards = await getFromServer(GetRecomendedCategory, { typeOfPhoto: "PNG", count: count });
+      setRecomendedRandomCategory("PNG",pngCards.data.id);
+      setPngCards(pngCards.data.result);
+    }
+  }
 
   async function initProducts() {
-    
-    setProducts(await getProducts("Product", { count: 4 }, getFromServer))
+
+    setProducts(await getProducts("Product", { count: 8 }, getFromServer))
   }
+  async function initCategories() {
+
+    setCategories(await getFromServer(GetMainCategories, { count: 9 }))
+  }
+
   async function initRecentlyViewed() {
     let ids = getRecentlyViewedProductsIds();
     if (ids.length == 0)
       return;
-    
+
     setRecently(await getProducts(GetAllProductsFromIdArray, ids, postToServer))
+  }
+
+  async function initBrands() {
+    setBrands(await getFromServer(GetRecomendedBrands, { count: 7 }))
   }
 
   useEffect(() => {
     initProducts();
     initRecentlyViewed();
+    initCategories();
+    initBrands();
+    initPngCards();
+    
   }, [])
 
-
   return (<>
-    {products.data && <ProductsListComponent
-      caption="Пропозиції"
-      products={products.data}
-    />}
-    {recently.data &&
-      <ProductsListComponent
-        caption="Нещодавно переглянуті товари"
-        products={recently.data}
-      />}
+    <div className="row">
+      <img src={homePageImg} />
+
+
+      <div
+        className="row"
+
+      >
+        <div
+          className="col-4"
+
+        >
+          <CustomList data={categories.data} />
+          <MoreLink link="." />
+        </div>
+
+        <div className="col-8">
+          <div
+            className="row"
+            style={{ margin: 0, padding: 0 }}
+          >
+            <div >
+              <div className='d-flex justify-content-between'>
+
+                <h3 className="text-title">Пропозиції</h3>
+                <MoreLink link="." />
+              </div>
+              <ProductsListComponent products={products.data} />
+            </div>
+          </div>
+          <div
+            className="row"
+            style={{ margin: 0, padding: 0 }}
+          >
+            {recently.data &&
+              <div>
+                <h3 className="text-title">Нещодавно переглянуті товари</h3>
+                <ProductsListComponent products={recently.data} />
+              </div>}
+          </div>
+        </div>
+      </div>
+
+      <div className="col-12" >
+        <div className='d-flex justify-content-between'>
+          <h3 className="text-title">Бренд</h3>
+          <MoreLink link="." />
+        </div>
+        <div className="flex-container d-flex">
+          {
+            brands.data && brands.data.map ?
+              brands.data.map(a => {
+                return <CircleCard
+                  key={a.id}
+                  text={a.name}
+                  imageUrl={`${ApiPath}${a.pathToPhoto}`}
+                />
+              })
+              : new Array(7).fill(null).map((_, index) => {
+                return <CircleCard
+                  key={index}
+                  text="Name"
+                />
+              })
+          }
+
+        </div>
+
+      </div>
+      <div className="col-12">
+        <div className='d-flex justify-content-between'>
+          <h3 className="text-title">Популярні товари</h3>
+          <MoreLink link="." />
+        </div>
+        <div className="d-flex justify-content-start">
+          <PopularButtonComponnent text="Вітаміни" />
+          <PopularButtonComponnent text="Вітаміни" />
+          <PopularButtonComponnent text="Вітаміни" />
+          <PopularButtonComponnent text="Вітаміни" />
+        </div>
+        <ProductsListComponent xlDisplayCount={6} products={null} />
+
+      </div>
+      <div className="col-12 baner-bottom"></div>
+
+    </div>
+
+    {pngCards && pngCards.map &&
+      <div className="col-12">
+        <div className=' d-flex justify-content-between'>
+          <h3 className="text-title">Вітаміни та мінерали</h3>
+          <MoreLink link="." />
+        </div>
+
+        <div className='d-flex' >
+          {pngCards.map(a => {
+
+            return (<VitaminCardComponnent
+              key={a.id}
+              imageUrl={`${ApiPath}${a.pathToPhoto}`}
+              text={a.title} color="#E0E0E0"
+            />)
+          }
+          )}
+
+        </div>
+      </div>}
+
+
+
+    <div
+      className="row "
+      style={{ margin: 0, padding: 0 }}
+    >
+      <div className="col-12 col-md-6">
+        <AccordionComponnent />
+      </div>
+
+      <div className="col-12 col-md-6">
+        7
+      </div>
+    </div>
+
+
   </>
 
     // <>

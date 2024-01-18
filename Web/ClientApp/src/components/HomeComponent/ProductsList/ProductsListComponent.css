@@ -1,0 +1,12 @@
+.caption{
+    font-weight: 700;
+    font-size: 32px;
+    font-family: var(--standart-font);
+    margin: 4px;
+}
+
+
+
+/* .paging-item {
+    fill:blue !important; Можна перефарбувати індикатори 
+} */

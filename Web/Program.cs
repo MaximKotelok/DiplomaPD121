@@ -13,6 +13,7 @@ using SendGrid.Extensions.DependencyInjection;
 using Services.ActiveSubstanceService;
 using Services.AttributeGroupService;
 using Services.AttributeService;
+using Services.BrandService;
 using Services.CategoryService;
 using Services.CityService;
 using Services.ConcreteProductService;
@@ -23,6 +24,7 @@ using Services.PharmacyCompanyService;
 using Services.PharmacyService;
 using Services.PropertyService;
 using Services.SimilarProductGroupService;
+using Services.SimilarProductItemService;
 using Services.SMTPService;
 using System.Text;
 using Utility.Models;
@@ -133,7 +135,7 @@ builder.Services.AddTransient<IPropertyService, PropertyService>();
 builder.Services.AddTransient<IPharmaCompanyService, PharmaCompanyService>();
 builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<ISimilarProductGroupService, SimilarProductGroupService>();
-builder.Services.AddTransient<IMedicineService, MedicineService>();
+builder.Services.AddTransient<ISimilarProductItemService, SimilarProductItemService>();
 builder.Services.AddTransient<IPharmacyService, PharmacyService>();
 builder.Services.AddTransient<IConcreteProductService, ConcreteProductService>();
 builder.Services.AddTransient<IProductService, ProductService>();
@@ -141,6 +143,8 @@ builder.Services.AddTransient<IActiveSubstanceService, ActiveSubstanceService>()
 builder.Services.AddTransient<ICityService, CityService>();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IBrandService, BrandService>();
+//builder.Services.AddTransient<IMedicineService, MedicineService>();
 //builder.Services.AddScoped<IMailKitService, MailKitService>();
 builder.Services.AddScoped<IEmailSenderService, EmailSenderService>();
 
@@ -149,6 +153,8 @@ builder.Services.AddSendGrid(options =>
     options.ApiKey = builder.Configuration.GetSection("SendGridSettings")
     .GetValue<string>("ApiKey");
 });
+
+
 
 
 builder.Services.Configure<SendGridSettings>(builder.Configuration.GetSection("SendGridSettings"));

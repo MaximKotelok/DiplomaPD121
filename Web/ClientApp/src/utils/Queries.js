@@ -1,5 +1,6 @@
 import axios from "axios";
 import { GetSupInfoForProductInYourCity, ServerURL,Success } from "./Constants";
+import { getCookie } from "./Cookies";
 
 const globalUrl = `${ServerURL}/api`;
 
@@ -8,7 +9,7 @@ export async function getProducts(url, data, getFunction){
     let getProducts = (await getFunction(url, data));
     
     await Promise.all(getProducts.data.map(async a => {
-      var res = await getFromServer(GetSupInfoForProductInYourCity, { city: "Львів", id: a.id });
+      var res = await getFromServer(GetSupInfoForProductInYourCity, { city: getCookie("city"), id: a.id });
       if (res.status === Success) {
         a.count = res.data.count;
         a.minPrice = res.data.minPrice;

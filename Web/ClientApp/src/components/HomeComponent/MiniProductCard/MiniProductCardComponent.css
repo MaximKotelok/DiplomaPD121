@@ -1,0 +1,90 @@
+.product-card {
+    border-radius: 16px;
+    display: inline-block;
+    font-family: var(--standart-font);
+    padding: 10px;
+    width: 203px;
+    
+}
+
+.product-info{
+    height: 100px;
+}
+
+.product-image {
+
+    height: 168px;    
+    width: 182px;    
+    object-fit: cover;
+}
+
+.product-title {
+    color: #0E3E75;
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 4px;
+    height: 24px;    
+}
+
+.product-description {
+    color: #0E3E75;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    height: 60px;
+}
+
+.count-of-pharmacies {
+    font-size: 12px;
+    font-weight: 600;
+    color: #535353;
+    margin-bottom: 4px;
+}
+
+.check-in-count-of-pharmacies {
+    margin-right: 2px;
+    font-size: 12px;
+    color: #FF671F;
+}
+
+.product-price{
+    font-size: 14px;
+    font-weight: 500;
+    color: #535353;
+}
+
+.product-price-bold{
+    font-size: 15px;
+    font-weight: 700;
+    color: #535353;
+}
+
+.product-manufacturer{
+    font-size: 16px;
+    font-weight: 300;
+    color: #535353;
+    margin-bottom: 4px;    
+    height: 48px;
+}
+
+.product-button{
+    border-radius: 8px; 
+    background: #139787; 
+    color: #fff; 
+    font-size: '16px';
+}
+
+.product-button:hover{    
+    background: #11877a; 
+    color: #fff; 
+}
+
+@media screen and (max-width: 992px)  {
+    .product-manufacturer{
+        display: none; 
+    }
+    .product-image {
+        height: 128px;
+        width: 140px;       
+    }
+}

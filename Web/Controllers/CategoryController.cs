@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Services.CategoryService;
 using Services.PharmacyCompanyService;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Utility;
 
 namespace Web.Controllers
@@ -20,6 +22,36 @@ namespace Web.Controllers
 			this._service = service;
 		}
 
+		[HttpGet("GetRecomendedCategoryById")]
+		public IActionResult GetRecomendedCategoryById(int id, int count)
+		{
+			var result = _service.GetCategory(a =>
+				a.Id == id, includeProperties: "SubCategories");
+
+			if (result is not null)
+			{
+				return Ok(new { result=result.SubCategories.Take(count), id});
+			}
+			return BadRequest("No records found");
+		}
+
+		[HttpGet("GetRecomendedCategory")]
+		public IActionResult GetRecomendedCategory(string typeOfPhoto, int count)
+		{
+			var result = _service.GetAllCategories(a=> 
+				(a.IsRecomended != null && a.IsRecomended.Value && a.SubCategoriesTypeOfPhoto == Enum.Parse<TypeOfPhoto>(typeOfPhoto)));
+
+			
+			if (result is not null && result.Count()>0)
+			{
+				var randomId = result.ElementAt(new Random().Next(0, result.Count())).Id;
+				var randomRes = _service.GetCategory(a => a.Id == randomId,
+					includeProperties: "SubCategories").SubCategories.Take(count);
+				return Ok(new { result=randomRes, id=randomId });
+			}
+			return BadRequest("No records found");
+		}
+
 		[HttpGet("")]
         public IActionResult GetAllCategories()
 		{
@@ -32,12 +64,12 @@ namespace Web.Controllers
 		}
 
 		[HttpGet("Main/All")]
-		public IActionResult GetAllMainCategories()
+		public IActionResult GetAllMainCategories(int count)
 		{
 			var result = _service.GetCategory(x => x.ParentCategory == null, "SubCategories" );
 			if (result is not null)
 			{
-				return Ok(result.SubCategories);
+				return Ok(result.SubCategories.Take(count));
 			}
 			return BadRequest("No records found");
 		}
@@ -92,16 +124,6 @@ namespace Web.Controllers
 		}
 
 		
-		[HttpGet("/GetActualCategories")]
-		public IActionResult GetActualCategories()
-		{
-			var categories = _service.GetAllCategories(a => a.isActual != null && a.isActual.Value);
-			if (categories is not null)
-			{
-				return Ok(categories);
-			}
-			return BadRequest("No records found");
-		}
 
 		[HttpGet("PathToCategory/{id}")]
 		public IActionResult GetCategoryPath(int id)
@@ -137,7 +159,7 @@ namespace Web.Controllers
 		}
 
 		[HttpPut("{id}")]
-                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult UpdateCategory(int id, Category category)
 		{
 			category.Id = id;
@@ -146,7 +168,7 @@ namespace Web.Controllers
 		}
 
 		[HttpDelete("{id}")]
-                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult DeleteCategory(int id)
 		{			
 			_service.DeleteCategory(id);
