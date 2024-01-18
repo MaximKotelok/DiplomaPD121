@@ -33,7 +33,7 @@ namespace Domain.Models
 		public int? SeriesId { get; set; }
 		[ForeignKey("SeriesId")]
 		public Series? Series { get; set; }
-		public IEnumerable<ProductProperty>? Properties { get; set; }
+        public IEnumerable<ProductProperty>? Properties { get; set; }
 
         [JsonIgnore]
         public IEnumerable<ConcreteProduct>? ConcreteProducts { get; set; }   

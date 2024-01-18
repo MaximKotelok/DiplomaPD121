@@ -1,4 +1,4 @@
-import { getFromServer } from '../../utils/Queries';
+import { getFromServer } from '../../../utils/Queries';
 import React, { useState, useEffect } from 'react';
 
 const ConreteProductSearchComponent = (props) => {
@@ -9,8 +9,11 @@ const ConreteProductSearchComponent = (props) => {
         const value = event.target.value;
         setInputValue(value);
 
-        if (value == "")
+        if (value == "") {
+            setProducts([])
             return;
+
+        }
 
         const response = await getFromServer(`ConcreteProduct/Search/${props.pharmacyId}/${value}`);
 
