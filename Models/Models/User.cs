@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Domain.Models
@@ -12,6 +13,10 @@ namespace Domain.Models
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
 
-
+        [JsonIgnore]
+        public IEnumerable<Product>? FavProducts { get; set; }
+        
+        [JsonIgnore]
+        public IEnumerable<Pharmacy>? FavPharmacies { get; set; }
     }
 }

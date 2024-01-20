@@ -33,6 +33,7 @@ namespace Domain.Models
         [ForeignKey("CityID")]
         public City? City { get; set; }
 
-
+        [JsonIgnore]
+        public IEnumerable<User>? FavUsers { get; set; }
     }
 }

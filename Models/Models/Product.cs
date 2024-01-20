@@ -36,6 +36,9 @@ namespace Domain.Models
         public IEnumerable<ProductProperty>? Properties { get; set; }
 
         [JsonIgnore]
-        public IEnumerable<ConcreteProduct>? ConcreteProducts { get; set; }   
-	}
+        public IEnumerable<ConcreteProduct>? ConcreteProducts { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<User>? FavUsers { get; set; }
+    }
 }
