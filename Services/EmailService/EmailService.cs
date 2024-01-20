@@ -66,5 +66,35 @@ namespace Services.EmailService
 
             return _sMTPService.SendEmailAsync(email, "Зміна статусу продукту", message);
         }
+        public Task SendConfirmationMail(string email, string userID)
+        {
+            string currentDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+            string message = $@"
+    <html>
+    <head>
+        <title>Підтвердження реєстрації</title>
+    </head>
+    <body>       
+        <p>Дякуємо за реєстрацію в нашому сервісі. Для підтвердження реєстрації, будь ласка, перейдіть за посиланням нижче:</p>
+        
+        <p><a href=""{GetConfirmationLink(email)}"">Підтвердити реєстрацію</a></p>
+        
+        <p>Дата реєстрації: <strong>{currentDate}</strong></p>
+
+        <p>Дякуємо, що обрали наші послуги.</p>
+
+        <p>З найкращими побажаннями,<br>Адміністрація</p>
+    </body>
+    </html>
+";
+
+            return _sMTPService.SendEmailAsync(email, "Підтвердження реєстрації", message);
+        }
+
+        private string GetConfirmationLink(string userID)
+        {
+            return $"https://localhost:7133/api/userauthentication/confirm?token={Uri.EscapeDataString(userID)}";
+        }
     }
 }

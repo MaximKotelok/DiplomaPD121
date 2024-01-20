@@ -55,7 +55,19 @@ namespace Repository.Repository.Services
             var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
         }
+        public async Task<bool> ConfirmEmailAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
 
+            if (user != null)
+            {
+                user.EmailConfirmed = true;
+                var result = await _userManager.UpdateAsync(user);
+                return result.Succeeded;
+            }
+
+            return false;
+        }
         private SigningCredentials GetSigningCredentials()
         {
             var jwtConfig = _configuration.GetSection("jwtConfig");

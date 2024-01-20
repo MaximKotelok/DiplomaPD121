@@ -15,5 +15,6 @@ namespace Repository.Repository.Interfaces
         Task<IdentityResult> RegisterUserAsync(UserRegistrationDto userForRegistration);
         Task<bool> ValidateUserAsync(UserLoginDto loginDto);
         Task<string> CreateTokenAsync();
+        Task<bool> ConfirmEmailAsync(string userId);
     }
 }

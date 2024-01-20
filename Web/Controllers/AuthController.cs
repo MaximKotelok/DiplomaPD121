@@ -40,5 +40,12 @@ namespace Web.Controllers
                 ? Unauthorized()
                 : Ok(new { Token = await _repository.UserAuthentication.CreateTokenAsync() });
         }
+        [HttpPost("confirm")]
+        public async Task<IActionResult> ConfirmEmail(string token)
+        {
+            return await _repository.UserAuthentication.ConfirmEmailAsync(token)
+                ? Ok()
+                :BadRequest();
+        }
     }
 }
