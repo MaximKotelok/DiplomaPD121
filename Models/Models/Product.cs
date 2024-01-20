@@ -39,6 +39,10 @@ namespace Domain.Models
 		[ForeignKey(nameof(ProductStatusID))]
         public ProductStatus? ProductStatus { get; set; }
         public IEnumerable<ProductProperty>? Properties { get; set; }   
-		public IEnumerable<ConcreteProduct>? ConcreteProducts { get; set; }   
+		[JsonIgnore]
+		public IEnumerable<ConcreteProduct>? ConcreteProducts { get; set; }
+		[JsonIgnore]
+		public IEnumerable<User>? FavUsers { get; set; }
+
 	}
 }

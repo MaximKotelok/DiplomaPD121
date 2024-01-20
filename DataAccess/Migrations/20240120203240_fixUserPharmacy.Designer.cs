@@ -4,6 +4,7 @@ using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240120203240_fixUserPharmacy")]
+    partial class fixUserPharmacy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -507,18 +510,11 @@ namespace DataAccess.Migrations
                     b.Property<int>("PharmaCompanyID")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CityID");
 
                     b.HasIndex("PharmaCompanyID");
-
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Pharmacies");
 
@@ -1385,6 +1381,9 @@ namespace DataAccess.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PharmacyId")
+                        .HasColumnType("int");
+
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
@@ -1410,6 +1409,8 @@ namespace DataAccess.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("PharmacyId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -1547,36 +1548,6 @@ namespace DataAccess.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("PharmacyUser", b =>
-                {
-                    b.Property<int>("FavPharmaciesId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FavUsersId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("FavPharmaciesId", "FavUsersId");
-
-                    b.HasIndex("FavUsersId");
-
-                    b.ToTable("PharmacyUser");
-                });
-
-            modelBuilder.Entity("ProductUser", b =>
-                {
-                    b.Property<int>("FavProductsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FavUsersId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("FavProductsId", "FavUsersId");
-
-                    b.HasIndex("FavUsersId");
-
-                    b.ToTable("ProductUser");
-                });
-
             modelBuilder.Entity("Domain.Models.Medicine", b =>
                 {
                     b.HasBaseType("Domain.Models.Product");
@@ -1646,15 +1617,9 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Models.User", "User")
-                        .WithOne("Pharmacy")
-                        .HasForeignKey("Domain.Models.Pharmacy", "UserId");
-
                     b.Navigation("City");
 
                     b.Navigation("PharmaCompany");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Models.Product", b =>
@@ -1766,6 +1731,15 @@ namespace DataAccess.Migrations
                     b.Navigation("SimilarProductGroup");
                 });
 
+            modelBuilder.Entity("Domain.Models.User", b =>
+                {
+                    b.HasOne("Domain.Models.Pharmacy", "Pharmacy")
+                        .WithMany()
+                        .HasForeignKey("PharmacyId");
+
+                    b.Navigation("Pharmacy");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -1817,36 +1791,6 @@ namespace DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PharmacyUser", b =>
-                {
-                    b.HasOne("Domain.Models.Pharmacy", null)
-                        .WithMany()
-                        .HasForeignKey("FavPharmaciesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("FavUsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ProductUser", b =>
-                {
-                    b.HasOne("Domain.Models.Product", null)
-                        .WithMany()
-                        .HasForeignKey("FavProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("FavUsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Domain.Models.Medicine", b =>
                 {
                     b.HasOne("Domain.Models.ActiveSubstance", "ActiveSubstance")
@@ -1890,11 +1834,6 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.Models.SimilarProductGroup", b =>
                 {
                     b.Navigation("Similar");
-                });
-
-            modelBuilder.Entity("Domain.Models.User", b =>
-                {
-                    b.Navigation("Pharmacy");
                 });
 #pragma warning restore 612, 618
         }

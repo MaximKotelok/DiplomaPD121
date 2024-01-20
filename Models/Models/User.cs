@@ -13,12 +13,11 @@ namespace Domain.Models
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-
         public Pharmacy? Pharmacy { get; set; }
-        [JsonIgnore]
-        public IEnumerable<Product>? FavProducts { get; set; }
+        [JsonIgnore]	
+		public IEnumerable<Product>? FavProducts { get; set; }
         
         [JsonIgnore]
-        public IEnumerable<Pharmacy>? FavPharmacies { get; set; }
+		public IEnumerable<Pharmacy>? FavPharmacies { get; set; }
     }
 }

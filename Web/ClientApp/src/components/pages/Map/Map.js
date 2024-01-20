@@ -7,6 +7,8 @@ import { useParams } from 'react-router';
 import  MapPharmacies from "../../MapComponents/MapPharmacies/MapPharmacies"
 import MapProduct  from "../../MapComponents/MapProducts/MapProducts"
 
+import "./Map.css"
+
 export const Map = (props) => {
     const { id } = useParams();
 
