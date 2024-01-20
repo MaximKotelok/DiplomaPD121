@@ -7,7 +7,7 @@
     }
   },
   "ConnectionStrings": {
-    "DefaultConnection": "DATA SOURCE=DESKTOP-6RV9DFC; DATABASE=DiplomaPD121; UID=sa; PWD=1; TrustServerCertificate=True;"
+    "DefaultConnection": ""
   },
   "JwtConfig": {
     "validIssuer": "https://localhost:7133",
