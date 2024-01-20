@@ -11,6 +11,6 @@ namespace Services.EmailService
     {
         Task SendBookingInfo(string email, ProductDto productDto);
         Task SendChangeProductStatus(string email, ProductDto productDto, string newStatus);
-        Task SendConfirmationMail(string email, string userID);
+        Task SendConfirmationMail(string email);
     }
 }

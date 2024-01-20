@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "bootstrap-icons": "^1.11.3",
+    "nuka-carousel": "^7.0.0",
     "react-bootstrap-icons": "^1.10.3",
     "react-responsive-carousel": "^3.2.23",
     "react-scroll": "^1.9.0",

@@ -66,7 +66,7 @@ namespace Services.EmailService
 
             return _sMTPService.SendEmailAsync(email, "Зміна статусу продукту", message);
         }
-        public Task SendConfirmationMail(string email, string userID)
+        public Task SendConfirmationMail(string email)
         {
             string currentDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
@@ -92,9 +92,9 @@ namespace Services.EmailService
             return _sMTPService.SendEmailAsync(email, "Підтвердження реєстрації", message);
         }
 
-        private string GetConfirmationLink(string userID)
+        private string GetConfirmationLink(string email)
         {
-            return $"https://localhost:7133/api/userauthentication/confirm?token={Uri.EscapeDataString(userID)}";
+            return $"https://localhost:7133/api/userauthentication/confirm?email={Uri.EscapeDataString(email)}";
         }
     }
 }
