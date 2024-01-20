@@ -35,5 +35,8 @@ namespace Domain.Models
         public string? UserId { get; set; }
         [ForeignKey("UserId")]
         public User? User { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<User>? FavUsers { get; set; }
     }
 }

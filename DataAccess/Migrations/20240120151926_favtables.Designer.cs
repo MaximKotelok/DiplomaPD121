@@ -4,6 +4,7 @@ using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240120151926_favtables")]
+    partial class favtables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,9 +67,6 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PathToPhoto")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CountryBrandID");
@@ -78,23 +78,20 @@ namespace DataAccess.Migrations
                         {
                             Id = 1,
                             CountryBrandID = 3,
-                            Name = "Brand 1",
-                            PathToPhoto = "/images/brand/Brand 1.png"
+                            Name = "Brand 1"
                         },
                         new
                         {
                             Id = 2,
                             CountryBrandID = 3,
-                            Name = "Brand 2",
-                            PathToPhoto = "/images/brand/Brand 2.png"
+                            Name = "Brand 2"
                         },
                         new
                         {
                             Id = 3,
                             CountryBrandID = 1,
                             Description = "Best brand",
-                            Name = "Brand 3",
-                            PathToPhoto = "/images/brand/Brand 3.png"
+                            Name = "Brand 3"
                         });
                 });
 
@@ -106,21 +103,15 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool?>("IsRecomended")
-                        .HasColumnType("bit");
-
                     b.Property<int?>("ParentCategoryID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PathToPhoto")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("SubCategoriesTypeOfPhoto")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("isActual")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -132,31 +123,24 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            PathToPhoto = "",
-                            SubCategoriesTypeOfPhoto = 0,
                             Title = "Каталог Товарів"
                         },
                         new
                         {
                             Id = 2,
                             ParentCategoryID = 1,
-                            PathToPhoto = "/images/category/icon/Medicines.png",
-                            SubCategoriesTypeOfPhoto = 3,
                             Title = "Ліки та профілактичні засоби"
                         },
                         new
                         {
                             Id = 3,
-                            IsRecomended = true,
                             ParentCategoryID = 2,
-                            SubCategoriesTypeOfPhoto = 1,
                             Title = "Вітаміни"
                         },
                         new
                         {
                             Id = 4,
                             ParentCategoryID = 3,
-                            PathToPhoto = "/images/category/png/C.png",
                             Title = "Вітамін С"
                         },
                         new
@@ -170,102 +154,6 @@ namespace DataAccess.Migrations
                             Id = 6,
                             ParentCategoryID = 5,
                             Title = "Аскорбінка-КВ"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            ParentCategoryID = 1,
-                            PathToPhoto = "/images/category/icon/Vitamines.png",
-                            Title = "Вітаміни та мінерали"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            ParentCategoryID = 1,
-                            PathToPhoto = "/images/category/icon/Care.png",
-                            Title = "Краса та догляд"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            ParentCategoryID = 1,
-                            PathToPhoto = "/images/category/icon/Sport.png",
-                            Title = "Спорт та здоров'я"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            ParentCategoryID = 1,
-                            PathToPhoto = "/images/category/icon/Kids.png",
-                            Title = "Товари для дітей та мам"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            ParentCategoryID = 1,
-                            PathToPhoto = "/images/category/icon/Medicine staff.png",
-                            Title = "Вироби медичного призначення"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            ParentCategoryID = 1,
-                            PathToPhoto = "/images/category/icon/Reabilitation.png",
-                            Title = "Ортопедія та реабілітація"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            ParentCategoryID = 1,
-                            PathToPhoto = "/images/category/icon/Medicine technic.png",
-                            Title = "Медична техніка"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            ParentCategoryID = 1,
-                            PathToPhoto = "/images/category/icon/Animals.png",
-                            Title = "Товари для тварин"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            ParentCategoryID = 14,
-                            Title = "Тонометри"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            ParentCategoryID = 14,
-                            Title = "Глюкометри"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            ParentCategoryID = 3,
-                            PathToPhoto = "/images/category/png/B.png",
-                            Title = "Вітаміни групи В"
-                        },
-                        new
-                        {
-                            Id = 18,
-                            ParentCategoryID = 3,
-                            PathToPhoto = "/images/category/png/Biotin.png",
-                            Title = "Біотин"
-                        },
-                        new
-                        {
-                            Id = 19,
-                            ParentCategoryID = 3,
-                            PathToPhoto = "/images/category/png/D.png",
-                            Title = "Вітамін D"
-                        },
-                        new
-                        {
-                            Id = 20,
-                            ParentCategoryID = 3,
-                            PathToPhoto = "/images/category/png/K.png",
-                            Title = "Вітамін К"
                         });
                 });
 
@@ -472,12 +360,6 @@ namespace DataAccess.Migrations
                             Id = 1,
                             Description = "АНЦ.",
                             Title = "АНЦ"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "Подорожник.",
-                            Title = "Подорожник"
                         });
                 });
 
@@ -507,18 +389,11 @@ namespace DataAccess.Migrations
                     b.Property<int>("PharmaCompanyID")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CityID");
 
                     b.HasIndex("PharmaCompanyID");
-
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Pharmacies");
 
@@ -569,9 +444,6 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ActiveSubstanceID")
-                        .HasColumnType("int");
-
                     b.Property<int?>("BrandId")
                         .HasColumnType("int");
 
@@ -581,24 +453,20 @@ namespace DataAccess.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("ManufacturerID")
                         .HasColumnType("int");
 
                     b.Property<string>("PathToPhoto")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProductStatusID")
-                        .HasColumnType("int");
-
                     b.Property<int?>("SeriesId")
                         .HasColumnType("int");
 
                     b.Property<string>("ShortDescription")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SimilarProductGroupId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -612,95 +480,13 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ManufacturerID");
 
-                    b.HasIndex("ProductStatusID");
-
                     b.HasIndex("SeriesId");
 
                     b.HasIndex("SimilarProductGroupId");
 
                     b.ToTable("Products");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Product");
-
-                    b.UseTphMappingStrategy();
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ActiveSubstanceID = 1,
-                            BrandId = 3,
-                            CategoryID = 6,
-                            Description = "...",
-                            ManufacturerID = 3,
-                            PathToPhoto = "/images/product/Аскорбінка 1.webp",
-                            SeriesId = 1,
-                            ShortDescription = "таблетки зі смак. апельсину по 25 мг №10 в етикет.",
-                            Title = "Аскорбінка-КВ"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ActiveSubstanceID = 1,
-                            BrandId = 3,
-                            CategoryID = 6,
-                            Description = "..",
-                            ManufacturerID = 3,
-                            PathToPhoto = "/images/product/Аскорбінка 2.webp",
-                            SeriesId = 1,
-                            ShortDescription = "таблетки зі смак. манго по 25 мг №10 в етикет.",
-                            Title = "Аскорбінка-КВ"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ActiveSubstanceID = 1,
-                            BrandId = 3,
-                            CategoryID = 6,
-                            Description = "..",
-                            ManufacturerID = 3,
-                            PathToPhoto = "/images/product/Аскорбінка 3.jpg",
-                            SeriesId = 1,
-                            ShortDescription = "таблетки зі смак. полуниці по 25 мг №10 в етикет.",
-                            Title = "Аскорбінка-КВ"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ActiveSubstanceID = 1,
-                            BrandId = 3,
-                            CategoryID = 6,
-                            Description = "..",
-                            ManufacturerID = 3,
-                            PathToPhoto = "/images/product/Аскорбінка 4.jpg",
-                            SeriesId = 1,
-                            ShortDescription = "таблетки зі смак. тутті-фруті по 25 мг №10 в етикет.",
-                            Title = "Аскорбінка-КВ"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            BrandId = 3,
-                            CategoryID = 15,
-                            Description = "..",
-                            ManufacturerID = 3,
-                            PathToPhoto = "/images/product/Тонометр.jpg",
-                            SeriesId = 1,
-                            ShortDescription = "Медхауз Свіс ГмбХ, ТОВ",
-                            Title = "Тонометр ProMedica Classic автоматичний"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            BrandId = 3,
-                            CategoryID = 16,
-                            Description = "..",
-                            ManufacturerID = 3,
-                            PathToPhoto = "/images/product/Глюкометр.jpg",
-                            SeriesId = 1,
-                            ShortDescription = "Infopia Co. Ltd.",
-                            Title = "Глюкометр GluNeo Lite"
-                        });
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("Domain.Models.ProductAttribute", b =>
@@ -1123,39 +909,6 @@ namespace DataAccess.Migrations
                     b.ToTable("Properties");
                 });
 
-            modelBuilder.Entity("Domain.Models.ProductStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ProductStatuses");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Status = "Підтверджено"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Status = "На розгляді"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Status = "Відхилено"
-                        });
-                });
-
             modelBuilder.Entity("Domain.Models.Reservation", b =>
                 {
                     b.Property<int>("Id")
@@ -1276,73 +1029,6 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SimilarProductGroups");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Смаки Аскорбінок",
-                            SimilarBy = "Смак"
-                        });
-                });
-
-            modelBuilder.Entity("Domain.Models.SimilarProductItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ProductID")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SimilarProductGroupId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductID");
-
-                    b.HasIndex("SimilarProductGroupId");
-
-                    b.ToTable("SimilarProductItems");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ProductID = 1,
-                            SimilarProductGroupId = 1,
-                            Title = "Апельсин"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ProductID = 2,
-                            SimilarProductGroupId = 1,
-                            Title = "Манго"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ProductID = 3,
-                            SimilarProductGroupId = 1,
-                            Title = "Полуниця"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ProductID = 4,
-                            SimilarProductGroupId = 1,
-                            Title = "Тутті-фруті"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Models.User", b =>
@@ -1583,11 +1269,27 @@ namespace DataAccess.Migrations
                 {
                     b.HasBaseType("Domain.Models.Product");
 
+                    b.Property<int>("ActiveSubstanceID")
+                        .HasColumnType("int");
+
                     b.HasIndex("ActiveSubstanceID");
 
-                    b.ToTable("Products");
+                    b.ToTable("Medicines");
 
-                    b.HasDiscriminator().HasValue("Medicine");
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BrandId = 3,
+                            CategoryID = 6,
+                            Description = "Аскорбінка.",
+                            ManufacturerID = 3,
+                            PathToPhoto = "/images/product/787f9b1f-f81c-4089-9382-57fd0cf0be15.webp",
+                            SeriesId = 1,
+                            ShortDescription = "таблетки зі смак. полун. по 25 мг №10 в етикет.",
+                            Title = "Аскорбінка",
+                            ActiveSubstanceID = 1
+                        });
                 });
 
             modelBuilder.Entity("Domain.Models.Brand", b =>
@@ -1648,15 +1350,9 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Models.User", "User")
-                        .WithOne("Pharmacy")
-                        .HasForeignKey("Domain.Models.Pharmacy", "UserId");
-
                     b.Navigation("City");
 
                     b.Navigation("PharmaCompany");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Models.Product", b =>
@@ -1673,13 +1369,13 @@ namespace DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("ManufacturerID");
 
-                    b.HasOne("Domain.Models.ProductStatus", "ProductStatus")
-                        .WithMany()
-                        .HasForeignKey("ProductStatusID");
-
                     b.HasOne("Domain.Models.Series", "Series")
                         .WithMany()
                         .HasForeignKey("SeriesId");
+
+                    b.HasOne("Domain.Models.SimilarProductGroup", "SimilarProductGroup")
+                        .WithMany("Products")
+                        .HasForeignKey("SimilarProductGroupId");
 
                     b.Navigation("Brand");
 
@@ -1687,9 +1383,9 @@ namespace DataAccess.Migrations
 
                     b.Navigation("Manufacturer");
 
-                    b.Navigation("ProductStatus");
-
                     b.Navigation("Series");
+
+                    b.Navigation("SimilarProductGroup");
                 });
 
             modelBuilder.Entity("Domain.Models.ProductAttribute", b =>
@@ -1747,25 +1443,6 @@ namespace DataAccess.Migrations
                     b.Navigation("Status");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Models.SimilarProductItem", b =>
-                {
-                    b.HasOne("Domain.Models.Product", "Product")
-                        .WithMany("SimilarProductItems")
-                        .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Models.SimilarProductGroup", "SimilarProductGroup")
-                        .WithMany("Similar")
-                        .HasForeignKey("SimilarProductGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("SimilarProductGroup");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1853,7 +1530,15 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("Domain.Models.ActiveSubstance", "ActiveSubstance")
                         .WithMany("Medicines")
-                        .HasForeignKey("ActiveSubstanceID");
+                        .HasForeignKey("ActiveSubstanceID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Product", null)
+                        .WithOne()
+                        .HasForeignKey("Domain.Models.Medicine", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ActiveSubstance");
                 });
@@ -1880,8 +1565,6 @@ namespace DataAccess.Migrations
                     b.Navigation("ConcreteProducts");
 
                     b.Navigation("Properties");
-
-                    b.Navigation("SimilarProductItems");
                 });
 
             modelBuilder.Entity("Domain.Models.ProductAttributeGroup", b =>
@@ -1891,12 +1574,7 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Domain.Models.SimilarProductGroup", b =>
                 {
-                    b.Navigation("Similar");
-                });
-
-            modelBuilder.Entity("Domain.Models.User", b =>
-                {
-                    b.Navigation("Pharmacy");
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }
