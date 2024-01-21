@@ -18,10 +18,10 @@ namespace Domain.Models
 		public string? PathToPhoto { get; set; }
 		public string? ShortDescription { get; set; }
 		public string? Description { get; set; }
-		public int? ActiveSubstanceID { get; set; }
+		/*public int? ActiveSubstanceID { get; set; }
 		[JsonIgnore]
 		[ForeignKey("ActiveSubstanceID")]
-		public ActiveSubstance? ActiveSubstance { get; set; }
+		public ActiveSubstance? ActiveSubstance { get; set; }*/
 		public int? CategoryID { get; set; }
 		[ForeignKey("CategoryID")]
 		public Category? Category { get; set; }

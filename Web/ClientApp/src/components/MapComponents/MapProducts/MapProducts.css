@@ -1,17 +1,7 @@
-﻿/* .map-default-marker {
+﻿
+.map-default-marker {
     background-color: white;
 }
 .map-selected-marker {
     background-color: green;
 }
-
-#map{
-    z-index: -1;
-    top:0;
-    left:0;
-    margin: 0!important;
-    padding: 0!important;
-    position: absolute;
-    width: 100%!important;
-    height: 100%!important;
-} */

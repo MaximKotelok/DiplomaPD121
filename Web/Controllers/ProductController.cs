@@ -88,13 +88,13 @@ namespace Web.Controllers
 
 
 
-				if (product.ActiveSubstanceID is not null)
-				{
+				//if (product.ActiveSubstanceID is not null)
+				/*{
 					MedicineViewModel res = new MedicineViewModel { Product = productView };
 					res.ActiveSubstance = ((Medicine)product).ActiveSubstance.Title;
 					res.ActiveSubstanceId = ((Medicine)product).ActiveSubstance.Id;
 					return Ok(res);
-				}
+				}*/
 
 				return Ok(productView);
 			}

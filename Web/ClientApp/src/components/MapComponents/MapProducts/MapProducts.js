@@ -73,7 +73,7 @@ const MapProducts = (props) => {
             html: `<div class="map-default-marker"><p>${selectedProductPrice}</p></div>`,
             iconSize: [30, 30],
         });
-       
+
         var clickedIcon = L.divIcon({
             className: 'map-icon-container',
             html: `<div class="map-selected-marker"><p>${product.price}</p></div>`,
@@ -118,20 +118,23 @@ const MapProducts = (props) => {
 
     return (
         <div>
-            <div id="map" style={{ height: '400px' }}></div>
-            {city !== "" && townProducts != null ? (
-                <ListProducts
-                    city={city}
-                    selectedProduct={selectedProduct}
-                    townProducts={townProducts}
-                    onProductClick={pharmacy => {
-                        setSelectedProduct(pharmacy);
-                    }}
-                    onMapSelect={handleMapSelect}
-                />
-            ) : (
-                <p>Loading...</p>
-            )}
+            <div id="map"></div>
+            <div>
+
+                {city !== "" && townProducts != null ? (
+                    <ListProducts
+                        city={city}
+                        selectedProduct={selectedProduct}
+                        townProducts={townProducts}
+                        onProductClick={pharmacy => {
+                            setSelectedProduct(pharmacy);
+                        }}
+                        onMapSelect={handleMapSelect}
+                    />
+                ) : (
+                    <p>Loading...</p>
+                )}
+            </div>
         </div>
     );
 };

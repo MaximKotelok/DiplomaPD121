@@ -4,22 +4,24 @@ import { NavMenu } from './NavMenu';
 import FooterComponent from './Footer/FooterComponent';
 import "../styles/variables.css";
 import "../styles/global.css";
-import { matchPath } from 'react-router-dom';
+import LayoutProvider from './LayoutProvider';
+import LayoutContext from './LayoutContext';
 
 export class Layout extends Component {
   static displayName = Layout.name;
+  static contextType = LayoutContext;
   
-  //isSpecificPage = window.location.pathname.startsWith("/map");
-  render() {
-    console.log(this.isSpecificPage)
+
+  render() {    
     return (
-      <div >
-        <NavMenu />
-        <Container tag="main">
-          {this.props.children}
-        </Container>
-        <FooterComponent />
-      </div>
+        <div className={this.context.isComponentMounted&&"map-container"}>
+          <NavMenu />
+          <Container tag="main">
+            {this.props.children}
+          </Container>
+          <FooterComponent />
+        </div>
+      
     );
   }
 }

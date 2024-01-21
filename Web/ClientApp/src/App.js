@@ -4,6 +4,7 @@ import AppRoutes from './AppRoutes';
 import { Layout } from './components/Layout';
 import './custom.css';
 import { setupLocation } from './utils/Location';
+import LayoutProvider from './components/LayoutProvider';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -14,7 +15,7 @@ export default class App extends Component {
 
   render() {
     return (
-      
+<LayoutProvider>
       <Layout>
         <Routes>
           {AppRoutes.map((route, index) => {
@@ -23,7 +24,7 @@ export default class App extends Component {
           })}
         </Routes>
       </Layout>
-      
+      </LayoutProvider>            
     );
   }
 }

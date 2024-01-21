@@ -1,6 +1,28 @@
 .map-container header,.map-container footer, .map-container header, .map-container main {
     width: 50%!important;
-    max-width: 700px!important;
+    max-width: 45%;
     margin: 0;
+    padding: 0;
+}
 
+
+.map-container .navbar,.map-container .navbar *{
+    margin: 0!important;
+}
+
+#map{
+    top:0;
+    right:0;
+    max-width: 55%;
+    margin: 0!important;
+    padding: 0!important;
+    position: fixed !important;
+    width: 100%!important;
+    height: 100%!important;
+}
+
+.map-left{ 
+    height: 100%;
+    width: 100%;
+    margin: 0;
 }

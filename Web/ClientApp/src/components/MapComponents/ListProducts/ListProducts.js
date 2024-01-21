@@ -5,7 +5,7 @@ const ListPharmacies = (props) => {
     };
 
     return (
-        <div>
+        <div className="map-left">
             <h1>Products in {props.city}</h1>
             <ul>
                 {props.townProducts.map(product => (

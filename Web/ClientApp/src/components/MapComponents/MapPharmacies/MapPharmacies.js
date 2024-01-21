@@ -91,7 +91,7 @@ const MapPharmacies = (props) => {
 
     return (
         <div>
-            <div id="map" style={{ height: '400px' }}></div>
+            <div id="map"></div>
             {city !== "" && townPharmacy != null ? (
                 <ListPharmacies
                     city={city}

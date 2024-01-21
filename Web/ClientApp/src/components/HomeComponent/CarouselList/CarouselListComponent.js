@@ -3,7 +3,7 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 
 import 'bootstrap/dist/css/bootstrap.css';
-import './ProductsListComponent.css';
+import './CarouselListComponent.css';
 import ProductCardComponent from '../../ProductCard/ProductCardComponent.js';
 
 import Carousel from "nuka-carousel"
@@ -11,9 +11,9 @@ import MiniProductCardComponent from '../MiniProductCard/MiniProductCardComponen
 
 import { isWidthDown } from '../../../utils/Functions.js';
 
-const ProductsListComponent =
+const CarouselListComponent =
     ({      
-        products,
+        children,        
         mdDisplayCount = 1,
         lgDisplayCount = 2,
         xlDisplayCount = 4
@@ -42,23 +42,10 @@ const ProductsListComponent =
         return (
             <>    
                 <Carousel cellAlign="left" slidesToShow={count}>
-                    {products&&products.map?products.map((a) => (
-                        <MiniProductCardComponent
-                            key={a.id}
-                            id={a.id}
-                            title={a.title}
-                            description={a.shortDescription}
-                            minPrice={a.minPrice}
-                            countOfPharmacies={a.count}
-                            manufacturer={a.manufacturer}
-                            imageUrl={a.pathToPhoto}
-                        />
-                    )):new Array(15).fill(null).map((_, index) => (
-                        <MiniProductCardComponent key={index}/>))
-                        }
+                    {children}                    
                 </Carousel>
             </>
         );
     };
 
-export default ProductsListComponent;
+export default CarouselListComponent;

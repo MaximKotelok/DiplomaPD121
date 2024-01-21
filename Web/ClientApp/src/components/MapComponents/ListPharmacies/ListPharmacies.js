@@ -1,8 +1,10 @@
 import ConreteProductSearchComponent from "../ConreteProductSearchComponent/ConreteProductSearchComponent"
 
+import "./ListPharmacies.css"
+
 const ListPharmacies = (props) => {
     return (
-        <div>
+        <div className="map-left">
             <h1>Pharmacies in {props.city}</h1>
             <ul>
                 {props.townPharmacy.map(pharmacy => (
