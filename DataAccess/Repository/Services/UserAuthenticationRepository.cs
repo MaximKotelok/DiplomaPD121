@@ -36,6 +36,8 @@ namespace Repository.Repository.Services
         public async Task<IdentityResult> RegisterUserAsync(UserRegistrationDto userRegistration)
         {
             var user = _mapper.Map<User>(userRegistration);
+
+
             var result = await _userManager.CreateAsync(user, userRegistration.Password);
             await _userManager.AddToRolesAsync(user, new List<string> { SD.Role_Customer });
             return result;

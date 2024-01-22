@@ -17,10 +17,10 @@ namespace Web.Controllers
 	[ApiController]
 	public class SimilarProductGroupController : ControllerBase
 	{
-		private readonly ISimilarProductGroupService _similarService;
+		private readonly IUserService _similarService;
 		private readonly IProductService _productService;
 
-		public SimilarProductGroupController(ISimilarProductGroupService similarService, IProductService productService)
+		public SimilarProductGroupController(IUserService similarService, IProductService productService)
 		{
 			this._similarService = similarService;
 			this._productService = productService;

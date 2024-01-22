@@ -132,7 +132,7 @@ builder.Services.AddTransient<IAttributeGroupService, AttributeGroupService>();
 builder.Services.AddTransient<IPropertyService, PropertyService>();
 builder.Services.AddTransient<IPharmaCompanyService, PharmaCompanyService>();
 builder.Services.AddTransient<ICategoryService, CategoryService>();
-builder.Services.AddTransient<ISimilarProductGroupService, SimilarProductGroupService>();
+builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IMedicineService, MedicineService>();
 builder.Services.AddTransient<IPharmacyService, PharmacyService>();
 builder.Services.AddTransient<IConcreteProductService, ConcreteProductService>();

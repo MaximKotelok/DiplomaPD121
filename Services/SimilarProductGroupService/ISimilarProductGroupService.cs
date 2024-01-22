@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Services.SimilarProductGroupService
 {
 	public interface ISimilarProductGroupService
-	{
+    {
 		IEnumerable<SimilarProductGroup> GetAllSimilarProductGroups(Expression<Func<SimilarProductGroup, bool>>? filter = null, string? includeProperties = null);
 		SimilarProductGroup? GetSimilarProductGroup(Expression<Func<SimilarProductGroup, bool>> filter, string? includeProperties = null);
 		void InsertSimilarProductGroup(SimilarProductGroup similarProductGroup);

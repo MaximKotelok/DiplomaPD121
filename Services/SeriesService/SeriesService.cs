@@ -11,7 +11,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 namespace Services.SeriesService
 {
 	public class SeriesService : ISeriesService
-	{
+    {
 		private readonly IRepository<Series> _repository;
 
 		public SeriesService(IRepository<Series> repository)

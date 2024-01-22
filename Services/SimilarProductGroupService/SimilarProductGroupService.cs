@@ -12,7 +12,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Services.SimilarProductGroupService
 {
-	public class SimilarProductGroupService : ISimilarProductGroupService
+	public class SimilarProductGroupService : IUserService
 	{
 		private IRepository<SimilarProductGroup> _repository;
 		public SimilarProductGroupService(IRepository<SimilarProductGroup> repository)
