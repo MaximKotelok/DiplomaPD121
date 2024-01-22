@@ -74,6 +74,17 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
+		[HttpGet("GetCategoriesForProductAdd")]
+		public IActionResult GetCategoriesForProductAdd(string title, int count)
+		{
+			var result = _service.GetAllCategories(a => a.Title.Contains(title) && a.CanHasProducts == true).Take(count);
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+
 		[HttpGet("Main")]
 		public IActionResult GetMainCategory() 
 		{

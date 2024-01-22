@@ -3,7 +3,7 @@ import { Details } from "./components/pages/Details/Details";
 import { Map } from "./components/pages/Map/Map";
 import RegistrationForm from "./components/Auth/RegistrationForm";
 import LoginForm from "./components/Auth/LoginForm";
-
+import ChooseACategoryComponent from "./components/AddProductComponents/ChooseACategoryComponent/ChooseACategoryComponent";
 const AppRoutes = [
   {
     index: true,
@@ -24,6 +24,10 @@ const AppRoutes = [
     {
         path: '/login',
         element: <LoginForm />
+    },
+    {
+        path: '/ChooseACategory',
+        element: <ChooseACategoryComponent />
     }
   
 ];

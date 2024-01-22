@@ -64,9 +64,6 @@ export async function postPhotoToServer(url, path, photo) {
 
 export async function getFromServer(url, params = {}) {
 
-    console.log(url)
-    console.log(params)
-
     try {
         
         const response = await axios.get(`${globalUrl}/${url}`, {
