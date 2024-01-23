@@ -47,6 +47,12 @@ namespace Repository.Repository.Services
         {
             _user = await _userManager.FindByNameAsync(loginDto.UserName);
             var result = _user != null && await _userManager.CheckPasswordAsync(_user, loginDto.Password);
+            
+            if (_user != null && _user.LockoutEnd.HasValue && _user.LockoutEnd > DateTimeOffset.UtcNow)
+            {
+                result = false;
+            }
+
             return result;
         }
 

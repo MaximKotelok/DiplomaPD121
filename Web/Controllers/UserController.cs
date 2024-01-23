@@ -1,15 +1,11 @@
-﻿using AutoMapper;
-using Domain.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
-using Repository.Repository.Interfaces;
-using Azure;
-using System.Security.Claims;
-using System.Security.Principal;
+﻿using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
-using Utility;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Repository.Repository.Interfaces;
 using Services.ConcreteProductService;
-using Services.SimilarProductGroupService;
+using Services.PharmacyService;
+using Utility;
 
 namespace Web.Controllers
 {
@@ -17,63 +13,81 @@ namespace Web.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _userService;
         private readonly UserManager<User> _userManager;
+        private readonly IProductService _productService;
+        private readonly IPharmacyService _pharmacyService;
 
-        public UserController(UserManager<User> userManager, IUserService userService)
+
+        public UserController(UserManager<User> userManager, IProductService productService, IPharmacyService pharmacyService)
         {
             _userManager = userManager;
-            _userService = userService;
+            _productService = productService;
+            _pharmacyService = pharmacyService;
         }
-
-        /*[HttpGet("id")]
-            [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> ClaimUserId()
-        {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-
-            return Ok(user.Id);
-        }*/
 
         [HttpPost("addFavouriteProduct/{productId}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> AddFavouriteProduct(int productId)
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            if (user == null)
+            var product = _productService.GetProduct(x => x.Id == productId);
+            if (user == null || product == null)
             {
                 return NoContent();
             }
 
-            _userService.AddFavouriteProduct(user, productId);
+
+            user.FavProducts = user.FavProducts?.Append(product).ToList();
+            await _userManager.UpdateAsync(user);
+
             return Ok();
         }
-        [HttpPost("addFavouriteProduct/{pharmacyId}")]
+        [HttpPost("addFavouritePharmacy/{pharmacyId}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> AddFavouritePharcmacy(int pharmacyId)
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            if (user == null)
+            var pharmacy = _pharmacyService.GetPharmacy(x => x.Id == pharmacyId);
+
+            if (user == null || pharmacy == null)
             {
                 return NoContent();
             }
 
-            _userService.AddFavouriteProduct(user, pharmacyId);
+            user.FavPharmacies = user.FavPharmacies?.Append(pharmacy).ToList();
+            await _userManager.UpdateAsync(user);
+
             return Ok();
         }
 
-        [HttpPost("addFavouriteProduct/{id}")]
+        [HttpPost("ban/{id}")]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public async Task<IActionResult> BanUser(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NoContent();
-            }
 
-            _userService.BanUser(user);
-            return Ok();
+            if (user != null)
+            {
+                user.LockoutEnd = DateTime.MaxValue;
+                await _userManager.UpdateAsync(user);
+                return Ok();
+            }
+            return NoContent();
+        }
+
+        [HttpPost("unban/{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+        public async Task<IActionResult> UnbanUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user != null)
+            {
+                user.LockoutEnd = null;
+                await _userManager.UpdateAsync(user);
+                return Ok();
+            }
+            return NoContent();
         }
     }
 }

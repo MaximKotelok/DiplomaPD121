@@ -11,11 +11,16 @@ namespace Domain.Models
 {
     public class User: IdentityUser
     {
+        public User() {
+            FavProducts = new List<Product>();
+            FavPharmacies = new List<Pharmacy>();
+        }   
+
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
 
         [JsonIgnore]
-        public IEnumerable<Product>? FavProducts { get; set; }
+        public IEnumerable<Product>? FavProducts { get; set; } 
         
         [JsonIgnore]
         public IEnumerable<Pharmacy>? FavPharmacies { get; set; }
