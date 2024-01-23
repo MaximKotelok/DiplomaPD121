@@ -38,11 +38,11 @@ namespace Domain.Models
         public int? ProductStatusID { get; set; }
 		[ForeignKey(nameof(ProductStatusID))]
         public ProductStatus? ProductStatus { get; set; }
-        public IEnumerable<ProductProperty>? Properties { get; set; }   
+        public ICollection<ProductProperty>? Properties { get; set; }   
 		[JsonIgnore]
-		public IEnumerable<ConcreteProduct>? ConcreteProducts { get; set; }
+		public ICollection<ConcreteProduct>? ConcreteProducts { get; set; }
 		[JsonIgnore]
-		public IEnumerable<User>? FavUsers { get; set; }
+		public ICollection<User>? FavUsers { get; set; }
 
 	}
 }

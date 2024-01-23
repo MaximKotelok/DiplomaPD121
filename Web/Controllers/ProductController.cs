@@ -14,6 +14,7 @@ using Services.ConcreteProductService;
 using Services.MedicineService;
 using Services.PharmacyCompanyService;
 using Services.PropertyService;
+using System.Collections;
 using System.Collections.Generic;
 using Utility;
 
@@ -54,14 +55,14 @@ namespace Web.Controllers
 			if (!properties.IsNullOrEmpty())
 			{
 
-				var names = properties.Select(a => a.Name).ToList();
+				var names = properties.Select(a => a.Id).ToList();
 				IEnumerable<ProductAttribute> productsAttributes = _attributeService
-					.GetAllAttributes(a => names.Contains(a.Name));
+					.GetAllAttributes(a => names.Contains(a.Id));
 
 				if (productsAttributes.Count() != properties.Count())
 					throw new Exception();
 
-				return productsAttributes.Select(a => new ProductProperty { Attribute = a, Value = properties.FirstOrDefault(b => b.Name == a.Name).Value });
+				return productsAttributes.Select(a => new ProductProperty { Attribute = a, Value = properties.FirstOrDefault(b => b.Id == a.Id).Value });
 			}
 			return new List<ProductProperty>();
 
@@ -83,7 +84,7 @@ namespace Web.Controllers
 					Title = product.Title + product.ShortDescription,
 					Description = product.Description,
 					PathToPhoto = product.PathToPhoto,
-					Properties = product.Properties.Select(a=>new PropertyViewModel { Value=a.Value, Name=a.Attribute.Name}).ToList()
+					Properties = product.Properties.Select(a=>new PropertyViewModel { Value=a.Value, Id=a.Attribute.Id}).ToList()
 
 				};
 
@@ -193,27 +194,29 @@ namespace Web.Controllers
 		[HttpPost("AddProduct")]
 		public IActionResult AddProduct(PostProductViewModel postModel)
 		{
-			var props = _convertProperties(postModel.Properties);
+			var props = (ICollection<ProductProperty>)_convertProperties(postModel.Properties).ToList();
 
 
 			if(postModel.ActiveSubstanceID is not null)
-			{
-
+			{				
 				Medicine medicine = new Medicine
 				{
 					Title = postModel.Title,
 					CategoryID = postModel.CategoryID,
 					PathToPhoto = postModel.PathToPhoto,
 					Description = postModel.Description,
+					ShortDescription = postModel.ShortDescription,
+					ManufacturerID =postModel.ManufacturerID,
+					BrandId=postModel.BrandId,
 					ActiveSubstanceID = postModel.ActiveSubstanceID.Value,
 					Properties = props
 				};
-				_medicineService.InsertMedicine(medicine);
 				foreach (var item in props)
 				{
-					item.Product = medicine;
-					_propertyService.InsertProperty(item);
+					item.Product = medicine;				
 				}
+				_medicineService.InsertMedicine(medicine);
+				
 			}
 
 			else
@@ -223,22 +226,25 @@ namespace Web.Controllers
 					Title = postModel.Title,
 					ShortDescription = postModel.ShortDescription,
 					CategoryID = postModel.CategoryID,
+					ManufacturerID = postModel.ManufacturerID,
+					BrandId = postModel.BrandId,
 					PathToPhoto = postModel.PathToPhoto,
 					Description = postModel.Description,
 					Properties = props
 				};
-				_productService.InsertProduct(product);
 				foreach (var item in props)
 				{
 					item.Product = product;
-					_propertyService.InsertProperty(item);
 				}
+
+				_productService.InsertProduct(product);
+				
 			}
 
 
 			
 
-			return BadRequest("Old path");
+			return Ok("Data inserted");
 		}
 
 

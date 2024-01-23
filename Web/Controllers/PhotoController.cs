@@ -17,7 +17,7 @@ namespace Web.Controllers
 			_hostingEnvironment = hostingEnvironment;
 		}
 		[HttpPost("Add")]
-		public IActionResult AddPhoto(string relativePath, [FromForm] IFormFile file)
+		public IActionResult AddPhoto([FromForm] string? relativePath, [FromForm] IFormFile? file)
 		{
 			if (file != null)
 			{

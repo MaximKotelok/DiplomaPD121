@@ -11,3 +11,4 @@ export const GetRecomendedCategory = "Category/GetRecomendedCategory";
 export const GetRecomendedCategoryById = "Category/GetRecomendedCategoryById";
 export const GetCategoriesForProductAdd = "Category/GetCategoriesForProductAdd";
 export const GetGroupById = "ProductAttributeGroup/get";
+export const AddProduct = "Product/AddProduct";

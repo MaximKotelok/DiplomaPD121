@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GetSupInfoForProductInYourCity, ServerURL,Success } from "./Constants";
+import { ApiPath, GetSupInfoForProductInYourCity, ServerURL,Success } from "./Constants";
 import { getCookie } from "./Cookies";
 
 const globalUrl = `${ServerURL}/api`;
@@ -41,26 +41,27 @@ export async function postToServer(url, data) {
     }
     }
 
-export async function postPhotoToServer(url, path, photo) {
-    let res = {};
-
-     await axios({
-            method: 'post',
-            url: `${globalUrl}/${url}`,
-            data: { path, photo },
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        })
-        .then((response) => {
-            res = { status: Success, data: response.data };
-        })
-        .catch((error) => {
-            res = { status: 'Error', error };
-        });
-
-    return res
-}
+export async function postPhotoToServer(serverUrl, relativePath, file) {
+    const formData = new FormData();
+    formData.append('relativePath', relativePath);
+    formData.append('file', file);
+  
+    try {
+      const response = await axios.post(`${ApiPath}/${serverUrl}`,formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+        
+      if (response.status === 200) {
+        return response.data;
+      } else {
+        console.error('Error uploading file:', response.data);
+      }
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+  }
 
 export async function getFromServer(url, params = {}) {
 
