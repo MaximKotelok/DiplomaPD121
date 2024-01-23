@@ -13,7 +13,7 @@ const SearchComponent = ({ searchTitle, queryFunction,parser }) => {
     return (
         <div>
             <div className='container custom-search-container'>
-                <div className='row search-custom'>
+                <div className='row search-custom mb-5'>
                     <div className='col-6'>
                         <p>{searchTitle}</p>
                     </div>

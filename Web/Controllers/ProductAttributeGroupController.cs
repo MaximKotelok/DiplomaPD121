@@ -34,7 +34,21 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-		
+		[HttpGet("get")]
+		//[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		public IActionResult GetGroupById(int id)
+		{
+			var result = _service.GetProductAttributeGroup(
+				a => a.Id == id,
+				includeProperties: "ExistAttributes,AttributesInGroup") ;
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+
+
 
 	}
 }

@@ -4,6 +4,7 @@ import { Map } from "./components/pages/Map/Map";
 import RegistrationForm from "./components/Auth/RegistrationForm";
 import LoginForm from "./components/Auth/LoginForm";
 import ChooseACategoryComponent from "./components/AddProductComponents/ChooseACategoryComponent/ChooseACategoryComponent";
+import AddProductComponent from "./components/AddProductComponents/AddProductComponent/AddProductComponent";
 const AppRoutes = [
   {
     index: true,
@@ -28,6 +29,10 @@ const AppRoutes = [
     {
         path: '/ChooseACategory',
         element: <ChooseACategoryComponent />
+    },
+    {
+        path: '/AddProduct/:typeId',
+        element: <AddProductComponent />
     }
   
 ];

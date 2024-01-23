@@ -10,7 +10,6 @@ const LoginForm = () => {
 
     const [errors, setErrors] = useState({
         username: '',
-        email: '',
         additional: ''
     });
 

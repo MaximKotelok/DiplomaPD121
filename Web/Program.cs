@@ -144,7 +144,7 @@ builder.Services.AddTransient<ICityService, CityService>();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
-//builder.Services.AddTransient<IMedicineService, MedicineService>();
+builder.Services.AddTransient<IMedicineService, MedicineService>();
 //builder.Services.AddScoped<IMailKitService, MailKitService>();
 builder.Services.AddScoped<IEmailSenderService, EmailSenderService>();
 

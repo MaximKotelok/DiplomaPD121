@@ -24,7 +24,7 @@ namespace Web.Controllers
 	public class ProductController : ControllerBase
 	{
 		private readonly IProductService _productService;
-		//private readonly IMedicineService _medicineService;
+		private readonly IMedicineService _medicineService;
 		private readonly IAttributeService _attributeService;
 		private readonly IPropertyService _propertyService;
 		private readonly ICityService _cityService;
@@ -35,12 +35,13 @@ namespace Web.Controllers
 			 IAttributeService attributeService,
 			 IPropertyService propertyService,
 			ICityService cityService,
-			IConcreteProductService concreteProductService
+			IConcreteProductService concreteProductService,
+			IMedicineService medicineService
 			)
 		{
 			this._productService = productService;
 			this._cityService = cityService;
-			//this._medicineService = medicineService;
+			this._medicineService = medicineService;
 			this._attributeService = attributeService;
 			this._propertyService = propertyService;
 			this._concreteProductService = concreteProductService;
@@ -71,7 +72,7 @@ namespace Web.Controllers
 		[HttpGet("{id}")]
 		public IActionResult GetProduct(int id)
 		{
-			Product product = _productService.GetProduct(a => a.Id == id, includeProperties: "Properties,Properties,Properties.Attribute,ActiveSubstance");
+			Product product = _productService.GetProduct(a => a.Id == id, includeProperties: "Properties,Properties,Properties.Attribute");
 
 			if (product is not null)
 			{
@@ -84,17 +85,17 @@ namespace Web.Controllers
 					PathToPhoto = product.PathToPhoto,
 					Properties = product.Properties.Select(a=>new PropertyViewModel { Value=a.Value, Name=a.Attribute.Name}).ToList()
 
-				};				
+				};
 
 
-
-				//if (product.ActiveSubstanceID is not null)
-				/*{
+				product = _medicineService.GetMedicine(a => a.Id == id, includeProperties: "ActiveSubstance");
+				if (product is not null)
+				{
 					MedicineViewModel res = new MedicineViewModel { Product = productView };
 					res.ActiveSubstance = ((Medicine)product).ActiveSubstance.Title;
 					res.ActiveSubstanceId = ((Medicine)product).ActiveSubstance.Id;
 					return Ok(res);
-				}*/
+				}
 
 				return Ok(productView);
 			}
@@ -189,30 +190,54 @@ namespace Web.Controllers
 		}
 
 
-		[HttpPost("AddMedicine")]
-		public IActionResult AddMedicine(MedicineViewModel medicineViewModel)
-		{/*
-			var props = _convertProperties(medicineViewModel.Product.Properties);
+		[HttpPost("AddProduct")]
+		public IActionResult AddProduct(PostProductViewModel postModel)
+		{
+			var props = _convertProperties(postModel.Properties);
 
 
-			Product product = new Product
+			if(postModel.ActiveSubstanceID is not null)
 			{
-				Title = medicineViewModel.Product.Title,
-				CategoryID = medicineViewModel.Product.CategoryID,
-				PathToPhoto = medicineViewModel.Product.PathToPhoto,
-				Description = medicineViewModel.Product.Description,
-				ActiveSubstanceID = medicineViewModel.ActiveSubstanceId
-			};
 
-			_productService.InsertProduct(product);
-
-
-			foreach (var item in props)
-			{
-				item.Product = product;
-				_propertyService.InsertProperty(item);
+				Medicine medicine = new Medicine
+				{
+					Title = postModel.Title,
+					CategoryID = postModel.CategoryID,
+					PathToPhoto = postModel.PathToPhoto,
+					Description = postModel.Description,
+					ActiveSubstanceID = postModel.ActiveSubstanceID.Value,
+					Properties = props
+				};
+				_medicineService.InsertMedicine(medicine);
+				foreach (var item in props)
+				{
+					item.Product = medicine;
+					_propertyService.InsertProperty(item);
+				}
 			}
-*/
+
+			else
+			{
+				Product product = new Product
+				{
+					Title = postModel.Title,
+					ShortDescription = postModel.ShortDescription,
+					CategoryID = postModel.CategoryID,
+					PathToPhoto = postModel.PathToPhoto,
+					Description = postModel.Description,
+					Properties = props
+				};
+				_productService.InsertProduct(product);
+				foreach (var item in props)
+				{
+					item.Product = product;
+					_propertyService.InsertProperty(item);
+				}
+			}
+
+
+			
+
 			return BadRequest("Old path");
 		}
 
