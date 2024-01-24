@@ -1,16 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { AddProduct, ApiPath, GetGroupById, PhotoPath } from '../../../utils/Constants';
+import { AddProduct, ApiPath, GetAllBrands, GetGroupById, PhotoPath, Success } from '../../../utils/Constants';
 import { useParams } from 'react-router-dom';
 import { getFromServer } from '../../../utils/Queries';
 import Select from 'react-select';
 import { postToServer, postPhotoToServer } from '../../../utils/Queries';
 import ImageUploaderComponent from '../ImageUploaderComponent/ImageUploaderComponent';
+import InputForProductComponent from '../InputForProductComponent/InputForProductComponent';
+import { GetAllManufacturers } from '../../../utils/Constants';
+
+import "bootstrap-icons/font/bootstrap-icons.css";
+
+import "./AddProductComponent.css"
 const AddProductComponent = () => {
     const { typeId } = useParams();
 
-    const [mainInput, setMainInput] = useState([]);
+
+    //#region states
+    const [mainAttribute, setMainAttribute] = useState([]);
     const [attributes, setAttributes] = useState([]);
     const [image, setImage] = useState(null);
+    const [additionalAttribute, setAdditionalAttribute] = useState([]);
+    const [selectedAdditionalAttribute, setSelectedAdditionalAttribute] = useState(null);
+    const [displayAdditionalAttributes, setDisplayAdditionalAttributes] = useState([]);
+    const [manufacturers, setManufacturers] = useState([])
+    const [brands, setBrands] = useState([])
 
     const [formData, setFormData] = useState({
         title: '',
@@ -22,23 +35,22 @@ const AddProductComponent = () => {
         categoryID: 1
     });
 
-    const [additionalAttribute, setAdditionalAttribute] = useState([]);
-    const [selectedAdditionalAttribute, setSelectedAdditionalAttribute] = useState(null);
-    const [displayAdditionalAttributes, setDisplayAdditionalAttributes] = useState([]);
-
     const [errors, setErrors] = useState({
         username: '',
         additional: ''
     });
-    useEffect(() => {
-        init();
-    }, [])
+    //#endregion
 
+    //#region init
     async function init() {
         try {
             let res = await getFromServer(GetGroupById, { id: typeId });
+            
+            
+
+            if(res.data.existAttributes.length > 0) {
             let inputData =
-                await Promise.all(res.data.existAttributes.map(async (b) => {
+                await Promise.all(res.data.existAttributes.map(async (b) => {                    
                     return {
                         name: b.name, description: b.description, list: (await getFromServer(b.actionGetPath))
                             .data.map(c => {
@@ -49,30 +61,45 @@ const AddProductComponent = () => {
                 }));
 
 
-            setMainInput(inputData);
+                setMainAttribute(inputData);
+            }
             setAttributes(res.data.attributesInGroup);
+
+            let resManufacturers = await getFromServer(GetAllManufacturers);
+            if(resManufacturers.status === Success)
+                setManufacturers(resManufacturers.data)
+
+            let resBrands = await getFromServer(GetAllBrands);
+            if(resBrands.status === Success)
+                setBrands(resBrands.data)
 
 
         } catch (error) {
             console.error("Error in init function:", error);
         }
     }
-    
+    useEffect(() => {
+        init();
+    }, [])
+    //#endregion
 
+    //#region submit
     const submit = async () => {
 
         let a = await postPhotoToServer("Photo/Add", "product", image);
         //let a = await postPhotoToServer("Photo/Add", "product", formData);
-        
+
         console.log(`/images/product/${a}`);
         formData["pathToPhoto"] = `/images/product/${a}`;
 
         console.log(formData)
-         postToServer(AddProduct, {
-             ...formData,
-             properties: additionalAttribute
-         })
+        postToServer(AddProduct, {
+            ...formData,
+            properties: additionalAttribute
+        })
     }
+
+    //#endregion
 
     //#region OnChanges
     const handleInputChange = (e) => {
@@ -93,7 +120,7 @@ const AddProductComponent = () => {
 
 
     const handleAdditionalChange = (name, value) => {
-        setAdditionalAttribute((prevData) => {
+        setAdditionalAttribute((prevData) => {            
             const newData = [...prevData];
             let index = newData.indexOf(newData.find(a => a.id === name));
             if (index !== -1) {
@@ -106,9 +133,133 @@ const AddProductComponent = () => {
     };
     //#endregion
 
+    const handleRemoveAdditional = (id)=>{
+        setAdditionalAttribute((prevData) => {
+            const newData = [...prevData];
+            let index = newData.indexOf(newData.find(a => a.id === id));
+            newData.splice(index, 1);
+            return newData;
+        });
+
+        setDisplayAdditionalAttributes((prevData) => {
+            const newData = [...prevData];
+            let index = newData.indexOf(newData.find(a => a.id === id));
+            newData.splice(index, 1);
+            return newData;
+        })
+    }
+console.log(formData)
+    return (<div className='row'>
+        <div className='add-product-left-container'>
+            acceptButton
+        </div>
+        <div className='add-product-right-container'>
+            
+                <InputForProductComponent
+                    className="margin-bottom"
+                    label="Назва товару"
+                    placeholder='Введіть назву товару'
+                    type="text"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleInputChange}
+                />
+                <InputForProductComponent
+                    className="margin-bottom"
+                    label="Короткий опис"
+                    placeholder='Введіть короткий опис'
+                    type="text"
+                    name="shortDescription"
+                    value={formData.shortDescription}
+                    onChange={handleInputChange}
+                />
+                <div className="margin-bottom select-div">
+                    <Select 
+                    className='me-1' 
+                    name="ManufacturerID"
+                    placeholder="Виробник" 
+                    options={manufacturers && manufacturers.map && manufacturers.map(item => ({ value: item.id, label: item.name }))}
+                    onChange={selectedOption => {
+                        setFormData({
+                            ...formData,
+                            ManufacturerID: selectedOption.value                            
+                        })
+                    }}
+                    />
+                    <Select 
+                    className='ms-1' 
+                    name="BrandId"
+                    placeholder="Бренд" 
+                    options={brands && brands.map && brands.map(item => ({ value: item.id, label: item.name }))}
+                    onChange={selectedOption => {
+                        setFormData({
+                            ...formData,
+                            BrandId: selectedOption.value                            
+                        })
+                    }}
+                    />
+                </div>
+                <div className="margin-bottom">
+                    <p className='product-label'>Додаткове поле</p>
+                    <Select
+                        className='additional-input margin-bottom'
+                        value={selectedAdditionalAttribute}
+                        name="additonals"
+                        placeholder="Вага, смак, колір"
+                        options={attributes.filter(a => {
+                            return !displayAdditionalAttributes.length || !displayAdditionalAttributes.map || !displayAdditionalAttributes.map(b => b.id).includes(a.id)
+                        }).map(item => ({ value: item.id, label: item.name }))
+                        }
+                        onChange={selectedOption => {
+                            setDisplayAdditionalAttributes([
+                                ...displayAdditionalAttributes,
+                                {
+                                    id: selectedOption.value,
+                                    name: selectedOption.label
+                                }
+                            ])
+                            setSelectedAdditionalAttribute(null)
+                        }}
+                        isSearchable={true}
+                    />
+                    {
+                        displayAdditionalAttributes && displayAdditionalAttributes.map(
+                            a => {
+
+                                return <div key={a.id} className='margin-bottom d-flex align-items-end'>
+                                <InputForProductComponent
+                                    className="additional-input me-2"                                    
+                                    placeholder={a.name}
+                                    type="text"
+                                    name={a.id}
+                                    onChange={e => {
+                                        handleAdditionalChange(a.id, e.target.value)
+                                    }
+                                }
+                                />
+                                <button className='btn cross-button'
+                                onClick={a=>{
+                                    handleRemoveAdditional(a.id)
+                                }}
+                                ><i className="bi bi-x-lg"></i></button>
+                                
+                                </div>
+                            }
+
+                        )
+                    }
+                <p className='product-label'>Оберіть фото</p>
+                <ImageUploaderComponent selectedImage={image} setSelectedImage={setImage} />
+
+            </div>
+
+        </div>
+    </div>);
+
+
 
     return <div>
-        
+
         <p>Image</p>
         <ImageUploaderComponent selectedImage={image} setSelectedImage={setImage} />
 
@@ -133,8 +284,8 @@ const AddProductComponent = () => {
             value={formData.description}
             onChange={handleInputChange}
         ></textarea>
-        {mainInput && mainInput.map &&
-            mainInput.map(a => {
+        {mainAttribute && mainAttribute.map &&
+            mainAttribute.map(a => {
 
                 if (a.list.length > 0)
                     return (

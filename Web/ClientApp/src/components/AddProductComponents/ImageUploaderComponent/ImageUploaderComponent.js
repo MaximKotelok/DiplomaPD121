@@ -28,6 +28,7 @@ const ImageUploaderComponent = ({selectedImage, setSelectedImage}) => {
         ref={fileInputRef}
       />
       <img
+        className='product-image'
         src={preview || placeholder}
         alt="Selected"
         style={{ cursor: 'pointer', maxWidth: '300px', maxHeight: '300px' }}

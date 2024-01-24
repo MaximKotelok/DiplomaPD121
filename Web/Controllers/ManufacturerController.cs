@@ -2,27 +2,27 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.ActiveSubstanceService;
-using Services.BrandService;
 using Services.CategoryService;
+using Services.ManufacturerService;
 using Utility;
 
 namespace Web.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class BrandController : Controller
+	public class ManufacturerController : Controller
 	{
-		private readonly IBrandService _service;
+		private readonly IManufacturerService _service;
 
-		public BrandController(IBrandService service)
+		public ManufacturerController(IManufacturerService service)
 		{
 			this._service = service;
 		}
 
-		[HttpGet("GetRecomendedBrands")]
-		public IActionResult GetRecomendedBrands(int count)
+		[HttpGet("GetAllManufacturers")]
+		public IActionResult GetAllManufacturers()
 		{
-			var result = _service.GetAllBrands().Take(count);
+			var result = _service.GetAllManufacturers();
 			if (result is not null)
 			{
 				return Ok(result);
@@ -30,10 +30,10 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-		[HttpGet("GetAllBrands")]
-		public IActionResult GetAllBrands()
+		[HttpGet("{id}")]
+		public IActionResult GetManufacturer(int id)
 		{
-			var result = _service.GetAllBrands();
+			var result = _service.GetManufacturer(x => x.Id == id);
 			if (result is not null)
 			{
 				return Ok(result);
