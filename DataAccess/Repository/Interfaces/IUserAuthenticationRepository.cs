@@ -13,7 +13,7 @@ namespace Repository.Repository.Interfaces
     public interface IUserAuthenticationRepository
     {
         Task<IdentityResult> RegisterUserAsync(UserRegistrationDto userForRegistration);
-        Task<bool> ValidateUserAsync(UserLoginDto loginDto);
+        Task<UserInfoDto> ValidateUserAsync(UserLoginDto loginDto);
         Task<string> CreateTokenAsync();
         Task<bool> ConfirmEmailAsync(string email);
     }

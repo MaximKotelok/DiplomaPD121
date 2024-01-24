@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 
 const LoginForm = () => {
     const [formData, setFormData] = useState({
-        username: '',
+        email: '',
         password: '',
     });
 
@@ -20,33 +20,33 @@ const LoginForm = () => {
 
         try {
             const response = await axios.post('https://localhost:7133/api/userauthentication/login', formData);
-            console.log(response)
-            // Перевірка наявності токену у відповіді
-            if (response.data && response.data.token) {
-                // Збереження токену в локальному сховищі
-                localStorage.setItem('authToken', response.data.token);
-                Swal.fire('Success!', 'Login successful', 'success');
+            console.log(response);
 
-                // Додайте необхідні дії після успішного входу, наприклад, перенаправлення на іншу сторінку
+            if (response.data && response.data.token) {
+                localStorage.setItem('authToken', response.data.token);
+                localStorage.setItem('userInfo', JSON.stringify(response.data.user));
+                Swal.fire('Success!', 'Login successful', 'success');
+                // Добавьте необходимые действия после успешного входа
             } else {
-                Swal.fire('Error!', 'Invalid response format', 'error');
+                Swal.fire('Error!', 'An error occurred during login.', 'error');
             }
         } catch (error) {
-            Swal.fire('Error!', 'Login failed', 'error');
-            // Додайте код для обробки помилки, наприклад, відображення повідомлення про помилку
+            console.log(error)
+            console.log(error.response)
+            Swal.fire('Error!', error.response?.data || 'An error occurred during login.', 'error');
         }
     };
 
     return (
         <form onSubmit={handleLogin}>
             <label>
-                Username:
-                <input type="text" name="username" value={formData.username} onChange={handleInputChange} />
+                Email:
+                <input type="text" name="email" value={formData.email} onChange={handleInputChange} required/>
             </label>
             <br />
             <label>
                 Password:
-                <input type="password" name="password" value={formData.password} onChange={handleInputChange} />
+                <input type="password" name="password" value={formData.password} onChange={handleInputChange} required/>
             </label>
             <br />
             <button type="submit">Login</button>

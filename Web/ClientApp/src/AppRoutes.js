@@ -4,6 +4,7 @@ import { Home } from "./components/pages/Home/Home";
 import { Details } from "./components/pages/Details/Details";
 import RegistrationForm from "./components/Auth/RegistrationForm";
 import LoginForm from "./components/Auth/LoginForm";
+import ConfirmEmail from "./components/Auth/ConfirmEmail";
 
 const AppRoutes = [
     {
@@ -29,6 +30,10 @@ const AppRoutes = [
     {
         path: '/login',
         element: <LoginForm />
+    },
+    {
+        path: '/confirm-email',
+        element: <ConfirmEmail />
     }
 ];
 

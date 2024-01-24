@@ -23,7 +23,7 @@ namespace Services.SMTPService
             _sendGridSettings = sendGridSettings.Value;
         }
 
-        public async Task SendEmailAsync(string email, string subject, string message)
+        public async Task<bool> SendEmailAsync(string email, string subject, string message)
         {
             var msg = new SendGridMessage()
             {
@@ -33,9 +33,9 @@ namespace Services.SMTPService
             };
             msg.AddTo(email);
 
-
-
-           var res =  await _sendGridClient.SendEmailAsync(msg);
+            Response res =  await _sendGridClient.SendEmailAsync(msg);
+            
+            return res.IsSuccessStatusCode;
         }
     }
 }

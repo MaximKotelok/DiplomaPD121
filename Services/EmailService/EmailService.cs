@@ -11,10 +11,10 @@ namespace Services.EmailService
 {
     public class EmailService : IEmailService
     {
-        private readonly IEmailSenderService _sMTPService;
-        public EmailService(IEmailSenderService sMTPService)
+        private readonly IEmailSenderService _emailSenderService;
+        public EmailService(IEmailSenderService emailSenderService)
         {
-            _sMTPService = sMTPService;
+            _emailSenderService = emailSenderService;
         }
         public Task SendBookingInfo(string email, ProductDto productDto)
         {
@@ -39,7 +39,7 @@ namespace Services.EmailService
         </html>
     ";
 
-            return _sMTPService.SendEmailAsync(email, "Підтвердження бронювання", message);
+            return _emailSenderService.SendEmailAsync(email, "Підтвердження бронювання", message);
         }
         public Task SendChangeProductStatus(string email, ProductDto productDto, string newStatus)
         {
@@ -64,9 +64,9 @@ namespace Services.EmailService
     </html>
 ";
 
-            return _sMTPService.SendEmailAsync(email, "Зміна статусу продукту", message);
+            return _emailSenderService.SendEmailAsync(email, "Зміна статусу продукту", message);
         }
-        public Task SendConfirmationMail(string email)
+        public Task<bool> SendConfirmationMail(string email)
         {
             string currentDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
@@ -89,12 +89,12 @@ namespace Services.EmailService
     </html>
 ";
 
-            return _sMTPService.SendEmailAsync(email, "Підтвердження реєстрації", message);
+            return _emailSenderService.SendEmailAsync(email, "Підтвердження реєстрації", message);
         }
 
         private string GetConfirmationLink(string email)
         {
-            return $"https://localhost:7133/api/userauthentication/confirm?email={Uri.EscapeDataString(email)}";
+            return $"https://localhost:44411/confirm-email?email={Uri.EscapeDataString(email)}";
         }
     }
 }

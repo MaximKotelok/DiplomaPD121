@@ -25,7 +25,7 @@ namespace Repository.Repository.Services
         private readonly IMapper _mapper;
         private User? _user;
 
-        public UserAuthenticationRepository(RoleManager<IdentityRole> roleManager,UserManager<User> userManager, IConfiguration configuration, IMapper mapper)
+        public UserAuthenticationRepository(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, IConfiguration configuration, IMapper mapper)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -36,16 +36,21 @@ namespace Repository.Repository.Services
         public async Task<IdentityResult> RegisterUserAsync(UserRegistrationDto userRegistration)
         {
             var user = _mapper.Map<User>(userRegistration);
-            var result = await _userManager.CreateAsync(user, userRegistration.Password);
-            await _userManager.AddToRolesAsync(user, new List<string> { SD.Role_Customer });
+            var result = await _userManager.CreateAsync(user, userRegistration.Password!);
+            if (result.Succeeded)
+                await _userManager.AddToRolesAsync(user, userRegistration.Roles!);
+
             return result;
         }
 
-        public async Task<bool> ValidateUserAsync(UserLoginDto loginDto)
+        public async Task<UserInfoDto?> ValidateUserAsync(UserLoginDto loginDto)
         {
-            _user = await _userManager.FindByNameAsync(loginDto.UserName);
-            var result = _user != null && await _userManager.CheckPasswordAsync(_user, loginDto.Password);
-            return result;
+            _user = await _userManager.FindByEmailAsync(loginDto.Email);
+
+            if (_user != null && await _userManager.CheckPasswordAsync(_user, loginDto.Password))
+                return new UserInfoDto { Email = _user.Email, };
+
+            return null;
         }
 
         public async Task<string> CreateTokenAsync()
@@ -53,6 +58,7 @@ namespace Repository.Repository.Services
             var signingCredentials = GetSigningCredentials();
             var claims = await GetClaims();
             var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
+
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
         }
         public async Task<bool> ConfirmEmailAsync(string email)
@@ -70,23 +76,20 @@ namespace Repository.Repository.Services
         }
         private SigningCredentials GetSigningCredentials()
         {
-            var jwtConfig = _configuration.GetSection("jwtConfig");
-            var key = Encoding.UTF8.GetBytes(jwtConfig["Secret"]);
+            var jwtConfig = _configuration.GetSection("JwtConfig");
+            var key = Encoding.UTF8.GetBytes(jwtConfig["secret"]);
             var secret = new SymmetricSecurityKey(key);
+
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }
 
         private async Task<List<Claim>> GetClaims()
         {
-            var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, _user.UserName)
-        };
+            var claims = new List<Claim> { new Claim(ClaimTypes.Name, _user.UserName) };
             var roles = await _userManager.GetRolesAsync(_user);
             foreach (var role in roles)
-            {
                 claims.Add(new Claim(ClaimTypes.Role, role));
-            }
+
             return claims;
         }
 
