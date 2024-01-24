@@ -23,6 +23,7 @@ const RegistrationForm = () => {
             const response = await axios.post('https://localhost:7133/api/userauthentication/register', formData);
             Swal.fire('Success!', response.data, 'success');
             // Додайте необхідні дії після успішної реєстрації, наприклад, перенаправлення на сторінку входу
+            
         } catch (error) {
             Swal.fire('Error!', error.response?.data[0] || 'An error occurred during registration.', 'error');
         }

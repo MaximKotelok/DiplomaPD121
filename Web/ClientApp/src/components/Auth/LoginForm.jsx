@@ -20,19 +20,16 @@ const LoginForm = () => {
 
         try {
             const response = await axios.post('https://localhost:7133/api/userauthentication/login', formData);
-            console.log(response);
-
+            // Перевірка наявності токену у відповіді
             if (response.data && response.data.token) {
                 localStorage.setItem('authToken', response.data.token);
                 localStorage.setItem('userInfo', JSON.stringify(response.data.user));
                 Swal.fire('Success!', 'Login successful', 'success');
-                // Добавьте необходимые действия после успешного входа
+                // Додайте необхідні дії після успішного входу, наприклад, перенаправлення на іншу сторінку
             } else {
                 Swal.fire('Error!', 'An error occurred during login.', 'error');
             }
         } catch (error) {
-            console.log(error)
-            console.log(error.response)
             Swal.fire('Error!', error.response?.data || 'An error occurred during login.', 'error');
         }
     };

@@ -1,6 +1,6 @@
 import React, { Component, useEffect, useState } from 'react';
 import ProductCardComponent from '../../ProductCard/ProductCardComponent';
-import ProductsListComponent from '../../HomeComponent/ProductsList/ProductsListComponent';
+import CarouselListComponent from '../../HomeComponent/CarouselList/CarouselListComponent';
 import { GetAllProductsFromIdArray, GetRecomendedBrands, GetMainCategories, ApiPath, GetRecomendedCategoryById, GetRecomendedCategory } from '../../../utils/Constants';
 import { getFromServer, getProducts, postToServer } from '../../../utils/Queries';
 import { getRecentlyViewedProductsIds, getRecomendedRandomCategory, setRecomendedRandomCategory } from '../../../utils/SessionStorage';
@@ -10,9 +10,9 @@ import PopularButtonComponnent from '../../HomeComponent/PopularButton/PopularBu
 import CircleCard from '../../HomeComponent/CircleCard/CircleCard';
 import CustomList from '../../HomeComponent/CustomList/CustomList';
 import AccordionComponnent from "../../HomeComponent/AccordionQuestion/accordionComponnent";
-
+import MiniProductCardComponent from '../../HomeComponent/MiniProductCard/MiniProductCardComponent';
 import homePageImg from "../../../styles/images/homePageImg.png";
-
+import AdaptiveContainerComponent from '../../AdaptiveContainerComponent/AdaptiveContainerComponent';
 
 import "./Home.css"
 export const Home = () => {
@@ -42,9 +42,8 @@ export const Home = () => {
   async function initProducts() {
 
     setProducts(await getProducts("Product", { count: 8 }, getFromServer))
-  }
+  } 
   async function initCategories() {
-
     setCategories(await getFromServer(GetMainCategories, { count: 9 }))
   }
 
@@ -97,7 +96,24 @@ export const Home = () => {
                 <h3 className="text-title">Пропозиції</h3>
                 <MoreLink link="." />
               </div>
-              <ProductsListComponent products={products.data} />
+              <CarouselListComponent>
+                {products.data&&products.data.map?products.data.map((a) => (
+                        <MiniProductCardComponent
+                            key={a.id}
+                            id={a.id}
+                            title={a.title}
+                            description={a.shortDescription}
+                            minPrice={a.minPrice}
+                            countOfPharmacies={a.count}
+                            manufacturer={a.manufacturer}
+                            imageUrl={a.pathToPhoto}
+                        />
+                    )):new Array(15).fill(null).map((_, index) => (
+                        <MiniProductCardComponent key={index}/>))
+                        }
+
+                </CarouselListComponent>
+              
             </div>
           </div>
           <div
@@ -107,7 +123,23 @@ export const Home = () => {
             {recently.data &&
               <div>
                 <h3 className="text-title">Нещодавно переглянуті товари</h3>
-                <ProductsListComponent products={recently.data} />
+                <CarouselListComponent>
+                {recently.data&&recently.data.map?recently.data.map((a) => (
+                        <MiniProductCardComponent
+                            key={a.id}
+                            id={a.id}
+                            title={a.title}
+                            description={a.shortDescription}
+                            minPrice={a.minPrice}
+                            countOfPharmacies={a.count}
+                            manufacturer={a.manufacturer}
+                            imageUrl={a.pathToPhoto}
+                        />
+                    )):new Array(15).fill(null).map((_, index) => (
+                        <MiniProductCardComponent key={index}/>))
+                        }
+
+                </CarouselListComponent>
               </div>}
           </div>
         </div>
@@ -119,6 +151,7 @@ export const Home = () => {
           <MoreLink link="." />
         </div>
         <div className="flex-container d-flex">
+          
           {
             brands.data && brands.data.map ?
               brands.data.map(a => {
@@ -150,7 +183,12 @@ export const Home = () => {
           <PopularButtonComponnent text="Вітаміни" />
           <PopularButtonComponnent text="Вітаміни" />
         </div>
-        <ProductsListComponent xlDisplayCount={6} products={null} />
+        <CarouselListComponent xlDisplayCount={6}>
+          {new Array(10).fill(null).map((_, index)=>{
+            return <MiniProductCardComponent key={index}></MiniProductCardComponent>
+          })}
+
+        </CarouselListComponent>
 
       </div>
       <div className="col-12 baner-bottom"></div>
@@ -164,7 +202,7 @@ export const Home = () => {
           <MoreLink link="." />
         </div>
 
-        <div className='d-flex' >
+        <AdaptiveContainerComponent>
           {pngCards.map(a => {
 
             return (<VitaminCardComponnent
@@ -173,9 +211,9 @@ export const Home = () => {
               text={a.title} color="#E0E0E0"
             />)
           }
-          )}
-
-        </div>
+          )
+        }
+        </AdaptiveContainerComponent>
       </div>}
 
 
@@ -236,4 +274,4 @@ export const Home = () => {
   //   </div>
   // );
 
-}
+        }

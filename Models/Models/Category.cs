@@ -29,5 +29,6 @@ namespace Domain.Models
         public bool? IsRecomended { get; set; }
         public string? PathToPhoto { get;set; }        
         public TypeOfPhoto? SubCategoriesTypeOfPhoto { get; set; }
+        public bool? CanHasProducts { get; set; } = false;
 	}
 }

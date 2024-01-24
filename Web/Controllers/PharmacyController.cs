@@ -82,7 +82,7 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-		[HttpPost]
+        [HttpPost]
                 [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult AddPharmacy(Pharmacy pharmacy)
 		{

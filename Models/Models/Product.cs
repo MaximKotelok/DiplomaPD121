@@ -18,10 +18,10 @@ namespace Domain.Models
 		public string? PathToPhoto { get; set; }
 		public string? ShortDescription { get; set; }
 		public string? Description { get; set; }
-		public int? ActiveSubstanceID { get; set; }
+		/*public int? ActiveSubstanceID { get; set; }
 		[JsonIgnore]
 		[ForeignKey("ActiveSubstanceID")]
-		public ActiveSubstance? ActiveSubstance { get; set; }
+		public ActiveSubstance? ActiveSubstance { get; set; }*/
 		public int? CategoryID { get; set; }
 		[ForeignKey("CategoryID")]
 		public Category? Category { get; set; }
@@ -39,6 +39,10 @@ namespace Domain.Models
 		[ForeignKey(nameof(ProductStatusID))]
         public ProductStatus? ProductStatus { get; set; }
         public IEnumerable<ProductProperty>? Properties { get; set; }   
-		public IEnumerable<ConcreteProduct>? ConcreteProducts { get; set; }   
+		[JsonIgnore]
+		public IEnumerable<ConcreteProduct>? ConcreteProducts { get; set; }
+		[JsonIgnore]
+		public IEnumerable<User>? FavUsers { get; set; }
+
 	}
 }

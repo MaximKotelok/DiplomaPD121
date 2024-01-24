@@ -1,0 +1,44 @@
+.search-custom p{
+    font-family: var(--standart-font);
+    font-weight: 500;
+    font-size: 28px;
+    margin: 0;
+}
+
+.result-items{
+    display: flex;      
+}
+
+.search-custom{
+    margin: 0 0px;
+}
+
+.search-custom>*{
+    padding: 0;
+}
+
+.custom-search-container{    
+    max-width: 873px;
+    
+}
+
+.my-round-search{
+    border-radius: 12px;
+    background-color: #EFEFEF;
+}
+
+.my-round-search input{
+    background-color: #EFEFEF!important;    
+    color: #7A7A7A;
+}
+
+.my-round-search input, .my-round-search button{
+    border:none !important;
+}
+
+.my-round-search input:focus,.my-round-search button:focus{
+    background-color: #EFEFEF!important;
+    border:none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
