@@ -33,6 +33,10 @@ const AppRoutes = [
     {
         path: '/AddProduct/:typeId',
         element: <AddProductComponent />
+    },
+    {
+        path: '/AddProduct/:productId',
+        element: <AddProductComponent />
     }
   
 ];

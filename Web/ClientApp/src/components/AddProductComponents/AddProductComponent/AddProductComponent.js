@@ -7,6 +7,8 @@ import { postToServer, postPhotoToServer } from '../../../utils/Queries';
 import ImageUploaderComponent from '../ImageUploaderComponent/ImageUploaderComponent';
 import InputForProductComponent from '../InputForProductComponent/InputForProductComponent';
 import { GetAllManufacturers } from '../../../utils/Constants';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 import "bootstrap-icons/font/bootstrap-icons.css";
 
@@ -14,16 +16,15 @@ import "./AddProductComponent.css"
 const AddProductComponent = () => {
     const { typeId } = useParams();
 
-
-    //#region states
-    const [mainAttribute, setMainAttribute] = useState([]);
+    //#region data from server
     const [attributes, setAttributes] = useState([]);
+    const [brands, setBrands] = useState([])
+    const [manufacturers, setManufacturers] = useState([])
+    //#endregion
+    //#region other states
+    const [mainAttribute, setMainAttribute] = useState([]);
     const [image, setImage] = useState(null);
     const [additionalAttribute, setAdditionalAttribute] = useState([]);
-    const [selectedAdditionalAttribute, setSelectedAdditionalAttribute] = useState(null);
-    const [displayAdditionalAttributes, setDisplayAdditionalAttributes] = useState([]);
-    const [manufacturers, setManufacturers] = useState([])
-    const [brands, setBrands] = useState([])
 
     const [formData, setFormData] = useState({
         title: '',
@@ -35,30 +36,24 @@ const AddProductComponent = () => {
         categoryID: 1
     });
 
-    const [errors, setErrors] = useState({
-        username: '',
-        additional: ''
-    });
     //#endregion
 
     //#region init
     async function init() {
         try {
             let res = await getFromServer(GetGroupById, { id: typeId });
-            
-            
 
-            if(res.data.existAttributes.length > 0) {
-            let inputData =
-                await Promise.all(res.data.existAttributes.map(async (b) => {                    
-                    return {
-                        name: b.name, description: b.description, list: (await getFromServer(b.actionGetPath))
-                            .data.map(c => {
-                                return { id: c.id, title: c.title }
-                            }
-                            )
-                    };
-                }));
+            if (res.data.existAttributes.length > 0) {
+                let inputData =
+                    await Promise.all(res.data.existAttributes.map(async (b) => {
+                        return {
+                            name: b.name, description: b.description, list: (await getFromServer(b.actionGetPath))
+                                .data.map(c => {
+                                    return { id: c.id, title: c.title }
+                                }
+                                )
+                        };
+                    }));
 
 
                 setMainAttribute(inputData);
@@ -66,11 +61,11 @@ const AddProductComponent = () => {
             setAttributes(res.data.attributesInGroup);
 
             let resManufacturers = await getFromServer(GetAllManufacturers);
-            if(resManufacturers.status === Success)
+            if (resManufacturers.status === Success)
                 setManufacturers(resManufacturers.data)
 
             let resBrands = await getFromServer(GetAllBrands);
-            if(resBrands.status === Success)
+            if (resBrands.status === Success)
                 setBrands(resBrands.data)
 
 
@@ -87,7 +82,6 @@ const AddProductComponent = () => {
     const submit = async () => {
 
         let a = await postPhotoToServer("Photo/Add", "product", image);
-        //let a = await postPhotoToServer("Photo/Add", "product", formData);
 
         console.log(`/images/product/${a}`);
         formData["pathToPhoto"] = `/images/product/${a}`;
@@ -101,13 +95,20 @@ const AddProductComponent = () => {
 
     //#endregion
 
-    //#region OnChanges
-    const handleInputChange = (e) => {
+    const setFormDataAttribute = (name, value) => {
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value,
+            [name]: value,
         });
+    }
+
+    //#region OnChanges
+    const handleInputChange = (e) => {
+        
+        setFormDataAttribute(e.target.name, e.target.value);
+        
     };
+
 
     const handleChangeMainData = (name, value) => {
         setFormData((prevData) => {
@@ -120,7 +121,7 @@ const AddProductComponent = () => {
 
 
     const handleAdditionalChange = (name, value) => {
-        setAdditionalAttribute((prevData) => {            
+        setAdditionalAttribute((prevData) => {
             const newData = [...prevData];
             let index = newData.indexOf(newData.find(a => a.id === name));
             if (index !== -1) {
@@ -131,171 +132,111 @@ const AddProductComponent = () => {
             return newData;
         });
     };
+    function handleAddAdditionalAttribute (id) {
+        
+        setAdditionalAttribute((prevData)=>{
+            let newData = [...prevData]
+            let index = newData.indexOf(newData.find(a => a.id === id));
+            
+            if(index === -1){        
+                index = attributes.indexOf(attributes.find(a => a.id === id));
+
+                
+                if(index !== -1){
+                    newData.push({
+                        id: attributes[index].id,
+                        name: attributes[index].name,
+                        value: ""
+                    });
+                }
+            }   
+            return newData;
+
+        });        
+    };
+
+    function handleRemoveAdditionalAttribute (id) {
+        setAdditionalAttribute((prevData)=>{
+            let newData = [...prevData]
+            let index = newData.indexOf(newData.find(a => a.id === id));
+            if(index !== -1){               
+                
+                newData = newData.slice(0, index).concat(newData.slice(index + 1));
+            }
+            return newData;
+    });
+    };
+    
     //#endregion
 
-    const handleRemoveAdditional = (id)=>{
-        setAdditionalAttribute((prevData) => {
-            const newData = [...prevData];
-            let index = newData.indexOf(newData.find(a => a.id === id));
-            newData.splice(index, 1);
-            return newData;
-        });
 
-        setDisplayAdditionalAttributes((prevData) => {
-            const newData = [...prevData];
-            let index = newData.indexOf(newData.find(a => a.id === id));
-            newData.splice(index, 1);
-            return newData;
-        })
-    }
-console.log(formData)
-    return (<div className='row'>
+    return (<div className='row add-product-main-container'>
         <div className='add-product-left-container'>
-            acceptButton
+            <p className='product-label'>Опис</p>
+            <ReactQuill 
+                theme="snow" 
+                value={formData.description} 
+                onChange={a=>{setFormDataAttribute("description", a)}} 
+                />
         </div>
         <div className='add-product-right-container'>
-            
-                <InputForProductComponent
-                    className="margin-bottom"
-                    label="Назва товару"
-                    placeholder='Введіть назву товару'
-                    type="text"
-                    name="title"
-                    value={formData.title}
-                    onChange={handleInputChange}
-                />
-                <InputForProductComponent
-                    className="margin-bottom"
-                    label="Короткий опис"
-                    placeholder='Введіть короткий опис'
-                    type="text"
-                    name="shortDescription"
-                    value={formData.shortDescription}
-                    onChange={handleInputChange}
-                />
-                <div className="margin-bottom select-div">
-                    <Select 
-                    className='me-1' 
+            <div className='flip'>
+            <InputForProductComponent
+                className="margin-bottom"
+                label="Назва товару"
+                placeholder='Введіть назву товару'
+                type="text"
+                name="title"
+                value={formData.title}
+                onChange={handleInputChange}
+            />
+            <InputForProductComponent
+                className="margin-bottom"
+                label="Короткий опис"
+                placeholder='Введіть короткий опис'
+                type="text"
+                name="shortDescription"
+                value={formData.shortDescription}
+                onChange={handleInputChange}
+            />
+            <div className="margin-bottom select-div">
+                <Select
+                    className='me-1'
                     name="ManufacturerID"
-                    placeholder="Виробник" 
+                    placeholder="Виробник"
                     options={manufacturers && manufacturers.map && manufacturers.map(item => ({ value: item.id, label: item.name }))}
                     onChange={selectedOption => {
                         setFormData({
                             ...formData,
-                            ManufacturerID: selectedOption.value                            
+                            ManufacturerID: selectedOption.value
                         })
                     }}
-                    />
-                    <Select 
-                    className='ms-1' 
+                />
+                <Select
+                    className='ms-1'
                     name="BrandId"
-                    placeholder="Бренд" 
+                    placeholder="Бренд"
                     options={brands && brands.map && brands.map(item => ({ value: item.id, label: item.name }))}
                     onChange={selectedOption => {
                         setFormData({
                             ...formData,
-                            BrandId: selectedOption.value                            
+                            BrandId: selectedOption.value
                         })
                     }}
-                    />
-                </div>
-                <div className="margin-bottom">
-                    <p className='product-label'>Додаткове поле</p>
-                    <Select
-                        className='additional-input margin-bottom'
-                        value={selectedAdditionalAttribute}
-                        name="additonals"
-                        placeholder="Вага, смак, колір"
-                        options={attributes.filter(a => {
-                            return !displayAdditionalAttributes.length || !displayAdditionalAttributes.map || !displayAdditionalAttributes.map(b => b.id).includes(a.id)
-                        }).map(item => ({ value: item.id, label: item.name }))
-                        }
-                        onChange={selectedOption => {
-                            setDisplayAdditionalAttributes([
-                                ...displayAdditionalAttributes,
-                                {
-                                    id: selectedOption.value,
-                                    name: selectedOption.label
-                                }
-                            ])
-                            setSelectedAdditionalAttribute(null)
-                        }}
-                        isSearchable={true}
-                    />
-                    {
-                        displayAdditionalAttributes && displayAdditionalAttributes.map(
-                            a => {
-
-                                return <div key={a.id} className='margin-bottom d-flex align-items-end'>
-                                <InputForProductComponent
-                                    className="additional-input me-2"                                    
-                                    placeholder={a.name}
-                                    type="text"
-                                    name={a.id}
-                                    onChange={e => {
-                                        handleAdditionalChange(a.id, e.target.value)
-                                    }
-                                }
-                                />
-                                <button className='btn cross-button'
-                                onClick={a=>{
-                                    handleRemoveAdditional(a.id)
-                                }}
-                                ><i className="bi bi-x-lg"></i></button>
-                                
-                                </div>
-                            }
-
-                        )
-                    }
-                <p className='product-label'>Оберіть фото</p>
-                <ImageUploaderComponent selectedImage={image} setSelectedImage={setImage} />
-
+                />
             </div>
-
-        </div>
-    </div>);
-
-
-
-    return <div>
-
-        <p>Image</p>
-        <ImageUploaderComponent selectedImage={image} setSelectedImage={setImage} />
-
-        <p>Title</p>
-        <input
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleInputChange}
-        ></input>
-        <p>Short Description</p>
-        <input
-            type="text"
-            name="shortDescription"
-            value={formData.shortDescription}
-            onChange={handleInputChange}
-        ></input>
-
-        <p>Description</p>
-        <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleInputChange}
-        ></textarea>
-        {mainAttribute && mainAttribute.map &&
+            <div>
+            {mainAttribute && mainAttribute.map &&
             mainAttribute.map(a => {
 
                 if (a.list.length > 0)
                     return (
-                        <div>
-                            <p>{a.description}</p>
+                        <div className='margin-bottom'>
                             <Select
                                 name={a.name}
                                 options={a.list.map(item => ({ value: item.id, label: item.title }))}
                                 onChange={selectedOption => { handleChangeMainData(a.name, selectedOption.value) }}
-                                placeholder="Select..."
+                                placeholder={a.description}
                                 isSearchable={true}
                             />
                         </div>
@@ -304,62 +245,61 @@ console.log(formData)
             })
 
         }
+            </div>
 
-        {attributes && attributes.map &&
 
-
-            <div>
-                <p>Додаткові параметри:</p>
+            <div className="margin-bottom">
+                
+                <p className='product-label'>Додаткове поле</p>
                 <Select
-                    value={selectedAdditionalAttribute}
+                    className='additional-input margin-bottom'
+                    value={null}
                     name="additonals"
+                    placeholder="Вага, смак, колір"
                     options={attributes.filter(a => {
-                        return !displayAdditionalAttributes.length || !displayAdditionalAttributes.map || !displayAdditionalAttributes.map(b => b.id).includes(a.id)
+                        return !additionalAttribute.length || !additionalAttribute.map || !additionalAttribute.map(b => b.id).includes(a.id)
                     }).map(item => ({ value: item.id, label: item.name }))
                     }
-                    onChange={selectedOption => { setSelectedAdditionalAttribute(selectedOption) }}
-                    placeholder="Select..."
+                    onChange={selectedOption => {
+                        handleAddAdditionalAttribute(selectedOption.value, true)               
+                    }}
                     isSearchable={true}
                 />
-                <button onClick={
-                    a => {
-                        setSelectedAdditionalAttribute(null)
-                        setDisplayAdditionalAttributes([
-                            ...displayAdditionalAttributes,
-                            {
-                                id: selectedAdditionalAttribute.value,
-                                name: selectedAdditionalAttribute.label
-                            }
-                        ])
-                    }
-                } >+</button>
-
                 {
-                    displayAdditionalAttributes && displayAdditionalAttributes.map(
+                    additionalAttribute && additionalAttribute.map(
                         a => {
 
-                            return <>
-                                <p>{a.name}</p>
-                                <input name={a.id} type="text" onChange={e => {
-                                    handleAdditionalChange(a.id, e.target.value)
-                                }} />
+                            return <div key={a.id} className='margin-bottom d-flex align-items-end'>
+                                <InputForProductComponent
+                                    className="additional-input me-2"
+                                    placeholder={a.name}
+                                    type="text"
+                                    name={a.id}
+                                    onChange={e => {
+                                        handleAdditionalChange(a.id, e.target.value)
+                                    }
+                                    }
+                                />
+                                <button className='btn cross-button'
+                                    onClick={e => {
+                                        handleRemoveAdditionalAttribute(a.id)               
+                                    }}
+                                ><i className="bi bi-x-lg"></i></button>
 
-
-                            </>
+                            </div>
                         }
 
                     )
                 }
+                <p className='product-label'>Оберіть фото</p>
+                <ImageUploaderComponent selectedImage={image} setSelectedImage={setImage} />
                 <button onClick={() => submit()}>Submit</button>
             </div>
 
-        }
-
-
-        <div className='add-product-right-container'>
-
         </div>
-    </div>
+        </div>
+    </div>);
+
 
 
 }

@@ -1,10 +1,51 @@
-.add-product-right-container{
-    max-width: 40%!important;
-    background-color: #F9F9F9!important;
-}
+
+
 
 .add-product-left-container{
-    width: 30%!important;
+    width: 50%!important;
+}
+
+
+.add-product-right-container::-webkit-scrollbar-track
+{
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+.add-product-right-container::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+.add-product-right-container::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	background-color: #ACACAC;
+}
+
+
+.flip{
+    transform: scaleX(-1)!important;
+}
+
+
+.add-product-right-container{
+    position: fixed !important;
+    padding: 30px;
+    right: 0;
+    top:0;
+    max-width: 30%!important;
+    background-color: #F9F9F9!important;
+    border: #ACACAC 10px solid;
+    border-width: 0 0 0 1px;
+    height: 100%; 
+    overflow-y: scroll;
+    transform: scaleX(-1)!important;
+}
+
+.add-product-main-container{    
+    height: 100vh;
 }
 
 .css-1u9des2-indicatorSeparator{
@@ -15,10 +56,21 @@
     color: black!important;
 }
 
-.css-13cymwt-control, .product-add-input{
+.css-13cymwt-control, .product-add-input, .ql-toolbar, .ql-editor{
     border-width: 1px!important;
     border-color: #A7A7A7!important;
     border-radius: 9px!important;
+}
+
+.ql-editor{
+    position: relative;
+}
+
+.ql-toolbar{
+    position: relative;
+    top: 10px;
+    z-index: 2!important;
+    background-color: white !important;
 }
 
 .select-div{
@@ -60,4 +112,9 @@
 .product-image{
     height: 203px;
     width: 203px;
+}
+
+.quill  { 
+    height: 90%!important; 
+    position: relative;
 }

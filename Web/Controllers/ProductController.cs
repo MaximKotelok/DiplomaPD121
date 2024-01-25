@@ -70,7 +70,7 @@ namespace Web.Controllers
 		}
 
 
-		[HttpGet("{id}")]
+		[HttpGet("GetById")]
 		public IActionResult GetProduct(int id)
 		{
 			Product product = _productService.GetProduct(a => a.Id == id, includeProperties: "Properties,Properties,Properties.Attribute");
@@ -84,7 +84,7 @@ namespace Web.Controllers
 					Title = product.Title + product.ShortDescription,
 					Description = product.Description,
 					PathToPhoto = product.PathToPhoto,
-					Properties = product.Properties.Select(a=>new PropertyViewModel { Value=a.Value, Id=a.Attribute.Id}).ToList()
+					Properties = product.Properties.Select(a=>new PropertyViewModel { Value=a.Value, Id=a.Attribute.Id, Name=a.Attribute.Name}).ToList()
 
 				};
 
