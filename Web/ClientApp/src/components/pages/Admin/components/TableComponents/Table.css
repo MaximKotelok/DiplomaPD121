@@ -1,0 +1,13 @@
+
+.table{
+    width: 100%;
+    height: 100%;
+    display: block;
+    overflow-y: auto;
+}
+
+
+th:last-child,
+td:last-child {
+  width: 50px; /* Замініть на бажану ширину */
+}
