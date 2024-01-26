@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
 import { UpsertProduct, ApiPath, GetAllBrands, GetGroupById, GetProduct, PhotoPath, StateInfos, Success } from '../../../utils/Constants';
 import { useParams } from 'react-router-dom';
 import { getFromServer } from '../../../utils/Queries';
@@ -14,10 +14,21 @@ import 'react-quill/dist/quill.snow.css';
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 import "./AddProductComponent.css"
+import LayoutContext from '../../LayoutContext';
 const AddProductComponent = () => {
+    const { onComponentMount, onComponentUnmount } = useContext(LayoutContext);    
     const { typeId } = useParams();
     const { productId } = useParams();
-
+    useEffect(() => {          
+        if(typeId)
+            onComponentMount("Сторінка додавання товару"); 
+        else if(productId)
+            onComponentMount("Сторінка оновлення товару");
+        return () => {    
+          onComponentUnmount();
+        };
+      }, [onComponentMount, onComponentUnmount]);
+    
     //#region data from server
     const [dataFromServer, setDataFromServer] = useState({
         attributes: [],
@@ -113,7 +124,7 @@ const AddProductComponent = () => {
                     mainAttribute: tmpMainAttributes
                 })
 
-                if (tmpObject) {
+                if (tmpObject && tmpObject.data.properties) {
 
                     setAdditionalAttribute(tmpObject.data.properties.map(a => {
                         return {
@@ -267,12 +278,15 @@ const AddProductComponent = () => {
 
     return (<div className='row add-product-main-container'>
         <div className='add-product-left-container'>
+            <div className='inner-add-product-left-container'>
+
             <p className='product-label'>Опис</p>
             <ReactQuill
                 theme="snow"
                 value={formData.description}
                 onChange={a => { setFormDataAttribute("description", a) }}
-            />
+                />
+                </div>
         </div>
         <div className='add-product-right-container'>
             <div className='flip'>

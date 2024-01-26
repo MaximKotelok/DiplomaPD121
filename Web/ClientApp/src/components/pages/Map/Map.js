@@ -15,7 +15,7 @@ export const Map = (props) => {
     const { onComponentMount, onComponentUnmount } = useContext(LayoutContext);
 
     useEffect(() => {    
-        onComponentMount();
+        onComponentMount("map");
         return () => {    
           onComponentUnmount();
         };

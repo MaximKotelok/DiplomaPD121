@@ -19,7 +19,7 @@ import BadgeComponennt from "./components/BadgesComponent/BadgeComponent";
 import TableComponent from "./components/TableComponents/TableComponent";
 // import { Container } from "reactstrap";
 
-const LayoutAdmin = () => {
+const LayoutAdmin = ({children}) => {
   return (
     <div className="app-container">
       <div className="sidebar ">
@@ -104,6 +104,7 @@ const LayoutAdmin = () => {
 
          <TableComponent/>
         </div>
+        {children}
       </div>
     </div>
   );

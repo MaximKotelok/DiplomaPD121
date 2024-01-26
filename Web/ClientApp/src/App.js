@@ -5,26 +5,33 @@ import { Layout } from './components/Layout';
 import './custom.css';
 import { setupLocation } from './utils/Location';
 import LayoutProvider from './components/LayoutProvider';
+import LayoutAdmin from './components/pages/Admin/LayoutAdmin';
 
 export default class App extends Component {
   static displayName = App.name;
 
-    async componentDidMount() {
-        await setupLocation();
-    }
+  async componentDidMount() {
+    await setupLocation();
+  }
 
   render() {
     return (
-<LayoutProvider>
-      <Layout>
+      <LayoutProvider>
         <Routes>
           {AppRoutes.map((route, index) => {
-            const { element, ...rest } = route;
-            return <Route key={index} {...rest} element={element} />;
+            const { element, Layout, ...rest } = route;
+  
+            const RenderedElement = Layout ? (
+              <Layout>{element}</Layout>
+            ) : (
+              element
+            );
+  
+            return <Route key={index} {...rest} element={RenderedElement} />;
           })}
         </Routes>
-      </Layout>
-      </LayoutProvider>            
+      </LayoutProvider>
     );
   }
+  
 }

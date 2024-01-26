@@ -17,7 +17,7 @@ export class Layout extends Component {
 
   render() {    
     return (
-        <div className={this.context.isComponentMounted?"map-container":""}>
+        <div className={this.context.stateComponentMounted == "map" ?"map-container":""}>
           <NavMenu />
           <Container tag="main">        
             {this.props.children}

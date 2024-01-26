@@ -1,10 +1,15 @@
 
 
 
-.add-product-left-container{
-    width: 50%!important;
+.add-product-left-container{    
+    padding-right: 29%;
+    padding-left: auto !important;
+    width: 100%!important;
 }
 
+.inner-add-product-left-container{
+    height: 100%;    
+}
 
 .add-product-right-container::-webkit-scrollbar-track
 {
