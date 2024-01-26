@@ -38,7 +38,10 @@ namespace Domain.Models
         public int? ProductStatusID { get; set; }
 		[ForeignKey(nameof(ProductStatusID))]
         public ProductStatus? ProductStatus { get; set; }
-        public ICollection<ProductProperty>? Properties { get; set; }   
+		public int? ProductAttributeGroupID { get; set; }
+		[ForeignKey(nameof(ProductAttributeGroupID))]
+		public ProductAttributeGroup? ProductAttributeGroup { get; set; }
+		public ICollection<ProductProperty>? Properties { get; set; }   
 		[JsonIgnore]
 		public ICollection<ConcreteProduct>? ConcreteProducts { get; set; }
 		[JsonIgnore]

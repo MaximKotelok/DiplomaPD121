@@ -24,6 +24,8 @@ namespace Domain.Models.ViewModels
 		[Required]
 		public int? CategoryID { get; set; }
 		[Required]
+		public int? ProductAttributeGroupID { get; set; }
+		[Required]
 		public string? PathToPhoto { get; set; }		
 		public List<PropertyViewModel>? Properties { get; set; }
 		

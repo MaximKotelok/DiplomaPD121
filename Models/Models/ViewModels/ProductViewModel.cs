@@ -11,7 +11,11 @@ namespace Domain.Models.ViewModels
 	{
 		public int? Id { get; set; }	
 		public string? Title { get; set; }
+		public string? ShortDescription { get; set; }
+		public int? ProductAttributeGroupID { get; set; }
 		public string? Description { get; set; }
+		public int? ManufacturerID { get; set; }
+		public int? BrandId { get; set; }
 		public int? CategoryID { get; set; }
 		public string? PathToPhoto { get; set; }
 		public int? SimilarGroupId { get; set; }

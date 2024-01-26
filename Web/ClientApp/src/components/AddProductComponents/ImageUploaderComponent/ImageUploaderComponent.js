@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
 
 import placeholder from "../../../styles/images/placeholder.png";
-const ImageUploaderComponent = ({selectedImage, setSelectedImage}) => {
+import { ApiPath } from '../../../utils/Constants';
+const ImageUploaderComponent = ({selectedImage, setSelectedImage, imageUrl}) => {
   const fileInputRef = useRef(null);
   const [preview, setPreview] = useState(null);
   const handleImageChange = (event) => {
@@ -29,7 +30,7 @@ const ImageUploaderComponent = ({selectedImage, setSelectedImage}) => {
       />
       <img
         className='product-image'
-        src={preview || placeholder}
+        src={preview || (imageUrl && ApiPath + imageUrl) || placeholder}
         alt="Selected"
         style={{ cursor: 'pointer', maxWidth: '300px', maxHeight: '300px' }}
         onClick={() => fileInputRef.current.click()}

@@ -81,7 +81,11 @@ namespace Web.Controllers
 				{
 					Id = product.Id,
 					CategoryID = product.Id,
-					Title = product.Title + product.ShortDescription,
+					Title = product.Title,
+					ShortDescription = product.ShortDescription,
+					ProductAttributeGroupID = product.ProductAttributeGroupID,
+					ManufacturerID=product.ManufacturerID,
+					BrandId = product.BrandId,
 					Description = product.Description,
 					PathToPhoto = product.PathToPhoto,
 					Properties = product.Properties.Select(a=>new PropertyViewModel { Value=a.Value, Id=a.Attribute.Id, Name=a.Attribute.Name}).ToList()
@@ -94,7 +98,7 @@ namespace Web.Controllers
 				{
 					MedicineViewModel res = new MedicineViewModel { Product = productView };
 					res.ActiveSubstance = ((Medicine)product).ActiveSubstance.Title;
-					res.ActiveSubstanceId = ((Medicine)product).ActiveSubstance.Id;
+					res.ActiveSubstanceID = ((Medicine)product).ActiveSubstance.Id;
 					return Ok(res);
 				}
 
@@ -191,8 +195,8 @@ namespace Web.Controllers
 		}
 
 
-		[HttpPost("AddProduct")]
-		public IActionResult AddProduct(PostProductViewModel postModel)
+		[HttpPost("UpsertProduct")]
+		public IActionResult UpsertProduct(PostProductViewModel postModel)
 		{
 			var props = (ICollection<ProductProperty>)_convertProperties(postModel.Properties).ToList();
 
@@ -209,13 +213,25 @@ namespace Web.Controllers
 					ManufacturerID =postModel.ManufacturerID,
 					BrandId=postModel.BrandId,
 					ActiveSubstanceID = postModel.ActiveSubstanceID.Value,
-					Properties = props
+					Properties = props,
+					ProductAttributeGroupID = postModel.ProductAttributeGroupID
 				};
 				foreach (var item in props)
 				{
+					if (postModel.Id != null)
+						_propertyService.DeleteProperty(postModel.Id.Value);
 					item.Product = medicine;				
 				}
-				_medicineService.InsertMedicine(medicine);
+				if(postModel.Id == null)
+				{
+					_medicineService.InsertMedicine(medicine);
+				}
+				else
+				{
+					
+					medicine.Id = postModel.Id.Value;
+					_medicineService.UpdateMedicine(medicine);
+				}
 				
 			}
 
@@ -230,19 +246,32 @@ namespace Web.Controllers
 					BrandId = postModel.BrandId,
 					PathToPhoto = postModel.PathToPhoto,
 					Description = postModel.Description,
-					Properties = props
+					Properties = props,
+					ProductAttributeGroupID = postModel.ProductAttributeGroupID
 				};
 				foreach (var item in props)
 				{
+					if (postModel.Id != null)
+						_propertyService.DeleteProperty(postModel.Id.Value);
 					item.Product = product;
 				}
 
-				_productService.InsertProduct(product);
 				
+				if (postModel.Id == null)
+				{
+					_productService.InsertProduct(product);
+				}
+				else
+				{
+					product.Id = postModel.Id.Value;
+					_productService.UpdateProduct(product);
+				}
+
+
 			}
 
 
-			
+
 
 			return Ok("Data inserted");
 		}

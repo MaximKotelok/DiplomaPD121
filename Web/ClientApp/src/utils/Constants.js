@@ -13,5 +13,12 @@ export const GetRecomendedCategory = "Category/GetRecomendedCategory";
 export const GetRecomendedCategoryById = "Category/GetRecomendedCategoryById";
 export const GetCategoriesForProductAdd = "Category/GetCategoriesForProductAdd";
 export const GetGroupById = "ProductAttributeGroup/get";
-export const AddProduct = "Product/AddProduct";
+export const UpsertProduct = "Product/UpsertProduct";
 export const GetProduct = "Product/GetById";
+
+
+export const StateInfos = {
+    LOADING: 'loading',
+    ERROR: 'error',
+    LOADED: 'LOADED'
+};

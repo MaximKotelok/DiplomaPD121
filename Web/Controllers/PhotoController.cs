@@ -37,7 +37,7 @@ namespace Web.Controllers
 		}
 
 		[HttpPost("Update")]
-		public IActionResult UpdatePhoto(string relativePath, IFormFile file)
+		public IActionResult UpdatePhoto([FromForm] string relativePath, [FromForm] IFormFile file)
 		{
 			if (!relativePath.IsNullOrEmpty())
 			{
@@ -53,7 +53,7 @@ namespace Web.Controllers
 			{
 				return NoContent();
 			}
-			return AddPhoto(relativePath: Path.GetDirectoryName(relativePath), file);
+			return AddPhoto(Path.GetDirectoryName(relativePath), file);
 		}
 
 		[HttpPost("Delete")]
