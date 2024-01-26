@@ -4,11 +4,12 @@ import myImage from './search.svg'; // Замініть шлях імпорту 
 
 const SearchElement = () => {
     return (
-        <div className="input-group mb-3 center back-serach-bar">
+        // <div className="input-group mb-3 center back-serach-bar">
+        <div className="input-group  center back-serach-bar">
             <button className="social-btn" type="button" >
                 <img src={myImage} width="20px"  alt="My Icon" className="icon" />
             </button>
-            <input type="text" className="search-bar" placeholder="пошук..." aria-label="Example text with button addon" aria-describedby="button-addon1" />
+            <input  type="text" className="my-search-bar" placeholder="пошук..." aria-label="Example text with button addon" aria-describedby="button-addon1" />
         </div>
     );
 };

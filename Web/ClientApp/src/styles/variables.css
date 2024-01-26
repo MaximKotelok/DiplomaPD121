@@ -1,3 +1,9 @@
 :root {
     --standart-font: 'Mulish', sans-serif;
   }
+
+
+
+  #root{
+    height: 100%;
+  }
