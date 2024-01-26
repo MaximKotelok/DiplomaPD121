@@ -17,7 +17,7 @@ namespace Web.Controllers
 			_hostingEnvironment = hostingEnvironment;
 		}
 		[HttpPost("Add")]
-		public IActionResult AddPhoto(string relativePath, [FromForm] IFormFile file)
+		public IActionResult AddPhoto([FromForm] string? relativePath, [FromForm] IFormFile? file)
 		{
 			if (file != null)
 			{
@@ -37,7 +37,7 @@ namespace Web.Controllers
 		}
 
 		[HttpPost("Update")]
-		public IActionResult UpdatePhoto(string relativePath, IFormFile file)
+		public IActionResult UpdatePhoto([FromForm] string relativePath, [FromForm] IFormFile file)
 		{
 			if (!relativePath.IsNullOrEmpty())
 			{
@@ -53,7 +53,7 @@ namespace Web.Controllers
 			{
 				return NoContent();
 			}
-			return AddPhoto(relativePath: Path.GetDirectoryName(relativePath), file);
+			return AddPhoto(Path.GetDirectoryName(relativePath), file);
 		}
 
 		[HttpPost("Delete")]

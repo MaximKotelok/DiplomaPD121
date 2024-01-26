@@ -6,6 +6,7 @@ import LoginForm from "./components/Auth/LoginForm";
 import ChooseACategoryComponent from "./components/AddProductComponents/ChooseACategoryComponent/ChooseACategoryComponent";
 import ConfirmEmail from "./components/Auth/ConfirmEmail";
 
+import AddProductComponent from "./components/AddProductComponents/AddProductComponent/AddProductComponent";
 const AppRoutes = [
   {
     index: true,
@@ -30,6 +31,14 @@ const AppRoutes = [
     {
         path: '/ChooseACategory',
         element: <ChooseACategoryComponent />
+    },
+    {
+        path: '/AddProduct/:typeId',
+        element: <AddProductComponent />
+    },
+    {
+        path: '/UpdateProduct/:productId',
+        element: <AddProductComponent />
     },
     {
         path: '/confirm-email',

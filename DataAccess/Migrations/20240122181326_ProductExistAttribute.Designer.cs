@@ -4,6 +4,7 @@ using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240122181326_ProductExistAttribute")]
+    partial class ProductExistAttribute
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,21 +46,6 @@ namespace DataAccess.Migrations
                         {
                             Id = 1,
                             Title = "аскорбінова кислота"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Title = "парацетамол"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Title = "кофеїн"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Title = "ацетилсаліцилова кислота"
                         });
                 });
 
@@ -686,9 +674,6 @@ namespace DataAccess.Migrations
                     b.Property<string>("PathToPhoto")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProductAttributeGroupID")
-                        .HasColumnType("int");
-
                     b.Property<int?>("ProductStatusID")
                         .HasColumnType("int");
 
@@ -710,8 +695,6 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ManufacturerID");
 
-                    b.HasIndex("ProductAttributeGroupID");
-
                     b.HasIndex("ProductStatusID");
 
                     b.HasIndex("SeriesId");
@@ -729,7 +712,6 @@ namespace DataAccess.Migrations
                             Description = "..",
                             ManufacturerID = 3,
                             PathToPhoto = "/images/product/Тонометр.jpg",
-                            ProductAttributeGroupID = 4,
                             SeriesId = 1,
                             ShortDescription = "Медхауз Свіс ГмбХ, ТОВ",
                             Title = "Тонометр ProMedica Classic автоматичний"
@@ -742,7 +724,6 @@ namespace DataAccess.Migrations
                             Description = "..",
                             ManufacturerID = 3,
                             PathToPhoto = "/images/product/Глюкометр.jpg",
-                            ProductAttributeGroupID = 4,
                             SeriesId = 1,
                             ShortDescription = "Infopia Co. Ltd.",
                             Title = "Глюкометр GluNeo Lite"
@@ -1682,7 +1663,6 @@ namespace DataAccess.Migrations
                             Description = "...",
                             ManufacturerID = 3,
                             PathToPhoto = "/images/product/Аскорбінка 1.webp",
-                            ProductAttributeGroupID = 2,
                             SeriesId = 1,
                             ShortDescription = "таблетки зі смак. апельсину по 25 мг №10 в етикет.",
                             Title = "Аскорбінка-КВ",
@@ -1696,7 +1676,6 @@ namespace DataAccess.Migrations
                             Description = "..",
                             ManufacturerID = 3,
                             PathToPhoto = "/images/product/Аскорбінка 2.webp",
-                            ProductAttributeGroupID = 2,
                             SeriesId = 1,
                             ShortDescription = "таблетки зі смак. манго по 25 мг №10 в етикет.",
                             Title = "Аскорбінка-КВ",
@@ -1710,7 +1689,6 @@ namespace DataAccess.Migrations
                             Description = "..",
                             ManufacturerID = 3,
                             PathToPhoto = "/images/product/Аскорбінка 3.jpg",
-                            ProductAttributeGroupID = 2,
                             SeriesId = 1,
                             ShortDescription = "таблетки зі смак. полуниці по 25 мг №10 в етикет.",
                             Title = "Аскорбінка-КВ",
@@ -1724,7 +1702,6 @@ namespace DataAccess.Migrations
                             Description = "..",
                             ManufacturerID = 3,
                             PathToPhoto = "/images/product/Аскорбінка 4.jpg",
-                            ProductAttributeGroupID = 2,
                             SeriesId = 1,
                             ShortDescription = "таблетки зі смак. тутті-фруті по 25 мг №10 в етикет.",
                             Title = "Аскорбінка-КВ",
@@ -1815,10 +1792,6 @@ namespace DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("ManufacturerID");
 
-                    b.HasOne("Domain.Models.ProductAttributeGroup", "ProductAttributeGroup")
-                        .WithMany()
-                        .HasForeignKey("ProductAttributeGroupID");
-
                     b.HasOne("Domain.Models.ProductStatus", "ProductStatus")
                         .WithMany()
                         .HasForeignKey("ProductStatusID");
@@ -1832,8 +1805,6 @@ namespace DataAccess.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Manufacturer");
-
-                    b.Navigation("ProductAttributeGroup");
 
                     b.Navigation("ProductStatus");
 

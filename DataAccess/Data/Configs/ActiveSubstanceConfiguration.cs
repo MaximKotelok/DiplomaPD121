@@ -13,7 +13,11 @@ namespace Repository.Data.Configs
 	{
 		public void Configure(EntityTypeBuilder<ActiveSubstance> builder)
 		{
-			builder.HasData(new ActiveSubstance { Id = 1, Title = "аскорбінова кислота" });
+			builder.HasData(new ActiveSubstance { Id = 1, Title = "аскорбінова кислота" },
+							new ActiveSubstance { Id = 2, Title = "парацетамол" },
+							new ActiveSubstance { Id = 3, Title = "кофеїн" },
+							new ActiveSubstance { Id = 4, Title = "ацетилсаліцилова кислота" }
+			);
 
 		}
 	}

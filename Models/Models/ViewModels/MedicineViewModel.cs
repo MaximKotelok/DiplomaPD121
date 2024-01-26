@@ -10,6 +10,6 @@ namespace Domain.Models.ViewModels
 	{
 		public ProductViewModel? Product { get; set; }
 		public string? ActiveSubstance { get; set; }
-		public int ActiveSubstanceId { get; set; }
+		public int ActiveSubstanceID { get; set; }
 	}
 }

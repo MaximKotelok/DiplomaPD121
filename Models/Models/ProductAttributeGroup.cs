@@ -11,5 +11,6 @@ namespace Domain.Models
 	{
 		public string? Name { get; set; }	
 		public IEnumerable<ProductAttribute>? AttributesInGroup { get; set; }
+		public IEnumerable<ProductExistAttribute>? ExistAttributes { get; set; }
 	}
 }

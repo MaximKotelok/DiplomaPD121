@@ -27,6 +27,7 @@ namespace DataAccess.Data
         public DbSet<City>? Citys { get; set; }
         public DbSet<ProductAttribute>? Attributes { get; set; }
         public DbSet<ProductAttributeGroup>? ProductAttributeGroups { get; set; }
+        public DbSet<ProductExistAttribute>? ProductExistAttributes { get; set; }
         public DbSet<ProductProperty>? Properties { get; set; }
         public DbSet<SimilarProductGroup>? SimilarProductGroups { get; set; }
         public DbSet<SimilarProductItem>? SimilarProductItems { get; set; }
@@ -79,6 +80,8 @@ namespace DataAccess.Data
             new SimilarItemConfiguration().Configure(modelBuilder.Entity<SimilarProductItem>());                        
 
 			new ConcreteProductConfiguration().Configure(modelBuilder.Entity<ConcreteProduct>());
+			
+            new ProductExistAttributeConfiguration().Configure(modelBuilder.Entity<ProductExistAttribute>());
 		}
     }
 }

@@ -17,9 +17,10 @@ namespace Web.Controllers
 	public class ProductAttributeGroupController : ControllerBase
 	{
 		private readonly IAttributeGroupService _service;
+		
 
 		public ProductAttributeGroupController(IAttributeGroupService service) {
-			this._service = service;
+			this._service = service;		
 		}
 
 		[HttpGet("")]
@@ -34,7 +35,22 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-		
+
+		[HttpGet("get")]
+		//[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		public IActionResult GetGroupById(int id)
+		{
+			var result = _service.GetProductAttributeGroup(
+				a => a.Id == id,
+				includeProperties: "ExistAttributes,AttributesInGroup") ;
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+
+
 
 	}
 }

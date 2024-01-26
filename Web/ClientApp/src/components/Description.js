@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { splitByClass, getTagContentFromString, wrapTagIntoDiv } from '../utils/Functions';
 import { Link, Element } from 'react-scroll';
-export function Description({ content }) {
+export function Description({ children, separeteBy }) {
 
-    const html = wrapTagIntoDiv(content, "h1", "description-item");
-    const subContent = splitByClass(html, "h1", "description-item");
+    if(!separeteBy)
+        return <div>{children}</div>;
+
+    const html = wrapTagIntoDiv(children, separeteBy, "description-item");
+    const subContent = splitByClass(html, separeteBy, "description-item");
     const contentsOfB = getTagContentFromString(html, "h1");
 
     const ids = [];
@@ -14,7 +17,7 @@ export function Description({ content }) {
         const id = `b_${i}_${contentsOfB[i].replace(/\s+/g, '_')}`;
         ids.push({ id: id, name: contentsOfB[i] });
     }
-
+    
 
     return (
         <div>

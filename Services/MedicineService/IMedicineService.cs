@@ -10,10 +10,10 @@ namespace Services.MedicineService
 {
 	public interface IMedicineService
 	{
-	/*	IEnumerable<Medicine> GetAllMedicines(Expression<Func<Medicine, bool>>? filter = null, string? includeProperties = null);
-		Medicine? GetMedicine(Expression<Func<Medicine, bool>> filter, string? includeProperties = null);
+		IEnumerable<Medicine> GetAllMedicines(Expression<Func<Medicine, bool>>? filter = null, string? includeProperties = null);
+		Medicine? GetMedicine(Expression<Func<Medicine, bool>	> filter, string? includeProperties = null);
 		void InsertMedicine(Medicine pharmacy);
 		void UpdateMedicine(Medicine pharmacy);
-		void DeleteMedicine(int id);*/
+		void DeleteMedicine(int id);
 	}
 }

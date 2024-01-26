@@ -10,9 +10,9 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Services.MedicineService
 {
-    public class MedicineService //: IMedicineService
+    public class MedicineService : IMedicineService
 	{
-		/*private IRepository<Medicine> _repository;
+		private IRepository<Medicine> _repository;
 
 		public MedicineService(IRepository<Medicine> repository)
 		{
@@ -45,6 +45,6 @@ namespace Services.MedicineService
 		{
 			_repository.Update(pharmacy);
 		}
-*/
+
 	}
 }

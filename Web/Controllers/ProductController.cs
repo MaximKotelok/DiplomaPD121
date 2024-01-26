@@ -14,6 +14,7 @@ using Services.ConcreteProductService;
 using Services.MedicineService;
 using Services.PharmacyCompanyService;
 using Services.PropertyService;
+using System.Collections;
 using System.Collections.Generic;
 using Utility;
 
@@ -24,7 +25,7 @@ namespace Web.Controllers
 	public class ProductController : ControllerBase
 	{
 		private readonly IProductService _productService;
-		//private readonly IMedicineService _medicineService;
+		private readonly IMedicineService _medicineService;
 		private readonly IAttributeService _attributeService;
 		private readonly IPropertyService _propertyService;
 		private readonly ICityService _cityService;
@@ -35,12 +36,13 @@ namespace Web.Controllers
 			 IAttributeService attributeService,
 			 IPropertyService propertyService,
 			ICityService cityService,
-			IConcreteProductService concreteProductService
+			IConcreteProductService concreteProductService,
+			IMedicineService medicineService
 			)
 		{
 			this._productService = productService;
 			this._cityService = cityService;
-			//this._medicineService = medicineService;
+			this._medicineService = medicineService;
 			this._attributeService = attributeService;
 			this._propertyService = propertyService;
 			this._concreteProductService = concreteProductService;
@@ -53,14 +55,14 @@ namespace Web.Controllers
 			if (!properties.IsNullOrEmpty())
 			{
 
-				var names = properties.Select(a => a.Name).ToList();
+				var names = properties.Select(a => a.Id).ToList();
 				IEnumerable<ProductAttribute> productsAttributes = _attributeService
-					.GetAllAttributes(a => names.Contains(a.Name));
+					.GetAllAttributes(a => names.Contains(a.Id));
 
 				if (productsAttributes.Count() != properties.Count())
 					throw new Exception();
 
-				return productsAttributes.Select(a => new ProductProperty { Attribute = a, Value = properties.FirstOrDefault(b => b.Name == a.Name).Value });
+				return productsAttributes.Select(a => new ProductProperty { Attribute = a, Value = properties.FirstOrDefault(b => b.Id == a.Id).Value });
 			}
 			return new List<ProductProperty>();
 
@@ -68,10 +70,10 @@ namespace Web.Controllers
 		}
 
 
-		[HttpGet("{id}")]
+		[HttpGet("GetById")]
 		public IActionResult GetProduct(int id)
 		{
-			Product product = _productService.GetProduct(a => a.Id == id, includeProperties: "Properties,Properties,Properties.Attribute,ActiveSubstance");
+			Product product = _productService.GetProduct(a => a.Id == id, includeProperties: "Properties,Properties,Properties.Attribute");
 
 			if (product is not null)
 			{
@@ -79,22 +81,26 @@ namespace Web.Controllers
 				{
 					Id = product.Id,
 					CategoryID = product.Id,
-					Title = product.Title + product.ShortDescription,
+					Title = product.Title,
+					ShortDescription = product.ShortDescription,
+					ProductAttributeGroupID = product.ProductAttributeGroupID,
+					ManufacturerID=product.ManufacturerID,
+					BrandId = product.BrandId,
 					Description = product.Description,
 					PathToPhoto = product.PathToPhoto,
-					Properties = product.Properties.Select(a=>new PropertyViewModel { Value=a.Value, Name=a.Attribute.Name}).ToList()
+					Properties = product.Properties.Select(a=>new PropertyViewModel { Value=a.Value, Id=a.Attribute.Id, Name=a.Attribute.Name}).ToList()
 
-				};				
+				};
 
 
-
-				//if (product.ActiveSubstanceID is not null)
-				/*{
+				product = _medicineService.GetMedicine(a => a.Id == id, includeProperties: "ActiveSubstance");
+				if (product is not null)
+				{
 					MedicineViewModel res = new MedicineViewModel { Product = productView };
 					res.ActiveSubstance = ((Medicine)product).ActiveSubstance.Title;
-					res.ActiveSubstanceId = ((Medicine)product).ActiveSubstance.Id;
+					res.ActiveSubstanceID = ((Medicine)product).ActiveSubstance.Id;
 					return Ok(res);
-				}*/
+				}
 
 				return Ok(productView);
 			}
@@ -189,31 +195,85 @@ namespace Web.Controllers
 		}
 
 
-		[HttpPost("AddMedicine")]
-		public IActionResult AddMedicine(MedicineViewModel medicineViewModel)
-		{/*
-			var props = _convertProperties(medicineViewModel.Product.Properties);
+		[HttpPost("UpsertProduct")]
+		public IActionResult UpsertProduct(PostProductViewModel postModel)
+		{
+			var props = (ICollection<ProductProperty>)_convertProperties(postModel.Properties).ToList();
 
 
-			Product product = new Product
-			{
-				Title = medicineViewModel.Product.Title,
-				CategoryID = medicineViewModel.Product.CategoryID,
-				PathToPhoto = medicineViewModel.Product.PathToPhoto,
-				Description = medicineViewModel.Product.Description,
-				ActiveSubstanceID = medicineViewModel.ActiveSubstanceId
-			};
-
-			_productService.InsertProduct(product);
-
-
-			foreach (var item in props)
-			{
-				item.Product = product;
-				_propertyService.InsertProperty(item);
+			if(postModel.ActiveSubstanceID is not null)
+			{				
+				Medicine medicine = new Medicine
+				{
+					Title = postModel.Title,
+					CategoryID = postModel.CategoryID,
+					PathToPhoto = postModel.PathToPhoto,
+					Description = postModel.Description,
+					ShortDescription = postModel.ShortDescription,
+					ManufacturerID =postModel.ManufacturerID,
+					BrandId=postModel.BrandId,
+					ActiveSubstanceID = postModel.ActiveSubstanceID.Value,
+					Properties = props,
+					ProductAttributeGroupID = postModel.ProductAttributeGroupID
+				};
+				foreach (var item in props)
+				{
+					if (postModel.Id != null)
+						_propertyService.DeleteProperty(postModel.Id.Value);
+					item.Product = medicine;				
+				}
+				if(postModel.Id == null)
+				{
+					_medicineService.InsertMedicine(medicine);
+				}
+				else
+				{
+					
+					medicine.Id = postModel.Id.Value;
+					_medicineService.UpdateMedicine(medicine);
+				}
+				
 			}
-*/
-			return BadRequest("Old path");
+
+			else
+			{
+				Product product = new Product
+				{
+					Title = postModel.Title,
+					ShortDescription = postModel.ShortDescription,
+					CategoryID = postModel.CategoryID,
+					ManufacturerID = postModel.ManufacturerID,
+					BrandId = postModel.BrandId,
+					PathToPhoto = postModel.PathToPhoto,
+					Description = postModel.Description,
+					Properties = props,
+					ProductAttributeGroupID = postModel.ProductAttributeGroupID
+				};
+				foreach (var item in props)
+				{
+					if (postModel.Id != null)
+						_propertyService.DeleteProperty(postModel.Id.Value);
+					item.Product = product;
+				}
+
+				
+				if (postModel.Id == null)
+				{
+					_productService.InsertProduct(product);
+				}
+				else
+				{
+					product.Id = postModel.Id.Value;
+					_productService.UpdateProduct(product);
+				}
+
+
+			}
+
+
+
+
+			return Ok("Data inserted");
 		}
 
 
