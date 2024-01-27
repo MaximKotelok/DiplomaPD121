@@ -17,7 +17,7 @@ namespace Web.Controllers
 			_hostingEnvironment = hostingEnvironment;
 		}
 		[HttpPost("Add")]
-		public IActionResult AddPhoto([FromForm] string? relativePath, [FromForm] IFormFile? file)
+		public IActionResult AddPhoto([FromForm] string relativePath, [FromForm] IFormFile? file)
 		{
 			if (file != null)
 			{
@@ -53,7 +53,7 @@ namespace Web.Controllers
 			{
 				return NoContent();
 			}
-			return AddPhoto(Path.GetDirectoryName(relativePath), file);
+			return AddPhoto(Path.GetDirectoryName(relativePath)!, file);
 		}
 
 		[HttpPost("Delete")]

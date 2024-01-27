@@ -21,7 +21,7 @@ namespace Services.BrandService
 
 		public void DeleteBrand(int id)
 		{
-			Brand brand = _repository.Get(a => a.Id == id);
+			Brand brand = _repository.Get(a => a.Id == id)!;
 			_repository.Remove(brand);
 			_repository.SaveChanges();
 		}

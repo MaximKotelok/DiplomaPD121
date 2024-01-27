@@ -16,7 +16,7 @@ const ChooseACategoryComponent = () => {
             return <SquareCardComponent 
             title={item.title} 
             image={item.pathToPhoto?`${ApiPath}${item.pathToPhoto}`:null}
-            linkTo={`/ChooseType/${item.id}`}
+            linkTo={`/ChooseAType/${item.id}`}
             imageHeight={100}
             />
         

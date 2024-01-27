@@ -55,7 +55,7 @@ namespace Web.Controllers
 		[HttpGet("GetCityByStartOfTitle/{startOfTitle}")]
 		public IActionResult GetCityByStartOfTitle(string startOfTitle)
 		{
-			var result = _service.GetAllCitys(a => a.NameCity.StartsWith(startOfTitle));
+			var result = _service.GetAllCitys(a => a.NameCity!.StartsWith(startOfTitle));
 			if (result is not null)
 			{
 				return Ok(result);

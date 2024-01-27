@@ -10,6 +10,7 @@ import AddProductComponent from "./components/AddProductComponents/AddProductCom
 import { Layout } from "./components/Layout";
 import LayoutAdmin from "./components/pages/Admin/LayoutAdmin";
 import LayoutPharma from "./components/pages/Pharma/LayoutPharma";
+import ChooseATypeComponent from "./components/AddProductComponents/ChooseATypeComponent/ChooseATypeComponent";
 const AppRoutes = [
     {
         index: true,
@@ -39,19 +40,22 @@ const AppRoutes = [
     {
         path: '/ChooseACategory',
         element: <ChooseACategoryComponent />,
-        Layout: Layout
+        Layout: LayoutPharma
     },
     {
-        path: '/AddProduct/:typeId',
+        path: '/ChooseAType/:categoryId',
+        element: <ChooseATypeComponent />,
+        Layout: LayoutPharma
+    },
+    {
+        path: '/AddProduct/:categoryId/:typeId',
         element: <AddProductComponent  />,
-        Layout: LayoutPharma,
-        layoutProps: { title: "Details Page" } 
+        Layout: LayoutPharma
     },
     {
         path: '/UpdateProduct/:productId',
         element: <AddProductComponent />,
-        Layout: LayoutPharma,
-        layoutProps: { title: "Details Page" } 
+        Layout: LayoutPharma
     },
     {
         path: '/confirm-email',

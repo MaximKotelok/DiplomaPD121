@@ -62,7 +62,7 @@ namespace Web.Controllers
 				if (productsAttributes.Count() != properties.Count())
 					throw new Exception();
 
-				return productsAttributes.Select(a => new ProductProperty { Attribute = a, Value = properties.FirstOrDefault(b => b.Id == a.Id).Value });
+				return productsAttributes.Select(a => new ProductProperty { Attribute = a, Value = properties!.FirstOrDefault(b => b.Id == a.Id)!.Value });
 			}
 			return new List<ProductProperty>();
 
@@ -73,7 +73,7 @@ namespace Web.Controllers
 		[HttpGet("GetById")]
 		public IActionResult GetProduct(int id)
 		{
-			Product product = _productService.GetProduct(a => a.Id == id, includeProperties: "Properties,Properties,Properties.Attribute");
+			Product product = _productService!.GetProduct(a => a.Id == id, includeProperties: "Properties,Properties,Properties.Attribute")!;
 
 			if (product is not null)
 			{
@@ -88,17 +88,17 @@ namespace Web.Controllers
 					BrandId = product.BrandId,
 					Description = product.Description,
 					PathToPhoto = product.PathToPhoto,
-					Properties = product.Properties.Select(a=>new PropertyViewModel { Value=a.Value, Id=a.Attribute.Id, Name=a.Attribute.Name}).ToList()
+					Properties = product.Properties!.Select(a=>new PropertyViewModel { Value=a.Value, Id=a.Attribute!.Id, Name=a.Attribute.Name}).ToList()
 
 				};
 
 
-				product = _medicineService.GetMedicine(a => a.Id == id, includeProperties: "ActiveSubstance");
+				product = _medicineService.GetMedicine(a => a.Id == id, includeProperties: "ActiveSubstance")!;
 				if (product is not null)
 				{
 					MedicineViewModel res = new MedicineViewModel { Product = productView };
-					res.ActiveSubstance = ((Medicine)product).ActiveSubstance.Title;
-					res.ActiveSubstanceID = ((Medicine)product).ActiveSubstance.Id;
+					res.ActiveSubstance = ((Medicine)product).ActiveSubstance!.Title;
+					res.ActiveSubstanceID = ((Medicine)product).ActiveSubstance!.Id;
 					return Ok(res);
 				}
 
@@ -136,7 +136,7 @@ namespace Web.Controllers
 					new HomeProductViewModel
 					{
 						Id = a.Id,
-						Manufacturer = a.Manufacturer.Name,
+						Manufacturer = a.Manufacturer!.Name,
 						Title = a.Title,
 						ShortDescription = a.ShortDescription,
 						PathToPhoto = a.PathToPhoto
@@ -166,7 +166,7 @@ namespace Web.Controllers
 					new HomeProductViewModel
 					{
 						Id = a.Id,
-						Manufacturer = a.Manufacturer.Name,
+						Manufacturer = a!.Manufacturer!.Name,
 						Title = a.Title,
 						ShortDescription = a.ShortDescription,
 						PathToPhoto = a.PathToPhoto
@@ -187,7 +187,7 @@ namespace Web.Controllers
 				var result = _concreteProductService.GetAllConcreteProducts(
 					a => a.ProductID == productId
 					&&
-					a.Pharmacy.CityID == city.Id, "Pharmacy");
+					a.Pharmacy!.CityID == city.Id, "Pharmacy");
 
 				return Ok(result);
 			}
@@ -198,7 +198,7 @@ namespace Web.Controllers
 		[HttpPost("UpsertProduct")]
 		public IActionResult UpsertProduct(PostProductViewModel postModel)
 		{
-			var props = (ICollection<ProductProperty>)_convertProperties(postModel.Properties).ToList();
+			var props = (ICollection<ProductProperty>)_convertProperties(postModel!.Properties!).ToList();
 
 
 			if(postModel.ActiveSubstanceID is not null)
@@ -269,9 +269,6 @@ namespace Web.Controllers
 
 
 			}
-
-
-
 
 			return Ok("Data inserted");
 		}

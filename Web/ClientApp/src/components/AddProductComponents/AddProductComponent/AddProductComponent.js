@@ -17,6 +17,7 @@ import "./AddProductComponent.css"
 import LayoutContext from '../../LayoutContext';
 const AddProductComponent = () => {
     const { onComponentMount, onComponentUnmount } = useContext(LayoutContext);    
+    const { categoryId } = useParams();
     const { typeId } = useParams();
     const { productId } = useParams();
     useEffect(() => {          

@@ -12,13 +12,14 @@ import Filter from "./imgs/tabler-icon-filter.svg";
 // import LogoSvg from "./imgs/";
 // import LogoSvg from "./imgs/";
 
-import { ReactComponent as Logo } from "./imgs/LogoCapsula.svg";
+import { ReactComponent as Logo } from "../../../styles/images/LogoCapsula.svg";
 import SearchElement from "../../Header/SearchComponent";
 import AvatarComponennt from "./components/AvatarComponent/AvatarComponennt";
 import BadgeComponennt from "./components/BadgesComponent/BadgeComponent";
 import TableComponent from "./components/TableComponents/TableComponent";
 import LayoutContext from "../../LayoutContext";
 import { useContext } from 'react';
+
 // import { Container } from "reactstrap";
 
 const LayoutPharma = ({ title, children }) => {
@@ -29,7 +30,9 @@ const LayoutPharma = ({ title, children }) => {
       <div className="row custom-border-bottom d-flex justify-content-beetween align-items-center w-100">
         <div className="col-2 custom-border-right">
           <div className="app-icon-pharma">
-            <Logo height={40} className="logo-pharma" />
+            <a href="/">
+              <Logo height={40} fill="black" className="logo-pharma" />
+            </a>
           </div>
         </div>
         <div className="col-3">

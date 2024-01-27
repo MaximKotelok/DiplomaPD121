@@ -6,7 +6,7 @@ import IconButton from './Header/IconButton';
 import CatalogIcon from './Header/catalog_icon_215654.ico';
 import SearchElement from './Header/SearchComponent';
 import ServiceIcon from './Header/service.svg';
-
+import { ReactComponent as Logo } from "../styles/images/LogoCapsula.svg"
 //import CatalogIcon from './catalog_icon_215654.svg';
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
@@ -32,7 +32,7 @@ export class NavMenu extends Component {
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" container light>
-          <NavbarBrand tag={Link} to="/"><h1>CAPSULA</h1></NavbarBrand>
+          <NavbarBrand tag={Link} to="/"><Logo height={40} fill="black" className="logo-pharma" /></NavbarBrand>
           <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
             <ul className="navbar-nav flex-grow">

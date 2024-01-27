@@ -14,7 +14,7 @@ namespace Repository.Data.Configs
 		public void Configure(EntityTypeBuilder<ProductAttributeGroup> builder)
 		{
 			builder.HasData(
-				new ProductAttributeGroup { Id = 1, Name = "Загальні" },
+				new ProductAttributeGroup { Id = 1, Name = "Загальні", IsDisableShow=true },
 				new ProductAttributeGroup { Id = 2, Name = "Таблетки" },
 				new ProductAttributeGroup { Id = 3, Name = "Товари для тварин" },
 				new ProductAttributeGroup { Id = 4, Name = "Медична техніка" }

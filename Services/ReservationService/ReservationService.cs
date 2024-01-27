@@ -22,7 +22,7 @@ namespace Services.ReservationService
 		
 		public void DeleteReservation(int id)
 		{
-			Reservation reservation = _repository.Get(a=>a.Id==id);
+			Reservation reservation = _repository.Get(a=>a.Id==id)!;
 			_repository.Remove(reservation);
 			_repository.SaveChanges();
 		}

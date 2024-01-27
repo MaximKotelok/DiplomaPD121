@@ -23,6 +23,19 @@ namespace Web.Controllers
 			this._service = service;		
 		}
 
+		[HttpGet("GetGroupsForProductAdd")]
+		//[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		public IActionResult GetGroupsForProductAdd(string title, int count)
+		{
+			var result = _service.GetAllProductAttributeGroups(a=>a.Name.Contains(title) && 
+			(a.IsDisableShow == null || !a.IsDisableShow.Value)).Take(count);
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+
 		[HttpGet("")]
 		//[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
 		public IActionResult GetAllGroups()

@@ -22,7 +22,7 @@ namespace Services.ManufacturerService
 
 		public void DeleteManufacturer(int id)
 		{
-			Manufacturer manufacturer = _repository.Get(a => a.Id == id);
+			Manufacturer manufacturer = _repository.Get(a => a.Id == id)!;
 			_repository.Remove(manufacturer);
 			_repository.SaveChanges();
 

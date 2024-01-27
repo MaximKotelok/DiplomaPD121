@@ -22,7 +22,7 @@ namespace Services.CountryService
 
 		public void DeleteCountry(int id)
 		{
-			Country country = _repository.Get(a => a.Id == id);
+			Country country = _repository.Get(a => a.Id == id)!;
 			_repository.Remove(country);
 			_repository.SaveChanges();
 		}

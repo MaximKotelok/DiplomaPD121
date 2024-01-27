@@ -30,7 +30,7 @@ namespace Web.Controllers
 
 			if (result is not null)
 			{
-				return Ok(new { result=result.SubCategories.Take(count), id});
+				return Ok(new { result=result!.SubCategories!.Take(count), id});
 			}
 			return BadRequest("No records found");
 		}
@@ -45,8 +45,8 @@ namespace Web.Controllers
 			if (result is not null && result.Count()>0)
 			{
 				var randomId = result.ElementAt(new Random().Next(0, result.Count())).Id;
-				var randomRes = _service.GetCategory(a => a.Id == randomId,
-					includeProperties: "SubCategories").SubCategories.Take(count);
+				var randomRes = _service!.GetCategory(a => a.Id == randomId,
+					includeProperties: "SubCategories")!.SubCategories!.Take(count);
 				return Ok(new { result=randomRes, id=randomId });
 			}
 			return BadRequest("No records found");
@@ -69,7 +69,7 @@ namespace Web.Controllers
 			var result = _service.GetCategory(x => x.ParentCategory == null, "SubCategories" );
 			if (result is not null)
 			{
-				return Ok(result.SubCategories.Take(count));
+				return Ok(result!.SubCategories!.Take(count));
 			}
 			return BadRequest("No records found");
 		}
@@ -77,7 +77,7 @@ namespace Web.Controllers
 		[HttpGet("GetCategoriesForProductAdd")]
 		public IActionResult GetCategoriesForProductAdd(string title, int count)
 		{
-			var result = _service.GetAllCategories(a => a.Title.Contains(title) && a.CanHasProducts == true).Take(count);
+			var result = _service.GetAllCategories(a => a!.Title!.Contains(title) && a.CanHasProducts == true).Take(count);
 			if (result is not null)
 			{
 				return Ok(result);
@@ -111,27 +111,23 @@ namespace Web.Controllers
 		public IActionResult GetSubCategories(int id)
 		{
 			var category = _service.GetCategory(a => a.Id == id, "SubCategories");
-			IEnumerable<Category> categories = null;
+			IEnumerable<Category> categories = new List<Category>();
 			if (category is not null)
-				categories = category?.SubCategories;
-			if (categories is not null)
-			{
-				return Ok(categories);
-			}
-			return BadRequest("No records found");
+				categories = category?.SubCategories!;
+			
+			return Ok(categories);
+			
 		}
 		[HttpGet("GetProductsFromCategory/{id}")]
 		public IActionResult GetProductsFromCategory(int id)
 		{
 			var category = _service.GetCategory(a => a.Id == id, "Products");
-			IEnumerable<Product> products = null;
+			IEnumerable<Product> products = new List<Product>();
 			if (category is not null)
-				products = category?.Products;
-			if (products is not null)
-			{
-				return Ok(products);
-			}
-			return BadRequest("No records found");
+				products = category?.Products!;
+			
+			return Ok(products);
+					
 		}
 
 		
@@ -143,7 +139,7 @@ namespace Web.Controllers
 
 			Category? category = _service.GetCategory(x => x.Id == id, "ParentCategory");
 			if (category == null)
-				return null;
+				return BadRequest("Category not found");;
 
 			path.Add(category);
 
@@ -151,7 +147,7 @@ namespace Web.Controllers
 			{
 				category = _service.GetCategory(x => x.Id == category.ParentCategoryID, "ParentCategory");
 
-				path.Insert(0, category);
+				path.Insert(0, category!);
 			}
 			
 			if (path is not null)

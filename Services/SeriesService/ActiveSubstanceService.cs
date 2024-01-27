@@ -21,7 +21,7 @@ namespace Services.SeriesService
 		
 		public void DeleteSeries(int id)
 		{
-			Series series = _repository.Get(a => a.Id == id);
+			Series series = _repository.Get(a => a.Id == id)!;
 			_repository.Remove(series);
 			_repository.SaveChanges();			
 		}

@@ -51,7 +51,7 @@ namespace Web.Controllers
 					{
 						Name = result.Name,
 						SimilarBy = result.SimilarBy,
-						Products = result.Similar.Select(a => 
+						Products = result!.Similar!.Select(a => 
 						new SimilarProductViewModel {
 							ProductId = a.Id, 
 							TitleOfSimilar=a.Title}
@@ -73,7 +73,7 @@ namespace Web.Controllers
 			};
 
 
-            foreach (var item in viewModel.Products)
+            foreach (var item in viewModel!.Products!)
             {
 				var product = _productService.GetProduct(a => a.Id == item.ProductId, includeProperties: "SimilarProductItems");
 				if(product is not null)
@@ -83,7 +83,7 @@ namespace Web.Controllers
 						ProductID = product.Id,
 						SimilarProductGroup = group
 					};
-					product.SimilarProductItems.Append(newSimilar);
+					product.SimilarProductItems!.Append(newSimilar);
 				
 					group.Similar.Prepend(newSimilar);
 				}

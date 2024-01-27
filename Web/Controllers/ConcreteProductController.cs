@@ -41,7 +41,7 @@ namespace Web.Controllers
 		{
 			var result = _concreteProductService.GetAllConcreteProducts(a=>a.ProductID==id 
 			&& 
-			a.Pharmacy.City.NameCity == city && a.Quantity > 0, "Pharmacy,Pharmacy.City");
+			a.Pharmacy!.City!.NameCity == city && a.Quantity > 0, "Pharmacy,Pharmacy.City");
 			if (!result.IsNullOrEmpty())
 			{
 				return Ok(new { minPrice = result.Min(a => a.Price), count=result.Count() });
@@ -58,7 +58,7 @@ namespace Web.Controllers
                 var result = _concreteProductService.GetAllConcreteProducts(
                   a => a.ProductID == productId
                   &&
-                  a.Pharmacy.CityID == cityRes.Id, "Pharmacy,Product,Product.Manufacturer");
+                  a.Pharmacy!.CityID == cityRes.Id, "Pharmacy,Product,Product.Manufacturer");
 
                 return Ok(result);
             }
@@ -70,7 +70,7 @@ namespace Web.Controllers
         public IActionResult GetProductByCoords(string latitude, string longitude, int productId)
         {
             var result = _concreteProductService.GetConcreteProduct(x => x.ProductID == productId
-			&& x.Pharmacy.Latitude == latitude 
+			&& x.Pharmacy!.Latitude == latitude 
 			&& x.Pharmacy.Longitude == longitude);
             if (result is not null)
             {
@@ -93,7 +93,7 @@ namespace Web.Controllers
 		[HttpGet("Search/{pharmacyId}/{title}")]
 		public IActionResult SearchConcreteProductByPharmacy(int pharmacyId, string title)
 		{
-			var result = _concreteProductService.GetAllConcreteProducts(x => x.PharmacyID == pharmacyId && x.Product.Title.StartsWith(title), "Product");
+			var result = _concreteProductService.GetAllConcreteProducts(x => x.PharmacyID == pharmacyId && x.Product!.Title!.StartsWith(title), "Product");
 			if (result is not null)
 			{
 				return Ok(result);
