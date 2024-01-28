@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using Services.AttributeService;
 using Services.CategoryService;
@@ -16,6 +17,8 @@ using Services.PharmacyCompanyService;
 using Services.PropertyService;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Principal;
+using System.Transactions;
 using Utility;
 
 namespace Web.Controllers
@@ -194,115 +197,96 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
+        [HttpPost("UpsertProduct")]
+        public IActionResult UpsertProduct(PostProductViewModel postModel)
+        {
+            using var transaction = new TransactionScope();
+            try
+            {
+                if (postModel.ActiveSubstanceID is not null)
+                    UpsertMedicine(postModel);
+                else
+                    UpsertProductEntity(postModel);
 
-		[HttpPost("UpsertProduct")]
-		public IActionResult UpsertProduct(PostProductViewModel postModel)
-		{
-			var props = (ICollection<ProductProperty>)_convertProperties(postModel!.Properties!).ToList();
+                transaction.Complete();
+                return Ok("Data inserted");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Failed to upsert product. Error: {ex.Message}");
+            }
+        }
 
+        private void UpsertMedicine(PostProductViewModel postModel)
+        {
+            var props = (ICollection<ProductProperty>)_convertProperties(postModel!.Properties!).ToList();
 
-			if(postModel.ActiveSubstanceID is not null)
-			{				
-				Medicine medicine = new Medicine
-				{
-					Title = postModel.Title,
-					CategoryID = postModel.CategoryID,
-					PathToPhoto = postModel.PathToPhoto,
-					Description = postModel.Description,
-					ShortDescription = postModel.ShortDescription,
-					ManufacturerID =postModel.ManufacturerID,
-					BrandId=postModel.BrandId,
-					ActiveSubstanceID = postModel.ActiveSubstanceID.Value,
-					Properties = props,
-					ProductAttributeGroupID = postModel.ProductAttributeGroupID
-				};
-				foreach (var item in props)
-				{
-					if (postModel.Id != null)
-						_propertyService.DeleteProperty(postModel.Id.Value);
-					item.Product = medicine;				
-				}
-				if(postModel.Id == null)
-				{
-					_medicineService.InsertMedicine(medicine);
-				}
-				else
-				{
-					
-					medicine.Id = postModel.Id.Value;
-					_medicineService.UpdateMedicine(medicine);
-				}
-				
-			}
+            var medicine = new Medicine
+            {
+                Title = postModel.Title,
+                CategoryID = postModel.CategoryID,
+                PathToPhoto = postModel.PathToPhoto,
+                Description = postModel.Description,
+                ShortDescription = postModel.ShortDescription,
+                ManufacturerID = postModel.ManufacturerID,
+                BrandId = postModel.BrandId,
+                ActiveSubstanceID = postModel.ActiveSubstanceID.Value,
+                Properties = _convertProperties(postModel!.Properties!).ToList(),
+                ProductAttributeGroupID = postModel.ProductAttributeGroupID
+            };
 
-			else
-			{
-				Product product = new Product
-				{
-					Title = postModel.Title,
-					ShortDescription = postModel.ShortDescription,
-					CategoryID = postModel.CategoryID,
-					ManufacturerID = postModel.ManufacturerID,
-					BrandId = postModel.BrandId,
-					PathToPhoto = postModel.PathToPhoto,
-					Description = postModel.Description,
-					Properties = props,
-					ProductAttributeGroupID = postModel.ProductAttributeGroupID
-				};
-				foreach (var item in props)
-				{
-					if (postModel.Id != null)
-						_propertyService.DeleteProperty(postModel.Id.Value);
-					item.Product = product;
-				}
+            foreach (var item in props)
+            {
+                if (postModel.Id != null)
+                    _propertyService.DeleteProperty(postModel.Id.Value);
+                item.Product = medicine;
+            }
+            if (postModel.Id == null)
+            {
+                _medicineService.InsertMedicine(medicine);
+            }
+            else
+            {
+                medicine.Id = postModel.Id.Value;
+                _medicineService.UpdateMedicine(medicine);
+            }
+        }
 
-				
-				if (postModel.Id == null)
-				{
-					_productService.InsertProduct(product);
-				}
-				else
-				{
-					product.Id = postModel.Id.Value;
-					_productService.UpdateProduct(product);
-				}
+        private void UpsertProductEntity(PostProductViewModel postModel)
+        {
+            var props = (ICollection<ProductProperty>)_convertProperties(postModel!.Properties!).ToList();
 
+            var product = new Product
+            {
+                Title = postModel.Title,
+                ShortDescription = postModel.ShortDescription,
+                CategoryID = postModel.CategoryID,
+                ManufacturerID = postModel.ManufacturerID,
+                BrandId = postModel.BrandId,
+                PathToPhoto = postModel.PathToPhoto,
+                Description = postModel.Description,
+                Properties = _convertProperties(postModel!.Properties!).ToList(),
+                ProductAttributeGroupID = postModel.ProductAttributeGroupID
+            };
 
-			}
+            foreach (var item in props)
+            {
+                if (postModel.Id != null)
+                    _propertyService.DeleteProperty(postModel.Id.Value);
+                item.Product = product;
+            }
+            if (postModel.Id == null)
+            {
+                _productService.InsertProduct(product);
+            }
+            else
+            {
+                product.Id = postModel.Id.Value;
+                _productService.UpdateProduct(product);
+            }
+        }
 
-			return Ok("Data inserted");
-		}
-
-
-		[HttpPut("UpdateMedicine")]
-		public IActionResult UpdateMedicine(MedicineViewModel medicineViewModel)
-		{/*
-			var props = _convertProperties(medicineViewModel.Product.Properties);
-			_propertyService.DeleteProperty(medicineViewModel.Product.Id.Value);
-
-			Medicine medicine = new Medicine
-			{
-				Id = medicineViewModel.Product.Id.Value,
-				Title = medicineViewModel.Product.Title,
-				CategoryID = medicineViewModel.Product.CategoryID,
-				PathToPhoto = medicineViewModel.Product.PathToPhoto,
-				Description = medicineViewModel.Product.Description,
-				ActiveSubstanceID = medicineViewModel.ActiveSubstanceId
-			};
-
-			//_medicineService.UpdateMedicine(medicine);
-
-
-			foreach (var item in props)
-			{
-				item.Product = medicine;
-				_propertyService.InsertProperty(item);
-			}
-*/
-			return BadRequest("Old path");
-		}
-
-		[HttpPut("{id}")]
+        [HttpPut("{id}")]
 
 		public IActionResult UpdateProduct(int id, Product product)
 		{
