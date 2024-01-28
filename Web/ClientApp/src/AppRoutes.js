@@ -1,16 +1,17 @@
-import { Home } from "./components/pages/Home/Home";
-import { Details } from "./components/pages/Details/Details";
-import { Map } from "./components/pages/Map/Map";
-import RegistrationForm from "./components/Auth/RegistrationForm";
-import LoginForm from "./components/Auth/LoginForm";
-import ChooseACategoryComponent from "./components/AddProductComponents/ChooseACategoryComponent/ChooseACategoryComponent";
-import ConfirmEmail from "./components/Auth/ConfirmEmail";
+import { Home } from "./components/User/Pages/Home/Home";
+import { Details } from "./components/User/Pages/Details/Details";
+import { Map } from "./components/User/Pages/Map/Map";
 
-import AddProductComponent from "./components/AddProductComponents/AddProductComponent/AddProductComponent";
-import { Layout } from "./components/Layout";
-import LayoutAdmin from "./components/pages/Admin/LayoutAdmin";
-import LayoutPharma from "./components/pages/Pharma/LayoutPharma";
-import ChooseATypeComponent from "./components/AddProductComponents/ChooseATypeComponent/ChooseATypeComponent";
+import RegistrationForm from "./components/Auth/RegistrationFormComponent/RegistrationForm";
+import LoginForm from "./components/Auth/LoginFormComponent/LoginForm";
+import ConfirmEmail from "./components/Auth/ConfirmEmailComponent/ConfirmEmail";
+
+import ChooseACategoryComponent from "./components/Admin/Pharmacy/AddProductComponents/ChooseACategoryComponent/ChooseACategoryComponent";
+import ChooseATypeComponent from "./components/Admin/Pharmacy/AddProductComponents/ChooseATypeComponent/ChooseATypeComponent";
+import AddProductComponent from "./components/Admin/Pharmacy/AddProductComponents/AddProductComponent/AddProductComponent";
+
+import { Layout } from "./layouts/UserLayout/Layout";
+import LayoutAdmin from "./layouts/AdminLayout/LayoutAdmin";
 const AppRoutes = [
     {
         index: true,
@@ -40,22 +41,22 @@ const AppRoutes = [
     {
         path: '/ChooseACategory',
         element: <ChooseACategoryComponent />,
-        Layout: LayoutPharma
+        Layout: LayoutAdmin
     },
     {
         path: '/ChooseAType/:categoryId',
         element: <ChooseATypeComponent />,
-        Layout: LayoutPharma
+        Layout: LayoutAdmin
     },
     {
         path: '/AddProduct/:categoryId/:typeId',
         element: <AddProductComponent  />,
-        Layout: LayoutPharma
+        Layout: LayoutAdmin
     },
     {
         path: '/UpdateProduct/:productId',
         element: <AddProductComponent />,
-        Layout: LayoutPharma
+        Layout: LayoutAdmin
     },
     {
         path: '/confirm-email',

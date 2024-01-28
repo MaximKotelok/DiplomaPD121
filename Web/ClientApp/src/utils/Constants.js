@@ -26,3 +26,9 @@ export const StateInfos = {
     ERROR: 'error',
     LOADED: 'LOADED'
 };
+
+export const LayoutProviderValues = {
+    MAP: 'map',
+    ADD: 'add',
+    UPDATE: 'update'
+};
