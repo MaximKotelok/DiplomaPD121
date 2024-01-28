@@ -7,7 +7,7 @@ import ChooseACategoryComponent from "./components/AddProductComponents/ChooseAC
 import ConfirmEmail from "./components/Auth/ConfirmEmail";
 
 import AddProductComponent from "./components/AddProductComponents/AddProductComponent/AddProductComponent";
-import { Layout } from "./components/Layout";
+import { Layout } from "./layouts/UserLayout/Layout";
 import LayoutAdmin from "./components/pages/Admin/LayoutAdmin";
 import LayoutPharma from "./components/pages/Pharma/LayoutPharma";
 import ChooseATypeComponent from "./components/AddProductComponents/ChooseATypeComponent/ChooseATypeComponent";
