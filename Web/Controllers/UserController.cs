@@ -42,6 +42,26 @@ namespace Web.Controllers
 
             return Ok();
         }
+        [HttpPost("removeFavouriteProduct/{productId}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> RemoveFavouriteProduct(int productId)
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var product = _productService.GetProduct(x => x.Id == productId);
+
+            if (user == null || product == null)
+            {
+                return NoContent();
+            }
+
+            if (user.FavProducts != null)
+            {
+                user.FavProducts = user.FavProducts.Where(p => p.Id != productId).ToList();
+                await _userManager.UpdateAsync(user);
+            }
+
+            return Ok();
+        }
         [HttpPost("addFavouritePharmacy/{pharmacyId}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> AddFavouritePharcmacy(int pharmacyId)
@@ -59,6 +79,27 @@ namespace Web.Controllers
 
             return Ok();
         }
+        [HttpPost("removeFavouritePharmacy/{pharmacyId}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> RemoveFavouritePharcmacy(int pharmacyId)
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var pharmacy = _pharmacyService.GetPharmacy(x => x.Id == pharmacyId);
+
+            if (user == null || pharmacy == null)
+            {
+                return NoContent();
+            }
+
+            if (user.FavPharmacies != null)
+            {
+                user.FavPharmacies = user.FavPharmacies.Where(p => p.Id != pharmacyId).ToList();
+                await _userManager.UpdateAsync(user);
+            }
+
+            return Ok();
+        }
+
 
         [HttpPost("ban/{id}")]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
