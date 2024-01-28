@@ -1,29 +1,41 @@
 ﻿import { Element } from "react-scroll";
 
-export function wrapTagIntoDiv(text, tag, className){
-    let updatedText;
+export function wrapTagIntoDiv(text, tag, className) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(text, 'text/html');
 
-    updatedText = text.replaceAll(`<${tag}>`, `</div><div class="${className}"><${tag}>`);
-    updatedText = updatedText.replaceAll(`</${tag}>`, `</${tag}>`);
-    updatedText = updatedText.replace(`</div><${tag}>`, `<${tag}>`);
-    updatedText = `${updatedText}</div>`;
+  const elements = doc.querySelectorAll(tag);
 
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(updatedText, 'text/html');
-    console.log(doc);
-    return doc;
+  elements.forEach((currentElement, index) => {
+      const nextElement = elements[index + 1];
+
+      const newDiv = doc.createElement('div');
+      newDiv.className = className;
+
+      let currentSibling = currentElement.nextSibling;
+      while (currentSibling && currentSibling !== nextElement) {
+          const temp = currentSibling.nextSibling;
+          newDiv.appendChild(currentSibling);
+          currentSibling = temp;
+      }
+
+      currentElement.parentNode.insertBefore(newDiv, currentElement.nextSibling);
+  });
+
+  return doc;
 }
 
 
-export function splitByClass(doc, tag,className) {
+
+export function splitByClass(doc,className) {
     
     const divs = doc.getElementsByClassName(className);
     const res = Array.from(divs).map(tag => tag.outerHTML);
-  
+
     return res;
     
-
   }
+
 export function getTagContentFromString(doc,tag) {
     
     const bTags = doc.getElementsByTagName(tag);

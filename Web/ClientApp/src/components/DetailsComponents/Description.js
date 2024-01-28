@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
-import { splitByClass, getTagContentFromString, wrapTagIntoDiv } from '../utils/Functions';
+import { splitByClass, getTagContentFromString, wrapTagIntoDiv } from '../../utils/Functions';
 import { Link, Element } from 'react-scroll';
+import DescriptionItemComponent from './DescriptionItemComponent/DescriptionItemComponent';
+
 export function Description({ children, separeteBy }) {
+
 
     if(!separeteBy)
         return <div>{children}</div>;
 
     const html = wrapTagIntoDiv(children, separeteBy, "description-item");
-    const subContent = splitByClass(html, separeteBy, "description-item");
-    const contentsOfB = getTagContentFromString(html, "h1");
+
+    const subContent = splitByClass(html, "description-item");
+    const contentsOfB = getTagContentFromString(html, separeteBy);
 
     const ids = [];
 
@@ -35,13 +39,20 @@ export function Description({ children, separeteBy }) {
             </div>
 
             {subContent.map((content, index) => (
-                <Element  key={ids[index].id}  name={ids[index].id}>
-                    <div dangerouslySetInnerHTML={{ __html: content }} />
-                </Element>
+                <DescriptionItemComponent id={ids[index].id} number={index+1} title={ids[index].name} isActive={false}  >
+                        <div dangerouslySetInnerHTML={{ __html: content }} />
+                </DescriptionItemComponent>                
             )
             )
             }
+            
         </div>
     );
 
 }
+
+/*
+<Element key={ids[index].id}  name={ids[index].id}>
+                    <div dangerouslySetInnerHTML={{ __html: content }} />
+                </Element>
+                */

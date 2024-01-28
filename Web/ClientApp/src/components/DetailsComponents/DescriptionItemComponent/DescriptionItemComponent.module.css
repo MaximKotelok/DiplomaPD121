@@ -1,0 +1,76 @@
+.description {
+  color: red;
+}
+
+.description:hover {
+  background-color: rgba(0, 122, 255, 0.15);
+  color: red;
+}
+
+.description.active {
+  background-color: "#007AFF" !important;
+  color: yellow !important;
+}
+
+.side-btn-togle-victorina {
+  background: none;
+  border: none;
+}
+
+.collapsed .accordion, .side-text-body-victorina{
+  background-color: #007AFF26;
+}
+.collapsed .accordion, .collapsed .side-text-body-victorina{
+  border-left: #007AFF 2px solid; 
+}
+
+.collapsed .accordion{
+  color: #007AFF;
+}
+
+.accordion{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: #E5E5EA solid 1px;
+  font-family: var(--standart-font);
+  font-weight: 650;
+  font-size: 24px;
+}
+
+.side-btn-togle-victorina {
+  background: none;
+  border: none;
+
+}
+
+
+.side-text-header-victorina {
+  font-size: 16px;
+  font-weight: 600;
+  color: black;
+  line-height: 14px;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out;
+}
+
+.side-text-body-victorina {
+  font-size: 12px;
+  max-height: 0;
+
+  overflow: hidden;
+  transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
+}
+
+.side-text-header-victorina.collapsed .side-text-body-victorina {
+  max-height: 500px;
+}
+
+.strow-dow {
+  transform: rotate(180deg);
+  transform-origin: center;
+  transition: transform 0.4s ease;
+
+}
+

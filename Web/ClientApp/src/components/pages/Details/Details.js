@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 import { addToRecentlyViewedProduct } from '../../../utils/SessionStorage';
 import "./Details.css";
 import { Link } from 'react-router-dom';
-import { Description } from '../../Description';
+import { Description } from "../../DetailsComponents/Description";
 import { getFromServer } from '../../../utils/Queries';
 import { GetProduct, Success } from '../../../utils/Constants';
 

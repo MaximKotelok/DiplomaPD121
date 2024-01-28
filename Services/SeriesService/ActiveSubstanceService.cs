@@ -23,7 +23,7 @@ namespace Services.SeriesService
 		{
 			Series series = _repository.Get(a => a.Id == id)!;
 			_repository.Remove(series);
-			_repository.SaveChanges();			
+			_repository.SaveChanges();				
 		}
 		public IEnumerable<Series> GetAllSeries(Expression<Func<Series, bool>>? filter = null, string? includeProperties = null)
 		{
