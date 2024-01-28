@@ -1,15 +1,11 @@
-
-
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import './CarouselListComponent.css';
-import ProductCardComponent from '../../ProductCard/ProductCardComponent.js';
 
 import Carousel from "nuka-carousel"
-import MiniProductCardComponent from '../../../components/HomeComponent/MiniProductCard/MiniProductCardComponent.js';
 
-import { isWidthDown } from '../../../../utils/Functions.js';
+import { isWidthDown } from '../../../../utils/Functions';
 
 const CarouselListComponent =
     ({      

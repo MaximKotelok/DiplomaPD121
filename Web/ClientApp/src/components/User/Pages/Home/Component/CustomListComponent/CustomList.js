@@ -1,8 +1,10 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./CustomList.css"; // Файл для власних стилів
-import placeholder from "../../../styles/images/placeholder.png";
+
+import placeholder from "../../../../../../assets/images/placeholder.png";
 import { ApiPath } from "../../../../../../utils/Constants";
+
 const CustomList = ({ data }) => {
   console.log(data);
   return (

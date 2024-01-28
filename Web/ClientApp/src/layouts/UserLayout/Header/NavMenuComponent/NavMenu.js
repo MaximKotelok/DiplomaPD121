@@ -9,11 +9,11 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import "./NavMenu.css";
-import IconButton from "../../../../components 2/Common/IconButtonComponent/IconButton";
-import CatalogIcon from "./Header/catalog_icon_215654.ico";
-import SearchElement from "../../../../components 2/Common/SearchComponent/SearchComponent";
-import ServiceIcon from "./Header/service.svg";
-import { ReactComponent as Logo } from "../styles/images/LogoCapsula.svg";
+import IconButton from "../../../../components/Common/IconButtonComponent/IconButton";
+import CatalogIcon from "../../../../assets/images/catalog_icon_215654.ico";
+import { ReactComponent as Logo } from "../../../../assets/images/LogoCapsula.svg";
+import SearchElement from "../../../../components/Common/SearchComponent/SearchComponent";
+import ServiceIcon from "../../../../assets/images/service.svg";
 //import CatalogIcon from './catalog_icon_215654.svg';
 export class NavMenu extends Component {
   static displayName = NavMenu.name;

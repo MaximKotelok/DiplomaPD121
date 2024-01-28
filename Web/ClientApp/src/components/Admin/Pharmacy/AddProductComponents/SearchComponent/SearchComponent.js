@@ -3,7 +3,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 
 import './SearchComponent.css';
 import SquareCardComponent from '../SquareCardComponent/SquareCardComponent';
-import plus from "../../../styles/images/plus.png";
+import plus from "../../../../../assets/images/plus.png";
 
 
 const SearchComponent = ({ searchTitle, queryFunction,parser }) => {

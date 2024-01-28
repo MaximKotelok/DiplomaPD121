@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
-import { addToRecentlyViewedProduct } from '../../../../utils/SessionStorage';
-import "./Details.css";
+import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { Description } from "../../../../components/DetailsComponents/Description";
+import "./Details.css";
+
+import { addToRecentlyViewedProduct } from '../../../../utils/SessionStorage';
+import { Description } from './Component/Description';
 import { getFromServer } from '../../../../utils/Queries';
 import { GetProduct, Success } from '../../../../utils/Constants';
+
+
 
 export const Details = ()=> {
     const { id } = useParams();

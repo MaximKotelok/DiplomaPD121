@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
 
-import placeholder from "../../../styles/images/placeholder.png";
-import { ApiPath } from '../../../utils/Constants';
+import placeholder from "../../../../../assets/images/placeholder.png";
+import { ApiPath } from '../../../../../utils/Constants';
+
 const ImageUploaderComponent = ({selectedImage, setSelectedImage, imageUrl}) => {
   const fileInputRef = useRef(null);
   const [preview, setPreview] = useState(null);

@@ -1,6 +1,5 @@
 import React, { Component, useEffect, useState } from "react";
-import ProductCardComponent from "../../ProductCard/ProductCardComponent";
-import CarouselListComponent from "../../HomeComponent/CarouselList/CarouselListComponent";
+import CarouselListComponent from "../../Common/CarouselListComponent/CarouselListComponent";
 import {
   GetAllProductsFromIdArray,
   GetRecomendedBrands,
@@ -18,16 +17,17 @@ import {
   getRecentlyViewedProductsIds,
   getRecomendedRandomCategory,
   setRecomendedRandomCategory,
-} from "../../../../utils/SessionStorage";
-import VitaminCardComponnent from "../../HomeComponent/VitaminCard/VitaminCardComponnent";
-import MoreLink from "../../HomeComponent/MoreLink/MoreLink";
-import PopularButtonComponnent from "../../HomeComponent/PopularButton/PopularButtonComponnent";
-import CircleCard from "../../HomeComponent/CircleCard/CircleCard";
+}  from "../../../../utils/SessionStorage";
+
+import VitaminCardComponnent from "../../Common/VitaminCardComponent/VitaminCardComponnent"
+import MoreLink from "../../../Common/MoreLinkComponent/MoreLink"
+import PopularButtonComponnent from "./Component/PopularButtonComponent/PopularButtonComponnent";
+import CircleCard from "../../../Common/CircleCardComponent/CircleCard";
 import CustomList from "./Component/CustomListComponent/CustomList";
-import AccordionComponnent from "../../HomeComponent/AccordionQuestion/accordionComponnent";
-import MiniProductCardComponent from "../../HomeComponent/MiniProductCard/MiniProductCardComponent";
-import homePageImg from "../../../styles/images/homePageImg.png";
-import AdaptiveContainerComponent from "../../AdaptiveContainerComponent/AdaptiveContainerComponent";
+import AccordionComponnent from "../../../Common/AccordionQuestionComponent/accordionComponnent";
+import MiniProductCardComponent from "../../../Common/MiniProductCardComponent/MiniProductCardComponent";
+import homePageImg from "../../../../assets/images/homePageImg.png";
+import AdaptiveContainerComponent from "../../../Common/AdaptiveContainerComponent/AdaptiveContainerComponent";
 
 import "./Home.css";
 export const Home = () => {

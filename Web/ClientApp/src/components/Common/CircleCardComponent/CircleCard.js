@@ -1,7 +1,7 @@
 import React from "react";
 import "./CircleCard.css";
 
-import brandImg from "../../../styles/images/BrandTmp.png"
+import brandImg from "../../../assets/images/BrandTmp.png"
 
 const CircleCard = ({ imageUrl=brandImg, text }) => {
   return (

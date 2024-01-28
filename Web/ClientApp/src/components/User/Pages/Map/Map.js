@@ -1,14 +1,13 @@
-﻿import 'leaflet/dist/leaflet.css';
+﻿import React, { useState, useEffect, useContext } from 'react';
+import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { showLocation, setupLocation } from '../../../../utils/Location';
-import React, { useState, useEffect, useContext } from 'react';
-import { getCookie } from "../../../../utils/Cookies"
 import { useParams } from 'react-router';
-import  MapPharmacies from "../../../../components/MapComponents/MapPharmacies/MapPharmacies"
-import MapProduct  from "../../../../components/MapComponents/MapProducts/MapProducts"
-
 import "./Map.css"
-import LayoutContext from '../../LayoutContext';
+
+import MapPharmacies from "./Component/MapPharmaciesComponent/MapPharmacies"
+import MapProduct from "./Component/MapProductsComponent/MapProducts"
+
+import LayoutContext from '../../../../layouts/LayoutContext';
 
 export const Map = (props) => {
     const { id } = useParams();

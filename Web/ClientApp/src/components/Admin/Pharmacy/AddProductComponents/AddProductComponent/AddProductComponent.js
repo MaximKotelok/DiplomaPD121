@@ -1,20 +1,22 @@
-import React, { useEffect, useState,useContext } from 'react';
-import { UpsertProduct, ApiPath, GetAllBrands, GetGroupById, GetProduct, PhotoPath, StateInfos, Success } from '../../../utils/Constants';
-import { useParams } from 'react-router-dom';
-import { getFromServer } from '../../../utils/Queries';
-import Select from 'react-select';
-import { postToServer, postPhotoToServer } from '../../../utils/Queries';
-import ImageUploaderComponent from '../ImageUploaderComponent/ImageUploaderComponent';
-import InputForProductComponent from '../InputForProductComponent/InputForProductComponent';
-import { GetAllManufacturers } from '../../../utils/Constants';
-import CustomSelectComponent from '../CustomSelectComponent/CustomSelectComponent';
-import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-
 import "bootstrap-icons/font/bootstrap-icons.css";
+import ReactQuill from 'react-quill';
+import React, { useEffect, useState,useContext } from 'react';
+import { useParams } from 'react-router-dom';
+import Select from 'react-select';
+
+
+import { getFromServer, postToServer, postPhotoToServer } from '../../../../../utils/Queries';
+import { UpsertProduct, GetAllBrands, GetAllManufacturers, GetGroupById, GetProduct, StateInfos, Success, LayoutProviderValues } from '../../../../../utils/Constants';
+
+import ImageUploaderComponent from '../ImageUploaderComponent/ImageUploaderComponent';
+import InputForProductComponent from '../InputForProductComponent/InputForProductComponent'
+import CustomSelectComponent from '../CustomSelectComponent/CustomSelectComponent';
+
 
 import "./AddProductComponent.css"
-import LayoutContext from '../../LayoutContext';
+import LayoutContext from '../../../../../layouts/LayoutContext';
+
 const AddProductComponent = () => {
     const { onComponentMount, onComponentUnmount } = useContext(LayoutContext);    
     const { categoryId } = useParams();
@@ -22,9 +24,9 @@ const AddProductComponent = () => {
     const { productId } = useParams();
     useEffect(() => {          
         if(typeId)
-            onComponentMount("Сторінка додавання товару"); 
+            onComponentMount(LayoutProviderValues.ADD);//"Сторінка додавання товару"); 
         else if(productId)
-            onComponentMount("Сторінка оновлення товару");
+            onComponentMount(LayoutProviderValues.UPDATE); //"Сторінка оновлення товару");
         return () => {    
           onComponentUnmount();
         };

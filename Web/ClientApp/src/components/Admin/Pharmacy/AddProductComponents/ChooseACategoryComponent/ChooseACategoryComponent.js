@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import SearchComponent from '../SearchComponent/SearchComponent';
-import { getFromServer } from '../../../utils/Queries';
-import { ApiPath, GetCategoriesForProductAdd } from '../../../utils/Constants';
+import { getFromServer } from '../../../../../utils/Queries';
+import { ApiPath, GetCategoriesForProductAdd } from  '../../../../../utils/Constants';
 import SquareCardComponent from '../SquareCardComponent/SquareCardComponent';
 const ChooseACategoryComponent = () => {
     

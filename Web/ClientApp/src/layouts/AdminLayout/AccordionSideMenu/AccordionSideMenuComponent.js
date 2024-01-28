@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import "./AccordionSideMenu.css";
 // import setupAccordion from "./AccordionSideMenuJQ";
 // import $ from "jquery";
-import { ReactComponent as LogoSvb } from "../../imgs/tabler-icon-brand-samsungpass.svg";
-import { ReactComponent as Dowthrow } from "./dow.svg";
+import { ReactComponent as LogoSvb } from "../../../assets/images/samsungpass.svg";
+import { ReactComponent as Dowthrow } from "../../../assets/images/dow.svg";
 
-const AccordionSideMenuComponnent = ({ id, title, content, isActive }) => {
+const AccordionSideMenuComponent = ({ id, title, content, isActive }) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -105,7 +105,7 @@ const AccordionSideMenuComponnent = ({ id, title, content, isActive }) => {
   );
 };
 
-export default AccordionSideMenuComponnent;
+export default AccordionSideMenuComponent;
 
 // import React, { useState } from "react";
 // import "./AccordionSideMenu.css"; // Створіть файл Accordion.css для стилізації

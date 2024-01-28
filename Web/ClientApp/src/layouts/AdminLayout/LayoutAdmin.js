@@ -1,27 +1,34 @@
-import React from "react";
-import AccordionSideMenuComponnent from "../../components/pages/Admin/components/AccordionSideMenu/AccordionSideMenuComponnent";
-import ButtonSideMenuComponennts from "../../components/pages/Admin/components/ButtonSideMenu/ButtonSideMenuComponennts";
+import React, { useContext } from "react";
 import "./LayoutAdmin.css";
-import Mail from "./imgs/tabler-icon-folder-question.svg";
-import Question from "./imgs/tabler-icon-mail.svg";
-import UsersSvg from "./imgs/tabler-icon-users.svg";
-import Samsungpass from "./imgs/tabler-icon-brand-samsungpass.svg";
-import Logout from "./imgs/Logout.svg";
-import Filter from "./imgs/tabler-icon-filter.svg";
-// import LogoSvg from "./imgs/";
-// import LogoSvg from "./imgs/";
-// import LogoSvg from "./imgs/";
 
-import { ReactComponent as Logo } from "./imgs/LogoCapsula.svg";
-import SearchElement from "../../components 2/Common/SearchComponent/SearchComponent";
-import AvatarComponennt from "../../components/pages/Admin/components/AvatarComponent/AvatarComponennt";
-import BadgeComponennt from "../../components/pages/Admin/components/BadgesComponent/BadgeComponent";
-import TableComponent from "../../components/pages/Admin/components/TableComponents/TableComponent";
+import AccordionSideMenuComponent from "./AccordionSideMenu/AccordionSideMenuComponent"
+import ButtonSideMenuComponents from "./ButtonSideMenu/ButtonSideMenuComponents";
+import Mail from "../../assets/images/mail.svg";
+import Question from "../../assets/images/question.svg";
+import UsersSvg from "../../assets/images/usersSvg.svg";
+import Samsungpass from "../../assets/images/samsungpass.svg";
+import Logout from "../../assets/images/Logout.svg";
+import Filter from "../../assets/images/filter.svg";
+import { ReactComponent as Logo } from "../../assets/images/LogoCapsula.svg";
+
+//import SearchComponent from "../../components/Common/SearchComponent/SearchComponent";
+import AvatarComponennt from "./AvatarComponent/AvatarComponennt";
+import BadgeComponennt from "./BadgesComponent/BadgeComponent";
+import SearchComponent from "../../components/Common/SearchComponent/SearchComponent";
+import LayoutContext from "../LayoutContext";
+import { LayoutProviderValues } from "../../utils/Constants";
+//import TableComponent from "../../components/pages/Admin/components/TableComponents/TableComponent";
 // import { Container } from "reactstrap";
 
 const LayoutAdmin = ({ children }) => {
+
+  const layoutContext = useContext(LayoutContext);
+  
   return (
-    <div className="app-container">
+    <div className={`app-container 
+    ${
+      layoutContext.stateComponentMounted == LayoutProviderValues.ADD ||
+      layoutContext.stateComponentMounted == LayoutProviderValues.UPDATE? "upsert-page" : ""}`}>
       <div className="sidebar ">
         <div className="sidebar-header">
           <div className="app-icon">
@@ -33,45 +40,45 @@ const LayoutAdmin = ({ children }) => {
 
         <ul className="sidebar-list">
           <li className="sidebar-list-item">
-            <ButtonSideMenuComponennts
+            <ButtonSideMenuComponents
               text="Повідомлення"
               icon={Question}
               link="https://www.example.com"
             />
           </li>
           <li className="sidebar-list-item active">
-            <ButtonSideMenuComponennts
+            <ButtonSideMenuComponents
               text="Заявки на підтвердження"
               icon={Mail}
               link="https://www.example.com"
             />
           </li>
           <li className="sidebar-list-item">
-            <ButtonSideMenuComponennts
+            <ButtonSideMenuComponents
               text="Аптеки"
               icon={Filter}
               link="https://www.example.com"
             />
           </li>
           <li className="sidebar-list-item">
-            <ButtonSideMenuComponennts
+            <ButtonSideMenuComponents
               text="Користувачі"
               icon={UsersSvg}
               link="https://www.example.com"
             />
           </li>
           <li className="sidebar-list-item">
-            <ButtonSideMenuComponennts
+            <ButtonSideMenuComponents
               text="Фільтри"
               icon={Filter}
               link="https://www.example.com"
             />
           </li>
           <li className="sidebar-list-item">
-            <AccordionSideMenuComponnent id="2" title="one" />
+            <AccordionSideMenuComponent id="2" title="one" />
           </li>
           <li className="sidebar-list-item">
-            <ButtonSideMenuComponennts
+            <ButtonSideMenuComponents
               text="Браковані серії"
               icon={Samsungpass}
               link="https://www.example.com"
@@ -80,7 +87,7 @@ const LayoutAdmin = ({ children }) => {
         </ul>
 
         <div className="account-info">
-          <ButtonSideMenuComponennts
+          <ButtonSideMenuComponents
             text="Вийти"
             icon={Logout}
             link="https://www.example.com"
@@ -90,7 +97,7 @@ const LayoutAdmin = ({ children }) => {
 
       <div className="app-content">
         <div className="app-content-header app-content-container ">
-          <SearchElement />
+          <SearchComponent />
           <div className="app-content-header">
             <BadgeComponennt />
             <AvatarComponennt />
@@ -98,9 +105,9 @@ const LayoutAdmin = ({ children }) => {
         </div>
 
         <div className="products-area-wrapper tableView">
-          <TableComponent />
+          {/* <TableComponent /> */}
+          {children}
         </div>
-        {children}
       </div>
     </div>
   );

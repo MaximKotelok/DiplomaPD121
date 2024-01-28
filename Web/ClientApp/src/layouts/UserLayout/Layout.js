@@ -2,11 +2,8 @@ import React, { Component } from "react";
 import { Container } from "reactstrap";
 import { NavMenu } from "./Header/NavMenuComponent/NavMenu";
 import FooterComponent from "./Footer/FooterComponent/FooterComponent";
-import "../styles/variables.css";
-import "../styles/global.css";
 import LayoutProvider from "../LayoutProvider";
 import LayoutContext from "../LayoutContext";
-import SearchComponent from "../../components/AddProductComponents/SearchComponent/SearchComponent";
 // import SideBarComponnents from "./pages/Admin/components/SideBar/SideBarComponnents";
 import LayoutAdmin from "../AdminLayout/LayoutAdmin";
 

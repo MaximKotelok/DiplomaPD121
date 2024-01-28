@@ -1,8 +1,8 @@
 ﻿import React from 'react';
 import './SearchComponent.css';
-import myImage from './search.svg'; // Замініть шлях імпорту на ваш шлях до зображення
+import myImage from "../../../assets/images/search.svg"; // Замініть шлях імпорту на ваш шлях до зображення
 
-const SearchElement = () => {
+const SearchComponent = () => {
     return (
         // <div className="input-group mb-3 center back-serach-bar">
         <div className="input-group  center back-serach-bar">
@@ -14,4 +14,4 @@ const SearchElement = () => {
     );
 };
 
-export default SearchElement;
+export default SearchComponent;
