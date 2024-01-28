@@ -45,16 +45,17 @@ namespace Repository.Repository.Services
 
         public async Task<UserInfoDto?> ValidateUserAsync(UserLoginDto loginDto)
         {
-            _user = await _userManager.FindByNameAsync(loginDto.UserName);
+
+            _user = await _userManager.FindByEmailAsync(loginDto.Email);
             var result = _user != null && await _userManager.CheckPasswordAsync(_user, loginDto.Password);
             
-            if (_user != null && _user.LockoutEnd.HasValue && _user.LockoutEnd > DateTimeOffset.UtcNow)
+            if (!result && (_user != null && _user.LockoutEnd.HasValue && _user.LockoutEnd > DateTimeOffset.UtcNow))
             {
-                result = false;
+                return null;
             }
 
-            return result;
-        }
+			return new UserInfoDto { Email = _user.Email, };
+		}
 
         public async Task<string> CreateTokenAsync()
         {

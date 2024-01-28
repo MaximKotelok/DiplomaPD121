@@ -147,7 +147,6 @@ const MapProducts = (props) => {
                 <p>Loading...</p>
             )}
         </div>
-        </div>
     );
 };
 export default MapProducts;
