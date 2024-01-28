@@ -58,7 +58,7 @@ namespace Web.Controllers
                 var result = _concreteProductService.GetAllConcreteProducts(
                   a => a.ProductID == productId
                   &&
-                  a.Pharmacy!.CityID == cityRes.Id, "Pharmacy,Product,Product.Manufacturer");
+                  a.Pharmacy.CityID == cityRes.Id, "Pharmacy,Product,Product.Manufacturer");
 
                 return Ok(result);
             }
@@ -70,7 +70,7 @@ namespace Web.Controllers
         public IActionResult GetProductByCoords(string latitude, string longitude, int productId)
         {
             var result = _concreteProductService.GetConcreteProduct(x => x.ProductID == productId
-			&& x.Pharmacy!.Latitude == latitude 
+			&& x.Pharmacy.Latitude == latitude 
 			&& x.Pharmacy.Longitude == longitude);
             if (result is not null)
             {

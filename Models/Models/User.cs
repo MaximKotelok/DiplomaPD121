@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Lab.Domain.Models;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,6 +12,11 @@ namespace Domain.Models
 {
     public class User: IdentityUser
     {
+        public User() {
+            FavProducts = new List<Product>();
+            FavPharmacies = new List<Pharmacy>();
+        }   
+
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public Pharmacy? Pharmacy { get; set; }

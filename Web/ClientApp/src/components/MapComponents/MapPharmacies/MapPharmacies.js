@@ -42,11 +42,15 @@ const MapPharmacies = (props) => {
 
             setMap(myMap);
 
-            showLocation(city, myMap);
-            setPharmacyOfTown(city, myMap);
         });
     }, []);
 
+    useEffect(() => {
+        if (city != null && map != null) {
+            showLocation(city, map);
+            setPharmacyOfTown(city, map);
+        }
+    }, [map])
 
     const setPharmacyOfTown = async (city, map) => {
         let pharmacy = (await getFromServer(`Pharmacy/GetListOfPharmacyInYourCity/${city}`)).data;
@@ -74,6 +78,7 @@ const MapPharmacies = (props) => {
             if (prevMarker) {
                 prevMarker.setIcon(defaultIcon);
             }
+            map.panTo(new L.LatLng(clickedMarker._latlng.lat, clickedMarker._latlng.lng));
             clickedMarker.setIcon(clickedIcon);
             return clickedMarker;
         });
@@ -82,16 +87,22 @@ const MapPharmacies = (props) => {
     const handleMapSelect = async (pharmacy) => {
         if (selectedMarker) {
             selectedMarker.setIcon(defaultIcon);
+            setSelectedMarker(null); 
+            map.setView(new L.LatLng(selectedMarker._latlng.lat, selectedMarker._latlng.lng));
         }
-        const newMarker = mapMarkers[pharmacy.id];
-        newMarker.setIcon(clickedIcon);
-        setSelectedMarker(newMarker);
+        setTimeout(() => {
+            const newMarker = mapMarkers[pharmacy.id];
+            map.setView(new L.LatLng(newMarker._latlng.lat, newMarker._latlng.lng));
+            newMarker.setIcon(clickedIcon);
+            setSelectedMarker(newMarker);
+        }, 0);
+        
     };
 
 
     return (
         <div>
-            <div id="map"></div>
+            <div id="map" style={{ height: '400px' }}></div>
             {city !== "" && townPharmacy != null ? (
                 <ListPharmacies
                     city={city}

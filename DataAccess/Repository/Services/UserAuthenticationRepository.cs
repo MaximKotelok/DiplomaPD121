@@ -36,21 +36,24 @@ namespace Repository.Repository.Services
         public async Task<IdentityResult> RegisterUserAsync(UserRegistrationDto userRegistration)
         {
             var user = _mapper.Map<User>(userRegistration);
-            var result = await _userManager.CreateAsync(user, userRegistration.Password!);
-            if (result.Succeeded)
-                await _userManager.AddToRolesAsync(user, userRegistration.Roles!);
 
+
+            var result = await _userManager.CreateAsync(user, userRegistration.Password);
+            await _userManager.AddToRolesAsync(user, new List<string> { SD.Role_Customer });
             return result;
         }
 
         public async Task<UserInfoDto?> ValidateUserAsync(UserLoginDto loginDto)
         {
-            _user = await _userManager.FindByEmailAsync(loginDto.Email);
+            _user = await _userManager.FindByNameAsync(loginDto.UserName);
+            var result = _user != null && await _userManager.CheckPasswordAsync(_user, loginDto.Password);
+            
+            if (_user != null && _user.LockoutEnd.HasValue && _user.LockoutEnd > DateTimeOffset.UtcNow)
+            {
+                result = false;
+            }
 
-            if (_user != null && await _userManager.CheckPasswordAsync(_user, loginDto.Password))
-                return new UserInfoDto { Email = _user.Email, };
-
-            return null;
+            return result;
         }
 
         public async Task<string> CreateTokenAsync()

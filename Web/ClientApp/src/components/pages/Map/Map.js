@@ -21,7 +21,7 @@ export const Map = (props) => {
         };
       }, [onComponentMount, onComponentUnmount]);
 
-    return (        
+    return (
         <div>
             {
                 id != null ? (
