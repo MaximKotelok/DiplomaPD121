@@ -8,8 +8,9 @@ export const GetAllProductsFromIdArray = "Product/GetAllProductsFromIdArray";
 export const GetAllManufacturers = "Manufacturer/GetAllManufacturers";
 export const GetMainCategories = "Category/Main/All";
 export const GetRecomendedBrands = "Brand/GetRecomendedBrands";
-export const GetAllBrands = "Brand/GetAllBrands";
+export const GetAllBrands = "Brand/GetAllBrands";``
 export const GetRecomendedCategory = "Category/GetRecomendedCategory";
+export const PathToCategory = "Category/PathToCategory";
 export const GetRecomendedCategoryById = "Category/GetRecomendedCategoryById";
 
 // Product Add

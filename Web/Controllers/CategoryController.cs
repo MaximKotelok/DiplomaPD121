@@ -132,7 +132,7 @@ namespace Web.Controllers
 
 		
 
-		[HttpGet("PathToCategory/{id}")]
+		[HttpGet("PathToCategory")]
 		public IActionResult GetCategoryPath(int id)
 		{
 			List<Category> path = new List<Category>();

@@ -24,7 +24,7 @@ import MoreLink from "../../../Common/MoreLinkComponent/MoreLink"
 import PopularButtonComponnent from "./Component/PopularButtonComponent/PopularButtonComponnent";
 import CircleCard from "../../../Common/CircleCardComponent/CircleCard";
 import CustomList from "./Component/CustomListComponent/CustomList";
-import AccordionComponnent from "../../../Common/AccordionQuestionComponent/accordionComponnent";
+import AccordionComponnent from "../../../Common/AccordionQuestionComponent/accordionComponent";
 import MiniProductCardComponent from "../../../Common/MiniProductCardComponent/MiniProductCardComponent";
 import homePageImg from "../../../../assets/images/homePageImg.png";
 import AdaptiveContainerComponent from "../../../Common/AdaptiveContainerComponent/AdaptiveContainerComponent";

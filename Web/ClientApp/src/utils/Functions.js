@@ -56,3 +56,10 @@ export function isWidthDown(breakpoint, width){
     const breakpointWidth = breakpoints[breakpoint];
     return width <= breakpointWidth;
 };
+
+export function toTwoDigitsNumber(number){
+  return number.toLocaleString('en-US', {
+    minimumIntegerDigits: 2,
+    useGrouping: false
+    })
+}

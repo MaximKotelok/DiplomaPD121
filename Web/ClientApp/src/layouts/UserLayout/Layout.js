@@ -6,6 +6,7 @@ import LayoutProvider from "../LayoutProvider";
 import LayoutContext from "../LayoutContext";
 // import SideBarComponnents from "./pages/Admin/components/SideBar/SideBarComponnents";
 import LayoutAdmin from "../AdminLayout/LayoutAdmin";
+import { Element } from "react-scroll";
 
 export class Layout extends Component {
   static displayName = Layout.name;

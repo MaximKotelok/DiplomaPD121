@@ -22,7 +22,7 @@ import AccordionItem from "./accordionQuestion";
 
 // export default accordionComponnent;
 
-const accordionComponnent = () => {
+const AccordionComponent = () => {
   return (
     <div className="accordion">
       <AccordionItem
@@ -40,4 +40,4 @@ const accordionComponnent = () => {
   );
 };
 
-export default accordionComponnent;
+export default AccordionComponent;

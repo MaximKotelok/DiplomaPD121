@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { splitByClass, getTagContentFromString, wrapTagIntoDiv } from '../../../../../utils/Functions';
+import { splitByClass, getTagContentFromString, wrapTagIntoDiv, toTwoDigitsNumber } from '../../../../../../utils/Functions';
 import { Link, Element } from 'react-scroll';
-import DescriptionItemComponent from './DescriptionItemComponent/DescriptionItemComponent';
+import DescriptionItemComponent from '../DescriptionItemComponent/DescriptionItemComponent';
+
+import styles from "./Description.module.css";
 
 export function Description({ children, separeteBy }) {
 
@@ -25,15 +27,16 @@ export function Description({ children, separeteBy }) {
 
     return (
         <div>
-            <div>
+            <div className={`${styles["description-navigation"]} col-9`}>
                 {
                     ids.map((id, index) => (
-                        <div key={index}>
-
-                        <Link to={id.id} spy={true} duration={500}>
+                        
+                        <Link to={id.id} spy={true} duration={500} className={`${styles["description-navigation-item"]} mt-2`}>
+                            <span>
+                                {`.${toTwoDigitsNumber(index+1)} `}
+                            </span>
                             {id.name}
-                        </Link>
-                        </div>
+                        </Link>                        
                     ))
                 }
             </div>

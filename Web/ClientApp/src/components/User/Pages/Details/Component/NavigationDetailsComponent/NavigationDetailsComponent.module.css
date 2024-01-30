@@ -1,0 +1,15 @@
+
+.product-nav {
+    font-family: var(--standart-font);
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: 600;
+    color: black;
+    cursor: pointer;
+}
+
+.product-nav a.active {
+    text-decoration: underline;
+    color: black;
+}

@@ -1,15 +1,7 @@
-.description {
-  color: red;
-}
 
-.description:hover {
-  background-color: rgba(0, 122, 255, 0.15);
-  color: red;
-}
 
 .description.active {
   background-color: "#007AFF" !important;
-  color: yellow !important;
 }
 
 .side-btn-togle-victorina {
@@ -17,11 +9,20 @@
   border: none;
 }
 
-.collapsed .accordion, .side-text-body-victorina{
-  background-color: #007AFF26;
-}
 .collapsed .accordion, .collapsed .side-text-body-victorina{
+  background-color: #007AFF26;
   border-left: #007AFF 2px solid; 
+  position: relative;
+}
+
+
+.collapsed .side-text-body-victorina>div, .collapsed .accordion>* {
+  position: relative;
+  left:-2px;
+}
+
+.accordion p{
+  color: #0E3E75;
 }
 
 .collapsed .accordion{

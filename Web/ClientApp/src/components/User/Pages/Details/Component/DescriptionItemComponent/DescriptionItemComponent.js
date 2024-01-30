@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./DescriptionItemComponent.module.css"
 import { Element } from "react-scroll";
+import { toTwoDigitsNumber } from "../../../../../../utils/Functions";
 // import setupAccordion from "./AccordionSideMenuJQ";
 // import $ from "jquery";
 
@@ -14,7 +15,7 @@ const DescriptionItemComponent = ({ id, number, title, children, isActive }) => 
 
   return (
     <Element key={id} name={id}
-      className={`${styles["description"]} ${isActive && `${styles["active"]}`}`}
+      className={`${styles["description"]} ${(isActive && `${styles["active"]}`)}`}
     >
       <div className="d-flex align-items-center">
         <div
@@ -26,22 +27,16 @@ const DescriptionItemComponent = ({ id, number, title, children, isActive }) => 
             <p>
               {title}
             </p>
-            <h1>
-              {
-              `${
-                number.toLocaleString('en-US', {
-                minimumIntegerDigits: 2,
-                useGrouping: false
-                })
-              }.`}</h1>
-
+            <h1>{`${toTwoDigitsNumber(number)}.`}</h1>
           </div>
 
           <div
             id={`collapse-${title.replace(/\s+/g, "")}`}
             className={`${styles["side-text-body-victorina"]} container`}
           >
-            {children}
+            <div>
+              {children}
+            </div>
           </div>
         </div>
       </div>

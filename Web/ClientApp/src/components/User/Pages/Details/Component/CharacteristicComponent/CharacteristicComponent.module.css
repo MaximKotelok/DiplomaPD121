@@ -1,0 +1,42 @@
+.characteristic {
+
+    height: 212px;
+    
+    border-radius: 24px;
+    gap: 114px;
+    background: #FF950033;
+
+}
+
+.name {
+    font-family: var(--standart-font);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+    margin: 0;
+    color: #0E3E75;
+}
+
+.w-90{
+    width: 90%;
+}
+
+.content {
+    font-family: var(--standart-font);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 23px;
+    margin: 0;
+    color:  #0E3E75;
+    
+}
+
+.image-box{
+    width: 32px;
+    height: 32px;
+    margin-right: 3px;
+}
+
+.characteristic-card{
+    width: 180px;
+}
