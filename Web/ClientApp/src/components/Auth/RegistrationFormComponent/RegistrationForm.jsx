@@ -31,7 +31,7 @@ const RegistrationForm = () => {
 
     return (
         <form onSubmit={handleRegistration}>
-            <label>
+            {/* <label>
                 Username:
                 <input type="text" name="username" value={formData.username} onChange={handleInputChange} required />
             </label>
@@ -43,9 +43,22 @@ const RegistrationForm = () => {
             <label>
                 Password:
                 <input type="password" name="password" value={formData.password} onChange={handleInputChange} required />
-            </label>
-            <br />
-            <button type="submit">Register</button>
+            </label> */}
+
+            <div>
+            <input className='input-text-form input-text-secondary-form mb-2' placeholder='Username' type="text" name="username" value={formData.username} onChange={handleInputChange} required/>
+
+            </div>
+            <div>
+                <input className='input-text-form input-text-secondary-form mb-2' placeholder='Email' type="text" name="email" value={formData.email} onChange={handleInputChange} required/>
+            </div>
+              <div>
+                <input className='input-text-form input-text-secondary-form mb-2' placeholder='Password' type="password" name="password" value={formData.password} onChange={handleInputChange} required/>
+               </div>
+              <div>
+                <input className='input-text-form input-text-secondary-form mb-2' placeholder='Confirm password' type="password" name="confirmPassword" value={formData.password} onChange={handleInputChange} required/>
+               </div>
+            <button  className="brn-form brn-primary-form mb-2" type="submit">Зареєструватись</button>
         </form>
     );
 };

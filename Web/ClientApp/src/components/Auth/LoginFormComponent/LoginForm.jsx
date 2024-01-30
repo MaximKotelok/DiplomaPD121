@@ -37,18 +37,19 @@ const LoginForm = () => {
 
     return (
         <form onSubmit={handleLogin}>
-            <label>
-                Email:
-                <input type="text" name="email" value={formData.email} onChange={handleInputChange} required/>
-            </label>
-            <br />
-            <label>
-                Password:
-                <input type="password" name="password" value={formData.password} onChange={handleInputChange} required/>
-            </label>
-            <br />
-            <button type="submit">Login</button>
+            <div>
+                <input className='input-text-form input-text-secondary-form mb-2' placeholder='Email' type="text" name="email" value={formData.email} onChange={handleInputChange} required/>
+            </div>
+<div>
+                <input className='input-text-form input-text-secondary-form mb-2' placeholder='Password' type="password" name="password" value={formData.password} onChange={handleInputChange} required/>
+</div>
+
+            <button  className="brn-form brn-primary-form mb-2" type="submit">Вхід</button>
         </form>
+
+
+
+
     );
 };
 

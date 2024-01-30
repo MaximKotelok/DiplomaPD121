@@ -12,6 +12,7 @@ import AddProductComponent from "./components/Admin/Pharmacy/AddProductComponent
 
 import { Layout } from "./layouts/UserLayout/Layout";
 import LayoutAdmin from "./layouts/AdminLayout/LayoutAdmin";
+import AuthPageComponent from "./components/Auth/AuthPageComponent";
 const AppRoutes = [
     {
         index: true,
@@ -29,15 +30,22 @@ const AppRoutes = [
         Layout: Layout
     },
     {
-        path: '/register',
-        element: <RegistrationForm />,
+ //Поки що так потім пораджусь з вами але думаю це норм як я зробив
+  
+        path: '/auth',
+        element: <AuthPageComponent />,
         Layout: Layout
     },
-    {
-        path: '/login',
-        element: <LoginForm />,
-        Layout: Layout
-    },
+    // {
+    //     path: '/register',
+    //     element: <RegistrationForm />,
+    //     Layout: Layout
+    // },
+    // {
+    //     path: '/login',
+    //     element: <LoginForm />,
+    //     Layout: Layout
+    // },
     {
         path: '/ChooseACategory',
         element: <ChooseACategoryComponent />,

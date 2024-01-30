@@ -17,10 +17,10 @@ import {
   getRecentlyViewedProductsIds,
   getRecomendedRandomCategory,
   setRecomendedRandomCategory,
-}  from "../../../../utils/SessionStorage";
+} from "../../../../utils/SessionStorage";
 
-import VitaminCardComponnent from "../../Common/VitaminCardComponent/VitaminCardComponnent"
-import MoreLink from "../../../Common/MoreLinkComponent/MoreLink"
+import VitaminCardComponnent from "../../Common/VitaminCardComponent/VitaminCardComponnent";
+import MoreLink from "../../../Common/MoreLinkComponent/MoreLink";
 import PopularButtonComponnent from "./Component/PopularButtonComponent/PopularButtonComponnent";
 import CircleCard from "../../../Common/CircleCardComponent/CircleCard";
 import CustomList from "./Component/CustomListComponent/CustomList";
