@@ -1,13 +1,44 @@
+import { NavigationDetailsComponent } from "../../../../Common/NavigationDetailsComponent/NavigationDetailsComponent";
+import ChangeCityComponent from "../ChangeCityComponent/ChangeCityComponent";
+import ListProductItemComponent from "../ListProductItemComponent/ListProductItemComponent";
+import styles from "./ListProduct.module.css"
+
 const ListPharmacies = (props) => {
-
-    const handleReserve = (id) => {
-        console.log(`reserve: ${id}`)
-    };
-
+    
     return (
         <div className="map-left">
-            <h1>Products in {props.city}</h1>
-            <ul>
+              <div className='mx-3'>
+
+                <p className={styles["product-title"]}>{props.product.title} {props.product.shortDescription} ціна у {props.city}</p>
+                <NavigationDetailsComponent id={props.product.id} />
+                <div className="my-3">
+                    <ChangeCityComponent city={props.city}/>
+                </div>
+            
+            {props.townProducts.map((product,index) => 
+            <ListProductItemComponent 
+                key={index}
+                id={product.id}
+                isSelected={props.selectedProduct && props.selectedProduct.id == product.id}
+                price={product.price}
+                lon={product.pharmacy.longitude}
+                lat={product.pharmacy.latitude} 
+                title={product.pharmacy.pharmaCompany.title} 
+                productTitle={`${product.product.title} ${props.product.shortDescription}`}                
+                address={product.pharmacy.address}
+                manufacturer={product.product.manufacturer.name}
+                timeClosed="20:00"
+                timeOpen="09:00"
+                onClick={() => { 
+                    props.onProductClick(product)
+                    if (props.onMapSelect) {
+                        props.onMapSelect(product);
+                    }
+                }}
+            /> 
+            )}
+            </div>
+            {/* <ul>
                 {props.townProducts.map(product => (
                     <li
                         key={product.id}
@@ -33,7 +64,7 @@ const ListPharmacies = (props) => {
                         <button onClick={() => { handleReserve(product.id) }}>Reserve</button>
                     </li>
                 ))}
-            </ul>
+            </ul> */}
         </div>
     );
 };

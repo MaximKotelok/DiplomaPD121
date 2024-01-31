@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./HeadOfDetailsComponent.module.css"
-import { NavigationDetailsComponent } from "../NavigationDetailsComponent/NavigationDetailsComponent";
+import { NavigationDetailsComponent } from "../../../../Common/NavigationDetailsComponent/NavigationDetailsComponent";
 import CustomImgComponent from "../../../../../Common/CustomImgComponent/CustomImgComponent";
 
 // import setupAccordion from "./AccordionSideMenuJQ";
@@ -12,22 +12,13 @@ const HeadOfDetailsComponent = ({ product }) => {
     <div className='d-flex w-100 mb-5'>
 
       <CustomImgComponent
+      className="me-2"
         style={{ width: "568px", height: "400px", objectFit: "cover" }}
         defaultSrc="https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png"
         src={`${product.pathToPhoto}`}
       />
       <div className='w-75'>
-        <NavigationDetailsComponent
-          data={
-            [
-              { anchorName: "about", title: "Про товар" },
-              { anchorName: "prices", title: "Ціни в аптеках" },
-              { anchorName: "instruction", title: "Інструкція" },
-              { anchorName: "characteristics", title: "Характеристики" },
-              { anchorName: "analogues", title: "Аналоги" },
-              { anchorName: "questions", title: "Часті питання" },
-            ]
-          } />
+        <NavigationDetailsComponent id={product.id}/>
 
         <div className={styles['product-details-info-container']}>
           <div>

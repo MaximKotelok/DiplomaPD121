@@ -79,3 +79,7 @@ color: rgba(242, 242, 247, 1);
     background-color: rgba(239, 239, 239, 1);
     color: rgba(122, 122, 122, 1);
 }
+
+.map-container .font-map-14{
+    font-size: 14;
+}

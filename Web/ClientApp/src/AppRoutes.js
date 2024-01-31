@@ -8,7 +8,7 @@ import ConfirmEmail from "./components/Auth/ConfirmEmailComponent/ConfirmEmail";
 
 import ChooseACategoryComponent from "./components/Admin/Pharmacy/AddProductComponents/ChooseACategoryComponent/ChooseACategoryComponent";
 import ChooseATypeComponent from "./components/Admin/Pharmacy/AddProductComponents/ChooseATypeComponent/ChooseATypeComponent";
-import AddProductComponent from "./components/Admin/Pharmacy/AddProductComponents/AddProductComponent/AddProductComponent";
+import AddProductComponent from "./components/Admin/Pharmacy/AddProductComponents/UpsertProductComponent/UpsertProductComponent";
 
 import { Layout } from "./layouts/UserLayout/Layout";
 import LayoutAdmin from "./layouts/AdminLayout/LayoutAdmin";

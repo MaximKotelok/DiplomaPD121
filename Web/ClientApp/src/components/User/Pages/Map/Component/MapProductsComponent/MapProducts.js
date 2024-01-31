@@ -6,6 +6,8 @@ import React, { useState, useEffect } from 'react';
 import { getCookie } from "../../../../../../utils/Cookies"
 import ListProducts from "../ListProductsComponent/ListProducts"
 import './MapProducts.css';
+import { NavigationDetailsComponent } from '../../../../Common/NavigationDetailsComponent/NavigationDetailsComponent';
+import { GetProduct } from '../../../../../../utils/Constants';
 
 const MapProducts = (props) => {
     const [map, setMap] = useState(null);
@@ -14,11 +16,17 @@ const MapProducts = (props) => {
     const [mapMarkers, setMapMarkers] = useState({});
     const [selectedMarker, setSelectedMarker] = useState(null);
     const [city, setCity] = useState(getCookie("city"));
+    const [product, setProduct] = useState(null);
 
     let selectedProductPrice = null;
 
-
+    async function loadProduct(){
+        let product = (await getFromServer(GetProduct, {id: props.productId})).data
+        setProduct(product);
+    };
     useEffect(() => {
+        loadProduct();
+        
         setupLocation().then(() => {
             const myMap = L.map('map').setView([0, 0], 13);
 
@@ -27,7 +35,7 @@ const MapProducts = (props) => {
             }).addTo(myMap);
 
             let city = getCookie("city");
-            setCity(getCookie("city"));
+            setCity(city);
 
             setMap(myMap);
 
@@ -60,9 +68,9 @@ const MapProducts = (props) => {
                 .on('click', getCurrentProduct);
 
             markers[element.id] = marker;
-        });
+        });        
         setMapMarkers(markers);
-        setTownProducts(products)
+        setTownProducts(products);
 
     }
 
@@ -129,12 +137,14 @@ const MapProducts = (props) => {
         }, 0);
     };
 
-
     return (
         <div>
+ 
+
             <div id="map" style={{ height: '400px' }}></div>
-            {city !== "" && townProducts != null ? (
+            {city !== "" && townProducts != null && product != null ? (
                 <ListProducts
+                    product={product}
                     city={city}
                     selectedProduct={selectedProduct}
                     townProducts={townProducts}

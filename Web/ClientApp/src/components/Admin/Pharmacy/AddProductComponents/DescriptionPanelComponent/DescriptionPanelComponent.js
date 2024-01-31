@@ -14,10 +14,10 @@ import InputForProductComponent from '../InputForProductComponent/InputForProduc
 import CustomSelectComponent from '../CustomSelectComponent/CustomSelectComponent';
 
 
-import "./AddProductComponent.css"
+import "./UpsertProductComponent.css"
 import LayoutContext from '../../../../../layouts/LayoutContext';
 
-const AddProductComponent = () => {
+const UpsertProductComponent = () => {
     const { onComponentMount, onComponentUnmount } = useContext(LayoutContext);    
     const { categoryId } = useParams();
     const { typeId } = useParams();
@@ -63,8 +63,7 @@ const AddProductComponent = () => {
         let localTypeId = typeId;
 
 
-        let
-            tmpObject,
+        let tmpObject,
             tmpBrands,
             tmpManufacturers,
             tmpAttributes,
@@ -198,6 +197,7 @@ const AddProductComponent = () => {
             postToServer(UpsertProduct, {
                 ...formData,
                 productAttributeGroupID: typeId,
+                categoryId: categoryId,
                 properties: additionalAttribute
             })
         else
@@ -425,4 +425,4 @@ const AddProductComponent = () => {
 }
 
 
-export default AddProductComponent;
+export default UpsertProductComponent;

@@ -8,6 +8,7 @@ import MapPharmacies from "./Component/MapPharmaciesComponent/MapPharmacies"
 import MapProduct from "./Component/MapProductsComponent/MapProducts"
 
 import LayoutContext from '../../../../layouts/LayoutContext';
+import { NavigationDetailsComponent } from '../../Common/NavigationDetailsComponent/NavigationDetailsComponent';
 
 export const Map = (props) => {
     const { id } = useParams();
@@ -21,8 +22,7 @@ export const Map = (props) => {
       }, [onComponentMount, onComponentUnmount]);
 
     return (
-        <div>
-            {
+        <div className='p-2'>            {
                 id != null ? (
                     <MapProduct productId={id}></MapProduct>
                 ) : (

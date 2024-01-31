@@ -9,7 +9,12 @@
     cursor: pointer;
 }
 
+.product-nav a {
+    text-decoration: none;
+ color: black;
+}
+
+
 .product-nav a.active {
-    text-decoration: underline;
-    color: black;
+    border-bottom: 1px solid #FF9500 ;
 }
