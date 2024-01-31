@@ -8,7 +8,7 @@ export const GetAllProductsFromIdArray = "Product/GetAllProductsFromIdArray";
 export const GetAllManufacturers = "Manufacturer/GetAllManufacturers";
 export const GetMainCategories = "Category/Main/All";
 export const GetRecomendedBrands = "Brand/GetRecomendedBrands";
-export const GetAllBrands = "Brand/GetAllBrands";``
+export const GetAllBrands = "Brand/GetAllBrands";
 export const GetRecomendedCategory = "Category/GetRecomendedCategory";
 export const PathToCategory = "Category/PathToCategory";
 export const GetRecomendedCategoryById = "Category/GetRecomendedCategoryById";
@@ -21,6 +21,13 @@ export const GetGroupById = "ProductAttributeGroup/get";
 export const UpsertProduct = "Product/UpsertProduct";
 export const GetProduct = "Product/GetById";
 
+export const ClassHeader = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+}
+export const FileHeader = {
+    'Content-Type': 'multipart/form-data'
+}
 
 export const StateInfos = {
     LOADING: 'loading',
