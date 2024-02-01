@@ -21,6 +21,13 @@ export const GetGroupById = "ProductAttributeGroup/get";
 export const UpsertProduct = "Product/UpsertProduct";
 export const GetProduct = "Product/GetById";
 
+export const ClassHeader = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+}
+export const FileHeader = {
+    'Content-Type': 'multipart/form-data'
+}
 
 export const StateInfos = {
     LOADING: 'loading',
