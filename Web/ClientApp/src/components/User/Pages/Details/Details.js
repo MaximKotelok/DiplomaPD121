@@ -15,6 +15,7 @@ import { CharacteristicTableComponent } from './Component/CharacteristicTableCom
 import AccordionComponent from '../../../Common/AccordionQuestionComponent/accordionComponent';
 import HeadOfDetailsComponent from './Component/HeadOfDetailsComponent/HeadOfDetailsComponent';
 import { getCookie } from '../../../../utils/Cookies';
+import { getPathToCategory } from '../../../../services/category';
 
 
 
@@ -29,67 +30,76 @@ export const Details = () => {
     }, [])
     const location = useLocation()
 
-    useEffect(()=> {
+    useEffect(() => {
         if (location.hash) {
             let elem = document.getElementById(location.hash.slice(1))
             if (elem) {
-                elem.scrollIntoView({behavior: "smooth"})
+                elem.scrollIntoView({ behavior: "smooth" })
             }
         } else {
-        window.scrollTo({top:0,left:0, behavior: "smooth"})
+            window.scrollTo({ top: 0, left: 0, behavior: "smooth" })
         }
     }, [location,])
 
-    useEffect(()=>{
+    useEffect(() => {
         const hash = window.location.hash;
-            
+
         if (hash) {
-          const targetElement = document.querySelector(hash);
-    
-          if (targetElement) {
-            targetElement.scrollIntoView({ behavior: 'smooth' });
-          }
+            const targetElement = document.querySelector(hash);
+
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            }
         }
-    },[loader])
+    }, [loader])
 
     async function init() {
         const res = await getFromServer(GetProduct, { id: id });
-        if (res.status == Success) {
+        if (res.status === Success) {
             let product;
             console.log(res)
             if (res.data.product) {
-                product = res.data.product;                
-                product.properties.unshift({name:"Діюча Речовина",value:res.data.activeSubstance})
+                product = res.data.product;
+                product.properties.unshift({ name: "Діюча Речовина", value: res.data.activeSubstance })
             }
             else {
-                product = res.data;            
+                product = res.data;
             }
-            product.city = getCookie("city")
-            product.pathToPhoto = `${ApiPath}${product.pathToPhoto}`
-            product.from = 23.66
-            product.to = 38.60
+            console.log(product)
+            let path = await getPathToCategory(product.categoryID);
+            if (path.status === Success) {
+                product.city = getCookie("city")
+                product.pathToPhoto = `${ApiPath}${product.pathToPhoto}`
+                product.from = 23.66
+                product.to = 38.60
+                product.pathToCategory = path.data;                                
+                product.properties.unshift({ name: "Категорія", value: path.data.slice(-1)[0].title });
+                setProduct(product)
+                setLoader(StateInfos.LOADED)
 
-                
-            setProduct(product)
-            setLoader(StateInfos.LOADED)
-            
+            } else {
+                setLoader(StateInfos.ERROR)
+            }
+
+
         } else {
             setLoader(StateInfos.ERROR)
         }
 
     }
-    if (loader == StateInfos.LOADING)
+    useEffect(()=>{
+        if(loader === StateInfos.ERROR){
+            window.location.href = "/404"
+        }
+    },[loader])
+
+    if (loader != StateInfos.LOADED){
         return <div>Loading...</div>
+    }
 
 
-    return (<div>
-
-        <DescriptionCategoryPathComponent data={[
-            { id: 1, title: "Каталог" },
-            { id: 2, title: "Ліки та профілактичні засоби" },
-            { id: 3, title: "Алергія" },
-            { id: 4, title: "Таблетки від алергії" },
-        ]} />
+    return (<div>    
+        <DescriptionCategoryPathComponent data={product.pathToCategory} />
 
         <HeadOfDetailsComponent product={product} />
 
@@ -111,7 +121,7 @@ export const Details = () => {
             >{product.description}</Description>
         </div>
         <hr />
-    
+
         <div className='row'>
             <p className='section-title' id='characteristic'>Характеристики</p>
             <CharacteristicTableComponent

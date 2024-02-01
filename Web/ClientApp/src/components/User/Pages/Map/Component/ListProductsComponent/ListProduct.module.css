@@ -5,3 +5,11 @@ font-weight: 700;
 line-height: 30px;
 
 }
+
+.found-in{
+    font-family: var(--standart-font);
+font-size: 20px;
+font-weight: 500;
+line-height: 25px;
+
+}

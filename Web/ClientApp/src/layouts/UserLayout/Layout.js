@@ -7,6 +7,7 @@ import LayoutContext from "../LayoutContext";
 // import SideBarComponnents from "./pages/Admin/components/SideBar/SideBarComponnents";
 import LayoutAdmin from "../AdminLayout/LayoutAdmin";
 import { Element } from "react-scroll";
+import { LayoutProviderValues } from "../../utils/Constants";
 
 export class Layout extends Component {
   static displayName = Layout.name;
@@ -16,12 +17,12 @@ export class Layout extends Component {
     return (
       <div
         className={
-          this.context.stateComponentMounted == "map" ? "map-container" : ""
+          this.context.stateComponentMounted === LayoutProviderValues.MAP ? "map-container" : ""
         }
       >
         <NavMenu />
         <Container tag="main">{this.props.children}</Container>
-        <FooterComponent />
+       <FooterComponent />
       </div>
     );
   }

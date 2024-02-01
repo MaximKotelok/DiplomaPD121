@@ -29,9 +29,9 @@ const HeadOfDetailsComponent = ({ product }) => {
           <div>
             <p className={styles["price-in-your-city"]}>Ціни у <b>{product.city}</b></p>
             <p className={styles["product-price-range"]}>від
-              <span className={styles["product-details-price"]}> {product.from} </span>
+              <span className={styles["product-details-price"]}> {Number(product.from).toFixed(2)} </span>
               до
-              <span className={styles["product-details-price"]}> {product.to} </span>
+              <span className={styles["product-details-price"]}> {Number(product.to).toFixed(2)} </span>
               грн
             </p>
           </div>

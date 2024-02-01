@@ -3,10 +3,11 @@ import SearchComponent from '../SearchComponent/SearchComponent';
 import { getFromServer } from '../../../../../utils/Queries';
 import { ApiPath, GetCategoriesForProductAdd } from  '../../../../../utils/Constants';
 import SquareCardComponent from '../SquareCardComponent/SquareCardComponent';
+import { getFirstNCategoryByTitle } from '../../../../../services/category';
 const ChooseACategoryComponent = () => {
     
     async function GetCategoryByName(title) {
-        const resp = await getFromServer(GetCategoriesForProductAdd, {title: title, count: 7});
+        const resp = await getFirstNCategoryByTitle(title, 7);
         
         return resp.data;        
     }

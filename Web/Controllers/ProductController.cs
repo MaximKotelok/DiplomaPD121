@@ -83,7 +83,7 @@ namespace Web.Controllers
 				ProductViewModel productView = new ProductViewModel
 				{
 					Id = product.Id,
-					CategoryID = product.Id,
+					CategoryID = product.CategoryID,
 					Title = product.Title,
 					ShortDescription = product.ShortDescription,
 					ProductAttributeGroupID = product.ProductAttributeGroupID,

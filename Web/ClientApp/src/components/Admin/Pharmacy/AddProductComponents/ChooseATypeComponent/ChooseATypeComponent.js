@@ -5,12 +5,13 @@ import SearchComponent from '../SearchComponent/SearchComponent';
 import { getFromServer } from '../../../../../utils/Queries';
 import { ApiPath, GetGroupsForProductAdd } from '../../../../../utils/Constants';
 import SquareCardComponent from '../SquareCardComponent/SquareCardComponent';
+import { getFirstNGroupByTitle } from '../../../../../services/group';
 const ChooseATypeComponent = () => {
     
     const { categoryId } = useParams();
 
     async function GetTypeByName(title) {
-        const resp = await getFromServer(GetGroupsForProductAdd, {title: title, count: 7});        
+        const resp = await getFirstNGroupByTitle(title, 7);        
         return resp.data;        
     }
 

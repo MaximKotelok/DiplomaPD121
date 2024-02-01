@@ -38,5 +38,6 @@ export const StateInfos = {
 export const LayoutProviderValues = {
     MAP: 'map',
     ADD: 'add',
-    UPDATE: 'update'
+    UPDATE: 'update',
+    DISABLE_FOOTER: 'disable-footer'
 };

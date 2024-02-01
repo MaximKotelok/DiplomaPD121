@@ -57,7 +57,7 @@ const UpsertProductComponent = () => {
         manufacturerID: undefined,
         brandId: undefined,
         pathToPhoto: undefined,
-        categoryID: 1,
+        categoryID: categoryId,
         productAttributeGroupID: undefined
     });
 
@@ -320,7 +320,7 @@ const UpsertProductComponent = () => {
                         onChange={selectedOption => {
                             setFormData({
                                 ...formData,
-                                ManufacturerID: selectedOption.value
+                                manufacturerID: selectedOption.value
                             })
                         }}
                     />
@@ -335,7 +335,7 @@ const UpsertProductComponent = () => {
                         onChange={selectedOption => {
                             setFormData({
                                 ...formData,
-                                BrandId: selectedOption.value
+                                brandId: selectedOption.value
                             })
                         }}
                     />

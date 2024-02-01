@@ -21,8 +21,11 @@ const MapProducts = (props) => {
     let selectedProductPrice = null;
 
     async function loadProduct(){
-        let product = (await getFromServer(GetProduct, {id: props.productId})).data
-        setProduct(product);
+        let product = (await getFromServer(GetProduct, {id: props.productId}))
+        if(product.data.product)
+            setProduct(product.data.product);
+        else
+            setProduct(product.data);
     };
     useEffect(() => {
         loadProduct();
@@ -59,7 +62,7 @@ const MapProducts = (props) => {
         products.forEach((element) => {
             let defaultIcon = L.divIcon({
                 className: 'map-icon-container',
-                html: `<div class="map-default-marker"><p>${element.price}</p></div>`,
+                html: `<div class="map-default-marker"><p>${Number(element.price).toFixed(2) }</p></div>`,
                 iconSize: [30, 30],
             });
 
@@ -85,13 +88,13 @@ const MapProducts = (props) => {
 
         let defaultIcon = L.divIcon({
             className: 'map-icon-container',
-            html: `<div class="map-default-marker"><p>${selectedProductPrice}</p></div>`,
+            html: `<div class="map-default-marker"><p>${Number(selectedProductPrice).toFixed(2) }</p></div>`,
             iconSize: [30, 30],
         });
        
         var clickedIcon = L.divIcon({
             className: 'map-icon-container',
-            html: `<div class="map-selected-marker"><p>${product.price}</p></div>`,
+            html: `<div class="map-selected-marker"><p>${Number(product.price).toFixed(2)}</p></div>`,
             iconSize: [30, 30],
         });
 
@@ -113,7 +116,7 @@ const MapProducts = (props) => {
         const newMarker = mapMarkers[product.id];
         var clickedIcon = L.divIcon({
             className: 'map-icon-container',
-            html: `<div class="map-selected-marker"><p>${product.price}</p></div>`,
+            html: `<div class="map-selected-marker"><p>${Number(product.price).toFixed(2) }</p></div>`,
             iconSize: [30, 30],
         });
 
@@ -121,7 +124,7 @@ const MapProducts = (props) => {
         if (selectedMarker) {
             let defaultIcon = L.divIcon({
                 className: 'map-icon-container',
-                html: `<div class="map-default-marker"><p>${selectedProduct.price}</p></div>`,
+                html: `<div class="map-default-marker"><p>${Number(selectedProduct.price).toFixed(2) }</p></div>`,
                 iconSize: [30, 30],
             });
             selectedMarker.setIcon(defaultIcon);
