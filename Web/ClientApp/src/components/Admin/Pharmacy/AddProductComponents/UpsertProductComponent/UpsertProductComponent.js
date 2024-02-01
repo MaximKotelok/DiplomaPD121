@@ -5,9 +5,14 @@ import React, { useEffect, useState,useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import Select from 'react-select';
 
+import { upsertProduct, getProductById } from "../../../../../services/product"
+import { postPhotoToServer } from "../../../../../services/photo"
+import { getGroupById } from "../../../../../services/group"
+import { getAllManufacturers } from "../../../../../services/manufacture"
+import { getAllBrands } from "../../../../../services/brand"
 
-import { getFromServer, postToServer, postPhotoToServer } from '../../../../../utils/Queries';
-import { UpsertProduct, GetAllBrands, GetAllManufacturers, GetGroupById, GetProduct, StateInfos, Success, LayoutProviderValues } from '../../../../../utils/Constants';
+import { getFromServer } from '../../../../../utils/Queries';
+import { StateInfos, Success, LayoutProviderValues } from '../../../../../utils/Constants';
 
 import ImageUploaderComponent from '../ImageUploaderComponent/ImageUploaderComponent';
 import InputForProductComponent from '../InputForProductComponent/InputForProductComponent'
@@ -71,13 +76,13 @@ const UpsertProductComponent = () => {
 
         try {
             if (productId) {
-                tmpObject = await getFromServer(GetProduct, { id: productId })
+                tmpObject = await getProductById({ id: productId })
                 let product = tmpObject.data.product ? tmpObject.data.product : tmpObject.data;
                 localTypeId = product.productAttributeGroupID
 
             }
 
-            let res = await getFromServer(GetGroupById, { id: localTypeId });
+            let res = await getGroupById(localTypeId);
 
             if (res.data.existAttributes.length > 0) {
                 tmpMainAttributes =
@@ -96,8 +101,8 @@ const UpsertProductComponent = () => {
             tmpAttributes = res;
             //setAttributes(res.data.attributesInGroup);
 
-            tmpManufacturers = await getFromServer(GetAllManufacturers);
-            tmpBrands = await getFromServer(GetAllBrands);
+            tmpManufacturers = await getAllManufacturers();
+            tmpBrands = await getAllBrands();
             if (
                 tmpBrands.status === Success &&
                 tmpManufacturers.status === Success &&
@@ -194,17 +199,9 @@ const UpsertProductComponent = () => {
         formData["pathToPhoto"] = a;
 
         if (typeId)
-            postToServer(UpsertProduct, {
-                ...formData,
-                productAttributeGroupID: typeId,
-                categoryId: categoryId,
-                properties: additionalAttribute
-            })
+            upsertProduct(formData, { typeId, additionalAttribute });
         else
-            postToServer(UpsertProduct, {
-                ...formData,
-                properties: additionalAttribute
-            })
+            upsertProduct(formData, { additionalAttribute });
     }
 
     //#endregion
@@ -315,7 +312,7 @@ const UpsertProductComponent = () => {
                     <CustomSelectComponent
                         selectedId={formData.manufacturerID}
                         className='me-1'
-                        name="ManufacturerID"
+                        name="manufacturerID"
                         placeholder="Виробник"
                         options={dataFromServer.manufacturers &&
                             dataFromServer.manufacturers.map &&
@@ -330,7 +327,7 @@ const UpsertProductComponent = () => {
                     <CustomSelectComponent
                         selectedId={formData.brandId}
                         className='ms-1'
-                        name="BrandId"
+                        name="brandId"
                         placeholder="Бренд"
                         options={dataFromServer.brands &&
                             dataFromServer.brands.map &&
