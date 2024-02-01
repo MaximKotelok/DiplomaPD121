@@ -5,13 +5,12 @@ import React, { useEffect, useState,useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import Select from 'react-select';
 
-import { upsertProduct, getProductById } from "../../../../../services/product"
+import { upsertProduct, getProductById, getExistAttributeVariantsList } from "../../../../../services/product"
 import { postPhotoToServer } from "../../../../../services/photo"
 import { getGroupById } from "../../../../../services/group"
 import { getAllManufacturers } from "../../../../../services/manufacture"
 import { getAllBrands } from "../../../../../services/brand"
 
-import { getFromServer } from '../../../../../utils/Queries';
 import { StateInfos, Success, LayoutProviderValues } from '../../../../../utils/Constants';
 
 import ImageUploaderComponent from '../ImageUploaderComponent/ImageUploaderComponent';
@@ -85,16 +84,7 @@ const UpsertProductComponent = () => {
             let res = await getGroupById(localTypeId);
 
             if (res.data.existAttributes.length > 0) {
-                tmpMainAttributes =
-                    await Promise.all(res.data.existAttributes.map(async (b) => {
-                        return {
-                            name: b.name, description: b.description, list: (await getFromServer(b.actionGetPath))
-                                .data.map(c => {
-                                    return { id: c.id, title: c.title }
-                                }
-                                )
-                        };
-                    }));
+                tmpMainAttributes = await getExistAttributeVariantsList(res.data.existAttributes);                    
             }
 
 

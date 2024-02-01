@@ -38,14 +38,15 @@ export const getRecentlyViewedProductsIds = () => {
 }
 
 
-export const getRecomendedRandomCategory = (type) => {         
+export const getRecomendedRandomCategory = (type) => {             
     return getObjectFromSession(`${type}RecomendedRandomCategoryId`);
 }
 
-export const setRecomendedRandomCategory = (type,id) => {         
+export const setRecomendedRandomCategory = (type,id) => {     
+    console.log(`${type}RecomendedRandomCategoryId`)
     if(id)
         saveObjectToSession(`${type}RecomendedRandomCategoryId`,id);
     else 
-    saveObjectToSession(`${type}RecomendedRandomCategoryId`,0);
+        saveObjectToSession(`${type}RecomendedRandomCategoryId`,0);
 }
 

@@ -1,18 +1,8 @@
 import React, { Component, useEffect, useState } from "react";
 import CarouselListComponent from "../../Common/CarouselListComponent/CarouselListComponent";
 import {
-  GetAllProductsFromIdArray,
-  GetRecomendedBrands,
-  GetMainCategories,
-  ApiPath,
-  GetRecomendedCategoryById,
-  GetRecomendedCategory,
+  ApiPath
 } from "../../../../utils/Constants";
-import {
-  getFromServer,
-  getProducts,
-  postToServer,
-} from "../../../../utils/Queries";
 import {
   getRecentlyViewedProductsIds,
   getRecomendedRandomCategory,
@@ -30,6 +20,9 @@ import homePageImg from "../../../../assets/images/homePageImg.png";
 import AdaptiveContainerComponent from "../../../Common/AdaptiveContainerComponent/AdaptiveContainerComponent";
 
 import "./Home.css";
+import { getFirstNItemRecomendedCategoryByPhoto, getFirstNItemMainCategories, getFirstNItemsOfRecomendedCategoryById } from "../../../../services/category";
+import { getCountProducts, getProductsFromIdsArray } from "../../../../services/product";
+import { getCountBrands } from "../../../../services/brand";
 export const Home = () => {
   var displayName = Home.name;
 
@@ -43,26 +36,22 @@ export const Home = () => {
     let id = getRecomendedRandomCategory("PNG");
     const count = 5;
     if (id) {
-      let pngCards = await getFromServer(GetRecomendedCategoryById, {
-        id: id,
-        count: count,
-      });
+      let pngCards = await getFirstNItemsOfRecomendedCategoryById(id, count);         
       setPngCards(pngCards.data.result);
     } else {
-      let pngCards = await getFromServer(GetRecomendedCategory, {
-        typeOfPhoto: "PNG",
-        count: count,
-      });
+      let pngCards = await getFirstNItemRecomendedCategoryByPhoto("PNG", count);
+      
       setRecomendedRandomCategory("PNG", pngCards.data.id);
       setPngCards(pngCards.data.result);
     }
   }
 
   async function initProducts() {
-    setProducts(await getProducts("Product", { count: 8 }, getFromServer));
+    setProducts(await getCountProducts(8));
   }
+
   async function initCategories() {
-    setCategories(await getFromServer(GetMainCategories, { count: 9 }));
+    setCategories(await getFirstNItemMainCategories(9));
   }
 
   async function initRecentlyViewed() {
@@ -70,12 +59,12 @@ export const Home = () => {
     if (ids.length == 0) return;
 
     setRecently(
-      await getProducts(GetAllProductsFromIdArray, ids, postToServer)
+      await getProductsFromIdsArray(ids)
     );
   }
 
   async function initBrands() {
-    setBrands(await getFromServer(GetRecomendedBrands, { count: 7 }));
+    setBrands(await getCountBrands(7));
   }
 
   useEffect(() => {
@@ -105,8 +94,8 @@ export const Home = () => {
                   <MoreLink link="." />
                 </div>
                 <CarouselListComponent>
-                  {products.data && products.data.map
-                    ? products.data.map((a) => (
+                  {products && products.map
+                    ? products.map((a) => (
                         <MiniProductCardComponent
                           key={a.id}
                           id={a.id}
@@ -127,12 +116,12 @@ export const Home = () => {
               </div>
             </div>
             <div className="row" style={{ margin: 0, padding: 0 }}>
-              {recently.data && (
+              {recently && (
                 <div>
                   <h3 className="text-title">Нещодавно переглянуті товари</h3>
                   <CarouselListComponent>
-                    {recently.data && recently.data.map
-                      ? recently.data.map((a) => (
+                    {recently && recently.map
+                      ? recently.map((a) => (
                           <MiniProductCardComponent
                             key={a.id}
                             id={a.id}

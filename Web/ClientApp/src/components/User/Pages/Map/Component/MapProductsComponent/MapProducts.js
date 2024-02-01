@@ -1,13 +1,12 @@
 ﻿import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { showLocation, setupLocation } from '../../../../../../utils/Location';
-import { getFromServer } from '../../../../../../utils/Queries';
 import React, { useState, useEffect } from 'react';
 import { getCookie } from "../../../../../../utils/Cookies"
 import ListProducts from "../ListProductsComponent/ListProducts"
 import './MapProducts.css';
-import { NavigationDetailsComponent } from '../../../../Common/NavigationDetailsComponent/NavigationDetailsComponent';
-import { GetProduct } from '../../../../../../utils/Constants';
+import { getProductById } from '../../../../../../services/product';
+import { Coords, getListOfConcreteProductInYourCity } from '../../../../../../services/concreteProduct';
 
 const MapProducts = (props) => {
     const [map, setMap] = useState(null);
@@ -21,12 +20,13 @@ const MapProducts = (props) => {
     let selectedProductPrice = null;
 
     async function loadProduct(){
-        let product = (await getFromServer(GetProduct, {id: props.productId}))
+        let product = (await getProductById(props.productId))
         if(product.data.product)
             setProduct(product.data.product);
         else
             setProduct(product.data);
     };
+
     useEffect(() => {
         loadProduct();
         
@@ -56,7 +56,8 @@ const MapProducts = (props) => {
 
 
     const setProductOfTown = async (city, map) => {
-        let products = (await getFromServer(`ConcreteProduct/GetListOfConcreteProductInYourCity/${city}/${props.productId}`)).data;
+        
+        let products = (await getListOfConcreteProductInYourCity(city, props.productId)).data;
 
         const markers = {};
         products.forEach((element) => {
@@ -80,7 +81,7 @@ const MapProducts = (props) => {
     const getCurrentProduct = async (e) => {
         var clickedMarker = e.target;
 
-        let product = (await getFromServer(`ConcreteProduct/Coords/${clickedMarker._latlng.lat}/${clickedMarker._latlng.lng}/${props.productId}`)).data;
+        let product = (await Coords(clickedMarker._latlng.lat,clickedMarker._latlng.lng, props.productId)).data;
 
 
         if (selectedProductPrice == null)

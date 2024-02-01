@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import SearchComponent from '../SearchComponent/SearchComponent';
-import { getFromServer } from '../../../../../utils/Queries';
 import { ApiPath, GetCategoriesForProductAdd } from  '../../../../../utils/Constants';
 import SquareCardComponent from '../SquareCardComponent/SquareCardComponent';
 import { getFirstNCategoryByTitle } from '../../../../../services/category';

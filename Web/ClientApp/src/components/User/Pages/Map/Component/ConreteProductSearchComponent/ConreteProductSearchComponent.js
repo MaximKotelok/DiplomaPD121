@@ -1,4 +1,4 @@
-import { getFromServer } from '../../../../../../utils/Queries';
+import { searchConcreteProduct } from '../../../../../../services/concreteProduct';
 import React, { useState, useEffect } from 'react';
 
 const ConreteProductSearchComponent = (props) => {
@@ -15,7 +15,7 @@ const ConreteProductSearchComponent = (props) => {
 
         }
 
-        const response = await getFromServer(`ConcreteProduct/Search/${props.pharmacyId}/${value}`);
+        const response = await searchConcreteProduct(props.pharmacyId,value);
 
         if (Array.isArray(response.data)) {
             setProducts(response.data);

@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { Element, scroller } from 'react-scroll';
 import "./Details.css";
 
 import { addToRecentlyViewedProduct } from '../../../../utils/SessionStorage';
 import { Description } from './Component/DescriptionComponent/Description';
-import { getFromServer } from '../../../../utils/Queries';
 import { ApiPath, GetProduct, PhotoPath, StateInfos, Success } from '../../../../utils/Constants';
 import DescriptionCategoryPathComponent from './Component/CategoryPathDetailsComponent/CategoryPathDetailsComponent';
-import CustomImgComponent from '../../../Common/CustomImgComponent/CustomImgComponent';
-import { NavigationDetailsComponent } from '../../Common/NavigationDetailsComponent/NavigationDetailsComponent';
 import { CharacteristicComponent } from './Component/CharacteristicComponent/CharacteristicComponent';
 import { CharacteristicTableComponent } from './Component/CharacteristicTableComponent/CharacteristicTableComponent';
 import AccordionComponent from '../../../Common/AccordionQuestionComponent/accordionComponent';
 import HeadOfDetailsComponent from './Component/HeadOfDetailsComponent/HeadOfDetailsComponent';
 import { getCookie } from '../../../../utils/Cookies';
 import { getPathToCategory } from '../../../../services/category';
+import { getProductById } from '../../../../services/product';
 
 
 
@@ -54,7 +51,7 @@ export const Details = () => {
     }, [loader])
 
     async function init() {
-        const res = await getFromServer(GetProduct, { id: id });
+        const res = await getProductById(id);
         if (res.status === Success) {
             let product;
             console.log(res)

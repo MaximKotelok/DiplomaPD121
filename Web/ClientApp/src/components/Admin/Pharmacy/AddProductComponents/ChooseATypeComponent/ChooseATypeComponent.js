@@ -2,8 +2,7 @@ import { useParams } from 'react-router-dom';
 import React, { useState } from 'react';
 
 import SearchComponent from '../SearchComponent/SearchComponent';
-import { getFromServer } from '../../../../../utils/Queries';
-import { ApiPath, GetGroupsForProductAdd } from '../../../../../utils/Constants';
+import { ApiPath } from '../../../../../utils/Constants';
 import SquareCardComponent from '../SquareCardComponent/SquareCardComponent';
 import { getFirstNGroupByTitle } from '../../../../../services/group';
 const ChooseATypeComponent = () => {
