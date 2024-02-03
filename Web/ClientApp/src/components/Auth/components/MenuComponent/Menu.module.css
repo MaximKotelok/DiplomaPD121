@@ -1,0 +1,48 @@
+
+      
+        .my-list-group-item{
+            border-radius: 12px;
+            padding: 12px 20px;
+            border: 1px solid rgba(0, 122, 255, 0.15);
+            margin-bottom: 12px;
+            font-family: var(--standart-font);
+            transition: all 0.5s ease;
+            }   
+           
+            
+            .my-list-group-item:hover {
+
+              border: 1px solid rgba(0, 122, 255, 0.15);
+background-color: rgba(0, 122, 255, 0.15);
+            }
+            
+            .my-list-group-item:hover .link-text {
+color: rgba(0, 122, 255, 1);
+            }
+
+
+            .link-text{
+            font-family: var(--standart-font);
+            transition: all 0.5s ease;
+
+text-decoration: none;
+              font-size: 16px;
+              font-weight: 500;
+              line-height: 20px;
+              letter-spacing: 0em;
+              text-align: left;
+            color: #0D1E31;
+            }
+
+            
+            .category-icon {
+                width: 32px;
+                height: 32px;
+                margin-right: 10px;
+              }
+    
+              .menu-list {
+                list-style: none; /* Видаляє крапочки */
+                padding: 0; /* Забирає внутрішні відступи */
+                margin: 0; /* Забирає зовнішні відступи */
+              }

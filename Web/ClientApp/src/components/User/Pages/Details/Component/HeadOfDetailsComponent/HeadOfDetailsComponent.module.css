@@ -1,0 +1,77 @@
+
+.product-details-in-pharmacies {
+  font-family: var(--standart-font);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+  color: #4E4444;
+}
+
+.price-in-your-city{
+  font-family: var(--standart-font);
+font-size: 18px;
+font-weight: 500;
+line-height: 23px;
+
+}
+
+.product-price-range {
+  font-family: var(--standart-font);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+
+
+}
+
+.product-details-price {
+  font-family: var(--standart-font);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 30px;
+}
+
+.product-details-title {
+  margin-top: 15px;
+  margin-bottom: 0;
+  font-weight: 600;
+  font-size: 24px;
+  font-family: var(--standart-font);
+}
+
+.product-details-info-container {
+  font-family: var(--standart-font);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 90%;
+}
+
+.btn-details {
+  font-family: var(--standart-font);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 23px;
+  letter-spacing: 0em;
+  padding: 15px 0;
+  border-radius: 12px;
+
+}
+
+.btn-pharmacies:hover {
+  background: #007AFF;
+}
+
+.btn-analogues:hover {
+  background: #007AFF26;
+}
+
+.btn-pharmacies {
+  color: white;
+  background: #007AFF;
+}
+
+.btn-analogues {
+  color: #007AFF;
+  background: #007AFF26;
+}

@@ -26,12 +26,12 @@
 
 .slider-container .slider-control-centerright button {
     
-    background-image: url("./images/arrow-right-short.svg")!important;
+    background-image: url("../assets/images/arrow-right-short.svg")!important;
     
 }
 
 .slider-container .slider-control-centerleft button {
-    background-image: url("./images/arrow-left-short.svg")!important;
+    background-image: url("../assets/images/arrow-left-short.svg")!important;
 }
 
 
@@ -46,3 +46,40 @@ body, html {
     height: 100%;
     width: 100%;
   }
+
+  .brn-form{
+    width: 100%;
+    padding: 16px 20px;
+    border: none;
+    border-radius: 12px;    
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    
+}
+  
+  .brn-primary-form{
+background-color: rgba(0, 122, 255, 1);
+color: rgba(242, 242, 247, 1);
+}
+
+.input-text-form{
+    width: 100%;
+    padding: 16px 20px;
+    border: none;
+    border-radius: 12px;    
+    font-size: 16px;
+    line-height: 20px;
+      font-weight: 500;
+    text-align: left;
+ outline: none;
+}
+
+.input-text-secondary-form{
+    background-color: rgba(239, 239, 239, 1);
+    color: rgba(122, 122, 122, 1);
+}
+
+.map-container .font-map-14{
+    font-size: 14;
+}

@@ -1,0 +1,20 @@
+.table-row:not(:last-child){
+    border-bottom: 1px solid #E5E5EA;
+}
+
+.table-row p{
+    font-family: var(--standart-font);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    margin: 10px 0;
+
+}
+.table-row .name{
+    color: black;
+}
+
+.table-row .value{
+    color: #0065D3;
+
+}

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import AppRoutes from './AppRoutes';
-import { Layout } from './components/Layout';
+// import { Layout } from './layouts/UserLayout/Layout';
 import './custom.css';
 import { setupLocation } from './utils/Location';
-import LayoutProvider from './components/LayoutProvider';
-import LayoutAdmin from './components/pages/Admin/LayoutAdmin';
+import LayoutProvider from './layouts/LayoutProvider';
+// import LayoutAdmin from './components/pages/Admin/LayoutAdmin';
+import "./styles/variables.css";
+import "./styles/global.css"
 
 export default class App extends Component {
   static displayName = App.name;

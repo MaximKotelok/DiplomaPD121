@@ -1,0 +1,19 @@
+.path {
+    font-weight: 600;
+    font-size: 12px;
+    color: #0E3E75;
+}
+
+.path a {
+    text-decoration: none;
+}
+
+.separator {
+    width: 0px;
+    height: 14px;
+    
+    border: 1px solid #0E3E75;
+    margin: 0 15px;
+}
+
+

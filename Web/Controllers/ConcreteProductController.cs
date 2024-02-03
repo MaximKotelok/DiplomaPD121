@@ -58,7 +58,7 @@ namespace Web.Controllers
                 var result = _concreteProductService.GetAllConcreteProducts(
                   a => a.ProductID == productId
                   &&
-                  a.Pharmacy.CityID == cityRes.Id, "Pharmacy,Product,Product.Manufacturer");
+                  a.Pharmacy.CityID == cityRes.Id, "Pharmacy,Product,Product.Manufacturer,Pharmacy.PharmaCompany");
 
                 return Ok(result);
             }

@@ -1,0 +1,21 @@
+
+      
+        .my-list-group-item{
+        border-radius: 12px;
+        padding: 16px 20px;
+        border: 1px solid #000;
+        margin-bottom: 20px;
+        font-family: var(--standart-font);
+        }   
+        
+        .category-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+          }
+
+          .category-list {
+            list-style: none; /* Видаляє крапочки */
+            padding: 0; /* Забирає внутрішні відступи */
+            margin: 0; /* Забирає зовнішні відступи */
+          }

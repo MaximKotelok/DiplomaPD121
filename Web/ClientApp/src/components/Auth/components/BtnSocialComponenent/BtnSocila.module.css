@@ -1,0 +1,13 @@
+.btn-socal {
+            font-family: var(--standart-font);
+
+    border: 1px solid rgba(13, 30, 49, 0.25);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    border-radius: 12px;
+  }
+  
+  .icon-container-socal {
+    margin-right: 10px;
+  }

@@ -1,0 +1,11 @@
+.description-item {
+    word-wrap: break-word;
+}
+
+.section-title{
+    margin-top: 5px;
+    font-family: var(--standart-font);
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 30px;
+}

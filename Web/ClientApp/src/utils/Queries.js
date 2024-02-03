@@ -1,8 +1,6 @@
 import axios from "axios";
-import { ApiPath, GetSupInfoForProductInYourCity, ServerURL,Success } from "./Constants";
+import { ApiPath, GetSupInfoForProductInYourCity,Success } from "./Constants";
 import { getCookie } from "./Cookies";
-
-const globalUrl = `${ServerURL}/api`;
 
 export async function getProducts(url, data, getFunction){
     
@@ -20,17 +18,13 @@ export async function getProducts(url, data, getFunction){
     return getProducts;
 }
 
-
-export async function postToServer(url, data) {
+export async function postToServer(url, data, headers) {
     try {
         const response = await axios.post(
-            `${globalUrl}/${url}`,
+            `${ApiPath}/${url}`,
             data,
             {
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
+                headers: headers,
             }
         );
         console.log(response.data);    
@@ -39,35 +33,13 @@ export async function postToServer(url, data) {
         console.log(error);
         return { status: 'Error', error };
     }
-    }
-
-export async function postPhotoToServer(serverUrl, relativePath, file) {
-    const formData = new FormData();
-    formData.append('relativePath', relativePath);
-    formData.append('file', file);
-  
-    try {
-      const response = await axios.post(`${ApiPath}/${serverUrl}`,formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-        
-      if (response.status === 200) {
-        return response.data;
-      } else {
-        console.error('Error uploading file:', response.data);
-      }
-    } catch (error) {
-      console.error('Error uploading file:', error);
-    }
-  }
+}
 
 export async function getFromServer(url, params = {}) {
 
     try {
         
-        const response = await axios.get(`${globalUrl}/${url}`, {
+        const response = await axios.get(`${ApiPath}/${url}`, {
             params: params,
             headers: {
                 Accept: "application/json",
