@@ -557,7 +557,7 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -569,22 +569,22 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "заборонено"
+                            Title = "заборонено"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "дозволено"
+                            Title = "дозволено"
                         },
                         new
                         {
                             Id = 3,
-                            Name = "за призначенням лікаря"
+                            Title = "за призначенням лікаря"
                         },
                         new
                         {
                             Id = 4,
-                            Name = "з обережністю"
+                            Title = "з обережністю"
                         });
                 });
 
@@ -1230,6 +1230,62 @@ namespace DataAccess.Migrations
                             Description = "Діюча речовина",
                             GroupID = 2,
                             Name = "activeSubstanceID"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ActionGetPath = "PermissionType",
+                            Description = "Алергіки",
+                            GroupID = 2,
+                            Name = "allergiesId"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ActionGetPath = "PermissionType",
+                            Description = "Діабетики",
+                            GroupID = 2,
+                            Name = "diabeticsId"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ActionGetPath = "PermissionType",
+                            Description = "Годуючі мами",
+                            GroupID = 2,
+                            Name = "nursingMothersId"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ActionGetPath = "PermissionType",
+                            Description = "Дорослі",
+                            GroupID = 2,
+                            Name = "adultsId"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ActionGetPath = "PermissionType",
+                            Description = "Вагітні",
+                            GroupID = 2,
+                            Name = "pregnantId"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ActionGetPath = "PermissionType",
+                            Description = "Діти",
+                            GroupID = 2,
+                            Name = "childrenId"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ActionGetPath = "PermissionType",
+                            Description = "Водії",
+                            GroupID = 2,
+                            Name = "driversId"
                         });
                 });
 

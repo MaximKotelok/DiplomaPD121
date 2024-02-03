@@ -82,7 +82,6 @@ const UpsertProductComponent = () => {
             }
 
             let res = await getGroupById(localTypeId);
-
             if (res.data.existAttributes.length > 0) {
                 tmpMainAttributes = await getExistAttributeVariantsList(res.data.existAttributes);                    
             }
@@ -183,7 +182,7 @@ const UpsertProductComponent = () => {
             a = formData.pathToPhoto;
         }
         
-        console.log(a)
+        console.log(formData)
 
 
         formData["pathToPhoto"] = a;
