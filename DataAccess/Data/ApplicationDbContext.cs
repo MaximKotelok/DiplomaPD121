@@ -38,6 +38,7 @@ namespace DataAccess.Data
         public DbSet<Reservation>? Reservations { get; set; }
         public DbSet<ReservationStatus>? ReservationStatuses { get; set; }
         public DbSet<ProductStatus>? ProductStatuses { get; set; }
+        public DbSet<PermissionType>? PermissionTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -82,6 +83,8 @@ namespace DataAccess.Data
 			new ConcreteProductConfiguration().Configure(modelBuilder.Entity<ConcreteProduct>());
 			
             new ProductExistAttributeConfiguration().Configure(modelBuilder.Entity<ProductExistAttribute>());
+            
+            new PermissionTypeConfiguration().Configure(modelBuilder.Entity<PermissionType>());
 		}
     }
 }

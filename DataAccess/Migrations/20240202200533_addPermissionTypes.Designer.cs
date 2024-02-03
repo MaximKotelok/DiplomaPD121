@@ -4,6 +4,7 @@ using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240202200533_addPermissionTypes")]
+    partial class addPermissionTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -564,28 +567,6 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PermissionTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "заборонено"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "дозволено"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "за призначенням лікаря"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "з обережністю"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Models.PharmaCompany", b =>
