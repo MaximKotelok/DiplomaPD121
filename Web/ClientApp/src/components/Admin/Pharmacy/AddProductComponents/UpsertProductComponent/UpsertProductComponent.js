@@ -26,6 +26,22 @@ const UpsertProductComponent = () => {
     const { categoryId } = useParams();
     const { typeId } = useParams();
     const { productId } = useParams();
+
+    useEffect(() => {    
+        const handleKeyDown = (e) => {
+
+            if (e.key === 'PageDown' || e.key === 'PageUp') {
+              e.preventDefault();
+            }
+            
+          };
+          document.addEventListener('keydown', handleKeyDown);
+
+    return () => {      
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+      }, []);
+
     useEffect(() => {          
         if(typeId)
             onComponentMount(LayoutProviderValues.ADD);//"Сторінка додавання товару"); 
@@ -47,6 +63,7 @@ const UpsertProductComponent = () => {
     //#region other states    
     const [stateInfo, setStateInfo] = useState(StateInfos.LOADING);
     const [image, setImage] = useState(null);
+    const [descriptionName, setDescriptionName] = useState("Опис");
     const [additionalAttribute, setAdditionalAttribute] = useState([]);
     const [formData, setFormData] = useState({
         id: undefined,
@@ -75,7 +92,7 @@ const UpsertProductComponent = () => {
 
         try {
             if (productId) {
-                tmpObject = await getProductById({ id: productId })
+                tmpObject = await getProductById(productId)
                 let product = tmpObject.data.product ? tmpObject.data.product : tmpObject.data;
                 localTypeId = product.productAttributeGroupID
 
@@ -84,6 +101,10 @@ const UpsertProductComponent = () => {
             let res = await getGroupById(localTypeId);
             if (res.data.existAttributes.length > 0) {
                 tmpMainAttributes = await getExistAttributeVariantsList(res.data.existAttributes);                    
+            }
+            
+            if(res.data.descriptionName){
+                setDescriptionName(res.data.descriptionName);
             }
 
 
@@ -99,8 +120,11 @@ const UpsertProductComponent = () => {
             ) {
 
                 //setFormData
-                setFormData((prevData) => {
+                setFormData((prevData) => {                
                     let newData = { ...prevData };
+                    if(!productId){
+                        newData = {...newData, description: res.data.description}
+                    }
                     if (tmpMainAttributes)
                         newData = { ...newData, ...Object.fromEntries(tmpMainAttributes.map(a => [a.name, undefined])) };
                     if (tmpObject && tmpObject.data) {
@@ -269,8 +293,9 @@ const UpsertProductComponent = () => {
         <div className='add-product-left-container'>
             <div className='inner-add-product-left-container'>
 
-            <p className='product-label'>Опис</p>
+            <p className='product-label'>{descriptionName}</p>
             <ReactQuill
+                className='description-form-element'
                 theme="snow"
                 value={formData.description}
                 onChange={a => { setFormDataAttribute("description", a) }}

@@ -243,7 +243,7 @@ namespace Web.Controllers
 
 			};
 
-			foreach (var item in props)
+			foreach (var item in props)	
 			{
 				if (postModel.Id != null)
 					_propertyService.DeleteProperty(postModel.Id.Value);
