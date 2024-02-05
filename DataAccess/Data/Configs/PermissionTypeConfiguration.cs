@@ -14,10 +14,10 @@ namespace Repository.Data.Configs
         public void Configure(EntityTypeBuilder<PermissionType> builder)
         {
             builder.HasData(
-                new PermissionType { Id = 1, Name = "заборонено" },
-                new PermissionType { Id = 2, Name = "дозволено" },
-                new PermissionType { Id = 3, Name = "за призначенням лікаря" },
-                new PermissionType { Id = 4, Name = "з обережністю" }
+                new PermissionType { Id = 1, Title = "заборонено" },
+                new PermissionType { Id = 2, Title = "дозволено" },
+                new PermissionType { Id = 3, Title = "за призначенням лікаря" },
+                new PermissionType { Id = 4, Title = "з обережністю" }
             );
         }
     }

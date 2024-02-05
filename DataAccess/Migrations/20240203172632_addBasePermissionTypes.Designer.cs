@@ -4,6 +4,7 @@ using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240203172632_addBasePermissionTypes")]
+    partial class addBasePermissionTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1159,12 +1162,6 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DescriptionName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool?>("IsDisableShow")
                         .HasColumnType("bit");
 
@@ -1188,8 +1185,6 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 2,
-                            Description = "<h1>Склад</h1><h1><br></h1><h1>Лікарська форма</h1><h1><br></h1><h1>Фармакотерапевтична група</h1><h1><br></h1><h1>Фармакологічні властивості</h1><h1><br></h1><h1>Показання</h1><h1><br></h1><h1>Протипоказання</h1><h1><br></h1><h1>Взаємодія з іншими лікарськими засобами та інші види взаємодії</h1><h1><br></h1><h1>Особливості щодо застосування</h1><h1><br></h1><h1>Спосіб застосування та дози</h1><h1><br></h1><h1>Передозування</h1><h1><br></h1><h1>Побічні ефекти</h1><h1><br></h1><h1>Термін придатності</h1><p><br></p><h1>Умови зберігання</h1><h1><br></h1><h1>Упаковка</h1><p><br></p><h1>Категорія відпуску</h1><p><br></p><h1>Виробник</h1><p><br></p><h1>Адреса</h1>",
-                            DescriptionName = "Інструкція",
                             Name = "Таблетки"
                         },
                         new

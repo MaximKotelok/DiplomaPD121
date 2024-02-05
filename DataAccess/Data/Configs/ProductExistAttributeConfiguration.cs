@@ -20,6 +20,62 @@ namespace Repository.Data.Configs
 					Description="Діюча речовина", 
 					GroupID=2,
 					ActionGetPath=nameof(ActiveSubstance)				
+				},
+				new ProductExistAttribute
+				{
+					Id = 2,
+					Name = "allergiesId",
+					Description = "Алергіки",
+					GroupID = 2,
+					ActionGetPath = nameof(PermissionType)
+				},
+				new ProductExistAttribute
+				{
+					Id = 3,
+					Name = "diabeticsId",
+					Description = "Діабетики",
+					GroupID = 2,
+					ActionGetPath = nameof(PermissionType)
+				},
+				new ProductExistAttribute
+				{
+					Id = 4,
+					Name = "nursingMothersId",
+					Description = "Годуючі мами",
+					GroupID = 2,
+					ActionGetPath = nameof(PermissionType)
+				},
+				new ProductExistAttribute
+				{
+					Id = 5,
+					Name = "adultsId",
+					Description = "Дорослі",
+					GroupID = 2,
+					ActionGetPath = nameof(PermissionType)
+				},
+				new ProductExistAttribute
+				{
+					Id = 6,
+					Name = "pregnantId",
+					Description = "Вагітні",
+					GroupID = 2,
+					ActionGetPath = nameof(PermissionType)
+				},
+				new ProductExistAttribute
+				{
+					Id = 7,
+					Name = "childrenId",
+					Description = "Діти",
+					GroupID = 2,
+					ActionGetPath = nameof(PermissionType)
+				},
+				new ProductExistAttribute
+				{
+					Id = 8,
+					Name = "driversId",
+					Description = "Водії",
+					GroupID = 2,
+					ActionGetPath = nameof(PermissionType)
 				}
 				);
 		}

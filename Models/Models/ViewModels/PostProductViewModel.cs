@@ -23,6 +23,13 @@ namespace Domain.Models.ViewModels
 		public string? ShortDescription { get; set; }
 		[Required]
 		public int? CategoryID { get; set; }
+		public int? AdultsId { get; set; }
+		public int? AllergiesId { get; set; }
+		public int? ChildrenId { get; set; }
+		public int? DiabeticsId { get; set; }
+		public int? DriversId { get; set; }
+		public int? NursingMothersId { get; set; }
+		public int? PregnantId { get; set; }
 		[Required]
 		public int? ProductAttributeGroupID { get; set; }
 		[Required]
