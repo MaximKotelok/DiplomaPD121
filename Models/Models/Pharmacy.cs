@@ -23,16 +23,17 @@ namespace Domain.Models
 
 		[Required]
         public int PharmaCompanyID { get; set; }
-        [ForeignKey("PharmaCompanyID")]
+        [ForeignKey(nameof(PharmaCompanyID))]
         public PharmaCompany? PharmaCompany { get; set; }
 		[JsonIgnore]
 		public IEnumerable<ConcreteProduct>? ConcreteProducts { get; set; }
 
         [Required]
         public int CityID { get; set; }
-        [ForeignKey("CityID")]
+        [ForeignKey(nameof(CityID))]
         public City? City { get; set; }
-        public string? UserId { get; set; }
+        public string? UserID { get; set; }
+        [ForeignKey(nameof(UserID))]
         public User? User { get; set; }
 
         [JsonIgnore]

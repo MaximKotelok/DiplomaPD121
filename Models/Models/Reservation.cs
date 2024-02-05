@@ -12,16 +12,16 @@ namespace Domain.Models
 	public class Reservation:BaseEntity
 	{
 		public int ConcreteProductID { get; set; }
-		[ForeignKey("ConcreteProductID")]
+		[ForeignKey(nameof(ConcreteProductID))]
 		public ConcreteProduct? ConcreteProduct { get; set; }
 		public DateTime ToGetReservationTime { get; set; }
 		public DateTime ReservedTime { get; set; }
 		[Required]
 		public string? UserID { get; set; }
-		[ForeignKey("UserID")]
+		[ForeignKey(nameof(UserID))]
 		public User? User { get; set; }
-		public int StatusId { get; set; }
-		[ForeignKey("StatusId")]
+		public int StatusID { get; set; }
+		[ForeignKey(nameof(StatusID))]
 		public ReservationStatus? Status { get; set; }
 	}
 }

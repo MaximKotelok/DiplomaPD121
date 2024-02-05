@@ -1,6 +1,7 @@
 ﻿import React, { useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { setToken } from '../../../utils/Login';
 
 const LoginForm = () => {
     const [formData, setFormData] = useState({
@@ -23,8 +24,7 @@ const LoginForm = () => {
             const response = await axios.post('https://localhost:7133/api/userauthentication/login', formData);
             // Перевірка наявності токену у відповіді
             if (response.data && response.data.token) {
-                localStorage.setItem('authToken', response.data.token);
-                localStorage.setItem('userInfo', JSON.stringify(response.data.user));
+                setToken(response.data.token);
                 Swal.fire('Success!', 'Login successful', 'success');
                 // Додайте необхідні дії після успішного входу, наприклад, перенаправлення на іншу сторінку
             } else {

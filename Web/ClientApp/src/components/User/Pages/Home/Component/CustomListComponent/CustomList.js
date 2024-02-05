@@ -7,7 +7,6 @@ import placeholder from "../../../../../../assets/images/placeholder.png";
 import { ApiPath } from "../../../../../../utils/Constants";
 
 const CustomList = ({ data }) => {
-  console.log(data);
   return (
     <ul className="category-list">
       {data && data.map

@@ -25,24 +25,59 @@ namespace Web.Controllers
             _pharmacyService = pharmacyService;
         }
 
-        [HttpPost("addFavouriteProduct/{productId}")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> AddFavouriteProduct(int productId)
-        {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var product = _productService.GetProduct(x => x.Id == productId);
-            if (user == null || product == null)
-            {
-                return NoContent();
-            }
+		[HttpPost("getFavorites")]
+		[Authorize(AuthenticationSchemes = "Bearer")]
+		public async Task<IActionResult> GetFavorites()
+		{
+			var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            
+            
+			if (user == null)
+			{
+				return NoContent();
+			}
+			
+			return Ok(user!.FavProducts!.Select(a => a.Id).ToList());
+		}
 
+		[HttpPost("addFavouriteProduct/{productId}")]
+		[Authorize(AuthenticationSchemes = "Bearer")]
+		public async Task<IActionResult> AddFavouriteProduct(int productId)
+		{
+			var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
-            user.FavProducts = user.FavProducts?.Append(product).ToList();
-            await _userManager.UpdateAsync(user);
+			if (user == null)
+			{
+				return NotFound("User not found.");
+			}
 
-            return Ok();
-        }
-        [HttpPost("removeFavouriteProduct/{productId}")]
+			var product = _productService.GetProduct(x => x.Id == productId);
+
+			if (product == null)
+			{
+				return NotFound("Product not found.");
+			}
+
+			if (user.FavProducts != null && user.FavProducts.Any(p => p.Id == productId))
+			{
+				return BadRequest("Product is already in favorites.");
+			}
+
+			user.FavProducts = user.FavProducts.Append(product).ToList();
+
+			try
+			{			
+				await _userManager.UpdateAsync(user);
+				return Ok();
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Error updating user: {ex.Message}");
+				return StatusCode(500, "Internal Server Error");
+			}
+		}
+
+		[HttpPost("removeFavouriteProduct/{productId}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> RemoveFavouriteProduct(int productId)
         {

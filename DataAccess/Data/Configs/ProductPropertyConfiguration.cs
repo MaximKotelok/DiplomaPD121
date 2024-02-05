@@ -15,8 +15,8 @@ namespace Repository.Data.Configs
 		{
 			builder.HasKey(table => new
 			{
-				table.ProductId,
-				table.AttributeId
+				table.ProductID,
+				table.AttributeID
 			});
 
 		}

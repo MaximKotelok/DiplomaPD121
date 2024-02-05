@@ -10,12 +10,12 @@ namespace Domain.Models
 {
 	public class ProductProperty
 	{
-		[ForeignKey("ProductId")]
+		[ForeignKey(nameof(ProductID))]
 		public Product? Product { get; set; }
-		public int ProductId { get; set; }
-		[ForeignKey("AttributeId")]
+		public int ProductID { get; set; }
+		[ForeignKey(nameof(AttributeID))]
 		public ProductAttribute? Attribute { get; set; }
-		public int AttributeId { get; set; }
+		public int AttributeID { get; set; }
 		[Required]
 		public string? Value { get; set; }
 	}

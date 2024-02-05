@@ -14,6 +14,8 @@ using Services.CityService;
 using Services.ConcreteProductService;
 using Services.MedicineService;
 using Services.PharmacyCompanyService;
+using Services.ProductConfirmService;
+using Services.ProductStatusService;
 using Services.PropertyService;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,22 +35,29 @@ namespace Web.Controllers
 		private readonly IPropertyService _propertyService;
 		private readonly ICityService _cityService;
 		private readonly IConcreteProductService _concreteProductService;
+		private readonly IProductStatusService _productStatusService;
+		private readonly IProductConfirmService _productConfirmService;
 
 		public ProductController(
-			IProductService productService,
-			 IAttributeService attributeService,
-			 IPropertyService propertyService,
-			ICityService cityService,
-			IConcreteProductService concreteProductService,
-			IMedicineService medicineService
+				IProductService productService,
+				IAttributeService attributeService,
+				IPropertyService propertyService,
+				ICityService cityService,
+				IConcreteProductService concreteProductService,
+				IMedicineService medicineService,
+				IProductStatusService productStatusService,
+				IProductConfirmService productConfirmService
 			)
 		{
+
+			this._productConfirmService = productConfirmService;
 			this._productService = productService;
 			this._cityService = cityService;
 			this._medicineService = medicineService;
 			this._attributeService = attributeService;
 			this._propertyService = propertyService;
 			this._concreteProductService = concreteProductService;
+			this._productStatusService = productStatusService;
 		}
 
 
@@ -76,9 +85,9 @@ namespace Web.Controllers
 		[HttpGet("GetById")]
 		public IActionResult GetProduct(int id)
 		{
-			Product product = _productService!.GetProduct(a => a.Id == id, includeProperties: "Properties,Properties,Properties.Attribute")!;
+			Product product = _productService!.GetProduct(a => a.Id == id, includeProperties: "Properties,Properties,Properties.Attribute,ProductConfirm,ProductConfirm.ProductStatus")!;
 
-			if (product is not null)
+			if (product is not null && (product.ProductConfirm == null || product!.ProductConfirm!.ProductStatus!.Status!.Equals(SD.ProductStatusConfirmed)))
 			{
 				ProductViewModel productView = new ProductViewModel
 				{
@@ -88,7 +97,7 @@ namespace Web.Controllers
 					ShortDescription = product.ShortDescription,
 					ProductAttributeGroupID = product.ProductAttributeGroupID,
 					ManufacturerID = product.ManufacturerID,
-					BrandId = product.BrandId,
+					BrandID = product.BrandID,
 					Description = product.Description,
 					PathToPhoto = product.PathToPhoto,
 					Properties = product.Properties!.Select(a => new PropertyViewModel { Value = a.Value, Id = a.Attribute!.Id, Name = a.Attribute.Name }).ToList()
@@ -112,11 +121,13 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
+
 		[HttpGet("GetAll")]
 		public IActionResult GetAll()
 		{
 			var result = _productService
-				.GetAllProducts(includeProperties: "Manufacturer");
+				.GetAllProducts(includeProperties: "Manufacturer,ProductConfirm,ProductConfirm.ProductStatus")
+				.Where(a => (a.ProductConfirm == null || a!.ProductConfirm!.ProductStatus!.Status!.Equals(SD.ProductStatusConfirmed)));
 			if (result is not null)
 			{
 				return Ok(result);
@@ -131,7 +142,8 @@ namespace Web.Controllers
 		public IActionResult GetProductOffer(int count)
 		{
 			var result = _productService
-				.GetAllProducts(includeProperties: "Manufacturer").TakeLast(count);
+				.GetAllProducts(includeProperties: "Manufacturer,ProductConfirm,ProductConfirm.ProductStatus")
+				.Where(a => (a.ProductConfirm == null || a!.ProductConfirm!.ProductStatus!.Status!.Equals(SD.ProductStatusConfirmed))).TakeLast(count);
 			if (result is not null)
 			{
 				var products =
@@ -160,7 +172,8 @@ namespace Web.Controllers
 
 
 			var result = _productService
-				.GetAllProducts(a => idArray.Contains(a.Id), includeProperties: "Manufacturer")
+				.GetAllProducts(a => idArray.Contains(a.Id), includeProperties: "Manufacturer,ProductConfirm,ProductConfirm.ProductStatus")
+				.Where(a => (a.ProductConfirm == null || a!.ProductConfirm!.ProductStatus!.Status!.Equals(SD.ProductStatusConfirmed)))
 				.OrderBy(a => Array.IndexOf(idArray, a.Id));
 			if (result is not null)
 			{
@@ -198,6 +211,7 @@ namespace Web.Controllers
 		}
 
 		[HttpPost("UpsertProduct")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
 		public IActionResult UpsertProduct(PostProductViewModel postModel)
 		{
 			using var transaction = new TransactionScope();
@@ -219,8 +233,9 @@ namespace Web.Controllers
 
 		private void UpsertMedicine(PostProductViewModel postModel)
 		{
+			
 			var props = (ICollection<ProductProperty>)_convertProperties(postModel!.Properties!).ToList();
-
+			var productConfirm = new ProductConfirm { PharmacompanyID = postModel.PharmaCompanyID, ProductStatusID = _productStatusService.GetProductStatusByName(SD.ProductStatusUnderConsideration).Id };
 			var medicine = new Medicine
 			{
 				Title = postModel.Title,
@@ -229,21 +244,22 @@ namespace Web.Controllers
 				Description = postModel.Description,
 				ShortDescription = postModel.ShortDescription,
 				ManufacturerID = postModel.ManufacturerID,
-				BrandId = postModel.BrandId,
+				BrandID = postModel.BrandID,
 				ActiveSubstanceID = postModel.ActiveSubstanceID.Value,
 				Properties = _convertProperties(postModel!.Properties!).ToList(),
 				ProductAttributeGroupID = postModel.ProductAttributeGroupID,
-				AdultsId = postModel.AdultsId,
-				AllergiesId = postModel.AllergiesId,
-				ChildrenId = postModel.ChildrenId,
-				DiabeticsId = postModel.DiabeticsId,
-				DriversId = postModel.DriversId,
-				NursingMothersId = postModel.NursingMothersId,
-				PregnantId = postModel.PregnantId			
+				AdultsID = postModel.AdultsID,
+				AllergiesID = postModel.AllergiesID,
+				ChildrenID = postModel.ChildrenID,
+				DiabeticsID = postModel.DiabeticsID,
+				DriversID = postModel.DriversID,
+				NursingMothersID = postModel.NursingMothersID,
+				PregnantID = postModel.PregnantID,
+				ProductConfirm = productConfirm
 
 			};
 
-			foreach (var item in props)	
+			foreach (var item in props)
 			{
 				if (postModel.Id != null)
 					_propertyService.DeleteProperty(postModel.Id.Value);
@@ -251,31 +267,35 @@ namespace Web.Controllers
 			}
 			if (postModel.Id == null)
 			{
-				_medicineService.InsertMedicine(medicine);
+				_productService.InsertProduct(medicine);
 			}
 			else
 			{
 				medicine.Id = postModel.Id.Value;
-				_medicineService.UpdateMedicine(medicine);
+				_productService.UpdateProduct(medicine);
+				productConfirm.ProductID = postModel.Id.Value;
+				_productConfirmService.UpdateProductConfirm(productConfirm);
 			}
 		}
 
 		private void UpsertProductEntity(PostProductViewModel postModel)
 		{
 			var props = (ICollection<ProductProperty>)_convertProperties(postModel!.Properties!).ToList();
-
+			var productConfirm = new ProductConfirm { PharmacompanyID = postModel.PharmaCompanyID, ProductStatusID = _productStatusService.GetProductStatusByName(SD.ProductStatusUnderConsideration).Id };
 			var product = new Product
 			{
 				Title = postModel.Title,
 				ShortDescription = postModel.ShortDescription,
 				CategoryID = postModel.CategoryID,
 				ManufacturerID = postModel.ManufacturerID,
-				BrandId = postModel.BrandId,
+				BrandID = postModel.BrandID,
 				PathToPhoto = postModel.PathToPhoto,
 				Description = postModel.Description,
 				Properties = _convertProperties(postModel!.Properties!).ToList(),
-				ProductAttributeGroupID = postModel.ProductAttributeGroupID
+				ProductAttributeGroupID = postModel.ProductAttributeGroupID,
+				ProductConfirm = productConfirm
 			};
+			
 
 			foreach (var item in props)
 			{
@@ -291,26 +311,37 @@ namespace Web.Controllers
 			{
 				product.Id = postModel.Id.Value;
 				_productService.UpdateProduct(product);
+				productConfirm.ProductID = postModel.Id.Value;
+				_productConfirmService.UpdateProductConfirm(productConfirm);
 			}
 		}
 
-		[HttpPut("{id}")]
-
-		public IActionResult UpdateProduct(int id, Product product)
-		{
-			product.Id = id;
-			_productService.UpdateProduct(product);
-			return Ok("Updation done");
-		}
-
 		[HttpDelete("{id}")]
-
 		public IActionResult DeleteProduct(int id)
 		{
 
 			_propertyService.DeleteProperty(id);
 			_productService.DeleteProduct(id);
 			return Ok("Data Deleted");
+		}
+
+		[HttpPut("ChangeStatus")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+
+		public IActionResult ChangeStatus(int id, int statusID)
+		{
+			var productConfirm = _productService!
+				.GetProduct(a => a.Id == id, "ProductConfirm,ProductConfirm.ProductStatus")
+				!.ProductConfirm;
+			if(productConfirm is not null)
+			{
+				productConfirm!.ProductStatusID = statusID;
+				_productConfirmService.UpdateProductConfirm(productConfirm!);
+				return Ok("Data Updated");
+			}
+			return Ok("Data Not Found");
+
+
 		}
 	}
 }

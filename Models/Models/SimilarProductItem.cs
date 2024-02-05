@@ -20,8 +20,8 @@ namespace Domain.Models
         [ForeignKey(nameof(ProductID))]
         public Product? Product { get; set; }
         [Required]
-		public int? SimilarProductGroupId { get; set; }
-        [ForeignKey(nameof(SimilarProductGroupId))]
+		public int? SimilarProductGroupID { get; set; }
+        [ForeignKey(nameof(SimilarProductGroupID))]
         public SimilarProductGroup? SimilarProductGroup { get; set; }
 
 	}

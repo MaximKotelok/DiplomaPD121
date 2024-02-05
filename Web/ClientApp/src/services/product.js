@@ -19,7 +19,6 @@ async function getSupInfo(products){
 export async function upsertProduct(product, options) {
     await postToServer(UpsertProduct, {
         ...product,
-        productAttributeGroupID: options.typeId,
         properties: options.additionalAttribute
     }, ClassHeader)
 } 

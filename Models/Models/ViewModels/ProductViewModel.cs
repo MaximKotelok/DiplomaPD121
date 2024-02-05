@@ -15,10 +15,10 @@ namespace Domain.Models.ViewModels
 		public int? ProductAttributeGroupID { get; set; }
 		public string? Description { get; set; }
 		public int? ManufacturerID { get; set; }
-		public int? BrandId { get; set; }
+		public int? BrandID { get; set; }
 		public int? CategoryID { get; set; }
 		public string? PathToPhoto { get; set; }
-		public int? SimilarGroupId { get; set; }
+		public int? SimilarGroupID { get; set; }
 		public List<PropertyViewModel>? Properties { get; set; }
 		public List<ProductViewModel>? SimilarProductsGroup { get; set; }
 
