@@ -7,6 +7,89 @@
 html {
   font-size: 14px;
 }
+
+.inner-custom-navbar {
+
+
+  width: 90% !important;
+  display: inline-grid;
+  align-items: center;
+
+  grid-template-areas:
+    "logo catalogue services geo searchbar searchbar searchbar cart profile";
+}
+
+.navbar-brand {
+  margin: 0;
+}
+
+
+.logo {
+  grid-area: logo;
+}
+
+.catalogue {
+  grid-area: catalogue;
+}
+
+.services {
+  grid-area: services;
+}
+
+.searchbar {
+  grid-area: searchbar;
+}
+
+.cart {
+  grid-area: cart;
+}
+
+.geo {
+  grid-area: geo;
+}
+
+
+.profile {
+  grid-area: profile;
+}
+
+@media screen and (max-width: 1200px) {
+  .custom-navbar{
+    height: 100%!important;
+    justify-content: center!important;
+  }
+  .logo, .logo-pharma, .catalogue, .services, .geo{
+    justify-self: left!important;
+    text-align: left!important;
+    display: inline-block!important;
+  }
+
+  .cart, .profile, .cart *, .profile *{
+    padding: 0;
+    justify-self: right!important;
+    text-align: right!important;
+    display: inline-block!important;
+    margin: 0!important;
+  }
+
+  .inner-custom-navbar {
+    width: 100%!important;
+    align-items: center!important;
+    justify-content: space-between !important;
+    grid-template-areas:
+      ". logo catalogue services geo cart profile ."
+      ". searchbar searchbar searchbar searchbar searchbar searchbar .";
+  }
+
+  .searchbar{
+    width: 100%!important;
+    max-width: 100%!important;
+    
+  }
+}
+
+
+
 @media (min-width: 768px) {
   html {
     font-size: 16px;
@@ -17,7 +100,7 @@ html {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
-.custom-navbar{
+.custom-navbar {
   width: 100%;
   height: 72px;
   background-color: var(--dark-blue);
@@ -26,26 +109,21 @@ html {
 
 }
 
-.custom-navbar .container{
-  width: 100%!important;
+.custom-navbar .container {
+  width: 100% !important;
   display: flex;
   justify-content: center;
 }
 
-.custom-navbar .navbar-nav{
-  width: 100%!important;
-  display: flex;
-  justify-content: space-between;
-}
-
-.custom-navbar .navbar-nav, .custom-navbar{
+.custom-navbar,
+.custom-navbar .container {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
 }
 
-.custom-navbar *{
+.custom-navbar * {
   font-family: var(--standart-font);
-  color: white!important;
+  color: white !important;
 }

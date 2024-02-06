@@ -8,7 +8,7 @@
     /* Center the text */
 }
 
-.top-div *{
+.top-div * {
     font-family: var(--standart-font);
 }
 
@@ -105,4 +105,45 @@
 .link-body-emphasis {
     text-decoration: none;
     color: rgba(28, 28, 28, 0.35);
+}
+
+.section-4 * {
+    font-family: Rubik;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 21px;
+}
+
+
+@media screen and (max-width: 1200px) {
+    .capsula-container {
+        display: none !important;
+    }
+
+    .section-1 {
+        width: 33% !important;
+    }
+
+    .section-2 {
+        width: 33% !important;
+    }
+
+    .section-3 {
+        width: 33% !important;
+    }
+
+    .section-4 {
+        display: flex !important;
+        margin: 0 !important;
+        flex-direction: row !important;
+        width: 100% !important;
+        margin-bottom: 20px !important;
+    }
+
+    .section-4 h5 {
+        margin-right: 20px;
+        align-self: center !important;
+
+    }
+
 }

@@ -9,6 +9,7 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import "./NavMenu.css";
+import "./NavMenuMap.css";
 import IconButton from "../../../../components/Common/IconButtonComponent/IconButton";
 import CatalogIcon from "../../../../assets/images/header-icons/catalogue-icon.svg"
 import ServiceIcon from "../../../../assets/images/header-icons/services-icon.svg";
@@ -17,7 +18,7 @@ import CartIcon from "../../../../assets/images/header-icons/cart-icon.svg";
 import ProfileIcon from "../../../../assets/images/header-icons/profile.svg";
 import { ReactComponent as Logo } from "../../../../assets/images/LogoCapsula.svg";
 import SearchElement from "../../../../components/Common/SearchComponent/SearchComponent";
-import { getToken } from "../../../../utils/Login";
+
 //import CatalogIcon from './catalog_icon_215654.svg';
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
@@ -46,37 +47,37 @@ export class NavMenu extends Component {
           light
         >
 
-          <div className="navbar-nav flex-grow">
-            <NavbarBrand tag={Link} to="/">
+          <div className="inner-custom-navbar navbar-nav flex-grow">
+            
+
+            <NavbarBrand className="logo" tag={Link} to="/">
               <Logo height={40} fill="black" className="logo-pharma" />
             </NavbarBrand>
 
-            <NavLink tag={Link} className="item" to="/">
+            <NavLink className="catalogue" tag={Link} to="/">
               <IconButton iconPath={CatalogIcon} text="Каталог" />
             </NavLink>
-            <NavLink tag={Link} className="item" to="/counter">
+            <NavLink className="services" tag={Link} to="/counter">
               <IconButton iconPath={ServiceIcon} text="Сервіси" />
             </NavLink>
 
-            <NavLink tag={Link} className="item" to="/map">
+            <NavLink className="geo" tag={Link} to="/map">
               <IconButton iconPath={GeoIcon} text="Геолокація" />
             </NavLink>
-
-
-
+                        
+            <SearchElement className="searchbar"/>
             
-            <SearchElement />
             
 
 
-
-            <NavLink tag={Link} className="item" to="/counter">
+            
+            <NavLink tag={Link} className="cart" to="/counter">
               <IconButton iconPath={CartIcon} />
             </NavLink>
 
 
 
-            <NavLink tag={Link} className="item" to="/auth">
+            <NavLink tag={Link} className="profile" to="/auth">
               <IconButton iconPath={ProfileIcon} />
             </NavLink>
 

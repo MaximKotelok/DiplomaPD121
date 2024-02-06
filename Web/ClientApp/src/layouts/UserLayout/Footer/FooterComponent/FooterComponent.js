@@ -2,7 +2,7 @@
 import './FooterComponent.css';
 import ios from "../../../../assets/images/footer-icons/ios.svg";
 import playmarket from "../../../../assets/images/footer-icons/playmarket.svg";
-
+import "./FooterMapComponent.css"
 const FooterLink = ({ href, text }) => (
     <li className="nav-item mb-2">
         <a href={href} className="nav-link p-0 text-dark">
@@ -13,10 +13,10 @@ const FooterLink = ({ href, text }) => (
 
 const FooterComponent = () => (
     <div  className="">
-        <footer className="">
+        <footer>
             <div className="row top-div" >
                 {/* Section 1 */}                
-                <div className="col-6 col-md-2 mb-3">
+                <div className="col-6 col-md-2 mb-3 section-1">
                     <h5>Користувачам</h5>
                     <ul className="nav flex-column">
                         <FooterLink href="#" text="Аптеки поблизу" />
@@ -28,7 +28,7 @@ const FooterComponent = () => (
                 </div>
 
                 {/* Section 2 */}
-                <div className="col-6 col-md-2 mb-3">
+                <div className="col-6 col-md-2 mb-3 section-2">
                     <h5>Інформація</h5>
                     <ul className="nav flex-column">
                         <FooterLink href="#" text="Про нас" />
@@ -40,7 +40,7 @@ const FooterComponent = () => (
                 </div>
 
                 {/* Section 3 */}
-                <div className="col-6 col-md-4 mb-3">
+                <div className="col-6 col-md-4 mb-3 section-3">
                     <h5>Партнерам</h5>
                     <ul className="nav flex-column">
                         <FooterLink href="#" text="Розмістити аптеку" />
@@ -52,8 +52,8 @@ const FooterComponent = () => (
 
                 {/* Section 4 */}
                 
-                <div className="col-6 col-md-3 offset-md-1 mb-3 d-flex flex-column align-items-start">
-                    <h5 style={{ textAlign: "end" }}>Завантажити додаток</h5>
+                <div className="col-6 col-md-3 offset-md-1 mb-3 d-flex flex-column align-items-start section-4">
+                    <h5 style={{ textAlign: "end" }}>Завантажте додаток</h5>
 
                     <div className="row">
                         <div className="col-6" >
@@ -65,8 +65,8 @@ const FooterComponent = () => (
                     </div>
 
                 </div>
-                {/* Section 3 */}
-                <div className="col-12">
+                {/* CAPSULA TEXT */}
+                <div className="col-12 capsula">
                     <div className="capsula-container unselectable">
                         <span className="capsula-text">CAPSULE</span>
                     </div>
