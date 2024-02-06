@@ -49,7 +49,7 @@ namespace Repository.Repository.Services
             _user = await _userManager.FindByEmailAsync(loginDto.Email);
             var result = _user != null && await _userManager.CheckPasswordAsync(_user, loginDto.Password);
             
-            if (!result && (_user != null && _user.LockoutEnd.HasValue && _user.LockoutEnd > DateTimeOffset.UtcNow && _user.EmailConfirmed == true))
+            if (!result || (_user != null && _user.LockoutEnd.HasValue && _user.LockoutEnd > DateTimeOffset.UtcNow && _user.EmailConfirmed == true))
             {
                 return null;
             }
