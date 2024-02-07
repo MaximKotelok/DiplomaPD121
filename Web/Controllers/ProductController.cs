@@ -15,6 +15,7 @@ using Services.ConcreteProductService;
 using Services.MedicineService;
 using Services.PharmacyCompanyService;
 using Services.PropertyService;
+using Services.ReservationService;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Principal;
@@ -33,6 +34,7 @@ namespace Web.Controllers
 		private readonly IPropertyService _propertyService;
 		private readonly ICityService _cityService;
 		private readonly IConcreteProductService _concreteProductService;
+		private readonly IReservationService _reservationService;
 
 		public ProductController(
 			IProductService productService,
@@ -40,7 +42,8 @@ namespace Web.Controllers
 			 IPropertyService propertyService,
 			ICityService cityService,
 			IConcreteProductService concreteProductService,
-			IMedicineService medicineService
+			IMedicineService medicineService,
+			IReservationService reservationService
 			)
 		{
 			this._productService = productService;
@@ -49,9 +52,8 @@ namespace Web.Controllers
 			this._attributeService = attributeService;
 			this._propertyService = propertyService;
 			this._concreteProductService = concreteProductService;
+			this._reservationService = reservationService;
 		}
-
-
 
 		private IEnumerable<ProductProperty> _convertProperties(List<PropertyViewModel> properties)
 		{
@@ -71,7 +73,6 @@ namespace Web.Controllers
 
 
 		}
-
 
 		[HttpGet("GetById")]
 		public IActionResult GetProduct(int id)
@@ -124,9 +125,6 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-
-
-
 		[HttpGet("")]
 		public IActionResult GetProductOffer(int count)
 		{
@@ -149,7 +147,6 @@ namespace Web.Controllers
 			}
 			return BadRequest("No records found");
 		}
-
 
 		[HttpPost("GetAllProductsFromIdArray")]
 		public IActionResult GetAllProductsFromIdArray(IEnumerable<int> ids)
@@ -180,7 +177,6 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-
 		[HttpGet("GetListOfConcreteProductInYourCity/{cityName}/{productId}")]
 		public IActionResult GetListOfConcreteProductInYourCity(int productId, string cityName)
 		{
@@ -196,6 +192,34 @@ namespace Web.Controllers
 			}
 			return BadRequest("No records found");
 		}
+        
+		[HttpGet("GetPopularProduct/{count}")]
+        public IActionResult GetPopularProduct(int count = 5)
+		{
+            try
+            {
+                var reservations = _reservationService.GetAllReservations();
+
+                var popularProducts = reservations
+                    .GroupBy(r => r.ConcreteProductID)
+                    .Select(g => new
+                    {
+                        ConcreteProductID = g.Key,
+                        ReservationCount = g.Count()
+                    })
+                    .OrderByDescending(x => x.ReservationCount)
+                    .Take(count)
+                    .ToList();
+
+                var result = popularProducts.Select(p => p.ConcreteProductID).ToList();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
+            }
+        }
 
 		[HttpPost("UpsertProduct")]
 		public IActionResult UpsertProduct(PostProductViewModel postModel)
