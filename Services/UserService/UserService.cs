@@ -111,6 +111,11 @@ namespace Services.UserService
             await _userManager.UpdateAsync(user);
         }
 
+        public async Task<User> GetUserByName(string name)
+        {
+            return await _userManager.FindByNameAsync(name);
+        }
+
         public async Task RemoveFavouritePharcmacy(int pharmacyId, string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);

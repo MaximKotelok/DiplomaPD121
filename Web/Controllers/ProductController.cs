@@ -247,7 +247,6 @@ namespace Web.Controllers
 			{
 				if (postModel.Id != null)
 					_propertyService.DeleteProperty(postModel.Id.Value);
-				item.Product = medicine;
 			}
 			if (postModel.Id == null)
 			{

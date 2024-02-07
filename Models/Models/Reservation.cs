@@ -16,7 +16,12 @@ namespace Domain.Models
 		public ConcreteProduct? ConcreteProduct { get; set; }
 		public DateTime ToGetReservationTime { get; set; }
 		public DateTime ReservedTime { get; set; }
+		
 		[Required]
+        public string? Email { get; set; }
+        [Required]
+        public string? Phone { get; set; }	
+		
 		public string? UserID { get; set; }
 		[ForeignKey("UserID")]
 		public User? User { get; set; }

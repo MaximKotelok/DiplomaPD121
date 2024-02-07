@@ -15,6 +15,7 @@ namespace Services.UserService
 {
     public interface IUserService
     {
+        public Task<User> GetUserByName(string name);
         public Task AddFavouriteProduct(int productId, string userName);
         public Task RemoveFavouriteProduct(int productId, string userName);
         public Task AddFavouritePharcmacy(int pharmacyId, string userName);
