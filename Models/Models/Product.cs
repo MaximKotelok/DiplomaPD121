@@ -23,21 +23,21 @@ namespace Domain.Models
 		[ForeignKey("ActiveSubstanceID")]
 		public ActiveSubstance? ActiveSubstance { get; set; }*/
 		public int? CategoryID { get; set; }
-		[ForeignKey("CategoryID")]
+		[ForeignKey(nameof(CategoryID))]
 		public Category? Category { get; set; }
 		public int? ManufacturerID { get; set; }
-		[ForeignKey("ManufacturerID")]
+		[ForeignKey(nameof(ManufacturerID))]
 		public Manufacturer? Manufacturer { get; set; }        
 		public IEnumerable<SimilarProductItem>? SimilarProductItems { get; set; }
-		public int? BrandId { get; set; }
-		[ForeignKey("BrandId")]
+		public int? BrandID { get; set; }
+		[ForeignKey(nameof(BrandID))]
 		public Brand? Brand { get; set; }
-		public int? SeriesId { get; set; }
-		[ForeignKey("SeriesId")]
+		public int? SeriesID { get; set; }
+		[ForeignKey(nameof(SeriesID))]
 		public Series? Series { get; set; }
-        public int? ProductStatusID { get; set; }
-		[ForeignKey(nameof(ProductStatusID))]
-        public ProductStatus? ProductStatus { get; set; }
+        public int? ProductConfirmID { get; set; }
+		[ForeignKey(nameof(ProductConfirmID))]
+        public ProductConfirm? ProductConfirm { get; set; }
 		public int? ProductAttributeGroupID { get; set; }
 		[ForeignKey(nameof(ProductAttributeGroupID))]
 		public ProductAttributeGroup? ProductAttributeGroup { get; set; }

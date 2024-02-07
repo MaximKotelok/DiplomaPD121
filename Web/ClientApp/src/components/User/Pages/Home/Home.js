@@ -23,6 +23,7 @@ import "./Home.css";
 import { getFirstNItemRecomendedCategoryByPhoto, getFirstNItemMainCategories, getFirstNItemsOfRecomendedCategoryById } from "../../../../services/category";
 import { getCountProducts, getProductsFromIdsArray } from "../../../../services/product";
 import { getCountBrands } from "../../../../services/brand";
+import { getFavs } from "../../../../services/favProducts";
 export const Home = () => {
   var displayName = Home.name;
 
@@ -30,8 +31,9 @@ export const Home = () => {
   const [recently, setRecently] = useState({});
   const [categories, setCategories] = useState({});
   const [brands, setBrands] = useState({});
+  const [favs, setFavs] = useState([]);
   const [pngCards, setPngCards] = useState({});
-
+  
   async function initPngCards() {
     let id = getRecomendedRandomCategory("PNG");
     const count = 5;
@@ -46,6 +48,7 @@ export const Home = () => {
     }
   }
 
+  
   async function initProducts() {
     setProducts(await getCountProducts(8));
   }
@@ -66,14 +69,29 @@ export const Home = () => {
   async function initBrands() {
     setBrands(await getCountBrands(7));
   }
+  async function initFavs() {
+    setFavs(await getFavs());
+  }
 
   useEffect(() => {
+    initFavs();
     initProducts();
     initRecentlyViewed();
     initCategories();
     initBrands();
     initPngCards();
   }, []);
+
+  const isFavorite = (productId) => {
+    if(!favs)
+      return false;
+    const result = favs.findIndex(a=>a === productId) !== -1;    
+    return result;
+  };
+  
+  
+
+
 
   return (
     <>
@@ -99,6 +117,7 @@ export const Home = () => {
                         <MiniProductCardComponent
                           key={a.id}
                           id={a.id}
+                          isFavorite = {isFavorite}
                           title={a.title}
                           description={a.shortDescription}
                           minPrice={a.minPrice}
@@ -124,6 +143,7 @@ export const Home = () => {
                       ? recently.map((a) => (
                           <MiniProductCardComponent
                             key={a.id}
+                            isFavorite = {isFavorite}
                             id={a.id}
                             title={a.title}
                             description={a.shortDescription}

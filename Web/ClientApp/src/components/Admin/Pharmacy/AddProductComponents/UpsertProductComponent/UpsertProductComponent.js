@@ -71,10 +71,11 @@ const UpsertProductComponent = () => {
         shortDescription: undefined,
         description: undefined,
         manufacturerID: undefined,
-        brandId: undefined,
+        brandID: undefined,
         pathToPhoto: undefined,
         categoryID: categoryId,
-        productAttributeGroupID: undefined
+        productAttributeGroupID: undefined,
+        pharmaCompanyID: 1
     });
 
     //#endregion
@@ -339,9 +340,9 @@ const UpsertProductComponent = () => {
                         }}
                     />
                     <CustomSelectComponent
-                        selectedId={formData.brandId}
+                        selectedId={formData.brandID}
                         className='ms-1'
-                        name="brandId"
+                        name="brandID"
                         placeholder="Бренд"
                         options={dataFromServer.brands &&
                             dataFromServer.brands.map &&
@@ -349,7 +350,7 @@ const UpsertProductComponent = () => {
                         onChange={selectedOption => {
                             setFormData({
                                 ...formData,
-                                brandId: selectedOption.value
+                                brandID: selectedOption.value
                             })
                         }}
                     />
@@ -362,7 +363,7 @@ const UpsertProductComponent = () => {
                                 return (
                                     <div className='margin-bottom'>
                                         <CustomSelectComponent
-                                            selectedId={formData[a.name]}
+                                            selectedID={formData[a.name]}
                                             name={a.name}
                                             options={a.list.map(item => ({ value: item.id, label: item.title }))}
                                             onChange={selectedOption => { setFormDataAttribute(a.name, selectedOption.value) }}

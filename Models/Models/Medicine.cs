@@ -18,39 +18,39 @@ namespace Domain.Models
 		[ForeignKey("ActiveSubstanceID")]
 		public ActiveSubstance? ActiveSubstance { get; set; }
 
-        public int? AllergiesId { get; set; }
+        public int? AllergiesID { get; set; }
         [JsonIgnore]
-        [ForeignKey("AllergiesId")]
+        [ForeignKey(nameof(AllergiesID))]
         public PermissionType? Allergies { get; set; }
 
-        public int? DiabeticsId { get; set; }
+        public int? DiabeticsID { get; set; }
         [JsonIgnore]
-        [ForeignKey("DiabeticsId")]
+        [ForeignKey(nameof(DiabeticsID))]
         public PermissionType? Diabetics { get; set; }
 
-        public int? NursingMothersId { get; set; }
+        public int? NursingMothersID { get; set; }
         [JsonIgnore]
-        [ForeignKey("NursingMothersId")]
+        [ForeignKey(nameof(NursingMothersID))]
         public PermissionType? NursingMothers { get; set; }
 
-        public int? AdultsId { get; set; }
+        public int? AdultsID { get; set; }
         [JsonIgnore]
-        [ForeignKey("AdultsId")]
+        [ForeignKey(nameof(AdultsID))]
         public PermissionType? Adults { get; set; }
 
-        public int? PregnantId { get; set; }
+        public int? PregnantID { get; set; }
         [JsonIgnore]
-        [ForeignKey("PregnantId")]
+        [ForeignKey(nameof(PregnantID))]
         public PermissionType? Pregnant { get; set; }
 
-        public int? ChildrenId { get; set; }
+        public int? ChildrenID { get; set; }
         [JsonIgnore]
-        [ForeignKey("ChildrenId")]
+        [ForeignKey(nameof(ChildrenID))]
         public PermissionType? Children { get; set; }
 
-        public int? DriversId { get; set; }
+        public int? DriversID { get; set; }
         [JsonIgnore]
-        [ForeignKey("DriversId")]
+        [ForeignKey(nameof(DriversID))]
         public PermissionType? Drivers { get; set; }
     }
 }

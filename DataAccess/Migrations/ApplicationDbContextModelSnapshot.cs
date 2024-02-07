@@ -36,7 +36,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ActiveSubstances");
+                    b.ToTable("ActiveSubstances", (string)null);
 
                     b.HasData(
                         new
@@ -86,7 +86,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("CountryBrandID");
 
-                    b.ToTable("Brands");
+                    b.ToTable("Brands", (string)null);
 
                     b.HasData(
                         new
@@ -144,7 +144,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ParentCategoryID");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -329,7 +329,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Citys");
+                    b.ToTable("Citys", (string)null);
 
                     b.HasData(
                         new
@@ -367,7 +367,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("ConcreteProducts");
+                    b.ToTable("ConcreteProducts", (string)null);
 
                     b.HasData(
                         new
@@ -474,7 +474,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Countries", (string)null);
 
                     b.HasData(
                         new
@@ -520,7 +520,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("CountryManufactureID");
 
-                    b.ToTable("Manufacturers");
+                    b.ToTable("Manufacturers", (string)null);
 
                     b.HasData(
                         new
@@ -563,7 +563,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PermissionTypes");
+                    b.ToTable("PermissionTypes", (string)null);
 
                     b.HasData(
                         new
@@ -605,7 +605,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PharmaCompanies");
+                    b.ToTable("PharmaCompanies", (string)null);
 
                     b.HasData(
                         new
@@ -648,7 +648,7 @@ namespace DataAccess.Migrations
                     b.Property<int>("PharmaCompanyID")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("UserID")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -657,11 +657,11 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("PharmaCompanyID");
 
-                    b.HasIndex("UserId")
+                    b.HasIndex("UserID")
                         .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
+                        .HasFilter("[UserID] IS NOT NULL");
 
-                    b.ToTable("Pharmacies");
+                    b.ToTable("Pharmacies", (string)null);
 
                     b.HasData(
                         new
@@ -710,7 +710,7 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BrandId")
+                    b.Property<int?>("BrandID")
                         .HasColumnType("int");
 
                     b.Property<int?>("CategoryID")
@@ -728,10 +728,10 @@ namespace DataAccess.Migrations
                     b.Property<int?>("ProductAttributeGroupID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProductStatusID")
+                    b.Property<int?>("ProductConfirmID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SeriesId")
+                    b.Property<int?>("SeriesID")
                         .HasColumnType("int");
 
                     b.Property<string>("ShortDescription")
@@ -743,7 +743,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BrandId");
+                    b.HasIndex("BrandID");
 
                     b.HasIndex("CategoryID");
 
@@ -751,11 +751,13 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ProductAttributeGroupID");
 
-                    b.HasIndex("ProductStatusID");
+                    b.HasIndex("ProductConfirmID")
+                        .IsUnique()
+                        .HasFilter("[ProductConfirmID] IS NOT NULL");
 
-                    b.HasIndex("SeriesId");
+                    b.HasIndex("SeriesID");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
 
                     b.UseTptMappingStrategy();
 
@@ -763,26 +765,26 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 5,
-                            BrandId = 3,
+                            BrandID = 3,
                             CategoryID = 15,
                             Description = "..",
                             ManufacturerID = 3,
                             PathToPhoto = "/images/product/Тонометр.jpg",
                             ProductAttributeGroupID = 4,
-                            SeriesId = 1,
+                            SeriesID = 1,
                             ShortDescription = "Медхауз Свіс ГмбХ, ТОВ",
                             Title = "Тонометр ProMedica Classic автоматичний"
                         },
                         new
                         {
                             Id = 6,
-                            BrandId = 3,
+                            BrandID = 3,
                             CategoryID = 16,
                             Description = "..",
                             ManufacturerID = 3,
                             PathToPhoto = "/images/product/Глюкометр.jpg",
                             ProductAttributeGroupID = 4,
-                            SeriesId = 1,
+                            SeriesID = 1,
                             ShortDescription = "Infopia Co. Ltd.",
                             Title = "Глюкометр GluNeo Lite"
                         });
@@ -810,7 +812,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ProductAttributeGroupID");
 
-                    b.ToTable("Attributes");
+                    b.ToTable("Attributes", (string)null);
 
                     b.HasData(
                         new
@@ -1176,7 +1178,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductAttributeGroups");
+                    b.ToTable("ProductAttributeGroups", (string)null);
 
                     b.HasData(
                         new
@@ -1204,6 +1206,34 @@ namespace DataAccess.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Domain.Models.ProductConfirm", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("PharmacompanyID")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductStatusID")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PharmacompanyID");
+
+                    b.HasIndex("ProductStatusID");
+
+                    b.ToTable("ProductConfirms", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Models.ProductExistAttribute", b =>
                 {
                     b.Property<int>("Id")
@@ -1228,7 +1258,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("GroupID");
 
-                    b.ToTable("ProductExistAttributes");
+                    b.ToTable("ProductExistAttributes", (string)null);
 
                     b.HasData(
                         new
@@ -1299,21 +1329,21 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Domain.Models.ProductProperty", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<int>("ProductID")
                         .HasColumnType("int");
 
-                    b.Property<int>("AttributeId")
+                    b.Property<int>("AttributeID")
                         .HasColumnType("int");
 
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ProductId", "AttributeId");
+                    b.HasKey("ProductID", "AttributeID");
 
-                    b.HasIndex("AttributeId");
+                    b.HasIndex("AttributeID");
 
-                    b.ToTable("Properties");
+                    b.ToTable("Properties", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.ProductStatus", b =>
@@ -1329,7 +1359,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductStatuses");
+                    b.ToTable("ProductStatuses", (string)null);
 
                     b.HasData(
                         new
@@ -1363,7 +1393,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("ReservedTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("StatusId")
+                    b.Property<int>("StatusID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ToGetReservationTime")
@@ -1377,11 +1407,11 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ConcreteProductID");
 
-                    b.HasIndex("StatusId");
+                    b.HasIndex("StatusID");
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Reservations");
+                    b.ToTable("Reservations", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.ReservationStatus", b =>
@@ -1397,7 +1427,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ReservationStatuses");
+                    b.ToTable("ReservationStatuses", (string)null);
 
                     b.HasData(
                         new
@@ -1439,7 +1469,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Series");
+                    b.ToTable("Series", (string)null);
 
                     b.HasData(
                         new
@@ -1468,7 +1498,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SimilarProductGroups");
+                    b.ToTable("SimilarProductGroups", (string)null);
 
                     b.HasData(
                         new
@@ -1491,7 +1521,7 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<int?>("SimilarProductGroupId")
+                    b.Property<int?>("SimilarProductGroupID")
                         .IsRequired()
                         .HasColumnType("int");
 
@@ -1503,37 +1533,37 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ProductID");
 
-                    b.HasIndex("SimilarProductGroupId");
+                    b.HasIndex("SimilarProductGroupID");
 
-                    b.ToTable("SimilarProductItems");
+                    b.ToTable("SimilarProductItems", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = 1,
                             ProductID = 1,
-                            SimilarProductGroupId = 1,
+                            SimilarProductGroupID = 1,
                             Title = "Апельсин"
                         },
                         new
                         {
                             Id = 2,
                             ProductID = 2,
-                            SimilarProductGroupId = 1,
+                            SimilarProductGroupID = 1,
                             Title = "Манго"
                         },
                         new
                         {
                             Id = 3,
                             ProductID = 3,
-                            SimilarProductGroupId = 1,
+                            SimilarProductGroupID = 1,
                             Title = "Полуниця"
                         },
                         new
                         {
                             Id = 4,
                             ProductID = 4,
-                            SimilarProductGroupId = 1,
+                            SimilarProductGroupID = 1,
                             Title = "Тутті-фруті"
                         });
                 });
@@ -1754,7 +1784,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("FavUsersId");
 
-                    b.ToTable("PharmacyUser");
+                    b.ToTable("PharmacyUser", (string)null);
                 });
 
             modelBuilder.Entity("ProductUser", b =>
@@ -1769,7 +1799,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("FavUsersId");
 
-                    b.ToTable("ProductUser");
+                    b.ToTable("ProductUser", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.Medicine", b =>
@@ -1779,56 +1809,56 @@ namespace DataAccess.Migrations
                     b.Property<int>("ActiveSubstanceID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AdultsId")
+                    b.Property<int?>("AdultsID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AllergiesId")
+                    b.Property<int?>("AllergiesID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ChildrenId")
+                    b.Property<int?>("ChildrenID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("DiabeticsId")
+                    b.Property<int?>("DiabeticsID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("DriversId")
+                    b.Property<int?>("DriversID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("NursingMothersId")
+                    b.Property<int?>("NursingMothersID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PregnantId")
+                    b.Property<int?>("PregnantID")
                         .HasColumnType("int");
 
                     b.HasIndex("ActiveSubstanceID");
 
-                    b.HasIndex("AdultsId");
+                    b.HasIndex("AdultsID");
 
-                    b.HasIndex("AllergiesId");
+                    b.HasIndex("AllergiesID");
 
-                    b.HasIndex("ChildrenId");
+                    b.HasIndex("ChildrenID");
 
-                    b.HasIndex("DiabeticsId");
+                    b.HasIndex("DiabeticsID");
 
-                    b.HasIndex("DriversId");
+                    b.HasIndex("DriversID");
 
-                    b.HasIndex("NursingMothersId");
+                    b.HasIndex("NursingMothersID");
 
-                    b.HasIndex("PregnantId");
+                    b.HasIndex("PregnantID");
 
-                    b.ToTable("Medicines");
+                    b.ToTable("Medicines", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            BrandId = 3,
+                            BrandID = 3,
                             CategoryID = 6,
                             Description = "...",
                             ManufacturerID = 3,
                             PathToPhoto = "/images/product/Аскорбінка 1.webp",
                             ProductAttributeGroupID = 2,
-                            SeriesId = 1,
+                            SeriesID = 1,
                             ShortDescription = "таблетки зі смак. апельсину по 25 мг №10 в етикет.",
                             Title = "Аскорбінка-КВ",
                             ActiveSubstanceID = 1
@@ -1836,13 +1866,13 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 2,
-                            BrandId = 3,
+                            BrandID = 3,
                             CategoryID = 6,
                             Description = "..",
                             ManufacturerID = 3,
                             PathToPhoto = "/images/product/Аскорбінка 2.webp",
                             ProductAttributeGroupID = 2,
-                            SeriesId = 1,
+                            SeriesID = 1,
                             ShortDescription = "таблетки зі смак. манго по 25 мг №10 в етикет.",
                             Title = "Аскорбінка-КВ",
                             ActiveSubstanceID = 1
@@ -1850,13 +1880,13 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 3,
-                            BrandId = 3,
+                            BrandID = 3,
                             CategoryID = 6,
                             Description = "..",
                             ManufacturerID = 3,
                             PathToPhoto = "/images/product/Аскорбінка 3.jpg",
                             ProductAttributeGroupID = 2,
-                            SeriesId = 1,
+                            SeriesID = 1,
                             ShortDescription = "таблетки зі смак. полуниці по 25 мг №10 в етикет.",
                             Title = "Аскорбінка-КВ",
                             ActiveSubstanceID = 1
@@ -1864,13 +1894,13 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 4,
-                            BrandId = 3,
+                            BrandID = 3,
                             CategoryID = 6,
                             Description = "..",
                             ManufacturerID = 3,
                             PathToPhoto = "/images/product/Аскорбінка 4.jpg",
                             ProductAttributeGroupID = 2,
-                            SeriesId = 1,
+                            SeriesID = 1,
                             ShortDescription = "таблетки зі смак. тутті-фруті по 25 мг №10 в етикет.",
                             Title = "Аскорбінка-КВ",
                             ActiveSubstanceID = 1
@@ -1937,7 +1967,7 @@ namespace DataAccess.Migrations
 
                     b.HasOne("Domain.Models.User", "User")
                         .WithOne("Pharmacy")
-                        .HasForeignKey("Domain.Models.Pharmacy", "UserId");
+                        .HasForeignKey("Domain.Models.Pharmacy", "UserID");
 
                     b.Navigation("City");
 
@@ -1950,7 +1980,7 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("Domain.Models.Brand", "Brand")
                         .WithMany()
-                        .HasForeignKey("BrandId");
+                        .HasForeignKey("BrandID");
 
                     b.HasOne("Domain.Models.Category", "Category")
                         .WithMany("Products")
@@ -1964,13 +1994,13 @@ namespace DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("ProductAttributeGroupID");
 
-                    b.HasOne("Domain.Models.ProductStatus", "ProductStatus")
-                        .WithMany()
-                        .HasForeignKey("ProductStatusID");
+                    b.HasOne("Domain.Models.ProductConfirm", "ProductConfirm")
+                        .WithOne("Product")
+                        .HasForeignKey("Domain.Models.Product", "ProductConfirmID");
 
                     b.HasOne("Domain.Models.Series", "Series")
                         .WithMany()
-                        .HasForeignKey("SeriesId");
+                        .HasForeignKey("SeriesID");
 
                     b.Navigation("Brand");
 
@@ -1980,7 +2010,7 @@ namespace DataAccess.Migrations
 
                     b.Navigation("ProductAttributeGroup");
 
-                    b.Navigation("ProductStatus");
+                    b.Navigation("ProductConfirm");
 
                     b.Navigation("Series");
                 });
@@ -1996,6 +2026,25 @@ namespace DataAccess.Migrations
                     b.Navigation("ProductAttributeGroup");
                 });
 
+            modelBuilder.Entity("Domain.Models.ProductConfirm", b =>
+                {
+                    b.HasOne("Domain.Models.PharmaCompany", "PharmaCompany")
+                        .WithMany()
+                        .HasForeignKey("PharmacompanyID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.ProductStatus", "ProductStatus")
+                        .WithMany()
+                        .HasForeignKey("ProductStatusID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PharmaCompany");
+
+                    b.Navigation("ProductStatus");
+                });
+
             modelBuilder.Entity("Domain.Models.ProductExistAttribute", b =>
                 {
                     b.HasOne("Domain.Models.ProductAttributeGroup", "AttributeGroup")
@@ -2009,13 +2058,13 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("Domain.Models.ProductAttribute", "Attribute")
                         .WithMany()
-                        .HasForeignKey("AttributeId")
+                        .HasForeignKey("AttributeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Product", "Product")
                         .WithMany("Properties")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -2034,7 +2083,7 @@ namespace DataAccess.Migrations
 
                     b.HasOne("Domain.Models.ReservationStatus", "Status")
                         .WithMany()
-                        .HasForeignKey("StatusId")
+                        .HasForeignKey("StatusID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -2061,7 +2110,7 @@ namespace DataAccess.Migrations
 
                     b.HasOne("Domain.Models.SimilarProductGroup", "SimilarProductGroup")
                         .WithMany("Similar")
-                        .HasForeignKey("SimilarProductGroupId")
+                        .HasForeignKey("SimilarProductGroupID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -2161,23 +2210,23 @@ namespace DataAccess.Migrations
 
                     b.HasOne("Domain.Models.PermissionType", "Adults")
                         .WithMany()
-                        .HasForeignKey("AdultsId");
+                        .HasForeignKey("AdultsID");
 
                     b.HasOne("Domain.Models.PermissionType", "Allergies")
                         .WithMany()
-                        .HasForeignKey("AllergiesId");
+                        .HasForeignKey("AllergiesID");
 
                     b.HasOne("Domain.Models.PermissionType", "Children")
                         .WithMany()
-                        .HasForeignKey("ChildrenId");
+                        .HasForeignKey("ChildrenID");
 
                     b.HasOne("Domain.Models.PermissionType", "Diabetics")
                         .WithMany()
-                        .HasForeignKey("DiabeticsId");
+                        .HasForeignKey("DiabeticsID");
 
                     b.HasOne("Domain.Models.PermissionType", "Drivers")
                         .WithMany()
-                        .HasForeignKey("DriversId");
+                        .HasForeignKey("DriversID");
 
                     b.HasOne("Domain.Models.Product", null)
                         .WithOne()
@@ -2187,11 +2236,11 @@ namespace DataAccess.Migrations
 
                     b.HasOne("Domain.Models.PermissionType", "NursingMothers")
                         .WithMany()
-                        .HasForeignKey("NursingMothersId");
+                        .HasForeignKey("NursingMothersID");
 
                     b.HasOne("Domain.Models.PermissionType", "Pregnant")
                         .WithMany()
-                        .HasForeignKey("PregnantId");
+                        .HasForeignKey("PregnantID");
 
                     b.Navigation("ActiveSubstance");
 
@@ -2241,6 +2290,11 @@ namespace DataAccess.Migrations
                     b.Navigation("AttributesInGroup");
 
                     b.Navigation("ExistAttributes");
+                });
+
+            modelBuilder.Entity("Domain.Models.ProductConfirm", b =>
+                {
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Domain.Models.SimilarProductGroup", b =>
