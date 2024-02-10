@@ -16,6 +16,7 @@ namespace Domain.Models.ViewModels
 		public string? Description { get; set; }
 		public int? ManufacturerID { get; set; }
 		public int? BrandID { get; set; }
+		public int? TypeID { get; set; }
 		public int? CategoryID { get; set; }
 		public string? PathToPhoto { get; set; }
 		public int? SimilarGroupID { get; set; }

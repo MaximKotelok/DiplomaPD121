@@ -1,6 +1,6 @@
 import React, { useState, useRef,useEffect } from 'react';
 import Select from 'react-select';
-const CustomSelectComponent = ({ placeholder, className, name, options, onChange,selectedId }) => {
+const CustomSelectComponent = ({ placeholder, className, name, options, onChange,selectedId,isDisabled=false }) => {
   const [selectedOption, setSelectedOption] = useState(null);
 
   useEffect(() => {
@@ -15,8 +15,9 @@ const CustomSelectComponent = ({ placeholder, className, name, options, onChange
     name={name}
     placeholder={placeholder}
     options={options}
-    onChange={onChange}
+    onChange={onChange}    
     value={selectedOption}
+    isDisabled={isDisabled}
   />
 };
 

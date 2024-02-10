@@ -1,181 +1,159 @@
 import 'react-quill/dist/quill.snow.css';
 import "bootstrap-icons/font/bootstrap-icons.css";
-import ReactQuill from 'react-quill';
-import React, { useEffect, useState,useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import Select from 'react-select';
 
 import { upsertProduct, getProductById, getExistAttributeVariantsList } from "../../../../../services/product"
 import { postPhotoToServer } from "../../../../../services/photo"
-import { getGroupById } from "../../../../../services/group"
+import { getAllTypes, getGroupById } from "../../../../../services/group"
 import { getAllManufacturers } from "../../../../../services/manufacture"
 import { getAllBrands } from "../../../../../services/brand"
 
-import { StateInfos, Success, LayoutProviderValues } from '../../../../../utils/Constants';
+import { StateInfos, Success, LayoutProviderValues, GetCategoriesForProductAdd } from '../../../../../utils/Constants';
 
 import ImageUploaderComponent from '../ImageUploaderComponent/ImageUploaderComponent';
 import InputForProductComponent from '../InputForProductComponent/InputForProductComponent'
-import CustomSelectComponent from '../CustomSelectComponent/CustomSelectComponent';
 
 
 import "./UpsertProductComponent.css"
-import LayoutContext from '../../../../../layouts/LayoutContext';
+import UpsertDescriptionComponent from '../UpsertDescriptionComponent/UpsertDescriptionComponent';
+import FormDataStandartInputsComponent from '../FormDataStandartInputsComponent/FormDataStandartInputsComponent';
+import LayoutAdmin from '../../../../../layouts/AdminLayout/LayoutAdmin';
+import { getAllCategories, getFirstNCategoryByTitle } from '../../../../../services/category';
+import TypeAndCategoryComboboxComponent from '../TypeAndCategoryComboboxComponent/TypeAndCategoryComboboxComponent';
+import { listData, listDataTemplate, productTemplate } from './ProductTemplates';
+import { updateObj } from '../../../../../utils/Functions';
+import Swal from 'sweetalert2';
 
 const UpsertProductComponent = () => {
-    const { onComponentMount, onComponentUnmount } = useContext(LayoutContext);    
-    const { categoryId } = useParams();
-    const { typeId } = useParams();
-    const { productId } = useParams();
 
-    useEffect(() => {    
-        const handleKeyDown = (e) => {
-
-            if (e.key === 'PageDown' || e.key === 'PageUp') {
-              e.preventDefault();
-            }
-            
-          };
-          document.addEventListener('keydown', handleKeyDown);
-
-    return () => {      
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-      }, []);
-
-    useEffect(() => {          
-        if(typeId)
-            onComponentMount(LayoutProviderValues.ADD);//"Сторінка додавання товару"); 
-        else if(productId)
-            onComponentMount(LayoutProviderValues.UPDATE); //"Сторінка оновлення товару");
-        return () => {    
-          onComponentUnmount();
-        };
-      }, [onComponentMount, onComponentUnmount]);
-    
-    //#region data from server
-    const [dataFromServer, setDataFromServer] = useState({
-        attributes: [],
-        brands: [],
-        manufacturers: [],
-        mainAttribute: []
-    });
-    //#endregion
-    //#region other states    
     const [stateInfo, setStateInfo] = useState(StateInfos.LOADING);
-    const [image, setImage] = useState(null);
-    const [descriptionName, setDescriptionName] = useState("Опис");
-    const [additionalAttribute, setAdditionalAttribute] = useState([]);
-    const [formData, setFormData] = useState({
-        id: undefined,
-        title: undefined,
-        shortDescription: undefined,
-        description: undefined,
-        manufacturerID: undefined,
-        brandID: undefined,
-        pathToPhoto: undefined,
-        categoryID: categoryId,
-        productAttributeGroupID: undefined,
-        pharmaCompanyID: 1
-    });
 
-    //#endregion
+    const { categoryId, typeId, productId } = useParams();
+
+    const [data, setData] = useState({
+        descriptionName: "Опис",
+        image: null,
+        formData: productTemplate,
+        isTypeDisabled:false
+    })
+
+    const [dataFromServer, setDataFromServer] = useState(listDataTemplate);
+
+    const [additionalAttribute, setAdditionalAttribute] = useState([]);
+
+    const setCustomState = (setState, name, updates) => {
+        setState((prevState) => updateObj(prevState, name, updates));
+    };
+
+    async function getDataOrSetError(getService, setData) {
+        if (stateInfo !== StateInfos.ERROR) {
+            let res = await getService()
+            if (res.status === Success)
+                await setData(res.data);
+            else
+                setStateInfo(StateInfos.ERROR)
+        }
+    }
 
     //#region init
+
     async function init() {
-        let localTypeId = typeId;
-
-
-        let tmpObject,
-            tmpBrands,
-            tmpManufacturers,
-            tmpAttributes,
-            tmpMainAttributes;
-
+        if (categoryId || typeId)
+            setCustomState(setData, "formData", { ...data.formData, categoryID: categoryId, typeID: typeId })
+        let tmpObject;
         try {
             if (productId) {
-                tmpObject = await getProductById(productId)
-                let product = tmpObject.data.product ? tmpObject.data.product : tmpObject.data;
-                localTypeId = product.productAttributeGroupID
+                await getDataOrSetError(
+                    async () => await getProductById(productId),
+                    async (value) => {
+                        tmpObject = {
+                            ...value,
+                            ...(value.product || {})
+                        };
 
-            }
-
-            let res = await getGroupById(localTypeId);
-            if (res.data.existAttributes.length > 0) {
-                tmpMainAttributes = await getExistAttributeVariantsList(res.data.existAttributes);                    
+                        if (tmpObject.properties) {
+                            setAdditionalAttribute(tmpObject.properties.map(a => {
+                                return {
+                                    id: a.id,
+                                    name: a.name,
+                                    value: a.value
+                                }
+                            }))
+                        }
+                    },
+                );
+                setCustomState(setData, "isTypeDisabled", true);
             }
             
-            if(res.data.descriptionName){
-                setDescriptionName(res.data.descriptionName);
-            }
 
+            await getDataOrSetError(
+                async () => {
+                    return await getGroupById(tmpObject && tmpObject.productAttributeGroupID ? tmpObject.productAttributeGroupID : typeId)
+                },
+                async (value) => {
+                    
+                        let tmpMainAttributes = await getExistAttributeVariantsList(value.existAttributes);
 
-            tmpAttributes = res;
-            //setAttributes(res.data.attributesInGroup);
-
-            tmpManufacturers = await getAllManufacturers();
-            tmpBrands = await getAllBrands();
-            if (
-                tmpBrands.status === Success &&
-                tmpManufacturers.status === Success &&
-                tmpAttributes.status == Success
-            ) {
-
-                //setFormData
-                setFormData((prevData) => {                
-                    let newData = { ...prevData };
-                    if(!productId){
-                        newData = {...newData, description: res.data.description}
-                    }
-                    if (tmpMainAttributes)
-                        newData = { ...newData, ...Object.fromEntries(tmpMainAttributes.map(a => [a.name, undefined])) };
-                    if (tmpObject && tmpObject.data) {
-                        newData = fillNullValues(newData, tmpObject.data)
-                        if (tmpObject.data.product) {
-                            newData = fillNullValues(newData, tmpObject.data.product)
+                        let newData = { ...data.formData };
+                        if (!productId) {
+                            newData = { ...newData, description: value.description }
                         }
-                    }
-                    return newData;
-                })
-
-                //setDataFromServer
-                setDataFromServer({
-                    attributes: tmpAttributes.data.attributesInGroup,
-                    brands: tmpBrands.data,
-                    manufacturers: tmpManufacturers.data,
-                    mainAttribute: tmpMainAttributes
-                })
-
-                if (tmpObject && tmpObject.data.properties) {
-
-                    setAdditionalAttribute(tmpObject.data.properties.map(a => {
-                        return {
-                            id: a.id,
-                            name: a.name,
-                            value: a.value
+                        if (tmpMainAttributes) {
+                            newData = { ...newData, ...Object.fromEntries(tmpMainAttributes.map(a => [a.name, undefined])) };
+                            setCustomState(setDataFromServer, "mainAttribute", tmpMainAttributes)
                         }
-                    }))
-                    //setAdditionalAttributes()
+                        if (tmpObject) {
+                            newData = fillNullValues(newData, tmpObject)
+                        }
+                        
+                        setCustomState(setData, "formData", newData);
+                    
+                    if (value.descriptionName) {
+                        setCustomState(setData, "descriptionName", value.descriptionName);
+                    }
+                    if (value.attributesInGroup && value.attributesInGroup.length)
+                        setCustomState(setDataFromServer, "attributes", value.attributesInGroup)
+                    else
+                        setCustomState(setDataFromServer, "attributes", [])
                 }
 
-                //setStateInfo
+            )
 
+
+            await getDataOrSetError(
+                getAllManufacturers,
+                async (value) => { setCustomState(setDataFromServer, "manufacturers", value) }
+            )
+
+            await getDataOrSetError(
+                getAllBrands,
+                async (value) => { setCustomState(setDataFromServer, "brands", value) }
+            )
+            await getDataOrSetError(
+                getAllCategories,
+                async (value) => { setCustomState(setDataFromServer, "categories", value) }
+            )
+            await getDataOrSetError(
+                getAllTypes,
+                async (value) => { setCustomState(setDataFromServer, "types", value) }
+            )
+            if (stateInfo == StateInfos.LOADING)
                 setStateInfo(StateInfos.LOADED);
-            }
 
-
-
-            else {
-                setStateInfo(StateInfos.ERROR);
-            }
 
         } catch (error) {
             console.error("Error in init function:", error);
+            setStateInfo(StateInfos.ERROR);
         }
     }
+
+
+
     useEffect(() => {
         init();
     }, [])
-
 
 
     function fillNullValues(originalObject, fillObject) {
@@ -197,45 +175,30 @@ const UpsertProductComponent = () => {
     //#region submit
     const submit = async () => {
         let a = "/images/product/1.png";
-        if (image) {
-            if (formData.pathToPhoto)
-            a = await postPhotoToServer("Photo/Update", formData.pathToPhoto.replace(/[\/\\]images[\/\\]/g, ""), image);
-        else
-                a = await postPhotoToServer("Photo/Add", "product", image);
+        if (data.image) {
+            if (data.pathToPhoto)
+                a = await postPhotoToServer("Photo/Update", data.pathToPhoto.replace(/[\/\\]images[\/\\]/g, ""), data.image);
+            else
+                a = await postPhotoToServer("Photo/Add", "product", data.image);
             a = `/images/product/${a}`;
-        } else if (formData.pathToPhoto) {
-            a = formData.pathToPhoto;
+        } else if (data.formData.pathToPhoto) {
+            a = data.formData.pathToPhoto;
         }
-        
-        console.log(formData)
+
+        data.formData["pathToPhoto"] = a;
+
+        upsertProduct(data.formData, { additionalAttribute });
 
 
-        formData["pathToPhoto"] = a;
-
-        if (typeId)
-            upsertProduct(formData, { typeId, additionalAttribute });
-        else
-            upsertProduct(formData, { additionalAttribute });
     }
 
     //#endregion
 
     const setFormDataAttribute = (name, value) => {
-
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
+        setCustomState(setData, "formData", updateObj(data.formData, name, value));
     }
 
     //#region OnChanges
-    const handleInputChange = (e) => {
-        setFormDataAttribute(e.target.name, e.target.value);
-
-    };
-
-
-
 
     const handleAdditionalChange = (id, name, value) => {
         setAdditionalAttribute((prevData) => {
@@ -272,6 +235,8 @@ const UpsertProductComponent = () => {
         });
     };
 
+
+
     function handleRemoveAdditionalAttribute(id) {
         setAdditionalAttribute((prevData) => {
             let newData = [...prevData]
@@ -287,150 +252,108 @@ const UpsertProductComponent = () => {
     //#endregion
 
     if (stateInfo == StateInfos.LOADING)
-        return <div>Loading</div>
+        return <LayoutAdmin>Loading</LayoutAdmin>
 
+    return (
+        <LayoutAdmin additionalHeader={
+            <TypeAndCategoryComboboxComponent
+                typeId={data.formData.productAttributeGroupID}
+                categoryId={data.formData.categoryID}
+                categories={dataFromServer.categories}
+                types={dataFromServer.types}
+                formData={data.formData}
+                setFormData={(value) => setCustomState(setData, "formData", value)}
+                isTypeDisabled={data.isTypeDisabled}
+            />
+        }>
+            <div className='row add-product-main-container m-2'>
+                <div className='row scroll d-flex'>
+                    <div className='col-8'>
+                        <div className='add-product-left-container'>
+                            <div className='inner-add-product-left-container'>
+                                <UpsertDescriptionComponent
+                                    descriptionName={data.descriptionName}
+                                    description={data.formData.description}
+                                    setDescription={(a) => {
+                                        if(!data.isTypeDisabled)
+                                            setCustomState(setData, "isTypeDisabled", true);
+                                        setFormDataAttribute("description", a)
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div className='col-4 round-white-div p-4 upsert-fields-div'>
+                        <div className='add-product-right-container'>
+                            <FormDataStandartInputsComponent
+                                formData={data.formData}
+                                setFormData={(name, value) => {
+                                    if(!data.isTypeDisabled)
+                                            setCustomState(setData, "isTypeDisabled", true);
+                                    setCustomState(setData, "formData", {
+                                    ...data.formData,
+                                    [name]: value
+                                })
+                                }}
+                                listData={dataFromServer}
+                            />
 
-    return (<div className='row add-product-main-container'>
-        <div className='add-product-left-container'>
-            <div className='inner-add-product-left-container'>
+                            <div className="margin-bottom">
 
-            <p className='product-label'>{descriptionName}</p>
-            <ReactQuill
-                className='description-form-element'
-                theme="snow"
-                value={formData.description}
-                onChange={a => { setFormDataAttribute("description", a) }}
-                />
-                </div>
-        </div>
-        <div className='add-product-right-container'>
-            <div className='flip'>
-                <InputForProductComponent
-                    className="margin-bottom"
-                    label="Назва товару"
-                    placeholder='Введіть назву товару'
-                    type="text"
-                    name="title"
-                    value={formData.title}
-                    onChange={handleInputChange}
-                />
-                <InputForProductComponent
-                    className="margin-bottom"
-                    label="Короткий опис"
-                    placeholder='Введіть короткий опис'
-                    type="text"
-                    name="shortDescription"
-                    value={formData.shortDescription}
-                    onChange={handleInputChange}
-                />
-                <div className="margin-bottom select-div">
-                    <CustomSelectComponent
-                        selectedId={formData.manufacturerID}
-                        className='me-1'
-                        name="manufacturerID"
-                        placeholder="Виробник"
-                        options={dataFromServer.manufacturers &&
-                            dataFromServer.manufacturers.map &&
-                            dataFromServer.manufacturers.map(item => ({ value: item.id, label: item.name }))}
-                        onChange={selectedOption => {
-                            setFormData({
-                                ...formData,
-                                manufacturerID: selectedOption.value
-                            })
-                        }}
-                    />
-                    <CustomSelectComponent
-                        selectedId={formData.brandID}
-                        className='ms-1'
-                        name="brandID"
-                        placeholder="Бренд"
-                        options={dataFromServer.brands &&
-                            dataFromServer.brands.map &&
-                            dataFromServer.brands.map(item => ({ value: item.id, label: item.name }))}
-                        onChange={selectedOption => {
-                            setFormData({
-                                ...formData,
-                                brandID: selectedOption.value
-                            })
-                        }}
-                    />
-                </div>
-                <div>
-                    {dataFromServer.mainAttribute && dataFromServer.mainAttribute.map &&
-                        dataFromServer.mainAttribute.map(a => {
+                                <p className='product-label'>Додаткове поле</p>
+                                <Select
+                                    className='additional-input margin-bottom'
+                                    value={null}
+                                    name="additonals"
+                                    placeholder="Вага, смак, колір"
+                                    options={dataFromServer.attributes.filter(a => {
+                                        return !additionalAttribute.length || !additionalAttribute.map || !additionalAttribute.map(b => b.id).includes(a.id)
+                                    }).map(item => ({ value: item.id, label: item.name }))
+                                    }
+                                    onChange={selectedOption => {
+                                        if(!data.isTypeDisabled)
+                                            setCustomState(setData, "isTypeDisabled", true);
+                                        handleAddAdditionalAttribute(selectedOption.value, true)
+                                    }}
+                                    isSearchable={true}
+                                />
+                                {
+                                    additionalAttribute && additionalAttribute.map(
+                                        a => {
 
-                            if (a.list.length > 0)
-                                return (
-                                    <div className='margin-bottom'>
-                                        <CustomSelectComponent
-                                            selectedID={formData[a.name]}
-                                            name={a.name}
-                                            options={a.list.map(item => ({ value: item.id, label: item.title }))}
-                                            onChange={selectedOption => { setFormDataAttribute(a.name, selectedOption.value) }}
-                                            placeholder={a.description}
-                                            isSearchable={true}
-                                        />
-                                    </div>
-                                )
+                                            return <div key={a.id} className='margin-bottom d-flex align-items-end'>
+                                                <InputForProductComponent
+                                                    value={a.value}
+                                                    className="additional-input me-2"
+                                                    placeholder={a.name}
+                                                    type="text"
+                                                    name={a.id}
+                                                    onChange={e => {
+                                                        handleAdditionalChange(a.id, a.name, e.target.value)
+                                                    }
+                                                    }
+                                                />
+                                                <button className='btn cross-button'
+                                                    onClick={e => {
+                                                        handleRemoveAdditionalAttribute(a.id)
+                                                    }}
+                                                ><i className="bi bi-x-lg"></i></button>
 
-                        })
-
-                    }
-                </div>
-
-
-                <div className="margin-bottom">
-
-                    <p className='product-label'>Додаткове поле</p>
-                    <Select
-                        className='additional-input margin-bottom'
-                        value={null}
-                        name="additonals"
-                        placeholder="Вага, смак, колір"
-                        options={dataFromServer.attributes.filter(a => {
-                            return !additionalAttribute.length || !additionalAttribute.map || !additionalAttribute.map(b => b.id).includes(a.id)
-                        }).map(item => ({ value: item.id, label: item.name }))
-                        }
-                        onChange={selectedOption => {
-                            handleAddAdditionalAttribute(selectedOption.value, true)
-                        }}
-                        isSearchable={true}
-                    />
-                    {
-                        additionalAttribute && additionalAttribute.map(
-                            a => {
-
-                                return <div key={a.id} className='margin-bottom d-flex align-items-end'>
-                                    <InputForProductComponent
-                                        value={a.value}
-                                        className="additional-input me-2"
-                                        placeholder={a.name}
-                                        type="text"
-                                        name={a.id}
-                                        onChange={e => {
-                                            handleAdditionalChange(a.id, a.name, e.target.value)
+                                            </div>
                                         }
-                                        }
-                                    />
-                                    <button className='btn cross-button'
-                                        onClick={e => {
-                                            handleRemoveAdditionalAttribute(a.id)
-                                        }}
-                                    ><i className="bi bi-x-lg"></i></button>
 
-                                </div>
-                            }
-
-                        )
-                    }
-                    <p className='product-label'>Оберіть фото</p>
-                    <ImageUploaderComponent imageUrl={formData.pathToPhoto} selectedImage={image} setSelectedImage={setImage} />
-                    <button onClick={() => submit()}>Submit</button>
+                                    )
+                                }
+                                <p className='product-label'>Оберіть фото</p>
+                                <ImageUploaderComponent imageUrl={data.formData.pathToPhoto} selectedImage={data.image} setSelectedImage={(value) => setCustomState(setData, "image", value)} />
+                                <button className='mt-2 btn btn-custom additional-input' onClick={() => submit()}>ЗБЕРЕГТИ</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
             </div>
-        </div>
-    </div>);
+        </LayoutAdmin>
+    );
 
 
 

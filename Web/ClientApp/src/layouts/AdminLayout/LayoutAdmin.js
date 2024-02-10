@@ -20,15 +20,12 @@ import { LayoutProviderValues } from "../../utils/Constants";
 //import TableComponent from "../../components/pages/Admin/components/TableComponents/TableComponent";
 // import { Container } from "reactstrap";
 
-const LayoutAdmin = ({ children }) => {
+const LayoutAdmin = ({ children, additionalHeader }) => {
 
   const layoutContext = useContext(LayoutContext);
   
   return (
-    <div className={`app-container 
-    ${
-      layoutContext.stateComponentMounted == LayoutProviderValues.ADD ||
-      layoutContext.stateComponentMounted == LayoutProviderValues.UPDATE? "upsert-page" : ""}`}>
+    <div className={`app-container`}>
       <div className="sidebar ">
         <div className="sidebar-header">
           <div className="app-icon">
@@ -98,16 +95,21 @@ const LayoutAdmin = ({ children }) => {
       <div className="app-content">
         <div className="app-content-header app-content-container ">
           <SearchComponent />
+          {
+            additionalHeader
+          }
+
+
           <div className="app-content-header">
             <BadgeComponennt />
             <AvatarComponennt />
           </div>
         </div>
 
-        <div className="products-area-wrapper tableView">
+        {/* <div className="products-area-wrapper tableView"> */}
           {/* <TableComponent /> */}
           {children}
-        </div>
+        {/* </div> */}
       </div>
     </div>
   );

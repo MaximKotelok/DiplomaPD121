@@ -63,3 +63,11 @@ export function toTwoDigitsNumber(number){
     useGrouping: false
     })
 }
+
+export function updateObj (obj, name, value){
+  return {
+    ...obj,
+    [name]:value
+  }
+}
+

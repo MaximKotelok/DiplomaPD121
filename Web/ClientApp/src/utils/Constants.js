@@ -15,8 +15,8 @@ export const PathToCategory = "Category/PathToCategory";
 export const GetRecomendedCategoryById = "Category/GetRecomendedCategoryById";
 
 // Product Add
-export const GetCategoriesForProductAdd = "Category/GetCategoriesForProductAdd";
-export const GetGroupsForProductAdd = "ProductAttributeGroup/GetGroupsForProductAdd";
+export const GetCategoriesForProductAdd = "Category";
+export const GetGroupsForProductAdd = "ProductAttributeGroup";
 
 export const GetGroupById = "ProductAttributeGroup/get";
 export const UpsertProduct = "Product/UpsertProduct";

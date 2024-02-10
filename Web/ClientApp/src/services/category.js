@@ -1,8 +1,8 @@
 import { GetCategoriesForProductAdd, GetMainCategories, GetRecomendedCategory, GetRecomendedCategoryById, PathToCategory } from "../utils/Constants";
 import { getFromServer} from "../utils/Queries";
 
-export async function getFirstNCategoryByTitle(title, n) {
-    return await getFromServer(GetCategoriesForProductAdd, {title: title, count: n})
+export async function getAllCategories(title) {
+    return await getFromServer(GetCategoriesForProductAdd)
 } 
 
 export async function getPathToCategory(id) {
