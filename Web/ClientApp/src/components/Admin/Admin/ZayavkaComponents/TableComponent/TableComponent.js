@@ -114,7 +114,8 @@ const TableComponent = () => {
     },
   });
 
-  return (
+    return (
+        <div className="products-area-wrapper tableView">
     <ChakraProvider>
       <StylesProvider>
         <Box>
@@ -183,7 +184,8 @@ const TableComponent = () => {
           </Box>
         </Box>
       </StylesProvider>
-    </ChakraProvider>
+            </ChakraProvider>
+    </div>
   );
 };
 export default TableComponent;

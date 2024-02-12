@@ -86,18 +86,20 @@ const AppRoutes = [
         Layout: Layout
     },  
     {
-        path: '*',
-        element: <Status404 />,
-        path: '/zayavka'
-    },
-    {
         element: <TableComponent />,
+        path: '/zayavka',
         Layout: LayoutAdmin
     },
     {
         path: '/confirm-email',
         element: <ConfirmEmail />,
         Layout: Layout
+    },
+    {
+        path: '*',
+        element: <Status404 />,
+        Layout: Layout
+        
     }
 
 ];
