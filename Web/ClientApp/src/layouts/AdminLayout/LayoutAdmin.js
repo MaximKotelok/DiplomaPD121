@@ -11,7 +11,6 @@ import Logout from "../../assets/images/Logout.svg";
 import Filter from "../../assets/images/filter.svg";
 import { ReactComponent as Logo } from "../../assets/images/LogoCapsula.svg";
 
-//import SearchComponent from "../../components/Common/SearchComponent/SearchComponent";
 import AvatarComponennt from "./AvatarComponent/AvatarComponennt";
 import BadgeComponennt from "./BadgesComponent/BadgeComponent";
 import SearchComponent from "../../components/Common/SearchComponent/SearchComponent";
@@ -96,8 +95,9 @@ const LayoutAdmin = ({ children }) => {
       </div>
 
       <div className="app-content">
-        <div className="app-content-header app-content-container ">
-          <SearchComponent />
+        {/* <div className="app-content-header app-content-container  "> */}
+          {/* <SearchComponent /> */}
+        <div className="app-content-header app-content-container d-flex justify-content-end">
           <div className="app-content-header">
             <BadgeComponennt />
             <AvatarComponennt />

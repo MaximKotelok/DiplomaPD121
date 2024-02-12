@@ -13,6 +13,7 @@ import AddProductComponent from "./components/Admin/Pharmacy/AddProductComponent
 import { Layout } from "./layouts/UserLayout/Layout";
 import LayoutAdmin from "./layouts/AdminLayout/LayoutAdmin";
 import AuthPageComponent from "./components/Auth/AuthPageComponent";
+import TableComponent from "./components/Admin/Admin/ZayavkaComponents/TableComponent/TableComponent";
 const AppRoutes = [
     {
         index: true,
@@ -64,6 +65,11 @@ const AppRoutes = [
     {
         path: '/UpdateProduct/:productId',
         element: <AddProductComponent />,
+        Layout: LayoutAdmin
+    },
+    {
+        path: '/zayavka',
+        element: <TableComponent />,
         Layout: LayoutAdmin
     },
     {
