@@ -32,8 +32,8 @@ const MiniProductCardComponent =
             return "";
         }
 
-        if (imageUrl && imageUrl[0] == '\\' || imageUrl[0] == '/')
-            imageUrl = `${ApiPath}${imageUrl}`;
+
+            
 
         return (
             <div className="m-1 product-card">
@@ -41,7 +41,7 @@ const MiniProductCardComponent =
                     <FavoriteButton id={id} isFavorite={isFavoriteState} setIsFavorite={setIsFavoriteState}></FavoriteButton>
                     <Link to={`/product-details/${id}`} className='text-decoration-none'>
                         <CustomImgComponent 
-                        src={imageUrl} 
+                        src={`${ApiPath}${imageUrl}`} 
                         defaultSrc="https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png"
                         style={{width:"183px", height:"170px"}}
                         className='product-image'

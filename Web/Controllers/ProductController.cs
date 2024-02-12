@@ -48,7 +48,7 @@ namespace Web.Controllers
 				IConcreteProductService concreteProductService,
 				IMedicineService medicineService,
 				IProductStatusService productStatusService,
-				IProductConfirmService productConfirmService
+				IProductConfirmService productConfirmService,
                 IReservationService reservationService
             )
         {

@@ -87,6 +87,7 @@ namespace DataAccess.Data
             new ProductExistAttributeConfiguration().Configure(modelBuilder.Entity<ProductExistAttribute>());
             
             new PermissionTypeConfiguration().Configure(modelBuilder.Entity<PermissionType>());
+            
 
 			modelBuilder.Entity<User>().Navigation(e => e.FavProducts).AutoInclude();
 		}
