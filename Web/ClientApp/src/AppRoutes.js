@@ -15,6 +15,7 @@ import LayoutAdmin from "./layouts/AdminLayout/LayoutAdmin";
 import AuthPageComponent from "./components/Auth/AuthPageComponent";
 import Status404 from "./components/StatusesPage/Status404";
 import { Category } from "./components/User/Pages/Category/Category";
+import TableComponent from "./components/Admin/Admin/ZayavkaComponents/TableComponent/TableComponent";
 const AppRoutes = [
     {
         index: true,
@@ -87,6 +88,15 @@ const AppRoutes = [
     {
         path: '*',
         element: <Status404 />,
+        path: '/zayavka'
+    },
+    {
+        element: <TableComponent />,
+        Layout: LayoutAdmin
+    },
+    {
+        path: '/confirm-email',
+        element: <ConfirmEmail />,
         Layout: Layout
     }
 
