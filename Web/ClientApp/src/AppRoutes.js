@@ -14,6 +14,7 @@ import { Layout } from "./layouts/UserLayout/Layout";
 import LayoutAdmin from "./layouts/AdminLayout/LayoutAdmin";
 import AuthPageComponent from "./components/Auth/AuthPageComponent";
 import Status404 from "./components/StatusesPage/Status404";
+import { Category } from "./components/User/Pages/Category/Category";
 const AppRoutes = [
     {
         index: true,
@@ -48,9 +49,20 @@ const AppRoutes = [
     //     Layout: Layout
     // },
     {
-        path: '/ChooseACategory',
+        path: '/ChooseACategory',   
         element: <ChooseACategoryComponent />,
         Layout: LayoutAdmin
+    }
+    ,  
+    {
+        path: '/category/:id',
+        element: <Category />,
+        Layout: Layout
+    },    
+    {
+        path: '/category/:id/:currentPage',
+        element: <Category />,
+        Layout: Layout
     },
     {
         path: '/ChooseAType/:categoryId',

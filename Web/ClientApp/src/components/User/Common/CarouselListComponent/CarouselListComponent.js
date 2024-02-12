@@ -12,7 +12,8 @@ const CarouselListComponent =
         children,        
         mdDisplayCount = 1,
         lgDisplayCount = 2,
-        xlDisplayCount = 4
+        xlDisplayCount = 4,
+        title
     }) => {
         const [count, setCount] = useState(1);
         useLayoutEffect(() => {
@@ -37,10 +38,12 @@ const CarouselListComponent =
 
         return (
             <>    
+                <h3 className="text-title">{title}</h3>
                 <Carousel cellAlign="left" slidesToShow={count}>
                     {children}                    
                 </Carousel>
             </>
+            
         );
     };
 

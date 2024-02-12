@@ -2,7 +2,7 @@ import { UpsertProduct, GetProduct,  ClassHeader, GetAllProductsFromIdArray, Suc
 import { getCookie } from "../utils/Cookies";
 import { postToServer, getFromServer} from "../utils/Queries";
 
-async function getSupInfo(products){
+export async function getSupInfo(products){
     return await Promise.all(products.map(async a => {
         var res = await getFromServer(GetSupInfoForProductInYourCity, { city: getCookie("city"), id: a.id });      
         if (res.status === Success) {
