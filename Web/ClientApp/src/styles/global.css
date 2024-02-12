@@ -1,86 +1,50 @@
-.slider-container button:disabled {
-    display: none!important;
-}
-
-.slider-container .slider-control-centerright button,
-.slider-container .slider-control-centerleft button {
-    color: transparent!important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 45px;
-    height: 45px;
-    font-size: 0px;
-    border-radius: 50%;
-    background-color: #139787!important;
-    opacity: 0.6!important;
-    cursor: pointer;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-    position: relative!important;
-    line-height: 0;
-    background-repeat: no-repeat!important;    
-    background-position: center!important;
-    background-size: 30px!important;
-}
-
-
-.slider-container .slider-control-centerright button {
-    
-    background-image: url("../assets/images/arrow-right-short.svg")!important;
-    
-}
-
-.slider-container .slider-control-centerleft button {
-    background-image: url("../assets/images/arrow-left-short.svg")!important;
-}
-
-
-header{
+header {
     background-color: white;
 }
 
 
-body, html {
+body,
+html {
     margin: 0;
     padding: 0;
     height: 100%;
     width: 100%;
-  }
+}
 
-  .brn-form{
+.brn-form {
     width: 100%;
     padding: 16px 20px;
     border: none;
-    border-radius: 12px;    
+    border-radius: 12px;
     font-size: 16px;
     font-weight: 700;
     line-height: 20px;
-    
-}
-  
-  .brn-primary-form{
-background-color: rgba(0, 122, 255, 1);
-color: rgba(242, 242, 247, 1);
+
 }
 
-.input-text-form{
+.brn-primary-form {
+    background-color: rgba(0, 122, 255, 1);
+    color: rgba(242, 242, 247, 1);
+}
+
+.input-text-form {
     width: 100%;
     padding: 16px 20px;
     border: none;
-    border-radius: 12px;    
+    border-radius: 12px;
     font-size: 16px;
     line-height: 20px;
-      font-weight: 500;
+    font-weight: 500;
     text-align: left;
- outline: none;
+    outline: none;
 }
 
-.input-text-secondary-form{
+.input-text-secondary-form {
     background-color: rgba(239, 239, 239, 1);
     color: rgba(122, 122, 122, 1);
 }
 
-.map-container .font-map-14{
+.map-container .font-map-14 {
     font-size: 14;
 }
 
@@ -89,4 +53,4 @@ color: rgba(242, 242, 247, 1);
     -khtml-user-select: none;
     -webkit-user-select: none;
     user-select: none;
-  }
+}
