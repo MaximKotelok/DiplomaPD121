@@ -16,10 +16,17 @@ import AuthPageComponent from "./components/Auth/AuthPageComponent";
 import Status404 from "./components/StatusesPage/Status404";
 import { Category } from "./components/User/Pages/Category/Category";
 import TableComponent from "./components/Admin/Admin/ZayavkaComponents/TableComponent/TableComponent";
+import Cart from "./components/User/Pages/Cart/Cart";
 const AppRoutes = [
     {
         index: true,
         element: <Home />,
+        Layout: Layout
+    },
+   ///Cart
+    {
+        path: '/cart',
+        element: <Cart />,
         Layout: Layout
     },
     {
