@@ -4,6 +4,7 @@ using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240213174601_AddDateTimeToProductConfirm")]
+    partial class AddDateTimeToProductConfirm
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1563,9 +1566,6 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Color")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
@@ -1577,19 +1577,16 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            Color = "rgba(52, 199, 89, 1)",
                             Status = "Підтверджено"
                         },
                         new
                         {
                             Id = 2,
-                            Color = "rgba(255, 149, 0, 1)",
                             Status = "На розгляді"
                         },
                         new
                         {
                             Id = 3,
-                            Color = "rgba(255, 59, 48, 1)",
                             Status = "Відхилено"
                         });
                 });

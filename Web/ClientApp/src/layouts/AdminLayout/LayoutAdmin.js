@@ -16,6 +16,7 @@ import BadgeComponennt from "./BadgesComponent/BadgeComponent";
 import SearchComponent from "../../components/Common/SearchComponent/SearchComponent";
 import LayoutContext from "../LayoutContext";
 import { LayoutProviderValues } from "../../utils/Constants";
+import { ToastContainer } from "react-toastify";
 //import TableComponent from "../../components/pages/Admin/components/TableComponents/TableComponent";
 // import { Container } from "reactstrap";
 
@@ -109,6 +110,7 @@ const LayoutAdmin = ({ children }) => {
           {children}
         </div>
       </div>
+      <ToastContainer position="bottom-right" autoClose={3000} />
     </div>
   );
 };

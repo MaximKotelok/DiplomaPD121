@@ -27,6 +27,11 @@ namespace Services.ProductConfirmService
 			_repository.SaveChanges();
 		}
 
+		public IEnumerable<ProductConfirm> GetAllProductConfirm(Expression<Func<ProductConfirm, bool>>? filter = null, string? includeProperties = null)
+		{
+			return _repository.GetAll(filter, includeProperties);
+		}
+
 		public ProductConfirm? GetProductConfirm(Expression<Func<ProductConfirm, bool>> filter, string? includeProperties = null)
 		{
 			return _repository.Get(filter, includeProperties);
