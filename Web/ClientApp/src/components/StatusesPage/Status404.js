@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react";
-import StatusImage from "../../assets/images/404.svg";
+import StatusImage from "../../assets/images/new404.svg";
 import styles from "./Status404.module.css";
 import { LayoutProviderValues } from "../../utils/Constants";
 import LayoutContext from "../../layouts/LayoutContext";

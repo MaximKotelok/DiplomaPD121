@@ -1,0 +1,73 @@
+.text-price-product{
+    font-family: var(--standart-font);
+font-size: 18px;
+font-weight: 600;
+line-height: 25px;
+color: #1C1C1C;
+}
+
+
+.header-text-cart-product{
+    font-family: var(--standart-font);
+font-size: 20px;
+font-weight: 700;
+line-height: 25px;
+color: #1C1C1C;
+
+}
+
+.monafacture-text-cart-product{
+    font-family: var(--standart-font);
+    color: #535353;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 20px;
+}
+
+
+.count-pack-text-cart-product{
+    font-family: var(--standart-font);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    color: #0E3E75;
+}
+
+
+.t-grn{
+    font-family: var(--standart-font);
+font-size: 16px;
+font-weight: 700;
+line-height: 20px;
+color: #0E3E75;
+
+}
+
+
+.btn-group-cout{
+    background-color: rgba(255, 149, 0, 1);
+    /* padding-top: 2px 0px 6px 0px  ; */
+    padding: 2px 6px 6px 6px;
+    border: none;
+outline: none;
+
+}
+
+.input-group-cout{
+    background-color: rgba(255, 149, 0, 1);
+    /* padding-top: 2px; */
+    padding: 3px 6px 3px 6px;
+    color: rgba(255, 255, 255, 1);
+    border: none;
+
+}
+
+ .btn-right{
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+ }
+
+ .btn-left{
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+ }
