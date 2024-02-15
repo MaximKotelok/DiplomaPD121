@@ -18,97 +18,104 @@ import { Category } from "./components/User/Pages/Category/Category";
 import TableComponent from "./components/Admin/Admin/ZayavkaComponents/TableComponent/TableComponent";
 import Cart from "./components/User/Pages/Cart/Cart";
 const AppRoutes = [
-    {
-        index: true,
-        element: <Home />,
-        Layout: Layout
-    },
-   ///Cart
-    {
-        path: '/cart',
-        element: <Cart />,
-        Layout: Layout
-    },
-    {
-        path: '/map/:id?',
-        element: <Map />,
-        Layout: Layout
-    },
-    {
-        path: '/product-details/:id',
-        element: <Details />,
-        Layout: Layout
-    },
-    {
- //Поки що так потім пораджусь з вами але думаю це норм як я зробив
-  
-        path: '/auth',
-        element: <AuthPageComponent />,
-        Layout: Layout
-    },
-    // {
-    //     path: '/register',
-    //     element: <RegistrationForm />,
-    //     Layout: Layout
-    // },
-    // {
-    //     path: '/login',
-    //     element: <LoginForm />,
-    //     Layout: Layout
-    // },
-    {
-        path: '/ChooseACategory',   
-        element: <ChooseACategoryComponent />,
-        Layout: LayoutAdmin
-    }
-    ,  
-    {
-        path: '/category/:id',
-        element: <Category />,
-        Layout: Layout
-    },    
-    {
-        path: '/category/:id/:currentPage',
-        element: <Category />,
-        Layout: Layout
-    },
-    {
-        path: '/ChooseAType/:categoryId',
-        element: <ChooseATypeComponent />,
-        Layout: LayoutAdmin
-    },
-    {
-        path: '/AddProduct/:categoryId/:typeId',
-        element: <AddProductComponent  />,
-        Layout: LayoutAdmin
-    },
-    {
-        path: '/UpdateProduct/:productId',
-        element: <AddProductComponent />,
-        Layout: LayoutAdmin
-    },
-    {
-        path: '/404',
-        element: <Status404 />,
-        Layout: Layout
-    },  
-    {
-        element: <TableComponent />,
-        path: '/zayavka',
-        Layout: LayoutAdmin
-    },
-    {
-        path: '/confirm-email',
-        element: <ConfirmEmail />,
-        Layout: Layout
-    },
-    {
-        path: '*',
-        element: <Status404 />,
-        Layout: Layout
-        
-    }
+  {
+    index: true,
+    element: <Home />,
+    Layout: Layout,
+  },
+  ///Cart
+  {
+    path: "/cart",
+    element: <Cart />,
+    Layout: Layout,
+  },
 
+  //// Profile
+//   {
+//     path: "/зrofile",
+//     element: <Profile/>,
+//     Layout: Layout,
+//   },
+
+  
+ 
+  {
+    path: "/map/:id?",
+    element: <Map />,
+    Layout: Layout,
+  },
+  {
+    path: "/product-details/:id",
+    element: <Details />,
+    Layout: Layout,
+  },
+  {
+    //Поки що так потім пораджусь з вами але думаю це норм як я зробив
+
+    path: "/auth",
+    element: <AuthPageComponent />,
+    Layout: Layout,
+  },
+  // {
+  //     path: '/register',
+  //     element: <RegistrationForm />,
+  //     Layout: Layout
+  // },
+  // {
+  //     path: '/login',
+  //     element: <LoginForm />,
+  //     Layout: Layout
+  // },
+  {
+    path: "/ChooseACategory",
+    element: <ChooseACategoryComponent />,
+    Layout: LayoutAdmin,
+  },
+  {
+    path: "/category/:id",
+    element: <Category />,
+    Layout: Layout,
+  },
+  {
+    path: "/category/:id/:currentPage",
+    element: <Category />,
+    Layout: Layout,
+  },
+  {
+    path: "/ChooseAType/:categoryId",
+    element: <ChooseATypeComponent />,
+    Layout: LayoutAdmin,
+  },
+  {
+    path: "/AddProduct/:categoryId/:typeId",
+    element: <AddProductComponent />,
+    Layout: LayoutAdmin,
+  },
+  {
+    path: "/UpdateProduct/:productId",
+    element: <AddProductComponent />,
+    Layout: LayoutAdmin,
+  },
+  {
+    path: "/404",
+    element: <Status404 />,
+    Layout: Layout,
+  },
+  {
+    element: <TableComponent />,
+    path: "/zayavka",
+    Layout: LayoutAdmin,
+  },
+  {
+    path: "/confirm-email",
+    element: <ConfirmEmail />,
+    Layout: Layout,
+  },
+  {
+    path: "*",
+    element: <Status404 />,
+    Layout: Layout,
+  },
 ];
 
 export default AppRoutes;

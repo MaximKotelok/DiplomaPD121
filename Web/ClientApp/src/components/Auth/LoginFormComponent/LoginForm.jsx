@@ -2,6 +2,7 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { setToken } from '../../../utils/Login';
+import styles from "../AuthPage.module.css";
 
 const LoginForm = () => {
     const [formData, setFormData] = useState({
@@ -37,11 +38,13 @@ const LoginForm = () => {
 
     return (
         <form onSubmit={handleLogin}>
-            <div>
-                <input className='input-text-form input-text-secondary-form mb-2' placeholder='Email' type="text" name="email" value={formData.email} onChange={handleInputChange} required/>
+                       <div className='mb-2'>
+
+                <input className={`input-text-form input-text-secondary-form mb-2 ${styles["my-input-text-form"]}`} placeholder='Email' type="text" name="email" value={formData.email} onChange={handleInputChange} required/>
             </div>
-            <div>
-                <input className='input-text-form input-text-secondary-form mb-2' placeholder='Password' type="password" name="password" value={formData.password} onChange={handleInputChange} required/>
+            <div className='mb-2'>
+
+                <input className={`input-text-form input-text-secondary-form mb-2 ${styles["my-input-text-form"]}`} placeholder='Password' type="password" name="password" value={formData.password} onChange={handleInputChange} required/>
             </div>
 
             <button  className="brn-form brn-primary-form mb-2" type="submit">Вхід</button>

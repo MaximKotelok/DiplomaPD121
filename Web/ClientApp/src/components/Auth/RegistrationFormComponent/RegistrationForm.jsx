@@ -2,6 +2,8 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
+import styles from "../AuthPage.module.css";
+
 const RegistrationForm = () => {
     const [formData, setFormData] = useState({
         username: '',
@@ -45,18 +47,19 @@ const RegistrationForm = () => {
                 <input type="password" name="password" value={formData.password} onChange={handleInputChange} required />
             </label> */}
 
-            <div>
-            <input className='input-text-form input-text-secondary-form mb-2' placeholder='Username' type="text" name="username" value={formData.username} onChange={handleInputChange} required/>
+                      <div className='mb-2'>
+            <input className={`input-text-form input-text-secondary-form mb-2 ${styles["my-input-text-form"]}`} placeholder='Username' type="text" name="username" value={formData.username} onChange={handleInputChange} required/>
+            </div>
+            <div className='mb-2'>
+                <input className={`input-text-form input-text-secondary-form mb-2 ${styles["my-input-text-form"]}`} placeholder='Email' type="text" name="email" value={formData.email} onChange={handleInputChange} required/>
+            </div>
+            <div className='mb-2'>
 
-            </div>
-            <div>
-                <input className='input-text-form input-text-secondary-form mb-2' placeholder='Email' type="text" name="email" value={formData.email} onChange={handleInputChange} required/>
-            </div>
-              <div>
-                <input className='input-text-form input-text-secondary-form mb-2' placeholder='Password' type="password" name="password" value={formData.password} onChange={handleInputChange} required/>
+                <input className={`input-text-form input-text-secondary-form mb-2 ${styles["my-input-text-form"]}`} placeholder='Password' type="password" name="password" value={formData.password} onChange={handleInputChange} required/>
                </div>
-              <div>
-                <input className='input-text-form input-text-secondary-form mb-2' placeholder='Confirm password' type="password" name="confirmPassword" value={formData.password} onChange={handleInputChange} required/>
+               <div className='mb-2'>
+
+                <input className={`input-text-form input-text-secondary-form mb-2 ${styles["my-input-text-form"]}`} placeholder='Confirm password' type="password" name="confirmPassword" value={formData.password} onChange={handleInputChange} required/>
                </div>
             <button  className="brn-form brn-primary-form mb-2" type="submit">Зареєструватись</button>
         </form>
