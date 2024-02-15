@@ -8,7 +8,7 @@ namespace Domain.Models.ViewModels
 {
 	public class SimilarProductViewModel
 	{
-		public int? ProductId { get; set; }	
+		public int? ProductID { get; set; }	
 		public string? TitleOfSimilar { get; set; }
 	}
 }

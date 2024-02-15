@@ -10,5 +10,6 @@ namespace Domain.Models
     public class ProductStatus:BaseEntity
     {
         public string? Status { get; set; }
+        public string? Color { get; set; }
     }
 }

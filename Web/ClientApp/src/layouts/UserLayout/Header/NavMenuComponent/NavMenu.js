@@ -9,11 +9,16 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import "./NavMenu.css";
+import "./NavMenuMap.css";
 import IconButton from "../../../../components/Common/IconButtonComponent/IconButton";
-import CatalogIcon from "../../../../assets/images/catalog_icon_215654.ico";
+import CatalogIcon from "../../../../assets/images/header-icons/catalogue-icon.svg"
+import ServiceIcon from "../../../../assets/images/header-icons/services-icon.svg";
+import GeoIcon from "../../../../assets/images/header-icons/geo-icon.svg";
+import CartIcon from "../../../../assets/images/header-icons/cart-icon.svg";
+import ProfileIcon from "../../../../assets/images/header-icons/profile.svg";
 import { ReactComponent as Logo } from "../../../../assets/images/LogoCapsula.svg";
 import SearchElement from "../../../../components/Common/SearchComponent/SearchComponent";
-import ServiceIcon from "../../../../assets/images/service.svg";
+
 //import CatalogIcon from './catalog_icon_215654.svg';
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
@@ -37,57 +42,47 @@ export class NavMenu extends Component {
     return (
       <header>
         <Navbar
-          className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3"
+          className="custom-navbar border-bottom box-shadow mb-3"
           container
           light
         >
-          <NavbarBrand tag={Link} to="/">
-            <Logo height={40} fill="black" className="logo-pharma" />
-          </NavbarBrand>
-          <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
-          <Collapse
-            className="d-sm-inline-flex flex-sm-row-reverse"
-            isOpen={!this.state.collapsed}
-            navbar
-          >
-            <ul className="navbar-nav flex-grow">
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/">
-                  <IconButton iconPath={CatalogIcon} text="Каталог" />
-                </NavLink>
-              </NavItem>
 
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/counter">
-                  <IconButton iconPath={ServiceIcon} text="Сервіси" />
-                </NavLink>
-              </NavItem>
+          <div className="inner-custom-navbar navbar-nav flex-grow">
+            
 
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/map">
-                  <IconButton iconPath={ServiceIcon} text="Геолокація" />
-                </NavLink>
-              </NavItem>
+            <NavbarBrand className="logo" tag={Link} to="/">
+              <Logo height={40} fill="black" className="logo-pharma" />
+            </NavbarBrand>
 
-              <NavItem>
-                <NavLink>
-                  <SearchElement />
-                </NavLink>
-              </NavItem>
+            <NavLink className="catalogue" tag={Link} to="/">
+              <IconButton iconPath={CatalogIcon} text="Каталог" />
+            </NavLink>
+            <NavLink className="services" tag={Link} to="/counter">
+              <IconButton iconPath={ServiceIcon} text="Сервіси" />
+            </NavLink>
 
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/counter">
-                  <IconButton iconPath={ServiceIcon} text="Корзина" />
-                </NavLink>
-              </NavItem>
+            <NavLink className="geo" tag={Link} to="/map">
+              <IconButton iconPath={GeoIcon} text="Геолокація" />
+            </NavLink>
+                        
+            <SearchElement className="searchbar"/>
+            
+            
 
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/counter">
-                  <IconButton iconPath={ServiceIcon} text="Акаунт" />
-                </NavLink>
-              </NavItem>
-            </ul>
-          </Collapse>
+
+            
+            <NavLink tag={Link} className="cart" to="/counter">
+              <IconButton iconPath={CartIcon} />
+            </NavLink>
+
+
+
+            <NavLink tag={Link} className="profile" to="/auth">
+              <IconButton iconPath={ProfileIcon} />
+            </NavLink>
+
+          </div>
+
         </Navbar>
       </header>
     );

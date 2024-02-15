@@ -21,13 +21,13 @@ namespace Services.PropertyService
 
 		public void DeleteProperty(int attributeId, int productId)
 		{
-			ProductProperty? property = _repository.Get(x => x.AttributeId == attributeId && x.ProductId == productId);
+			ProductProperty? property = _repository.Get(x => x.AttributeID == attributeId && x.ProductID == productId);
 			_repository.Remove(property);
 			_repository.SaveChanges();
 		}
 		public void DeleteProperty(int productId)
 		{
-			var properties = _repository.GetAll(x => x.ProductId == productId);
+			var properties = _repository.GetAll(x => x.ProductID == productId);
 			foreach (var property in properties)
 			{
 

@@ -43,18 +43,18 @@ namespace Repository.Repository.Services
             return result;
         }
 
-        public async Task<UserInfoDto?> ValidateUserAsync(UserLoginDto loginDto)
+        public async Task<UserInfoDto> ValidateUserAsync(UserLoginDto loginDto)
         {
 
-            _user = await _userManager.FindByEmailAsync(loginDto.Email);
-            var result = _user != null && await _userManager.CheckPasswordAsync(_user, loginDto.Password);
+            _user = await _userManager.FindByEmailAsync(loginDto.Email!);
+            var result = _user != null && await _userManager.CheckPasswordAsync(_user, loginDto.Password!);
             
             if (!result || (_user != null && _user.LockoutEnd.HasValue && _user.LockoutEnd > DateTimeOffset.UtcNow && _user.EmailConfirmed == true))
             {
                 return null;
             }
 
-			return new UserInfoDto { Email = _user.Email, };
+			return new UserInfoDto { Email = _user!.Email, };
 		}
 
         public async Task<string> CreateTokenAsync()
@@ -89,7 +89,7 @@ namespace Repository.Repository.Services
 
         private async Task<List<Claim>> GetClaims()
         {
-            var claims = new List<Claim> { new Claim(ClaimTypes.Name, _user.UserName) };
+            var claims = new List<Claim> { new Claim(ClaimTypes.Name, _user!.UserName!) };
             var roles = await _userManager.GetRolesAsync(_user);
             foreach (var role in roles)
                 claims.Add(new Claim(ClaimTypes.Role, role));

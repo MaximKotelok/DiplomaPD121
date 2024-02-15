@@ -13,7 +13,7 @@ namespace Repository.Data.Configs
 	{
 		public void Configure(EntityTypeBuilder<Pharmacy> builder)
 		{
-			builder.HasOne(a => a.User).WithOne(a => a.Pharmacy).HasForeignKey<Pharmacy>(a=>a.UserId);
+			builder.HasOne(a => a.User).WithOne(a => a.Pharmacy).HasForeignKey<Pharmacy>(a=>a.UserID);
 
 			builder.HasData(
 				new Pharmacy { Id = 1, Address = "Temp Address", Latitude = "49.842957", Longitude = "24.031511", PharmaCompanyID = 1, CityID = 1 },

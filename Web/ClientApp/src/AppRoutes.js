@@ -14,6 +14,8 @@ import { Layout } from "./layouts/UserLayout/Layout";
 import LayoutAdmin from "./layouts/AdminLayout/LayoutAdmin";
 import AuthPageComponent from "./components/Auth/AuthPageComponent";
 import Status404 from "./components/StatusesPage/Status404";
+import { Category } from "./components/User/Pages/Category/Category";
+import TableComponent from "./components/Admin/Admin/ZayavkaComponents/TableComponent/TableComponent";
 const AppRoutes = [
     {
         index: true,
@@ -48,9 +50,20 @@ const AppRoutes = [
     //     Layout: Layout
     // },
     {
-        path: '/ChooseACategory',
+        path: '/ChooseACategory',   
         element: <ChooseACategoryComponent />,
         Layout: LayoutAdmin
+    }
+    ,  
+    {
+        path: '/category/:id',
+        element: <Category />,
+        Layout: Layout
+    },    
+    {
+        path: '/category/:id/:currentPage',
+        element: <Category />,
+        Layout: Layout
     },
     {
         path: '/ChooseAType/:categoryId',
@@ -73,9 +86,20 @@ const AppRoutes = [
         Layout: Layout
     },  
     {
+        element: <TableComponent />,
+        path: '/zayavka',
+        Layout: LayoutAdmin
+    },
+    {
+        path: '/confirm-email',
+        element: <ConfirmEmail />,
+        Layout: Layout
+    },
+    {
         path: '*',
         element: <Status404 />,
         Layout: Layout
+        
     }
 
 ];

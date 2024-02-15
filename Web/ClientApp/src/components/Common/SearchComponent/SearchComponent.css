@@ -10,6 +10,7 @@
     background: none;
 }
 .my-search-bar {
+    font-family: var(--standart-font);
     padding: 0px 8px 0 6px;
     border: none;
     background: none;
@@ -22,8 +23,8 @@
 .back-serach-bar {
     border-radius: 12px;
     background: #e5e7eb;
-    max-width: 420px;
-    width: 420px;
+    max-width: 621px;
+    width: 40vw;
     padding: 8px 10px;
     display: flex;
     justify-content: space-between;
@@ -31,7 +32,8 @@
 }
 
 .icon {
-    padding-left: 16px;
+    padding-left: 8px;
+    padding-right: 8px;
     width: 40px;
 }
 

@@ -19,9 +19,9 @@ const MapProducts = (props) => {
 
     let selectedProductPrice = null;
 
-    async function loadProduct(){
+    async function loadProduct() {
         let product = (await getProductById(props.productId))
-        if(product.data.product)
+        if (product.data.product)
             setProduct(product.data.product);
         else
             setProduct(product.data);
@@ -29,7 +29,7 @@ const MapProducts = (props) => {
 
     useEffect(() => {
         loadProduct();
-        
+
         setupLocation().then(() => {
             const myMap = L.map('map').setView([0, 0], 13);
 
@@ -42,7 +42,7 @@ const MapProducts = (props) => {
 
             setMap(myMap);
 
-            
+
         });
     }, []);
 
@@ -51,19 +51,19 @@ const MapProducts = (props) => {
             showLocation(city, map);
             setProductOfTown(city, map);
         }
-       
-    },[map])
+
+    }, [map])
 
 
     const setProductOfTown = async (city, map) => {
-        
+
         let products = (await getListOfConcreteProductInYourCity(city, props.productId)).data;
 
         const markers = {};
         products.forEach((element) => {
             let defaultIcon = L.divIcon({
                 className: 'map-icon-container',
-                html: `<div class="map-default-marker"><p>${Number(element.price).toFixed(2) }</p></div>`,
+                html: `<div class="map-default-marker"><p>${Number(element.price).toFixed(2)}</p></div>`,
                 iconSize: [30, 30],
             });
 
@@ -72,7 +72,7 @@ const MapProducts = (props) => {
                 .on('click', getCurrentProduct);
 
             markers[element.id] = marker;
-        });        
+        });
         setMapMarkers(markers);
         setTownProducts(products);
 
@@ -81,7 +81,7 @@ const MapProducts = (props) => {
     const getCurrentProduct = async (e) => {
         var clickedMarker = e.target;
 
-        let product = (await Coords(clickedMarker._latlng.lat,clickedMarker._latlng.lng, props.productId)).data;
+        let product = (await Coords(clickedMarker._latlng.lat, clickedMarker._latlng.lng, props.productId)).data;
 
 
         if (selectedProductPrice == null)
@@ -89,10 +89,10 @@ const MapProducts = (props) => {
 
         let defaultIcon = L.divIcon({
             className: 'map-icon-container',
-            html: `<div class="map-default-marker"><p>${Number(selectedProductPrice).toFixed(2) }</p></div>`,
+            html: `<div class="map-default-marker"><p>${Number(selectedProductPrice).toFixed(2)}</p></div>`,
             iconSize: [30, 30],
         });
-       
+
         var clickedIcon = L.divIcon({
             className: 'map-icon-container',
             html: `<div class="map-selected-marker"><p>${Number(product.price).toFixed(2)}</p></div>`,
@@ -105,8 +105,18 @@ const MapProducts = (props) => {
             if (prevMarker) {
                 prevMarker.setIcon(defaultIcon);
             }
-            map.panTo(new L.LatLng(clickedMarker._latlng.lat, clickedMarker._latlng.lng));
+            const selected = new L.LatLng(clickedMarker._latlng.lat, clickedMarker._latlng.lng);
+
+            map.panTo(selected);
             clickedMarker.setIcon(clickedIcon);
+
+            const markerElement = clickedMarker._icon;
+
+            if (markerElement) {
+                markerElement.style.zIndex = '999';
+            }
+
+
             return clickedMarker;
         });
         setSelectedProduct(product);
@@ -116,16 +126,17 @@ const MapProducts = (props) => {
     const handleMapSelect = async (product) => {
         const newMarker = mapMarkers[product.id];
         var clickedIcon = L.divIcon({
-            className: 'map-icon-container',
-            html: `<div class="map-selected-marker"><p>${Number(product.price).toFixed(2) }</p></div>`,
-            iconSize: [30, 30],
+            className: 'map-icon-container selected',
+            html: `<div class="map-selected-marker"><p>${Number(product.price).toFixed(2)}</p></div>`,
+            iconSize: [30, 30],        
+
         });
 
 
         if (selectedMarker) {
             let defaultIcon = L.divIcon({
                 className: 'map-icon-container',
-                html: `<div class="map-default-marker"><p>${Number(selectedProduct.price).toFixed(2) }</p></div>`,
+                html: `<div class="map-default-marker"><p>${Number(selectedProduct.price).toFixed(2)}</p></div>`,
                 iconSize: [30, 30],
             });
             selectedMarker.setIcon(defaultIcon);
@@ -143,7 +154,7 @@ const MapProducts = (props) => {
 
     return (
         <div>
- 
+
 
             <div id="map" style={{ height: '400px' }}></div>
             {city !== "" && townProducts != null && product != null ? (

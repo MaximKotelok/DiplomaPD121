@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Repository.Data.Configs;
@@ -28,6 +29,7 @@ namespace DataAccess.Data
         public DbSet<ProductAttribute>? Attributes { get; set; }
         public DbSet<ProductAttributeGroup>? ProductAttributeGroups { get; set; }
         public DbSet<ProductExistAttribute>? ProductExistAttributes { get; set; }
+        public DbSet<ProductConfirm>? ProductConfirms { get; set; }
         public DbSet<ProductProperty>? Properties { get; set; }
         public DbSet<SimilarProductGroup>? SimilarProductGroups { get; set; }
         public DbSet<SimilarProductItem>? SimilarProductItems { get; set; }
@@ -39,12 +41,12 @@ namespace DataAccess.Data
         public DbSet<ReservationStatus>? ReservationStatuses { get; set; }
         public DbSet<ProductStatus>? ProductStatuses { get; set; }
         public DbSet<PermissionType>? PermissionTypes { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+		
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);			
 
-            new ProductPropertyConfiguration().Configure(modelBuilder.Entity<ProductProperty>());
+			new ProductPropertyConfiguration().Configure(modelBuilder.Entity<ProductProperty>());
 
             new ProductAttributeGroupConfiguration().Configure(modelBuilder.Entity<ProductAttributeGroup>());
 
@@ -85,6 +87,9 @@ namespace DataAccess.Data
             new ProductExistAttributeConfiguration().Configure(modelBuilder.Entity<ProductExistAttribute>());
             
             new PermissionTypeConfiguration().Configure(modelBuilder.Entity<PermissionType>());
+            
+
+			modelBuilder.Entity<User>().Navigation(e => e.FavProducts).AutoInclude();
 		}
     }
 }

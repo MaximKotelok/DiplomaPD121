@@ -1,8 +1,26 @@
-import { GetCategoriesForProductAdd, GetMainCategories, GetRecomendedCategory, GetRecomendedCategoryById, PathToCategory } from "../utils/Constants";
+import { GetCategoriesForProductAdd, GetMainCategories, GetRecomendedCategory, GetRecomendedCategoryById, PathToCategory, Success } from "../utils/Constants";
 import { getFromServer} from "../utils/Queries";
+import { getSupInfo } from "./product";
 
 export async function getFirstNCategoryByTitle(title, n) {
     return await getFromServer(GetCategoriesForProductAdd, {title: title, count: n})
+} 
+
+export async function GetCategoryById(id) {
+    return await getFromServer("Category/GetById", {id:id})
+} 
+
+export async function GetProductsFromCategory(id, count) {
+    let data = await getFromServer("Category/GetProductsFromCategory", {id: id, count: count});    
+    
+    return data;
+} 
+
+
+export async function GetWithProducts(id, from, to, count) {
+    let data = await getFromServer("Category/GetWithProducts", {id: id, from: from, to: to, count: count})
+    
+    return data;
 } 
 
 export async function getPathToCategory(id) {

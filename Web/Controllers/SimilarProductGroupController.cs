@@ -53,7 +53,7 @@ namespace Web.Controllers
 						SimilarBy = result.SimilarBy,
 						Products = result!.Similar!.Select(a => 
 						new SimilarProductViewModel {
-							ProductId = a.Id, 
+							ProductID = a.Id, 
 							TitleOfSimilar=a.Title}
 						)
 					}
@@ -75,7 +75,7 @@ namespace Web.Controllers
 
             foreach (var item in viewModel!.Products!)
             {
-				var product = _productService.GetProduct(a => a.Id == item.ProductId, includeProperties: "SimilarProductItems");
+				var product = _productService.GetProduct(a => a.Id == item.ProductID, includeProperties: "SimilarProductItems");
 				if(product is not null)
 				{
 					var newSimilar = new SimilarProductItem
@@ -100,7 +100,7 @@ namespace Web.Controllers
 			if (_similarService.GetSimilarProductGroup(a => a.Id == groupId) != null)
 			{
 				_similarProductItemService.InsertSimilarProductItem(
-					new SimilarProductItem { SimilarProductGroupId = groupId, ProductID=productId, Title= title }
+					new SimilarProductItem { SimilarProductGroupID = groupId, ProductID=productId, Title= title }
 					);
 				return Ok("Data inserted");
 			}
@@ -110,7 +110,7 @@ namespace Web.Controllers
 		[HttpDelete("RemoveProductFromGroup")]
 		public IActionResult RemoveProductFromGroup(int productId, int groupId)
 		{
-			var res = _similarProductItemService.GetSimilarProductItem(a => a.SimilarProductGroupId == groupId && a.ProductID == productId);
+			var res = _similarProductItemService.GetSimilarProductItem(a => a.SimilarProductGroupID == groupId && a.ProductID == productId);
 
 			if(res != null)
 			{

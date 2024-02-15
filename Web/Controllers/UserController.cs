@@ -24,6 +24,22 @@ namespace Web.Controllers
             _userService = userService;
         }
 
+
+
+[HttpPost("getFavorites")]
+		[Authorize(AuthenticationSchemes = "Bearer")]
+		public async Task<IActionResult> GetFavorites()
+		{
+			var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            
+            
+			if (user == null)
+			{
+				return NoContent();
+			}
+			
+			return Ok(user!.FavProducts!.Select(a => a.Id).ToList());
+		}
         [HttpPost("addFavouriteProduct/{productId}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> AddFavouriteProduct(int productId)

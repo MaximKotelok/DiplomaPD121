@@ -1,0 +1,32 @@
+.map-container .custom-navbar{
+    height: 100%!important;
+    justify-content: center!important;
+  }
+  .map-container .logo, .map-container .logo-pharma,.map-container .catalogue,.map-container .services,.map-container .geo{
+    justify-self: left!important;
+    text-align: left!important;
+    display: inline-block!important;
+  }
+
+  .map-container .cart,.map-container .profile,.map-container .cart *,.map-container .profile *{
+    padding: 0;
+    justify-self: right!important;
+    text-align: right!important;
+    display: inline-block!important;
+    margin: 0!important;
+  }
+
+  .map-container .inner-custom-navbar {
+    width: 100%!important;
+    align-items: center!important;
+    justify-content: space-between !important;
+    grid-template-areas:
+      ". logo catalogue services geo cart profile ."
+      ". searchbar searchbar searchbar searchbar searchbar searchbar .";
+  }
+
+  .map-container .searchbar{
+    width: 100%!important;
+    max-width: 100%!important;
+    
+  }

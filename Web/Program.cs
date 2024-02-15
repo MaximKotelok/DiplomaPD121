@@ -24,6 +24,8 @@ using Services.MedicineService;
 using Services.PermissionTypeService;
 using Services.PharmacyCompanyService;
 using Services.PharmacyService;
+using Services.ProductConfirmService;
+using Services.ProductStatusService;
 using Services.PropertyService;
 using Services.ReservationService;
 using Services.SimilarProductGroupService;
@@ -136,6 +138,8 @@ builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddScoped<IPermissionTypeService, PermissionTypeService>();
 builder.Services.AddScoped<IManufacturerService, ManufacturerService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
+builder.Services.AddScoped<IProductConfirmService, ProductConfirmService>();
+builder.Services.AddScoped<IProductStatusService, ProductStatusService>();
 builder.Services.AddTransient<IAttributeService, AttributeService>();
 builder.Services.AddTransient<IAttributeGroupService, AttributeGroupService>();
 builder.Services.AddTransient<IPropertyService, PropertyService>();
@@ -157,6 +161,7 @@ builder.Services.AddScoped<IReservationStatusService, ReservationStatusService>(
 builder.Services.AddScoped<IMedicineService, MedicineService>();
 //builder.Services.AddScoped<IMailKitService, MailKitService>();
 builder.Services.AddScoped<IEmailSenderService, EmailSenderService>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
 
 builder.Services.AddSendGrid(options =>
 {

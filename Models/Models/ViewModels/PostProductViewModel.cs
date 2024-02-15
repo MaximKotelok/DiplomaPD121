@@ -12,9 +12,11 @@ namespace Domain.Models.ViewModels
 
 		public int? Id { get; set; }
 		[Required]
+		public int? PharmaCompanyID { get; set; }
+		[Required]
 		public int? ManufacturerID { get; set; }
 		[Required]
-		public int? BrandId { get; set; }
+		public int? BrandID { get; set; }
 		[Required]
 		public string? Title { get; set; }
 		[Required]
@@ -23,16 +25,14 @@ namespace Domain.Models.ViewModels
 		public string? ShortDescription { get; set; }
 		[Required]
 		public int? CategoryID { get; set; }
-		public int? AdultsId { get; set; }
-		public int? AllergiesId { get; set; }
-		public int? ChildrenId { get; set; }
-		public int? DiabeticsId { get; set; }
-		public int? DriversId { get; set; }
-		public int? NursingMothersId { get; set; }
-		public int? PregnantId { get; set; }
-		[Required]
+		public int? AdultsID { get; set; }
+		public int? AllergiesID { get; set; }
+		public int? ChildrenID { get; set; }
+		public int? DiabeticsID { get; set; }
+		public int? DriversID { get; set; }
+		public int? NursingMothersID { get; set; }
+		public int? PregnantID { get; set; }
 		public int? ProductAttributeGroupID { get; set; }
-		[Required]
 		public string? PathToPhoto { get; set; }		
 		public List<PropertyViewModel>? Properties { get; set; }
 		

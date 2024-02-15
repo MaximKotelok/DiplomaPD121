@@ -23,6 +23,8 @@ import "./Home.css";
 import { getFirstNItemRecomendedCategoryByPhoto, getFirstNItemMainCategories, getFirstNItemsOfRecomendedCategoryById } from "../../../../services/category";
 import { getCountProducts, getProductsFromIdsArray } from "../../../../services/product";
 import { getCountBrands } from "../../../../services/brand";
+import { getFavs } from "../../../../services/favProducts";
+import { initFavs, isFavorite } from "../../../../utils/Functions";
 export const Home = () => {
   var displayName = Home.name;
 
@@ -30,8 +32,9 @@ export const Home = () => {
   const [recently, setRecently] = useState({});
   const [categories, setCategories] = useState({});
   const [brands, setBrands] = useState({});
+  const [favs, setFavs] = useState([]);
   const [pngCards, setPngCards] = useState({});
-
+  
   async function initPngCards() {
     let id = getRecomendedRandomCategory("PNG");
     const count = 5;
@@ -46,6 +49,7 @@ export const Home = () => {
     }
   }
 
+  
   async function initProducts() {
     setProducts(await getCountProducts(8));
   }
@@ -54,26 +58,32 @@ export const Home = () => {
     setCategories(await getFirstNItemMainCategories(9));
   }
 
-  async function initRecentlyViewed() {
+  async function initBrands() {
+    setBrands(await getCountBrands(7));
+  }
+   async function initRecentlyViewed() {
     let ids = getRecentlyViewedProductsIds();
     if (ids.length == 0) return;
-
+  
     setRecently(
       await getProductsFromIdsArray(ids)
     );
   }
-
-  async function initBrands() {
-    setBrands(await getCountBrands(7));
-  }
+  
 
   useEffect(() => {
+    initFavs(setFavs);
     initProducts();
     initRecentlyViewed();
     initCategories();
     initBrands();
     initPngCards();
   }, []);
+
+  function isCustomFavorite(id){
+    isFavorite(id, favs);
+  }
+
 
   return (
     <>
@@ -89,16 +99,14 @@ export const Home = () => {
           <div className="col-8">
             <div className="row" style={{ margin: 0, padding: 0 }}>
               <div>
-                <div className="d-flex justify-content-between">
-                  <h3 className="text-title">Пропозиції</h3>
-                  <MoreLink link="." />
-                </div>
-                <CarouselListComponent>
+                
+                <CarouselListComponent title="Пропозиції">
                   {products && products.map
                     ? products.map((a) => (
                         <MiniProductCardComponent
                           key={a.id}
                           id={a.id}
+                          isFavorite = {isCustomFavorite}
                           title={a.title}
                           description={a.shortDescription}
                           minPrice={a.minPrice}
@@ -116,14 +124,13 @@ export const Home = () => {
               </div>
             </div>
             <div className="row" style={{ margin: 0, padding: 0 }}>
-              {recently && (
-                <div>
-                  <h3 className="text-title">Нещодавно переглянуті товари</h3>
-                  <CarouselListComponent>
-                    {recently && recently.map
-                      ? recently.map((a) => (
+              {recently && recently.map && (
+                <div>                  
+                  <CarouselListComponent title="Нещодавно переглянуті товари">
+                    {recently.map((a) => (
                           <MiniProductCardComponent
                             key={a.id}
+                            isFavorite = {isCustomFavorite}
                             id={a.id}
                             title={a.title}
                             description={a.shortDescription}
@@ -132,12 +139,7 @@ export const Home = () => {
                             manufacturer={a.manufacturer}
                             imageUrl={a.pathToPhoto}
                           />
-                        ))
-                      : new Array(15)
-                          .fill(null)
-                          .map((_, index) => (
-                            <MiniProductCardComponent key={index} />
-                          ))}
+                        ))}
                   </CarouselListComponent>
                 </div>
               )}

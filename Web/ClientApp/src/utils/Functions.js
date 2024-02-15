@@ -1,4 +1,5 @@
 ﻿import { Element } from "react-scroll";
+import { getFavs } from "../services/favProducts";
 
 export function wrapTagIntoDiv(text, tag, className) {
   const parser = new DOMParser();
@@ -51,6 +52,18 @@ export const breakpoints = {
     lg: 992,
     xl: 1200,
 };
+
+export const isFavorite = (productId, favs) => {
+  if(!favs)
+    return false;
+  const result = favs.findIndex(a=>a === productId) !== -1;    
+  return result;
+};
+
+export async function initFavs(setFavs) {
+  setFavs(await getFavs());
+}
+
 
 export function isWidthDown(breakpoint, width){
     const breakpointWidth = breakpoints[breakpoint];

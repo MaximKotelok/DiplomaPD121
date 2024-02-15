@@ -71,6 +71,10 @@
     position: relative;
 }
 
+.ql-editor, .ql-container{
+    height: 430px;
+}
+
 .ql-toolbar{
     position: relative;
     top: 10px;
