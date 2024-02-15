@@ -4,12 +4,12 @@ const removeValue = (arr, value) => {
     return arr.filter(item => item !== value);
 }
 
-const saveObjectToSession = (key, obj) => {
+export const saveObjectToSession = (key, obj) => {
     const serializedObj = JSON.stringify(obj);
     sessionStorage.setItem(key, serializedObj);
 };
 
-const getObjectFromSession = (key) => {
+export const getObjectFromSession = (key) => {
     const serializedObj = sessionStorage.getItem(key);
 
     if(serializedObj){

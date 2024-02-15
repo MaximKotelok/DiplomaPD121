@@ -26,11 +26,11 @@ namespace Web.Controllers
 
 
 
-[HttpPost("getFavorites")]
+        [HttpGet("getFavorites")]
 		[Authorize(AuthenticationSchemes = "Bearer")]
 		public async Task<IActionResult> GetFavorites()
 		{
-			var user = await _userManager.FindByNameAsync(User.Identity.Name);
+			var user = await _userService.GetUserByName(User.Identity.Name);
             
             
 			if (user == null)

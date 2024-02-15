@@ -8,6 +8,7 @@ import LayoutContext from "../LayoutContext";
 import LayoutAdmin from "../AdminLayout/LayoutAdmin";
 import { Element } from "react-scroll";
 import { LayoutProviderValues } from "../../utils/Constants";
+import { ToastContainer } from "react-toastify";
 
 export class Layout extends Component {
   static displayName = Layout.name;
@@ -23,6 +24,7 @@ export class Layout extends Component {
         <NavMenu />
         <Container tag="main">{this.props.children}</Container>
        <FooterComponent />
+       <ToastContainer position="bottom-right" autoClose={3000} />
       </div>
     );
   }

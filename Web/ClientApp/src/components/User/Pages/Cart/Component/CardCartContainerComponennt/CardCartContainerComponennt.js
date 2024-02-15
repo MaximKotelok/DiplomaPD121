@@ -3,13 +3,14 @@ import CartBYComponent from "../CartBYComponent/CartBYComponent";
 import styles from "./CardCartContainer.module.css";
 import btnOcloko from "../../../../../../assets/images/znakOkloko.svg";
 
-const CardCartContainerComponennt = () => {
+const CardCartContainerComponennt = ({data}) => {
+  console.log(data)
   return (
     <div className={`mb-4 ${styles["body-card-cart"]}`}>
       <div className="row">
         <div className="col-md-12">
           <h1 className={`${styles["h-container"]}`}>
-            Аптека Здорова Родина{" "}
+            {data.title}{" "}
             <img
               style={{ height: "24px", cursor: "pointer" }}
               src={btnOcloko}
@@ -18,20 +19,20 @@ const CardCartContainerComponennt = () => {
           </h1>
           <p className={` ${styles["p-container"]}`}>Відкрито до 20:00</p>
           <p className={` ${styles["p-container"]}`}>
-            вул. Володимира Великого 29А, Львів
+            {data.address}
           </p>
         </div>
       </div>
 
       <div className="row">
-        <div className="col-md-12">
+        <div className="col-md-12">                    
           <hr className="my-4" />
-          <CartBYComponent />
-          <hr className="my-4" />
-          <CartBYComponent />
-          <hr className="my-4" />
-          <CartBYComponent />
-          <hr className="my-4" />
+          {data.items.map(a=>(
+          <div>
+            <CartBYComponent data={a}/>
+            <hr className="my-4" />
+          </div>          
+          ))}
         </div>
 
         <div className="col-md-12">

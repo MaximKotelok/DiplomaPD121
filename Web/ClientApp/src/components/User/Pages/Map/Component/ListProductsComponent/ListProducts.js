@@ -16,8 +16,9 @@ const ListPharmacies = (props) => {
                 </div>
             <p className={`${styles["found-in"]}`}>Знайдено у {props.townProducts.length} аптеках</p>
             {props.townProducts.map((product,index) => 
-            <ListProductItemComponent 
+            <ListProductItemComponent             
                 key={index}
+                pharmacyId={product.pharmacy.id}
                 id={product.id}
                 isSelected={props.selectedProduct && props.selectedProduct.id == product.id}
                 price={product.price}

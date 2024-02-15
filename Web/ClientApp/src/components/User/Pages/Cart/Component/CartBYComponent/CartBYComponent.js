@@ -6,9 +6,12 @@ import { ReactComponent as BtnMinusCount } from "./minusBtnCount.svg";
 import btnClose from "../../../../../../assets/images/btnClose.svg";
 import styles from "./CartBY.module.css";
 import { Button, ButtonGroup } from "react-bootstrap";
+import { toTwoDigitsNumber } from "../../../../../../utils/Functions";
+import { ApiPath } from "../../../../../../utils/Constants";
 
-const CartBYComponent = () => {
-  const [count, setCount] = useState(0);
+const CartBYComponent = ({data}) => {
+  console.log(data)
+  const [count, setCount] = useState(data.quantity);
 
   const handleIncrement = () => {
     setCount(count + 1);
@@ -29,12 +32,12 @@ const CartBYComponent = () => {
     <div>
       <div className="row">
         <div className="col-1">
-          <img style={{ height: "100px" }} src={photo} alt="Картинка" />
+          <img style={{ height: "100px" }} src={`${ApiPath}${data.pathToPhoto}`} alt="Картинка" />
         </div>
         <div className="col-9  d-flex flex-column  align-items-start  justify-content-between">
-          <p className={`${styles["header-text-cart-product"]}`}>Текст 1</p>
-          <h6>Текст 2 </h6>
-          <p>Упаковка 1</p>
+          <p className={`${styles["header-text-cart-product"]}`}>{data.title}</p>
+          <h6>{data.shortDescription}</h6>
+          {/* <p>Упаковка 1</p> */}
         </div>
         <div className="col-2 d-flex flex-column align-items-end justify-content-between  ">
           <img
@@ -43,7 +46,7 @@ const CartBYComponent = () => {
             alt="Картинка"
           />
           <p className={`${styles["text-price-product"]}`}>
-            194.23<span className={`ms-2 ${styles["t-grn"]}`}>грн</span>
+            {toTwoDigitsNumber(data.price)}<span className={`ms-2 ${styles["t-grn"]}`}>грн</span>
           </p>
           <div className="float-left">
             <ButtonGroup>

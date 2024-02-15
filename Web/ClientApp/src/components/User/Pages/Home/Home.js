@@ -82,7 +82,7 @@ export const Home = () => {
   }, []);
 
   function isCustomFavorite(id) {
-    isFavorite(id, favs);
+    return isFavorite(id, favs);
   }
 
   return (

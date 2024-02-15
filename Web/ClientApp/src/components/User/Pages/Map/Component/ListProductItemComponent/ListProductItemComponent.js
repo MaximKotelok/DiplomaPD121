@@ -2,8 +2,10 @@ import { NavigationDetailsComponent } from "../../../../Common/NavigationDetails
 import styles from "./ListProductItemComponent.module.css"
 
 import {ReactComponent as Geo} from "../../../../../../assets/images/geo.svg"
+import { addToCart } from "../../../../../../services/cartService";
+import { toast } from "react-toastify";
 
-const ListProductItemComponent = ({id, isSelected, price, title, productTitle, manufacturer, address, timeClosed, timeOpen, onClick,lon,lat }) => {
+const ListProductItemComponent = ({id, pharmacyId, isSelected, price, title, productTitle, manufacturer, address, timeClosed, timeOpen, onClick,lon,lat }) => {
 
     
     function isPharmacyOpen(timeOpen, timeClosed) {
@@ -29,8 +31,9 @@ const ListProductItemComponent = ({id, isSelected, price, title, productTitle, m
 
     let isOpen = isPharmacyOpen(timeOpen,timeClosed);
 
-      const handleReserve = (id) => {
-        console.log(`reserve: ${id}`)
+      const handleReserve = () => {        
+        addToCart(pharmacyId, id)
+        toast.success("Товар додано до кошика");
         };
 
     return (
@@ -58,7 +61,7 @@ const ListProductItemComponent = ({id, isSelected, price, title, productTitle, m
             </div>
             <div className="col-4 d-flex align-items-end flex-column">
                 <p className={`${styles["price"]}`}>{Number(price).toFixed(2)}</p>
-                <button className={`btn ${styles["reserve"]}`} onClick={() => { handleReserve(id) }}>Забронювати</button>
+                <button className={`btn ${styles["reserve"]}`} onClick={() => { handleReserve() }}>Забронювати</button>
             </div>
             </div>
             </div>
