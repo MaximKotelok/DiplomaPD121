@@ -8,27 +8,49 @@ import styles from "./CartBY.module.css";
 import { Button, ButtonGroup } from "react-bootstrap";
 import { toTwoDigitsNumber } from "../../../../../../utils/Functions";
 import { ApiPath } from "../../../../../../utils/Constants";
+import { useDispatch, useSelector } from "react-redux";
+import { reloadCart } from "../../../../../../reducers/reducers";
+import { changeCountInCart } from "../../../../../../services/cartService";
 
 const CartBYComponent = ({data}) => {
-  console.log(data)
-  const [count, setCount] = useState(data.quantity);
+  const dispatch = useDispatch();
+  const cart = useSelector(state => state.cart.cart);
 
-  const handleIncrement = () => {
-    setCount(count + 1);
-  };
 
-  const handleDecrement = () => {
-    setCount(count - 1);
-  };
-
-  const handleInputChange = (e) => {
-    const input = parseInt(e.target.value, 10);
-    if (!isNaN(input)) {
-      setCount(input);
+  const updateCart = (pharmacyId, itemId, count) => {
+    if (changeCountInCart(pharmacyId, itemId, count)) {
+      const updatedCart = cart.map((pharmacy) => {
+        if (pharmacy.id !== pharmacyId) {
+          return pharmacy;
+        }
+  
+        const updatedItems = pharmacy.items.map((item) => {
+          if (item.id !== itemId) {
+            return item;
+          }
+  
+          if (count !== 0) {            
+            return { ...item, quantity: count };
+          } else {
+            
+            return null;
+          }
+        }).filter(Boolean); 
+  
+        return { ...pharmacy, items: updatedItems };
+      }).filter((pharmacy) => pharmacy.items.length > 0);
+  
+      dispatch(reloadCart(updatedCart));
     }
   };
+  
+
+
+  if(!data)
+  return (<></>)
 
   return (
+    
     <div>
       <div className="row">
         <div className="col-1">
@@ -43,16 +65,17 @@ const CartBYComponent = ({data}) => {
           <img
             style={{ height: "24px", cursor: "pointer" }}
             src={btnClose}
+            onClick={()=> updateCart(data.pharmacyId, data.id, 0)}
             alt="Картинка"
           />
           <p className={`${styles["text-price-product"]}`}>
-            {toTwoDigitsNumber(data.price)}<span className={`ms-2 ${styles["t-grn"]}`}>грн</span>
+            {data.price.toFixed(2)}<span className={`ms-2 ${styles["t-grn"]}`}>грн</span>
           </p>
           <div className="float-left">
             <ButtonGroup>
               <button
                 className={`${styles["btn-group-cout"]} ${styles["btn-left"]}`}
-                onClick={handleDecrement}
+                onClick={()=> updateCart(data.pharmacyId, data.id, data.quantity-1)}
               >
                 <BtnMinusCount />
               </button>
@@ -60,11 +83,11 @@ const CartBYComponent = ({data}) => {
                 className={`${styles["input-group-cout"]}`}
                 style={{ minWidth: "40px" }}
               >
-                {count}
+                {data.quantity}
               </button>
               <button
                 className={`${styles["btn-group-cout"]} ${styles["btn-right"]}`}
-                onClick={handleIncrement}
+                onClick={()=> updateCart(data.pharmacyId, data.id, data.quantity+1)}
               >
                 <BtnPlusCount />
               </button>

@@ -3,8 +3,7 @@ import CartBYComponent from "../CartBYComponent/CartBYComponent";
 import styles from "./CardCartContainer.module.css";
 import btnOcloko from "../../../../../../assets/images/znakOkloko.svg";
 
-const CardCartContainerComponennt = ({data}) => {
-  console.log(data)
+const CardCartContainerComponent = ({data}) => {
   return (
     <div className={`mb-4 ${styles["body-card-cart"]}`}>
       <div className="row">
@@ -41,7 +40,7 @@ const CardCartContainerComponennt = ({data}) => {
               <div className="d-flex justify-content-between">
                 <h3 className={`${styles["t-razom"]}`}>Разом:</h3>
                 <h2 class={`text-right ${styles["t-all-price"]}`}>
-                  194.79<span className={`ms-2 ${styles["t-grn"]}`}>грн</span>
+                  {data.items.map(a=>a.price*a.quantity).reduce((a,b)=>a+b,0).toFixed(2)}<span className={`ms-2 ${styles["t-grn"]}`}>грн</span>
                 </h2>
               </div>
               <div className="row mt-4">
@@ -68,4 +67,4 @@ const CardCartContainerComponennt = ({data}) => {
   );
 };
 
-export default CardCartContainerComponennt;
+export default CardCartContainerComponent;
