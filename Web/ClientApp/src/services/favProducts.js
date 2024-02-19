@@ -1,13 +1,12 @@
 import { removeToken } from "../utils/Login";
-import { postToServer } from "../utils/Queries";
+import { postToServer, getFromServer } from "../utils/Queries";
 
 export async function getFavs(){
-    let res = await postToServer("User/getFavorites");
+    let res = await getFromServer("User/getFavoriteProducts");
     if(res.status === "Error"){
         removeToken();    
     }
     return res.data;
-
 }
 
 export async function addFavouriteProduct(id){

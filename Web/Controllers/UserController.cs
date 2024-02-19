@@ -25,12 +25,11 @@ namespace Web.Controllers
         }
 
 
-
-[HttpPost("getFavorites")]
+        [HttpGet("getFavoriteProducts")]
 		[Authorize(AuthenticationSchemes = "Bearer")]
-		public async Task<IActionResult> GetFavorites()
+		public async Task<IActionResult> GetFavouriteProducts()
 		{
-			var user = await _userManager.FindByNameAsync(User.Identity.Name);
+			var user = await _userService.GetUserByName(User.Identity.Name);
             
             
 			if (user == null)
@@ -40,6 +39,7 @@ namespace Web.Controllers
 			
 			return Ok(user!.FavProducts!.Select(a => a.Id).ToList());
 		}
+
         [HttpPost("addFavouriteProduct/{productId}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> AddFavouriteProduct(int productId)
