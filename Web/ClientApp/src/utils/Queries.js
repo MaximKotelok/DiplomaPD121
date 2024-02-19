@@ -2,15 +2,18 @@ import axios from "axios";
 import { ApiPath, GetSupInfoForProductInYourCity,Success } from "./Constants";
 
 export async function postToServer(url, data, headers) {
+    console.log(data);
     try {
         const response = await axios.post(
             `${ApiPath}/${url}`,
             data,
             {
-                headers: {...headers, Authorization: 'Bearer ' +localStorage.getItem('authToken')},
+                headers: { ...headers, Authorization: 'Bearer ' + localStorage.getItem('authToken') },
             }
-        );    
+        );
+                
         return { status: 'Success', data: response.data };
+        
     } catch (error) {
         console.log(error);
         return { status: 'Error', error };

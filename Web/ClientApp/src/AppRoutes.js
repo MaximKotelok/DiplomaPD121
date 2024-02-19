@@ -17,6 +17,7 @@ import Status404 from "./components/StatusesPage/Status404";
 import { Category } from "./components/User/Pages/Category/Category";
 import TableComponent from "./components/Admin/Admin/ZayavkaComponents/TableComponent/TableComponent";
 import Cart from "./components/User/Pages/Cart/Cart";
+import { Reservation } from "./components/User/Pages/Reservation/Reservation";
 const AppRoutes = [
   {
     index: true,
@@ -95,6 +96,11 @@ const AppRoutes = [
     path: "/UpdateProduct/:productId",
     element: <AddProductComponent />,
     Layout: LayoutAdmin,
+  },,
+  {
+    path: "/ReservationConfirm/:pharmacyId",
+    element: <Reservation />,
+    Layout: Layout,
   },
   {
     path: "/404",

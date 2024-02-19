@@ -23,6 +23,13 @@ export const addToCart = (pharmacyId, itemId) => {
     }
 }
 
+export const removePharmacyFromCart = (pharmacyId)=>{
+    let cart = getCart();
+    let index = cart.findIndex(a=>a.pharmacyId === pharmacyId);
+    cart.splice(index, 1);
+    saveObjectToSession("cartItems", cart);
+}
+
 export const changeCountInCart = (pharmacyId, itemId, count) => {
     pharmacyId = parseInt(pharmacyId);
     itemId = parseInt(itemId);

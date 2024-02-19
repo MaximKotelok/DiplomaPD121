@@ -25,8 +25,14 @@ namespace Web.Controllers
         }
 
 
+		[HttpPost("/isAuth")]
+		[Authorize(AuthenticationSchemes = "Bearer")]
+		public IActionResult IsAuth()
+		{			
+			return Ok("User authenticated");
+		}
 
-        [HttpGet("getFavorites")]
+		[HttpGet("getFavorites")]
 		[Authorize(AuthenticationSchemes = "Bearer")]
 		public async Task<IActionResult> GetFavorites()
 		{

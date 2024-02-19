@@ -11,9 +11,7 @@ namespace Domain.Models
 {
 	public class Reservation:BaseEntity
 	{
-		public int ConcreteProductID { get; set; }
-		[ForeignKey(nameof(ConcreteProductID))]
-		public ConcreteProduct? ConcreteProduct { get; set; }
+		public ICollection<ConcreteProduct>? ConcreteProducts { get; set; }
 		public DateTime ToGetReservationTime { get; set; }
 		public DateTime ReservedTime { get; set; }
 		

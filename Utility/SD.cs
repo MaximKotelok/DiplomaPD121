@@ -16,5 +16,10 @@ namespace Utility
         public const string ProductStatusConfirmed = "Підтверджено";
         public const string ProductStatusUnderConsideration = "На розгляді";
         public const string ProductStatusRejected = "Відхилено";
-    }
+
+		public const string ResirvationStatusConfirmed = "Підтверджено";
+		public const string ReservationStatusWaiting = "В очікуванні";
+		public const string ReservationStatusCanceled = "Скасовано";
+		public const string ReservationStatusFinished = "Завершено";
+	}
 }

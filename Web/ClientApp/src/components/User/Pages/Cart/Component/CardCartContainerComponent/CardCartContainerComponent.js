@@ -2,6 +2,7 @@ import React, { useEffect, useContext } from "react";
 import CartBYComponent from "../CartBYComponent/CartBYComponent";
 import styles from "./CardCartContainer.module.css";
 import btnOcloko from "../../../../../../assets/images/znakOkloko.svg";
+import { Link } from "react-router-dom";
 
 const CardCartContainerComponent = ({data}) => {
   return (
@@ -52,11 +53,11 @@ const CardCartContainerComponent = ({data}) => {
                   </button>
                 </div>
                 <div className="col-6 ps-2 pe-2">
-                  <button
-                    className={`brn-form ${styles["card-btn-primary"]}  w-100 `}
+                  <Link to={`/ReservationConfirm/${data.id}`}
+                    className={`brn-form ${styles["card-btn-primary"]} btn  w-100 `}
                   >
                     Оформити бронювання
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

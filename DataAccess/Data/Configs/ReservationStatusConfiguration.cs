@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utility;
 
 namespace Repository.Data.Configs
 {
@@ -14,10 +15,10 @@ namespace Repository.Data.Configs
 		public void Configure(EntityTypeBuilder<ReservationStatus> builder)
 		{
 			builder.HasData(
-				new ReservationStatus { Id = 1, Status= "В очікуванні" },
-				new ReservationStatus { Id = 2, Status= "Підтверджено" },
-				new ReservationStatus { Id = 3, Status= "Скасовано" },
-				new ReservationStatus { Id = 4, Status= "Завершено" }
+				new ReservationStatus { Id = 1, Status= SD.ReservationStatusWaiting },
+				new ReservationStatus { Id = 2, Status= SD.ProductStatusConfirmed },
+				new ReservationStatus { Id = 3, Status= SD.ReservationStatusCanceled },
+				new ReservationStatus { Id = 4, Status= SD.ReservationStatusFinished }
 				);
 
 		}

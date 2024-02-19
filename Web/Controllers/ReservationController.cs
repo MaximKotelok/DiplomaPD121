@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
 using Domain.Models.ViewModels;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.AttributeService;
@@ -19,30 +20,55 @@ namespace Web.Controllers
     {
         private readonly IReservationService _reservationService;
         private readonly IReservationStatusService _reservationStatusService;
+        private readonly IConcreteProductService _concreteProductService;
         private readonly IUserService _userService;
 
-        public ReservationController(IReservationService reservationService, IReservationStatusService reservationStatusService, IUserService userService)
+        public ReservationController(IReservationService reservationService, 
+            IReservationStatusService reservationStatusService, IUserService userService,
+			IConcreteProductService concreteProductService)
         {
             _reservationService = reservationService;
             _userService = userService;
             _reservationStatusService = reservationStatusService;
+			_concreteProductService = concreteProductService;
         }
 
         [HttpPost("LoggedReserve")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> LoggedReserve(Reservation reservation)
+        public async Task<IActionResult> LoggedReserve([FromBody] ReservationPostViewModel model)
         {
             User user = await _userService.GetUserByName(User.Identity.Name);
-            reservation.User = user;
+
+            Reservation reservation = new Reservation
+            {
+                Email = user.Email,
+                Phone = user.PhoneNumber,
+                User = user,
+                ConcreteProducts = model
+                .ConcreteProducts.Select(a => _concreteProductService.GetConcreteProduct(b=>b.Id==a))
+                .ToList(),
+				StatusID = _reservationStatusService.GetAllReservationStatuses(a => a.Status == SD.ReservationStatusWaiting).FirstOrDefault().Id
+			};
 
             _reservationService.InsertReservation(reservation);
             return Ok();
         }
 
         [HttpPost("Reserve")]
-        public IActionResult Reserve(Reservation reservation)
+        public IActionResult Reserve(ReservationPostViewModel data)
         {
-            _reservationService.InsertReservation(reservation);
+			Reservation reservation = new Reservation
+			{
+				Email = data.Email,
+				Phone = data.Phone,
+				ConcreteProducts = data
+				.ConcreteProducts.Select(a => _concreteProductService.GetConcreteProduct(b => b.Id == a))
+				.ToList(),
+                StatusID = _reservationStatusService.GetAllReservationStatuses(a=>a.Status==SD.ReservationStatusWaiting).FirstOrDefault().Id
+
+
+			};
+			_reservationService.InsertReservation(reservation);
             return Ok();
         }
 

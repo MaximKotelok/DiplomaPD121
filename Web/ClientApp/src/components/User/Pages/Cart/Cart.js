@@ -12,7 +12,7 @@ const Cart = () => {
 
     // </div>    
     <Provider store={store}>
-    <CartComponent/>
+      <CartComponent/>
     </Provider>
   );
 };

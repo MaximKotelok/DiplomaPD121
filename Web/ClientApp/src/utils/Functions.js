@@ -69,6 +69,9 @@ export function isWidthDown(breakpoint, width){
     const breakpointWidth = breakpoints[breakpoint];
     return width <= breakpointWidth;
 };
+export function redirect404(){
+    window.location.href = '/404';
+};
 
 export function toTwoDigitsNumber(number){
   return number.toLocaleString('en-US', {

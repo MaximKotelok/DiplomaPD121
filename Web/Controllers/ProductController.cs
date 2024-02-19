@@ -214,7 +214,8 @@ namespace Web.Controllers
                 var reservations = _reservationService.GetAllReservations();
 
                 var popularProducts = reservations
-                    .GroupBy(r => r.ConcreteProductID)
+					.SelectMany(a=>a.ConcreteProducts)
+                    .GroupBy(r => r.ProductID)
                     .Select(g => new
                     {
                         ConcreteProductID = g.Key,
