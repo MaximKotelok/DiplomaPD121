@@ -6,7 +6,7 @@ import styles from "./ListProduct.module.css"
 const ListPharmacies = (props) => {
     
     return (
-        <div className="map-left">
+        <div className="map-left  p-3">
               <div className='mx-3'>
 
                 <p className={styles["product-title"]}>{props.product.title} {props.product.shortDescription} ціна у {props.city}</p>

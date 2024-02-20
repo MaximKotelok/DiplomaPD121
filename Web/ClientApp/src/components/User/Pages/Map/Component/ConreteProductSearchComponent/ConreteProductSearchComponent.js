@@ -1,7 +1,10 @@
 import { searchConcreteProduct } from '../../../../../../services/concreteProduct';
 import React, { useState, useEffect } from 'react';
 
-const ConreteProductSearchComponent = (props) => {
+import styles from "./ConreteProductSearchComponent.module.css"
+import searchIcon from "../../../../../../assets/images/header-icons/search-icon.svg"
+
+const ConreteProductSearchComponent = ({className="", pharmacyId}) => {
     const [inputValue, setInputValue] = useState('');
     const [products, setProducts] = useState([]);
 
@@ -15,7 +18,7 @@ const ConreteProductSearchComponent = (props) => {
 
         }
 
-        const response = await searchConcreteProduct(props.pharmacyId,value);
+        const response = await searchConcreteProduct(pharmacyId,value);
 
         if (Array.isArray(response.data)) {
             setProducts(response.data);
@@ -25,20 +28,12 @@ const ConreteProductSearchComponent = (props) => {
     };
 
     return (
-        <div>
-            <label htmlFor="myInput">Search of Product:</label>
-            <input
-                type="text"
-                id="myInput"
-                value={inputValue}
-                onChange={handleInputChange}
-            />
-            <ul>
-                {Array.isArray(products) && products.map(product => (
-                    <li key={product.id}>{product.product.title},{product.price}</li>
-                ))}
-            </ul>
-        </div>
+        <div className={`input-group ${styles["back-serach-bar"]} center ${className}`}>
+        <button className={`${styles["social-btn"]}`} type="button" >
+            <img src={searchIcon} width="28px" height="28px"  alt="My Icon" className="icon" />
+        </button>
+        <input type="text" className={`${styles["my-search-bar"]}`} placeholder="Пошук товарів тут..." aria-label="Example text with button addon" aria-describedby="button-addon1" />
+    </div>
     );
 };
 export default ConreteProductSearchComponent;

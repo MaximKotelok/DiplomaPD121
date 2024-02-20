@@ -1,0 +1,112 @@
+.card {
+    border: 1px #F0F0F0 solid;
+    border-radius: 16px;
+    padding: 16px;
+    margin: 15px 0!important;
+}
+
+.search{
+    width: 100%;
+    max-width: 100%;
+    
+}
+
+.pharma-info-link{
+    font-family: var(--standart-font);
+font-size: 14px;
+font-weight: 400;
+line-height: 18px;
+color: #007AFF;
+text-decoration: none;
+}
+
+.pharma-info p {
+    font-family: var(--standart-font);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 15px;
+    margin: 0;
+
+}
+
+.card.active{
+    border: 1px #FF9500 solid;
+    
+}
+
+.price{
+    font-family: var(--standart-font);
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 25px;
+
+}
+
+.reserve{
+
+font-family: var(--standart-font);
+font-size: 16px;
+font-weight: 500;
+line-height: 20px;
+
+    padding: 9px 30px;
+    color: white;
+    background: #007AFF;
+    border-radius: 8px
+}
+
+.geo {
+    font-family: var(--standart-font);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
+    color: #007AFF;
+    border-radius: 50px;
+    border: #007AFF 1px solid;
+    padding: 7px 10px;
+    width: 100px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+.geo p{
+    margin: 0;
+}
+
+.pharma-name {
+    font-family: var(--standart-font);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 25px;
+
+}
+
+.product-title{
+
+font-family: var(--standart-font);
+font-size: 16px;
+font-weight: 700;
+line-height: 20px;
+
+}
+
+.manufacturer{
+    
+    font-family: var(--standart-font);
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 20px;
+    
+}
+
+.info-icon {
+    color: #FF9500;
+}
+
+.geo-icon {
+
+
+    color: #007AFF;
+}

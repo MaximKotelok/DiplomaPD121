@@ -1,0 +1,44 @@
+/*.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;*/ /* Додається, щоб центрувати по вертикалі */
+/*}*/
+
+.social-btn {
+    border: none;
+    background: none;
+}
+.my-search-bar {
+    font-family: var(--standart-font);
+    padding: 0px 8px 0 6px;
+    border: none;
+    background: none;
+    width: 100%;
+    flex: 1; 
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.back-serach-bar {
+    border-radius: 12px;
+    background: #e5e7eb;
+    max-width: 621px;
+    width: 40vw;
+    padding: 8px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.icon {
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 40px;
+}
+
+.my-search-bar:focus {
+    border-color: initial;
+    outline: none;
+    box-shadow: none;
+}

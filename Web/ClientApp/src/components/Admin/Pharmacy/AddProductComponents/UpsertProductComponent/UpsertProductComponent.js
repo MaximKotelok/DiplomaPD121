@@ -1,7 +1,7 @@
 import 'react-quill/dist/quill.snow.css';
 import "bootstrap-icons/font/bootstrap-icons.css";
 import ReactQuill from 'react-quill';
-import React, { useEffect, useState,useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import Select from 'react-select';
 
@@ -22,36 +22,36 @@ import "./UpsertProductComponent.css"
 import LayoutContext from '../../../../../layouts/LayoutContext';
 
 const UpsertProductComponent = () => {
-    const { onComponentMount, onComponentUnmount } = useContext(LayoutContext);    
+    const { onComponentMount, onComponentUnmount } = useContext(LayoutContext);
     const { categoryId } = useParams();
     const { typeId } = useParams();
     const { productId } = useParams();
 
-    useEffect(() => {    
+    useEffect(() => {
         const handleKeyDown = (e) => {
 
             if (e.key === 'PageDown' || e.key === 'PageUp') {
-              e.preventDefault();
+                e.preventDefault();
             }
-            
-          };
-          document.addEventListener('keydown', handleKeyDown);
 
-    return () => {      
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-      }, []);
-
-    useEffect(() => {          
-        if(typeId)
-            onComponentMount(LayoutProviderValues.ADD);//"Сторінка додавання товару"); 
-        else if(productId)
-            onComponentMount(LayoutProviderValues.UPDATE); //"Сторінка оновлення товару");
-        return () => {    
-          onComponentUnmount();
         };
-      }, [onComponentMount, onComponentUnmount]);
-    
+        document.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (typeId)
+            onComponentMount(LayoutProviderValues.ADD);//"Сторінка додавання товару"); 
+        else if (productId)
+            onComponentMount(LayoutProviderValues.UPDATE); //"Сторінка оновлення товару");
+        return () => {
+            onComponentUnmount();
+        };
+    }, [onComponentMount, onComponentUnmount]);
+
     //#region data from server
     const [dataFromServer, setDataFromServer] = useState({
         attributes: [],
@@ -101,10 +101,10 @@ const UpsertProductComponent = () => {
 
             let res = await getGroupById(localTypeId);
             if (res.data.existAttributes.length > 0) {
-                tmpMainAttributes = await getExistAttributeVariantsList(res.data.existAttributes);                    
+                tmpMainAttributes = await getExistAttributeVariantsList(res.data.existAttributes);
             }
-            
-            if(res.data.descriptionName){
+
+            if (res.data.descriptionName) {
                 setDescriptionName(res.data.descriptionName);
             }
 
@@ -121,10 +121,10 @@ const UpsertProductComponent = () => {
             ) {
 
                 //setFormData
-                setFormData((prevData) => {                
+                setFormData((prevData) => {
                     let newData = { ...prevData };
-                    if(!productId){
-                        newData = {...newData, description: res.data.description}
+                    if (!productId) {
+                        newData = { ...newData, description: res.data.description }
                     }
                     if (tmpMainAttributes)
                         newData = { ...newData, ...Object.fromEntries(tmpMainAttributes.map(a => [a.name, undefined])) };
@@ -196,21 +196,22 @@ const UpsertProductComponent = () => {
 
     //#region submit
     const submit = async () => {
-        let a = "/images/product/1.png";
+        let photoPath = "/images/product/1.png";
         if (image) {
             if (formData.pathToPhoto)
-            a = await postPhotoToServer("Photo/Update", formData.pathToPhoto.replace(/[\/\\]images[\/\\]/g, ""), image);
-        else
-                a = await postPhotoToServer("Photo/Add", "product", image);
-            a = `/images/product/${a}`;
+                photoPath = await postPhotoToServer("Photo/Update", formData.pathToPhoto.replace(/[\/\\]images[\/\\]/g, ""), image);
+            else
+                photoPath = await postPhotoToServer("Photo/Add", "product", image);
+            if (photoPath.status === Success) {
+
+                photoPath = `/images/product/${photoPath.data}`;
+            }
         } else if (formData.pathToPhoto) {
-            a = formData.pathToPhoto;
+            photoPath = formData.pathToPhoto;
         }
-        
-        console.log(formData)
 
 
-        formData["pathToPhoto"] = a;
+        formData["pathToPhoto"] = photoPath;
 
         if (typeId)
             upsertProduct(formData, { typeId, additionalAttribute });
@@ -294,14 +295,14 @@ const UpsertProductComponent = () => {
         <div className='add-product-left-container'>
             <div className='inner-add-product-left-container'>
 
-            <p className='product-label'>{descriptionName}</p>
-            <ReactQuill
-                className='description-form-element'
-                theme="snow"
-                value={formData.description}
-                onChange={a => { setFormDataAttribute("description", a) }}
+                <p className='product-label'>{descriptionName}</p>
+                <ReactQuill
+                    className='description-form-element'
+                    theme="snow"
+                    value={formData.description}
+                    onChange={a => { setFormDataAttribute("description", a) }}
                 />
-                </div>
+            </div>
         </div>
         <div className='add-product-right-container'>
             <div className='flip'>

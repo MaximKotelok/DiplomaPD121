@@ -60,7 +60,8 @@ const UpsertBrandComponent = () => {
         countryID: undefined,
         pathToPhoto: undefined,
     });
-
+    console.log(formData)
+     
 
     async function init() {
         let tmpObject,
@@ -69,7 +70,8 @@ const UpsertBrandComponent = () => {
         try {
             if (brandId) {
                 tmpObject = await getBrandById(brandId)
-                setFormData(tmpObject);
+                if(tmpObject.status === Success)
+                    setFormData(tmpObject.data);
             }
 
             tmpCountries = await getAllCountries();
@@ -116,12 +118,15 @@ const UpsertBrandComponent = () => {
                 path = await postPhotoToServer("Photo/Update", formData.pathToPhoto.replace(/[\/\\]images[\/\\]/g, ""), image);
             else
                 path = await postPhotoToServer("Photo/Add", "brand", image);
-            path = `/images/brand/${path}`;
+            if(path.status === Success){
+
+                path = `/images/brand/${path.data}`;
+            }
         } else if (formData.pathToPhoto) {
             path = formData.pathToPhoto;
         }
 
-        console.log(formData)
+        
 
 
         formData["pathToPhoto"] = path;
@@ -129,10 +134,10 @@ const UpsertBrandComponent = () => {
         upsertBrand(formData);
     }
 
+    
+
     if (stateInfo == StateInfos.LOADING)
         return <div>Loading</div>
-
-    console.log(dataFromServer.countries);
 
     return (
         <div className='row add-product-main-container'>
@@ -151,7 +156,7 @@ const UpsertBrandComponent = () => {
                         placeholder='Введіть назву бренду'
                         type="text"
                         name="name"
-                        value={formData.title}
+                        value={formData.name}
                         onChange={handleInputChange}
                     />
                     <InputForBrandComponent
@@ -160,14 +165,14 @@ const UpsertBrandComponent = () => {
                         placeholder='Введіть короткий опис'
                         type="text"
                         name="description"
-                        value={formData.shortDescription}
+                        value={formData.description}
                         onChange={handleInputChange}
                     />
                     <div className="margin-bottom select-div">
                         <CustomSelectComponent
-                            selectedId={formData.countryBrandId}
+                            selectedId={formData.countryBrandID}
                             className='me-1'
-                            name="countryBrandId"
+                            name="countryBrandID"
                             placeholder="Країна"
                             options={dataFromServer.countries &&
                                 dataFromServer.countries.map &&

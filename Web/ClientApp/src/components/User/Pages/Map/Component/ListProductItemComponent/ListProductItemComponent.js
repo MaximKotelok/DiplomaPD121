@@ -1,4 +1,4 @@
-import { NavigationDetailsComponent } from "../../../../Common/NavigationDetailsComponent/NavigationDetailsComponent";
+
 import styles from "./ListProductItemComponent.module.css"
 
 import {ReactComponent as Geo} from "../../../../../../assets/images/geo.svg"

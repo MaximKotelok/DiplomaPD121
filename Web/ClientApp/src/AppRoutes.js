@@ -89,12 +89,12 @@ const AppRoutes = [
   },
   {
     path: "/AddProduct/:categoryId/:typeId",
-    element: <AddProductComponent />,
+    element: <UpsertProductComponent />,
     Layout: LayoutAdmin,
   },
   {
     path: "/UpdateProduct/:productId",
-    element: <AddProductComponent />,
+    element: <UpsertProductComponent />,
     Layout: LayoutAdmin,
   },,
   {

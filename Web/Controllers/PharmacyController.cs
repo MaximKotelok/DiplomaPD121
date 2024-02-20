@@ -87,7 +87,7 @@ namespace Web.Controllers
 			var city = _cityService.GetCity(a => a.NameCity == cityName);
 			if (city is not null)
 			{
-				var result = _pharmacyService.GetAllPharmacies(a => a.CityID == city.Id);
+				var result = _pharmacyService.GetAllPharmacies(a => a.CityID == city.Id, "PharmaCompany");
 
 				return Ok(result);
 			}

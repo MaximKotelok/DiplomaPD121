@@ -4,8 +4,8 @@ import { postToServer, getFromServer} from "../utils/Queries";
 export async function getAllBrands() {
     return await getFromServer(GetAllBrands)
 } 
-export async function getBrandById(barandId) {
-    return await getFromServer(GetBrandById, { id: barandId })
+export async function getBrandById(brandId) {
+    return await getFromServer(GetBrandById, { brandId: brandId })
 }
 export async function getCountBrands(count) {
     return await getFromServer(GetRecomendedBrands, { count: count })
