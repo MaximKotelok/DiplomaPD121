@@ -13,6 +13,9 @@ namespace Domain.Models
 	{
 		[Required]
 		public int? PharmacompanyID { get; set; }
+		
+		public DateTime CreationDate { get; set; }
+
 		[ForeignKey(nameof(PharmacompanyID))]
 		public PharmaCompany? PharmaCompany { get; set; }
 		public int? ProductID {  get; set; }

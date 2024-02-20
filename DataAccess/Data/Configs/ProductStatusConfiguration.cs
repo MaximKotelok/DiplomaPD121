@@ -15,9 +15,9 @@ namespace Repository.Data.Configs
         public void Configure(EntityTypeBuilder<ProductStatus> builder)
         {
             builder.HasData(
-                new ProductStatus { Id = 1, Status = SD.ProductStatusConfirmed },
-                new ProductStatus { Id = 2, Status = SD.ProductStatusUnderConsideration },
-                new ProductStatus { Id = 3, Status = SD.ProductStatusRejected }
+                new ProductStatus { Id = 1, Status = SD.ProductStatusConfirmed, Color= "rgba(52, 199, 89, 1)" },
+                new ProductStatus { Id = 2, Status = SD.ProductStatusUnderConsideration, Color= "rgba(255, 149, 0, 1)" },
+                new ProductStatus { Id = 3, Status = SD.ProductStatusRejected, Color = "rgba(255, 59, 48, 1)" }
                 );
         }
     }

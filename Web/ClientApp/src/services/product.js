@@ -1,6 +1,6 @@
 import { UpsertProduct, GetProduct,  ClassHeader, GetAllProductsFromIdArray, Success, GetSupInfoForProductInYourCity } from "../utils/Constants";
 import { getCookie } from "../utils/Cookies";
-import { postToServer, getFromServer} from "../utils/Queries";
+import { postToServer, getFromServer, putToServer} from "../utils/Queries";
 
 export async function getSupInfo(products){
     return await Promise.all(products.map(async a => {
@@ -21,6 +21,10 @@ export async function upsertProduct(product, options) {
         ...product,
         properties: options.additionalAttribute
     }, ClassHeader)
+} 
+
+export async function changeStatus(productId, statusId) {
+    return await putToServer(`Product/ChangeStatus/${productId}/${statusId}`, ClassHeader)
 } 
 
 export async function getProductsFromIdsArray(ids){

@@ -46,10 +46,22 @@ namespace Web.Controllers
 			return BadRequest("Pharmacy not found");
 		}
 
+		[HttpGet("GetPharmacyProduct")]
+		public IActionResult GetPharmacyProduct(int id, int productId)
+		{
+			var result = _pharmacyService.GetPharmacy(x => x.Id == id, "ConcreteProducts,ConcreteProducts.Product")?.ConcreteProducts;
+			if (result is not null)
+			{
+				var product = result.First(a=>a.Id==productId);
+				return Ok(product);
+			}
+			return BadRequest("No records found");
+		}
+
 		[HttpGet("{id}")]
 		public IActionResult GetPharmacy(int id)
-		{
-			var result = _pharmacyService.GetPharmacy(x => x.Id == id);
+		{	
+			var result = _pharmacyService.GetPharmacy(x => x.Id == id, "PharmaCompany");
 			if (result is not null)
 			{
 				return Ok(result);
@@ -75,7 +87,7 @@ namespace Web.Controllers
 			var city = _cityService.GetCity(a => a.NameCity == cityName);
 			if (city is not null)
 			{
-				var result = _pharmacyService.GetAllPharmacies(a => a.CityID == city.Id);
+				var result = _pharmacyService.GetAllPharmacies(a => a.CityID == city.Id, "PharmaCompany");
 
 				return Ok(result);
 			}

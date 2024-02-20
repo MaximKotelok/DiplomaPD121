@@ -17,6 +17,7 @@ using Services.BrandService;
 using Services.CategoryService;
 using Services.CityService;
 using Services.ConcreteProductService;
+using Services.CountryService;
 using Services.EmailService;
 using Services.MailService;
 using Services.ManufacturerService;
@@ -31,6 +32,7 @@ using Services.ReservationService;
 using Services.SimilarProductGroupService;
 using Services.SimilarProductItemService;
 using Services.SMTPService;
+using Services.UserService;
 using System.Text;
 using Utility.Models;
 using Web.Extension;
@@ -139,23 +141,26 @@ builder.Services.AddScoped<IManufacturerService, ManufacturerService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<IProductConfirmService, ProductConfirmService>();
 builder.Services.AddScoped<IProductStatusService, ProductStatusService>();
-builder.Services.AddTransient<IAttributeService, AttributeService>();
-builder.Services.AddTransient<IAttributeGroupService, AttributeGroupService>();
-builder.Services.AddTransient<IPropertyService, PropertyService>();
-builder.Services.AddTransient<IPharmaCompanyService, PharmaCompanyService>();
-builder.Services.AddTransient<ICategoryService, CategoryService>();
-builder.Services.AddTransient<ISimilarProductGroupService, SimilarProductGroupService>();
-builder.Services.AddTransient<ISimilarProductItemService, SimilarProductItemService>();
-builder.Services.AddTransient<IPharmacyService, PharmacyService>();
-builder.Services.AddTransient<IConcreteProductService, ConcreteProductService>();
-builder.Services.AddTransient<IProductService, ProductService>();
-builder.Services.AddTransient<IActiveSubstanceService, ActiveSubstanceService>();
-builder.Services.AddTransient<ICityService, CityService>();
+builder.Services.AddScoped<IAttributeService, AttributeService>();
+builder.Services.AddScoped<IAttributeGroupService, AttributeGroupService>();
+builder.Services.AddScoped<IPropertyService, PropertyService>();
+builder.Services.AddScoped<IPharmaCompanyService, PharmaCompanyService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ISimilarProductGroupService, SimilarProductGroupService>();
+builder.Services.AddScoped<ISimilarProductItemService, SimilarProductItemService>();
+builder.Services.AddScoped<IPharmacyService, PharmacyService>();
+builder.Services.AddScoped<IConcreteProductService, ConcreteProductService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IActiveSubstanceService, ActiveSubstanceService>();
+builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<ICountryService, CountryService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
-builder.Services.AddTransient<IMedicineService, MedicineService>();
-//builder.Services.AddScoped<IMailKitService, MailKitService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
+builder.Services.AddScoped<IReservationStatusService, ReservationStatusService>();
+builder.Services.AddScoped<IMedicineService, MedicineService>();
 builder.Services.AddScoped<IEmailSenderService, EmailSenderService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 
@@ -164,9 +169,6 @@ builder.Services.AddSendGrid(options =>
     options.ApiKey = builder.Configuration.GetSection("SendGridSettings")
     .GetValue<string>("ApiKey");
 });
-
-
-
 
 builder.Services.Configure<SendGridSettings>(builder.Configuration.GetSection("SendGridSettings"));
 
@@ -181,6 +183,7 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
 
 app.UseSwagger();
 app.UseSwaggerUI();

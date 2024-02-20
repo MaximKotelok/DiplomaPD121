@@ -6,7 +6,7 @@ import styles from "./ListProduct.module.css"
 const ListPharmacies = (props) => {
     
     return (
-        <div className="map-left">
+        <div className="map-left  p-3">
               <div className='mx-3'>
 
                 <p className={styles["product-title"]}>{props.product.title} {props.product.shortDescription} ціна у {props.city}</p>
@@ -16,8 +16,9 @@ const ListPharmacies = (props) => {
                 </div>
             <p className={`${styles["found-in"]}`}>Знайдено у {props.townProducts.length} аптеках</p>
             {props.townProducts.map((product,index) => 
-            <ListProductItemComponent 
+            <ListProductItemComponent             
                 key={index}
+                pharmacyId={product.pharmacy.id}
                 id={product.id}
                 isSelected={props.selectedProduct && props.selectedProduct.id == product.id}
                 price={product.price}

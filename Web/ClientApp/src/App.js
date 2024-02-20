@@ -8,6 +8,7 @@ import LayoutProvider from './layouts/LayoutProvider';
 // import LayoutAdmin from './components/pages/Admin/LayoutAdmin';
 import "./styles/variables.css";
 import "./styles/global.css"
+import 'react-toastify/dist/ReactToastify.css';
 
 export default class App extends Component {
   static displayName = App.name;

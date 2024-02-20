@@ -22,6 +22,21 @@ namespace DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("ConcreteProductReservation", b =>
+                {
+                    b.Property<int>("ConcreteProductsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReservationsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ConcreteProductsId", "ReservationsId");
+
+                    b.HasIndex("ReservationsId");
+
+                    b.ToTable("ConcreteProductReservation");
+                });
+
             modelBuilder.Entity("Domain.Models.ActiveSubstance", b =>
                 {
                     b.Property<int>("Id")
@@ -1286,6 +1301,9 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("PharmacompanyID")
                         .IsRequired()
                         .HasColumnType("int");
@@ -1560,6 +1578,9 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Color")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
@@ -1571,16 +1592,19 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1,
+                            Color = "rgba(52, 199, 89, 1)",
                             Status = "Підтверджено"
                         },
                         new
                         {
                             Id = 2,
+                            Color = "rgba(255, 149, 0, 1)",
                             Status = "На розгляді"
                         },
                         new
                         {
                             Id = 3,
+                            Color = "rgba(255, 59, 48, 1)",
                             Status = "Відхилено"
                         });
                 });
@@ -1593,8 +1617,13 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ConcreteProductID")
-                        .HasColumnType("int");
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ReservedTime")
                         .HasColumnType("datetime2");
@@ -1606,12 +1635,9 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserID")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ConcreteProductID");
 
                     b.HasIndex("StatusID");
 
@@ -2113,6 +2139,21 @@ namespace DataAccess.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ConcreteProductReservation", b =>
+                {
+                    b.HasOne("Domain.Models.ConcreteProduct", null)
+                        .WithMany()
+                        .HasForeignKey("ConcreteProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Reservation", null)
+                        .WithMany()
+                        .HasForeignKey("ReservationsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Domain.Models.Brand", b =>
                 {
                     b.HasOne("Domain.Models.Country", "CountryBrand")
@@ -2281,12 +2322,6 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Domain.Models.Reservation", b =>
                 {
-                    b.HasOne("Domain.Models.ConcreteProduct", "ConcreteProduct")
-                        .WithMany()
-                        .HasForeignKey("ConcreteProductID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Models.ReservationStatus", "Status")
                         .WithMany()
                         .HasForeignKey("StatusID")
@@ -2295,11 +2330,7 @@ namespace DataAccess.Migrations
 
                     b.HasOne("Domain.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ConcreteProduct");
+                        .HasForeignKey("UserID");
 
                     b.Navigation("Status");
 

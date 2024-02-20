@@ -71,7 +71,7 @@ export class NavMenu extends Component {
 
 
             
-            <NavLink tag={Link} className="cart" to="/counter">
+            <NavLink tag={Link} className="cart" to="/cart">
               <IconButton iconPath={CartIcon} />
             </NavLink>
 

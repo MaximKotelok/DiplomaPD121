@@ -23,5 +23,6 @@ namespace Domain.Models
 		public int? PharmacyID { get; set; }
 		[ForeignKey("PharmacyID")]        
 		public Pharmacy? Pharmacy { get; set; }
+		public ICollection<Reservation>? Reservations { get; set; }
 	}
 }

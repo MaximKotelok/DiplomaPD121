@@ -1,36 +1,34 @@
 import ConreteProductSearchComponent from "../ConreteProductSearchComponent/ConreteProductSearchComponent"
+import ListPharmaciesItemComponent from "../ListPharmaciesItemComponent/ListProductItemComponent";
 
-import "./ListPharmacies.css"
+import styles from "./ListPharmacies.module.css"
 
 const ListPharmacies = (props) => {
     return (
-        <div className="map-left">
-            <h1>Pharmacies in {props.city}</h1>
-            <ul>
+        <div className="map-left p-3">
+            <h1 className={`${styles["header-text"]}`}>Аптеки у місті {props.city}</h1>
+            
                 {props.townPharmacy.map(pharmacy => (
-                    <li
-                        key={pharmacy.id}
-                        style={{
-                            border: '2px solid #000',
-                            padding: '10px',
-                            color: props.selectedPharmacy && props.selectedPharmacy.id === pharmacy.id ? 'red' : 'black'
-                        }}
-                        onClick={() => { 
-                            props.onPharmacyClick(pharmacy)
-                            if (props.onMapSelect) {
-                                props.onMapSelect(pharmacy);
-                            }
-                        }}
-                    >
-                        <p>{pharmacy.address}, {pharmacy.longitude},{pharmacy.latitude}</p>
-                        <ConreteProductSearchComponent pharmacyId={pharmacy.id}></ConreteProductSearchComponent>
-                        <button onClick={() => {
-                            const mapsUrl = `https://www.google.com/maps?q=${pharmacy.latitude},${pharmacy.longitude}&z=15&t=m`;
-                            window.open(mapsUrl, '_blank');
-                        }}>Open Map</button>
-                    </li>
+                    <ListPharmaciesItemComponent 
+                    key={pharmacy.id} 
+                    id={pharmacy.id}
+                    onClick={() => { 
+                        props.onPharmacyClick(pharmacy)
+                        if (props.onMapSelect) {
+                            props.onMapSelect(pharmacy);
+                        }
+                    }}
+                    lon={pharmacy.longitude}
+                    lat={pharmacy.latitude}
+                    address={pharmacy.address}
+                    title={pharmacy.pharmaCompany.title}
+                    timeOpen="8:00"
+                    timeClosed="20:00"
+                    isSelected={props.selectedPharmacy && props.selectedPharmacy.id === pharmacy.id}
+                    />
+
                 ))}
-            </ul>
+            
         </div>
     );
 };

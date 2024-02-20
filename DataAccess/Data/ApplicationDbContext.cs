@@ -88,8 +88,9 @@ namespace DataAccess.Data
             
             new PermissionTypeConfiguration().Configure(modelBuilder.Entity<PermissionType>());
             
-
 			modelBuilder.Entity<User>().Navigation(e => e.FavProducts).AutoInclude();
+
+			modelBuilder.Entity<Reservation>().HasMany(a=>a.ConcreteProducts).WithMany(a=>a.Reservations);
 		}
     }
 }

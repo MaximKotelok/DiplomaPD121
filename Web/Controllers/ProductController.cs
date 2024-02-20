@@ -214,7 +214,8 @@ namespace Web.Controllers
                 var reservations = _reservationService.GetAllReservations();
 
                 var popularProducts = reservations
-                    .GroupBy(r => r.ConcreteProductID)
+					.SelectMany(a=>a.ConcreteProducts)
+                    .GroupBy(r => r.ProductID)
                     .Select(g => new
                     {
                         ConcreteProductID = g.Key,
@@ -259,7 +260,11 @@ namespace Web.Controllers
 		{
 			
 			var props = (ICollection<ProductProperty>)_convertProperties(postModel!.Properties!).ToList();
-			var productConfirm = new ProductConfirm { PharmacompanyID = postModel.PharmaCompanyID, ProductStatusID = _productStatusService.GetProductStatusByName(SD.ProductStatusUnderConsideration).Id };
+			var productConfirm = new ProductConfirm { 
+				PharmacompanyID = postModel.PharmaCompanyID, 
+				ProductStatusID = _productStatusService.GetProductStatusByName(SD.ProductStatusUnderConsideration).Id, 
+				CreationDate=DateTime.Now 
+			};
 			var medicine = new Medicine
 			{
 				Title = postModel.Title,
@@ -287,7 +292,6 @@ namespace Web.Controllers
 			{
 				if (postModel.Id != null)
 					_propertyService.DeleteProperty(postModel.Id.Value);
-				item.Product = medicine;
 			}
 			if (postModel.Id == null)
 			{
@@ -305,7 +309,11 @@ namespace Web.Controllers
 		private void UpsertProductEntity(PostProductViewModel postModel)
 		{
 			var props = (ICollection<ProductProperty>)_convertProperties(postModel!.Properties!).ToList();
-			var productConfirm = new ProductConfirm { PharmacompanyID = postModel.PharmaCompanyID, ProductStatusID = _productStatusService.GetProductStatusByName(SD.ProductStatusUnderConsideration).Id };
+			var productConfirm = new ProductConfirm { 
+				PharmacompanyID = postModel.PharmaCompanyID, 
+				ProductStatusID = _productStatusService.GetProductStatusByName(SD.ProductStatusUnderConsideration).Id, 
+				CreationDate=DateTime.Now
+			};
 			var product = new Product
 			{
 				Title = postModel.Title,
@@ -349,13 +357,12 @@ namespace Web.Controllers
 			return Ok("Data Deleted");
 		}
 
-		[HttpPut("ChangeStatus")]
+		[HttpPut("ChangeStatus/{id}/{statusID}")]
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
-
 		public IActionResult ChangeStatus(int id, int statusID)
 		{
 			var productConfirm = _productService!
-				.GetProduct(a => a.Id == id, "ProductConfirm,ProductConfirm.ProductStatus")
+				.GetProduct(a => a.Id == id, "ProductConfirm")
 				!.ProductConfirm;
 			if(productConfirm is not null)
 			{
