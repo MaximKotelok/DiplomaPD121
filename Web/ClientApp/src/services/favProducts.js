@@ -7,7 +7,6 @@ export async function getFavs(){
         removeToken();    
     }
     return res.data;
-
 }
 
 export async function addFavouriteProduct(id){

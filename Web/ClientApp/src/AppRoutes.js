@@ -8,8 +8,8 @@ import ConfirmEmail from "./components/Auth/ConfirmEmailComponent/ConfirmEmail";
 
 import ChooseACategoryComponent from "./components/Admin/Pharmacy/AddProductComponents/ChooseACategoryComponent/ChooseACategoryComponent";
 import ChooseATypeComponent from "./components/Admin/Pharmacy/AddProductComponents/ChooseATypeComponent/ChooseATypeComponent";
-import AddProductComponent from "./components/Admin/Pharmacy/AddProductComponents/UpsertProductComponent/UpsertProductComponent";
-
+import UpsertProductComponent from "./components/Admin/Pharmacy/AddProductComponents/UpsertProductComponent/UpsertProductComponent";
+import UpsertBrandComponent from "./components/Admin/Brand/AddBrandComponents/UpsertBrandComponent/UpsertBrandComponent";
 import { Layout } from "./layouts/UserLayout/Layout";
 import LayoutAdmin from "./layouts/AdminLayout/LayoutAdmin";
 import AuthPageComponent from "./components/Auth/AuthPageComponent";
@@ -106,7 +106,17 @@ const AppRoutes = [
     path: "/404",
     element: <Status404 />,
     Layout: Layout,
-  },
+    },
+    {
+        path: '/AddBrand',
+        element: <UpsertBrandComponent />,
+        Layout: LayoutAdmin
+    },
+    {
+        path: '/UpdateBrand/:brandId',
+        element: <UpsertBrandComponent />,
+        Layout: LayoutAdmin
+    },
   {
     element: <TableComponent />,
     path: "/zayavka",

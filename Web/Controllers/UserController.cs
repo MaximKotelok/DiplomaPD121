@@ -25,16 +25,9 @@ namespace Web.Controllers
         }
 
 
-		[HttpPost("/isAuth")]
+        [HttpGet("getFavoriteProducts")]
 		[Authorize(AuthenticationSchemes = "Bearer")]
-		public IActionResult IsAuth()
-		{			
-			return Ok("User authenticated");
-		}
-
-		[HttpGet("getFavorites")]
-		[Authorize(AuthenticationSchemes = "Bearer")]
-		public async Task<IActionResult> GetFavorites()
+		public async Task<IActionResult> GetFavouriteProducts()
 		{
 			var user = await _userService.GetUserByName(User.Identity.Name);
             
@@ -46,6 +39,7 @@ namespace Web.Controllers
 			
 			return Ok(user!.FavProducts!.Select(a => a.Id).ToList());
 		}
+
         [HttpPost("addFavouriteProduct/{productId}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> AddFavouriteProduct(int productId)
