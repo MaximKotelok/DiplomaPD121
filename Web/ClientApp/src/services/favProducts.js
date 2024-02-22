@@ -2,7 +2,7 @@ import { removeToken } from "../utils/Login";
 import { getFromServer, postToServer } from "../utils/Queries";
 
 export async function getFavs(){
-    let res = await getFromServer("User/getFavorites");
+    let res = await getFromServer("User/getFavoriteProducts");
     if(res.status === "Error"){
         removeToken();    
     }

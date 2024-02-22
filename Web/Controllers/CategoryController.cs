@@ -104,6 +104,48 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
+		[HttpGet("IsCategoryHasProducts")]
+		public IActionResult IsCategoryHasProducts(int? id)
+		{
+			
+			var result = _service.GetCategory(x => x.Id == id, "Products");
+
+			if (result is not null)
+			{
+				
+
+				return Ok(result.Products.Count() != 0);
+			}
+			return BadRequest("No records found");
+		}
+
+		[HttpGet("GetCategoryProductsForFilter")]
+		public IActionResult GetCategoryProductsForFilter(int? id, int from, int to)
+		{
+			int maxNumber = to - from;
+			if (maxNumber <= 0)
+				return BadRequest("Incorrect datas");
+			var result = _service.GetCategory(x => x.Id == id, "Products,Products.Manufacturer,Products.Properties,Products.Properties.Attribute");
+
+			if (result is not null)
+			{
+				var products = result.Products.Skip(from).Take(maxNumber)
+					.Select(a=>new {
+						a.Id,
+						a.Title,
+						a.PathToPhoto,
+						ManufacturerName = a.Manufacturer.Name,
+						a.ShortDescription,
+						Properties=a.Properties
+						.Select(b =>new { b.Attribute.Name, b.Value})
+					});;
+
+
+				return Ok(products);
+			}
+			return BadRequest("No records found");
+		}
+
 
 		[HttpGet("Main/All")]
 		public IActionResult GetAllMainCategories(int count)
