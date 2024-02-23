@@ -17,6 +17,7 @@ import Status404 from "./components/StatusesPage/Status404";
 import { Category } from "./components/User/Pages/Category/Category";
 import TableComponent from "./components/Admin/Admin/ZayavkaComponents/TableComponent/TableComponent";
 import Cart from "./components/User/Pages/Cart/Cart";
+import Profile from "./components/User/Pages/Profile/Profile";
 const AppRoutes = [
   {
     index: true,
@@ -31,14 +32,12 @@ const AppRoutes = [
   },
 
   //// Profile
-//   {
-//     path: "/зrofile",
-//     element: <Profile/>,
-//     Layout: Layout,
-//   },
+  //   {
+  //     path: "/зrofile",
+  //     element: <Profile/>,
+  //     Layout: Layout,
+  //   },
 
-  
- 
   {
     path: "/map/:id?",
     element: <Map />,
@@ -51,11 +50,17 @@ const AppRoutes = [
   },
   {
     //Поки що так потім пораджусь з вами але думаю це норм як я зробив
-
     path: "/auth",
     element: <AuthPageComponent />,
     Layout: Layout,
   },
+
+  {
+    path: "/profile",
+    element: <Profile />,
+    Layout: Layout,
+  },
+
   // {
   //     path: '/register',
   //     element: <RegistrationForm />,

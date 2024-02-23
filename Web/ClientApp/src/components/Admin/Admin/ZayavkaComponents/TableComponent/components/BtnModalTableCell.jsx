@@ -20,7 +20,6 @@ const BtnModalTableCell = ({ getValue, row, column, table }) => {
 
 
 
-  // const options = ['Коректне', 'На перевірці', 'Не коректне']
 
   const options = [
     { label: 'Коректне', color: 'rgba(52, 199, 89, 1)' },

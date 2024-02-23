@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import "./LayoutAdmin.css";
 
-import AccordionSideMenuComponent from "./AccordionSideMenu/AccordionSideMenuComponent"
+import AccordionSideMenuComponent from "./AccordionSideMenu/AccordionSideMenuComponent";
 import ButtonSideMenuComponents from "./ButtonSideMenu/ButtonSideMenuComponents";
 import Mail from "../../assets/images/mail.svg";
 import Question from "../../assets/images/question.svg";
@@ -16,18 +16,22 @@ import BadgeComponennt from "./BadgesComponent/BadgeComponent";
 import SearchComponent from "../../components/Common/SearchComponent/SearchComponent";
 import LayoutContext from "../LayoutContext";
 import { LayoutProviderValues } from "../../utils/Constants";
+import { Outlet } from "react-router-dom";
 //import TableComponent from "../../components/pages/Admin/components/TableComponents/TableComponent";
 // import { Container } from "reactstrap";
 
 const LayoutAdmin = ({ children }) => {
-
   const layoutContext = useContext(LayoutContext);
-  
+
   return (
-    <div className={`app-container 
-    ${
-      layoutContext.stateComponentMounted == LayoutProviderValues.ADD ||
-      layoutContext.stateComponentMounted == LayoutProviderValues.UPDATE? "upsert-page" : ""}`}>
+    <div
+      className={`app-container ${
+        layoutContext.stateComponentMounted === LayoutProviderValues.ADD ||
+        layoutContext.stateComponentMounted === LayoutProviderValues.UPDATE
+          ? "upsert-page"
+          : ""
+      }`}
+    >
       <div className="sidebar ">
         <div className="sidebar-header">
           <div className="app-icon">
@@ -96,7 +100,7 @@ const LayoutAdmin = ({ children }) => {
 
       <div className="app-content">
         {/* <div className="app-content-header app-content-container  "> */}
-          {/* <SearchComponent /> */}
+        {/* <SearchComponent /> */}
         <div className="app-content-header app-content-container d-flex justify-content-end">
           <div className="app-content-header">
             <BadgeComponennt />
@@ -106,7 +110,8 @@ const LayoutAdmin = ({ children }) => {
 
         <div className="products-area-wrapper tableView">
           {/* <TableComponent /> */}
-          {children}
+          {/* {children} */}
+          <Outlet />
         </div>
       </div>
     </div>
