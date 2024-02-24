@@ -1,0 +1,44 @@
+.peren-card-history{
+    border: 1px solid rgba(229, 229, 234, 1);
+    border-radius: 16px;
+    padding:       12px 20px;
+}
+
+.text-name{
+    font-family: var(--standart-font);
+font-size: 14px;
+font-weight: 700;
+line-height: 18px;
+text-transform: uppercase;
+}
+
+.text-adress{
+    font-family: var(--standart-font);
+font-size: 12px;
+font-weight: 500;
+line-height: 15px;
+
+
+}
+
+
+p{
+
+    color: rgba(13, 30, 49, 1);
+}
+
+
+.text-Number{
+    font-family: var(--standart-font);
+font-size: 16px;
+font-weight: 700;
+line-height: 18px;
+}
+
+
+.text-data{
+    font-family: var(--standart-font);
+font-size: 14px;
+font-weight: 500;
+line-height: 18px;
+}

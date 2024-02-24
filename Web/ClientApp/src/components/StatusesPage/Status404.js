@@ -5,15 +5,15 @@ import { LayoutProviderValues } from "../../utils/Constants";
 import LayoutContext from "../../layouts/LayoutContext";
 
 const Status404 = () => {
-    const { onComponentMount, onComponentUnmount } = useContext(LayoutContext);
+    // const { onComponentMount, onComponentUnmount } = useContext(LayoutContext);
 
-    useEffect(() => {    
-        onComponentMount(LayoutProviderValues.DISABLE_FOOTER);
-        return () => {    
-          onComponentUnmount();
-        };
+    // useEffect(() => {    
+    //     onComponentMount(LayoutProviderValues.DISABLE_FOOTER);
+    //     return () => {    
+    //       onComponentUnmount();
+    //     };
         
-      }, [onComponentMount, onComponentUnmount]);
+    //   }, [onComponentMount, onComponentUnmount]);
 
 
     return (

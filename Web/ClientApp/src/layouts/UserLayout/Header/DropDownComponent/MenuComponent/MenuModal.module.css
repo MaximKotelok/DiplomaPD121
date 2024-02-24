@@ -3,8 +3,8 @@
         .my-list-group-item{
             border-radius: 12px;
             padding: 12px 20px;
-            border: 1px solid rgba(0, 122, 255, 0.15);
-            margin-bottom: 12px;
+            border: 1px solid transparent;
+            margin-bottom: 4px;
             font-family: var(--standart-font);
             transition: all 0.5s ease;
             }   
@@ -15,7 +15,7 @@
               border: 1px solid rgba(0, 122, 255, 0.15);
 background-color: rgba(0, 122, 255, 0.15);
             }
-            
+
             .my-list-group-item:hover .link-text {
 color: rgba(0, 122, 255, 1);
             }
@@ -46,3 +46,20 @@ text-decoration: none;
                 padding: 0; /* Забирає внутрішні відступи */
                 margin: 0; /* Забирає зовнішні відступи */
               }
+
+
+              
+            .my-list-group-item-active {
+              border: 1px solid rgba(0, 122, 255, 0.15);
+              background-color: rgba(0, 122, 255, 0.15);
+              color: rgba(0, 122, 255, 1);
+
+            }
+            .my-list-group-item-active .link-text {
+              color: rgba(0, 122, 255, 1);
+            }
+            
+            a{
+              text-decoration: none;
+            }
+       

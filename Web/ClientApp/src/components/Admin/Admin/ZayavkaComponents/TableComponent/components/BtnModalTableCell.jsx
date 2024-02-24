@@ -24,7 +24,6 @@ const BtnModalTableCell = ({ statuses, activeStatus,id,updateStatus }) => {
   const [activeStatusId, setActiveStatusId] = useState(activeStatus)
 
 
-  // const options = ['Коректне', 'На перевірці', 'Не коректне']
 
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: 'framework',

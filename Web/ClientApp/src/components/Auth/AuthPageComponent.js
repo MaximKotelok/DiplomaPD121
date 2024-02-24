@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import MenuComponent from "./components/MenuComponent/MenuComponent";
+import MenuComponent from "../User/Pages/Profile/Components/MenuComponent/MenuComponent";
 import LoginForm from "./LoginFormComponent/LoginForm";
 import styles from "./AuthPage.module.css";
 import RegistrationForm from "./RegistrationFormComponent/RegistrationForm";
@@ -7,51 +7,32 @@ import BtnSocialComponenent from "./components/BtnSocialComponenent/BtnSocialCom
 import google from "../../assets/images/google.svg";
 import authPage from "../../assets/images/authPage.png";
 import faceboo from "../../assets/images/Facebook.svg";
-import ProductFilterComponent from "../Common/ProductFilterComponent/ProductFilterComponent";
-const AuthPageComponent = () => {
-    const [activeForm, setActiveForm] = useState("login");
+import { NavLink, Outlet } from "react-router-dom";
 
-  const handleTabClick = (formType) => {
-    setActiveForm(formType);
-  };
+var active = ({ isActive }) =>
+  isActive
+    ? ` ms-3 ${styles["navigation-h"]} ${styles["navigation-h-active"]}`
+    : ` ms-3 ${styles["navigation-h"]}`;
+    
+const AuthPageComponent = () => {
   return (
-    // <div className="input-group mb-3 center back-serach-bar">
     <div
       className="row d-flex align-items-center "
       style={{ justifyContent: "end", margin: "0 0 200px 0" }}
     >
-      {/* <div
-        className="col-12 col-md-6 col-lg-4 p-3"
-        style={{ marginTop: "50px" }}
-      >
-        <MenuComponent />
-      </div> */}
-
       <div className="col-12 col-md-12 col-lg-5  p-5 pt-2">
         <div className="mb-4 d-flex justify-content-center">
-          <span
-            // href="#"
-            className={`me-4 ${styles["navigation-h"]} ${
-              activeForm === "login" ? styles["navigation-h-active"] : ""
-            }`}
-            onClick={() => handleTabClick("login")}
-          >
+          <NavLink to="/auth/login" className={active}>
             Вхід
-          </span>
-          <span
-            // href="#"
-            className={`ms-3 ${styles["navigation-h"]} ${
-              activeForm === "registration" ? styles["navigation-h-active"] : ""
-            }`}
-            onClick={() => handleTabClick("registration")}
-          >
+          </NavLink>
+
+          <NavLink to="/auth/registration" className={active}>
             Реєстрація
-          </span>
+          </NavLink>
         </div>
 
         <div className="form-container">
-          {activeForm === "login" && <LoginForm />}
-          {activeForm === "registration" && <RegistrationForm />}
+          <Outlet />
         </div>
 
         <div class="d-flex align-items-center justify-content-center mt-3 mb-3">
@@ -84,7 +65,9 @@ const AuthPageComponent = () => {
       </div>
 
       <div className="col-12 col-md-12 col-lg-7  ">
-        <img src={authPage} height="100%" />
+        <div style={{ maxWidth: "100%" }}>
+          <img src={authPage} style={{ width: "100%", height: "auto" }} />
+        </div>
       </div>
     </div>
   );
