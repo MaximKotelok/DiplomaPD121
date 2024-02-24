@@ -1,9 +1,14 @@
 ﻿import React, { useState, useEffect } from 'react';
 import ProductFilterItemComponent from '../ProductFilterItemComponent/ProductFilterItemComponent';
+import ProductFilterItemGroupComponent from '../ProductFilterItemGroupComponent/ProductFilterItemGroupComponent';
 
+import styles from "./ProductFilterComponent.module.css";
+import ProductFilterChoosenComponent from '../ProductFilterChoosenComponent/ProductFilterChoosenComponent';
+import SearchComponent from '../SearchComponent/SearchComponent';
 const ProductFilterComponent = ({ products, setProducts }) => {
     const [filters, setFilters] = useState({});
-    const [availableAttributes, setAvailableAttributes] = useState({});
+    const [availableAttributes, setAvailableAttributes] = useState({});    
+    const [filteredAttributes, setFilteredAttributes] = useState({});    
     useEffect(() => {
         const attributes = [];
         products.forEach(product => {
@@ -23,6 +28,7 @@ const ProductFilterComponent = ({ products, setProducts }) => {
         });
 
         setAvailableAttributes(attributes); // Оновлюємо стан availableAttributes
+        setFilteredAttributes(attributes); // Оновлюємо стан filteredAttributes
     }, [products]);
 
     useEffect(() => {
@@ -74,10 +80,20 @@ const ProductFilterComponent = ({ products, setProducts }) => {
 
 
     return (
-        <div>
-            {Object.keys(availableAttributes).map(attributeName => (
-                <div key={attributeName}>
-                    <p>{attributeName}</p>
+        <div className={styles["card"]}>
+            {Object.keys(filters).map(attributeName =>{
+                return filters[attributeName].map(a=>{
+                    return <ProductFilterChoosenComponent name={a} 
+                    remove={()=>handleFilterChange(attributeName,a,false)}/>
+                });
+                
+            })}
+
+            <SearchComponent className={styles["search"]}/>
+
+            {Object.keys(filteredAttributes).map(attributeName => (
+                <div key={attributeName}>                    
+                    <ProductFilterItemGroupComponent title={attributeName}>                    
                     {availableAttributes[attributeName]?.map(value => {
                         let state = (filters[attributeName] && filters[attributeName].indexOf(value) !== -1);
                         
@@ -89,7 +105,10 @@ const ProductFilterComponent = ({ products, setProducts }) => {
                             setState={(state)=>{handleFilterChange(attributeName,value,!state)}}
                         />
                     )
-                    })}
+                    })
+                    }
+                    </ProductFilterItemGroupComponent>
+                    
                     {/* <span>{attributeName}:</span>
                     <select
                         value={filters[attributeName] || ''}
