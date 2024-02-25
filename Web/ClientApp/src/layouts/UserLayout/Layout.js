@@ -10,7 +10,6 @@ import { Element } from "react-scroll";
 import { LayoutProviderValues } from "../../utils/Constants";
 import { ToastContainer } from "react-toastify";
 import { Outlet } from "react-router-dom";
-
 export class Layout extends Component {
   static displayName = Layout.name;
   static contextType = LayoutContext;
@@ -28,8 +27,8 @@ export class Layout extends Component {
             <Container tag="main">
                 <Outlet />
             </Container>
-       <FooterComponent />
-       <ToastContainer position="bottom-right" autoClose={3000} />
+            <ToastContainer position="bottom-right" autoClose={3000} />
+       <FooterComponent />      
       </div>
     );
   }

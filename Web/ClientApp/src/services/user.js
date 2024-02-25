@@ -1,7 +1,8 @@
 import { GetAllBrands, GetRecomendedBrands, Success } from "../utils/Constants";
+import { getToken } from "../utils/Login";
 import { postToServer, getFromServer} from "../utils/Queries";
 
-export async function checkIsAuth() {
-    return ((await postToServer("isAuth")).status == Success);
+export function checkIsAuth() {
+    return (getToken() && true);
 } 
 

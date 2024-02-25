@@ -1,8 +1,8 @@
 import axios from "axios";
 import { ApiPath, GetSupInfoForProductInYourCity,Success } from "./Constants";
+import { getToken } from "./Login";
 
 export async function postToServer(url, data, headers) {
-    console.log(data);
     try {
         const response = await axios.post(
             `${ApiPath}/${url}`,

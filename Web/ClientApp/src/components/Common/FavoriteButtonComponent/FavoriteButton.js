@@ -4,10 +4,10 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import 'bootstrap/dist/css/bootstrap.css';
 import './FavoriteButton.css';
 import { addFavouriteProduct, removeFavouriteProduct } from '../../../services/favProducts';
-import { useNavigate } from 'react-router-dom';
+import { toast } from "react-toastify";
 
 const FavoriteButton = ({ isFavorite, setIsFavorite, id }) => {    
-    const navigate = useNavigate();
+    
     async function handleClick() {
         let status = 401;
         if (!isFavorite)
@@ -15,8 +15,9 @@ const FavoriteButton = ({ isFavorite, setIsFavorite, id }) => {
         else
             status = await removeFavouriteProduct(id);
 
-        if(status == 401){            
-            navigate("/auth");
+        if(status == 401){    
+            toast.error("Помилка")
+            
         }
         setIsFavorite(!isFavorite);
     }

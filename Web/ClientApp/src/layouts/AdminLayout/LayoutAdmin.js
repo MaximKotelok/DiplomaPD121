@@ -21,6 +21,7 @@ import { Outlet } from "react-router-dom";
 //import TableComponent from "../../components/pages/Admin/components/TableComponents/TableComponent";
 // import { Container } from "reactstrap";
 
+import 'react-toastify/dist/ReactToastify.css';
 const LayoutAdmin = ({ children }) => {
   const layoutContext = useContext(LayoutContext);
 

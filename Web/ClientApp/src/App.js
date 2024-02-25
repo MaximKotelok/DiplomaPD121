@@ -8,6 +8,7 @@ import { setupLocation } from "./utils/Location";
 // import LayoutAdmin from "./components/pages/Admin/LayoutAdmin";
 import "./styles/variables.css";
 import "./styles/global.css";
+import { ToastContainer } from "react-toastify";
 import { Home } from "./components/User/Pages/Home/Home";
 import { Layout } from "./layouts/UserLayout/Layout";
 import AuthPageComponent from "./components/Auth/AuthPageComponent";
@@ -45,6 +46,7 @@ export default class App extends Component {
               <Route path="auth/*" element={<AuthPageComponent />}>
                 <Route path="registration" element={<RegistrationForm />} />
                 <Route path="login" element={<LoginForm />} />
+                <Route path="" element={<LoginForm />} />
               </Route>
 
               <Route path="cart" element={<Cart />} />
@@ -54,7 +56,7 @@ export default class App extends Component {
                 <Route path="selectedproducts" element={<SelectedProducts />} />
                 <Route path="wathclist" element={<WathcList />} />
               </Route>
-              <Route path="confirm-email" element={<ConfirmEmail />} />
+            <Route path="confirm-email" element={<ConfirmEmail />} />
               <Route path="map/:id?" element={<Map />} />
               <Route path="product-details/:id" element={<Details />} />
               <Route path="category/:id" element={<Category />} />
@@ -68,6 +70,7 @@ export default class App extends Component {
             </Route>
           </Routes>
         </LayoutProvider>
+
       </>
     );
   }

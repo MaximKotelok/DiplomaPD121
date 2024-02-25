@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import MenuComponent from "../User/Pages/Profile/Components/MenuComponent/MenuComponent";
 import LoginForm from "./LoginFormComponent/LoginForm";
 import styles from "./AuthPage.module.css";
@@ -7,7 +7,9 @@ import BtnSocialComponenent from "./components/BtnSocialComponenent/BtnSocialCom
 import google from "../../assets/images/google.svg";
 import authPage from "../../assets/images/authPage.png";
 import faceboo from "../../assets/images/Facebook.svg";
+import { useNavigate } from 'react-router-dom';
 import { NavLink, Outlet } from "react-router-dom";
+import { checkIsAuth } from "../../services/user";
 
 var active = ({ isActive }) =>
   isActive
@@ -15,6 +17,14 @@ var active = ({ isActive }) =>
     : ` ms-3 ${styles["navigation-h"]}`;
     
 const AuthPageComponent = () => {
+  const navigate = useNavigate();
+  
+  useEffect(()=>{
+    if(checkIsAuth()){
+       navigate("/profile");
+  }
+  },[]);
+
   return (
     <div
       className="row d-flex align-items-center "

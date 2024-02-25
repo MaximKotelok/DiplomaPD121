@@ -2,12 +2,21 @@ import React from "react";
 import styles from "./Menu.module.css";
 import shpruc from "../../../../../../assets/images/shpruc.svg";
 import { NavLink } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import { removeToken } from "../../../../../../utils/Login";
 var active = ({ isActive }) =>
   isActive
     ? ` d-flex align-items-center ${styles["my-list-group-item"]} ${styles["my-list-group-item-active"]} ${styles["link-text-active"]}`
     : ` d-flex align-items-center ${styles["my-list-group-item"]}`;
 
 const MenuComponent = () => {
+
+  const navigate = useNavigate();
+  function OnExit(){  
+    removeToken();
+    navigate("/auth");  
+  }
+
   return (
     <ul className={styles["menu-list"]}>
       <li>
@@ -36,7 +45,7 @@ const MenuComponent = () => {
         </NavLink>
       </li>
       <li className={styles["my-list-group-item"]}>
-        <div className="d-flex align-items-center">
+        <div className="d-flex align-items-center" role="button" onClick={OnExit}>
           <img className={styles["category-icon"]} src={shpruc} />
           <a className={`label ${styles["link-text"]} `}> Вихід </a>
         </div>
