@@ -28,6 +28,8 @@ import MyPharmacies from "./components/User/Pages/Profile/Components/MyPharmacie
 import MineBookeds from "./components/User/Pages/Profile/Components/MineBookedsComponent/MineBookedsComponent";
 import SelectedProducts from "./components/User/Pages/Profile/Components/SelectedProductsComponent/SelectedProducts";
 import WathcList from "./components/User/Pages/Profile/Components/WathcListComponent/WathcList";
+import UpsertBrandComponent from "./components/Admin/Brand/AddBrandComponents/UpsertBrandComponent/UpsertBrandComponent";
+import UpsertPharmaCompanyComponent from "./components/Admin/PharmaCompany/AddPharmaCompanyComponents/UpsertPharmaCompanyComponent/UpsertPharmaCompanyComponent";
 
 // export default class App extends Component {
 // static displayName = App.name;
@@ -67,6 +69,10 @@ export default class App extends Component {
             <Route path="admin" element={<LayoutAdmin />}>
               <Route path="" element={<Home />} />
               <Route path="zayavka" element={<TableComponent />} />
+              <Route path="addBrand" element={<UpsertBrandComponent />} />
+              <Route path="updateBrand/:brandId" element={<UpsertBrandComponent />} />
+              <Route path="addPharmaCompany" element={<UpsertBrandComponent />} />
+              <Route path="updatePharmaCompany/:companyId" element={<UpsertPharmaCompanyComponent />} />              
             </Route>
           </Routes>
         </LayoutProvider>
