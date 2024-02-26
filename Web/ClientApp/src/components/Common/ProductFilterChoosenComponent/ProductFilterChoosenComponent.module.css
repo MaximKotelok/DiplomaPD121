@@ -1,0 +1,20 @@
+.capsule{
+    background: #FF9500;
+    border-radius: 50px;
+    gap: 8px;
+    font-family: var(--standart-font);
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 20px;
+    color: white;
+    padding: 5px 9px;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    margin-right: 4px;
+    margin-top: 4px;
+}
+
+.capsule .cross-icon{
+    cursor: pointer;
+}
