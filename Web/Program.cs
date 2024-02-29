@@ -26,6 +26,7 @@ using Services.PermissionTypeService;
 using Services.PharmacyCompanyService;
 using Services.PharmacyService;
 using Services.ProductConfirmService;
+using Services.ProductPriceHistoryService;
 using Services.ProductStatusService;
 using Services.PropertyService;
 using Services.ReservationService;
@@ -163,6 +164,7 @@ builder.Services.AddScoped<IReservationStatusService, ReservationStatusService>(
 builder.Services.AddScoped<IMedicineService, MedicineService>();
 builder.Services.AddScoped<IEmailSenderService, EmailSenderService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
+builder.Services.AddScoped<IProductPriceHistoryService, ProductPriceHistoryService>();
 
 builder.Services.AddSendGrid(options =>
 {

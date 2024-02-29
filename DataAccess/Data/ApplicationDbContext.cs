@@ -41,7 +41,8 @@ namespace DataAccess.Data
         public DbSet<ReservationStatus>? ReservationStatuses { get; set; }
         public DbSet<ProductStatus>? ProductStatuses { get; set; }
         public DbSet<PermissionType>? PermissionTypes { get; set; }
-		
+        public DbSet<ProductPriceHistory>? ProductPriceHistories { get; set; }
+		public DbSet<HistoryDate>? HistoryDates { get; set; }
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);			

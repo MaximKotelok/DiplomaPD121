@@ -46,6 +46,7 @@ namespace Domain.Models
 		public ICollection<ConcreteProduct>? ConcreteProducts { get; set; }
 		[JsonIgnore]
 		public ICollection<User>? FavUsers { get; set; }
-
-	}
+        [JsonIgnore]
+        public ICollection<ProductPriceHistory>? PriceHistory { get; set; }
+    }
 }
