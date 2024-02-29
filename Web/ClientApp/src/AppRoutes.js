@@ -1,3 +1,4 @@
+/* eslint-disable no-sparse-arrays */
 import { Home } from "./components/User/Pages/Home/Home";
 import { Details } from "./components/User/Pages/Details/Details";
 import { Map } from "./components/User/Pages/Map/Map";
@@ -18,6 +19,8 @@ import { Category } from "./components/User/Pages/Category/Category";
 import TableComponent from "./components/Admin/Admin/ZayavkaComponents/TableComponent/TableComponent";
 import Cart from "./components/User/Pages/Cart/Cart";
 import { Reservation } from "./components/User/Pages/Reservation/Reservation";
+import Profile from "./components/User/Pages/Profile/Profile";
+import UpsertPharmaCompanyComponent from "./components/Admin/PharmaCompany/AddPharmaCompanyComponents/UpsertPharmaCompanyComponent/UpsertPharmaCompanyComponent";
 const AppRoutes = [
   {
     index: true,
@@ -32,14 +35,12 @@ const AppRoutes = [
   },
 
   //// Profile
-//   {
-//     path: "/зrofile",
-//     element: <Profile/>,
-//     Layout: Layout,
-//   },
+  //   {
+  //     path: "/зrofile",
+  //     element: <Profile/>,
+  //     Layout: Layout,
+  //   },
 
-  
- 
   {
     path: "/map/:id?",
     element: <Map />,
@@ -52,11 +53,17 @@ const AppRoutes = [
   },
   {
     //Поки що так потім пораджусь з вами але думаю це норм як я зробив
-
     path: "/auth",
     element: <AuthPageComponent />,
     Layout: Layout,
   },
+
+  {
+    path: "/profile",
+    element: <Profile />,
+    Layout: Layout,
+  },
+
   // {
   //     path: '/register',
   //     element: <RegistrationForm />,
@@ -115,6 +122,16 @@ const AppRoutes = [
     {
         path: '/UpdateBrand/:brandId',
         element: <UpsertBrandComponent />,
+        Layout: LayoutAdmin
+    },
+    {
+        path: '/AddPharmaCompany',
+        element: <UpsertPharmaCompanyComponent />,
+        Layout: LayoutAdmin
+    },
+    {
+        path: '/UpdatePharmaCompany/:companyId',
+        element: <UpsertPharmaCompanyComponent />,
         Layout: LayoutAdmin
     },
   {

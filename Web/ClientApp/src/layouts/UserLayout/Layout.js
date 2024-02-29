@@ -9,7 +9,7 @@ import LayoutAdmin from "../AdminLayout/LayoutAdmin";
 import { Element } from "react-scroll";
 import { LayoutProviderValues } from "../../utils/Constants";
 import { ToastContainer } from "react-toastify";
-
+import { Outlet } from "react-router-dom";
 export class Layout extends Component {
   static displayName = Layout.name;
   static contextType = LayoutContext;
@@ -18,13 +18,17 @@ export class Layout extends Component {
     return (
       <div
         className={
-          this.context.stateComponentMounted === LayoutProviderValues.MAP ? "map-container" : ""
+          this.context.stateComponentMounted === LayoutProviderValues.MAP
+            ? "map-container"
+            : ""
         }
       >
         <NavMenu />
-        <Container tag="main">{this.props.children}</Container>
-       <FooterComponent />
-       <ToastContainer position="bottom-right" autoClose={3000} />
+            <Container tag="main">
+                <Outlet />
+            </Container>
+            <ToastContainer position="bottom-right" autoClose={3000} />
+       <FooterComponent />      
       </div>
     );
   }

@@ -1884,6 +1884,9 @@ namespace DataAccess.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PharmaCompanyId")
+                        .HasColumnType("int");
+
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
@@ -1909,6 +1912,8 @@ namespace DataAccess.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("PharmaCompanyId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -2415,6 +2420,15 @@ namespace DataAccess.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("SimilarProductGroup");
+                });
+
+            modelBuilder.Entity("Domain.Models.User", b =>
+                {
+                    b.HasOne("Domain.Models.PharmaCompany", "PharmaCompany")
+                        .WithMany()
+                        .HasForeignKey("PharmaCompanyId");
+
+                    b.Navigation("PharmaCompany");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

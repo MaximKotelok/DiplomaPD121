@@ -30,6 +30,10 @@ export const UpsertBrand = "Brand/UpsertBrand";
 //Country
 export const GetAllCountries = "Country/GetAllCountries";
 
+//Company
+export const GetAllPharmaCompanies = "PharmaCompany/GetAllPharmaCompanies";
+export const GetPharmaCompanyById = "PharmaCompany/GetPharmaCompanyById";
+export const UpsertPharmaCompany = "PharmaCompany/UpsertPharmaCompany";
 
 
 export const ClassHeader = {

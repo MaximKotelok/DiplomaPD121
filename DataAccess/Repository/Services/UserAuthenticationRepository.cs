@@ -37,9 +37,12 @@ namespace Repository.Repository.Services
         {
             var user = _mapper.Map<User>(userRegistration);
 
+            if (userRegistration.Roles == null)
+                userRegistration.Roles = new List<string> { SD.Role_Customer };
 
             var result = await _userManager.CreateAsync(user, userRegistration.Password);
-            await _userManager.AddToRolesAsync(user, new List<string> { SD.Role_Customer });
+            await _userManager.AddToRolesAsync(user, userRegistration.Roles);
+
             return result;
         }
 

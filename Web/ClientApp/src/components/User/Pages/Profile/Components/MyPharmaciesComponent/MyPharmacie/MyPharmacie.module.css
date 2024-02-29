@@ -1,0 +1,23 @@
+
+.perent-card-pharmacie{
+    border: 1px solid rgba(229, 229, 234, 1);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.text-p-card{
+    font-family: var(--standart-font);
+font-size: 12px;
+font-weight: 500;
+line-height: 15px;
+color: rgba(13, 30, 49, 1);
+}
+
+
+.text-h6-bottom{
+    font-family: var(--standart-font);
+font-size: 14px;
+font-weight: 700;
+line-height: 15px;
+color: rgba(13, 30, 49, 1);
+}

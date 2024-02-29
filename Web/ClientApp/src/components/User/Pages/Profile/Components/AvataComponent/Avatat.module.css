@@ -1,0 +1,16 @@
+
+.circle-avatar{
+    width: 64px;
+height: 64px;
+border-radius: 100px;
+object-fit: cover; 
+
+}
+.name-user{
+    color: rgba(13, 30, 49, 1);
+    font-family: var(--standart-font);
+font-size: 16px;
+font-weight: 700;
+line-height: 20px;
+
+}

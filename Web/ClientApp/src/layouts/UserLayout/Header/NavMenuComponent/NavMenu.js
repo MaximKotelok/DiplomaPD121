@@ -18,6 +18,8 @@ import CartIcon from "../../../../assets/images/header-icons/cart-icon.svg";
 import ProfileIcon from "../../../../assets/images/header-icons/profile.svg";
 import { ReactComponent as Logo } from "../../../../assets/images/LogoCapsula.svg";
 import SearchElement from "../../../../components/Common/SearchComponent/SearchComponent";
+import DropDown from "../DropDownComponent/DropDown";
+import { checkIsAuth } from "../../../../services/user";
 
 //import CatalogIcon from './catalog_icon_215654.svg';
 export class NavMenu extends Component {
@@ -55,7 +57,9 @@ export class NavMenu extends Component {
             </NavbarBrand>
 
             <NavLink className="catalogue" tag={Link} to="/">
-              <IconButton iconPath={CatalogIcon} text="Каталог" />
+              {/* <IconButton iconPath={CatalogIcon} text="Каталог" /> */}
+              <DropDown iconPath={CatalogIcon} />
+
             </NavLink>
             <NavLink className="services" tag={Link} to="/counter">
               <IconButton iconPath={ServiceIcon} text="Сервіси" />
@@ -77,7 +81,7 @@ export class NavMenu extends Component {
 
 
 
-            <NavLink tag={Link} className="profile" to="/auth">
+            <NavLink tag={Link} className="profile" to={checkIsAuth()?"/profile":"/auth"}>
               <IconButton iconPath={ProfileIcon} />
             </NavLink>
 
