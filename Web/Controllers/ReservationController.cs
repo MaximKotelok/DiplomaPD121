@@ -7,6 +7,7 @@ using Services.AttributeService;
 using Services.CityService;
 using Services.ConcreteProductService;
 using Services.MedicineService;
+using Services.PharmacyService;
 using Services.PropertyService;
 using Services.ReservationService;
 using Services.UserService;
@@ -21,12 +22,15 @@ namespace Web.Controllers
         private readonly IReservationService _reservationService;
         private readonly IReservationStatusService _reservationStatusService;
         private readonly IConcreteProductService _concreteProductService;
+        private readonly IPharmacyService _pharmacyService;
         private readonly IUserService _userService;
 
         public ReservationController(IReservationService reservationService, 
             IReservationStatusService reservationStatusService, IUserService userService,
-			IConcreteProductService concreteProductService)
+			IConcreteProductService concreteProductService,
+			IPharmacyService pharmacyService)
         {
+			_pharmacyService = pharmacyService;
             _reservationService = reservationService;
             _userService = userService;
             _reservationStatusService = reservationStatusService;
@@ -35,18 +39,35 @@ namespace Web.Controllers
 
         [HttpPost("LoggedReserve")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> LoggedReserve([FromBody] ReservationPostViewModel model)
+        public async Task<IActionResult> LoggedReserve(ReservationPostViewModel model)
         {
             User user = await _userService.GetUserByName(User.Identity.Name);
 
-            Reservation reservation = new Reservation
+            var products = model
+                .ConcreteProducts!
+                .Select(a => 
+                new ReservationItem 
+                { 
+                    ConcreteProductID = a.ConcreteProductId.Value, 
+                    ConcreteProduct = _concreteProductService.GetConcreteProduct(b => b.Id == a.ConcreteProductId),
+                    Quantity=a.Quantity.Value                    
+                })
+                .ToList();
+            int pharmacyID = products[0]!.ConcreteProduct.PharmacyID!.Value;
+
+			if (!products.All(a=>a.ConcreteProduct.PharmacyID == pharmacyID)){
+                return BadRequest("All products must be in one same pharmacy");
+            }
+
+
+			Reservation reservation = new Reservation
             {
+                PharmacyID = pharmacyID,
                 Email = user.Email,
                 Phone = user.PhoneNumber,
                 User = user,
-                ConcreteProducts = model
-                .ConcreteProducts.Select(a => _concreteProductService.GetConcreteProduct(b=>b.Id==a))
-                .ToList(),
+                ReservationItems = products,
+                ReservedTime =DateTime.Now,
 				StatusID = _reservationStatusService.GetAllReservationStatuses(a => a.Status == SD.ReservationStatusWaiting).FirstOrDefault().Id
 			};
 
@@ -55,24 +76,59 @@ namespace Web.Controllers
         }
 
         [HttpPost("Reserve")]
-        public IActionResult Reserve(ReservationPostViewModel data)
+        public IActionResult Reserve(ReservationPostViewModel model)
         {
+
+			var products = model
+				.ConcreteProducts!
+				.Select(a =>
+				new ReservationItem
+				{
+					ConcreteProductID = a.ConcreteProductId.Value,
+					ConcreteProduct = _concreteProductService.GetConcreteProduct(b => b.Id == a.ConcreteProductId),
+					Quantity = a.Quantity.Value
+				})
+				.ToList();
+			int pharmacyID = products[0]!.ConcreteProduct.PharmacyID!.Value;
+
+			if (!products.All(a => a.ConcreteProduct.PharmacyID == pharmacyID))
+			{
+                return BadRequest("All products must be in one same pharmacy");
+
+			}
+
+
 			Reservation reservation = new Reservation
 			{
-				Email = data.Email,
-				Phone = data.Phone,
-				ConcreteProducts = data
-				.ConcreteProducts.Select(a => _concreteProductService.GetConcreteProduct(b => b.Id == a))
-				.ToList(),
-                StatusID = _reservationStatusService.GetAllReservationStatuses(a=>a.Status==SD.ReservationStatusWaiting).FirstOrDefault().Id
-
-
+				PharmacyID = pharmacyID,			
+				Email = model.Email,
+				Phone = model.Phone,
+				ReservationItems = products,
+				ReservedTime = DateTime.Now,
+				StatusID = _reservationStatusService.GetAllReservationStatuses(a=>a.Status==SD.ReservationStatusWaiting).FirstOrDefault().Id
 			};
 			_reservationService.InsertReservation(reservation);
             return Ok();
         }
 
-        [HttpPost("Cancel")]
+        [HttpGet("GetReservations")]
+		[Authorize(AuthenticationSchemes = "Bearer")]
+		public async Task<IActionResult> GetReservations()
+        {
+			User user = await _userService.GetUserByName(User.Identity.Name);
+			var reservations = _reservationService.GetAllReservations(a => a.UserID == user.Id, "ReservationItems,ReservationItems.ConcreteProduct,Status,Pharmacy,Pharmacy.PharmaCompany");
+            var data = reservations.Select(reservation =>
+            {
+                var total = reservation.ReservationItems.Sum(a => a.ConcreteProduct.Price * a.Quantity);
+                var pharmacy = reservation.Pharmacy;
+                return new { Id = reservation.Id,Name=reservation.Pharmacy.PharmaCompany.Title, ReservedTime = reservation.ReservedTime.ToString("dd.MM.yyyy в HH:mm"), Pharmacy = pharmacy, Total = total, Status = reservation.Status };
+            });
+
+            return Ok(data);
+
+		}
+
+		[HttpPost("Cancel")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public IActionResult Сancel(int id)
         {

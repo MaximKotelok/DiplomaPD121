@@ -4,7 +4,8 @@ import { getFromServer, postToServer } from "../utils/Queries";
 export async function getFavs(){
     let res = await getFromServer("User/getFavoriteProducts");
     if(res.status === "Error"){
-        removeToken();    
+        removeToken(); 
+        console.log("Error on getFavs")   
     }
     return res.data;
 }

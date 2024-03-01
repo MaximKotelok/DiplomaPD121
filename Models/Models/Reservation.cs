@@ -11,7 +11,7 @@ namespace Domain.Models
 {
 	public class Reservation:BaseEntity
 	{
-		public ICollection<ConcreteProduct>? ConcreteProducts { get; set; }
+		public ICollection<ReservationItem>? ReservationItems { get; set; }
 		public DateTime ToGetReservationTime { get; set; }
 		public DateTime ReservedTime { get; set; }
 		
@@ -24,6 +24,9 @@ namespace Domain.Models
 		[ForeignKey(nameof(UserID))]
 		public User? User { get; set; }
 		public int StatusID { get; set; }
+		public int PharmacyID { get; set; }
+		[ForeignKey(nameof(PharmacyID))]
+		public Pharmacy? Pharmacy { get; set; }
 		[ForeignKey(nameof(StatusID))]
 		public ReservationStatus? Status { get; set; }
 	}

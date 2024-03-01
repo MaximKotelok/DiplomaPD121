@@ -1,12 +1,23 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 // import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import "./DropDown.css";
 import MenuComponentModal from "./MenuComponent/MenuComponentModal";
 import Content from "./ContentComponent/Content";
+import { getFirstNItemMainCategories } from "../../../../services/category";
 function DropDown({ iconPath }) {
   const [show, setShow] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState(null);
+  const [categories, setCategories] = useState([]);
+  
+
+  useEffect(()=>{
+    initCategories();
+  },[]);
+
+  async function initCategories() {
+    setCategories((await getFirstNItemMainCategories(9)).data);
+  }
 
   const handleMenuSelect = (menuId) => {
     setSelectedMenu(menuId);
@@ -43,7 +54,7 @@ function DropDown({ iconPath }) {
               className="col-4 pe-5"
               style={{ borderRight: "2px solid rgba(0, 122, 255, 1)" }}
             >
-              <MenuComponentModal onSelect={handleMenuSelect} />
+              <MenuComponentModal categories={categories} onSelect={handleMenuSelect} />
             </div>
             <div className="col-8 ps-5 pe-5">
               <Content selectedMenu={selectedMenu} />

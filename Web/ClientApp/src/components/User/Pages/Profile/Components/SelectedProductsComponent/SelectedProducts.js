@@ -1,12 +1,30 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import styles from "./SelectedProducts.module.css";
 import FilterData from "./FilterDataComponent/FilterData";
 import Filter from "./FilterComponent/Filter";
 import MiniProductCardComponent from "../../../../../Common/MiniProductCardComponent/MiniProductCardComponent";
 import AccordionComponent from "../../../../../Common/AccordionQuestionComponent/accordionComponent";
 import srcImg from "../../../../../../assets/images/authPage.png";
+import { initFavs } from "../../../../../../utils/Functions";
+import { getFavs } from "../../../../../../services/favProducts";
+import { getProductsFromIdsArray } from "../../../../../../services/product";
+import { Success } from "../../../../../../utils/Constants";
 
 const SelectedProducts = () => {
+  const [favs, setFavs] = useState([]);
+
+  useEffect(() => {
+    init();
+
+  }, [])
+
+  async function init() {
+    let favs = await getFavs();
+    let res = await getProductsFromIdsArray(favs);
+    setFavs(res);
+  }
+
+
   return (
     <div>
       <h5
@@ -34,37 +52,44 @@ const SelectedProducts = () => {
       </div> */}
 
       <div>
-        {/* Якщо історія не пуста  */}
-        {/* Макс тут доробиш ті карточки */}
+        {favs.length > 0 ?
+          favs.map(a => (
+            <MiniProductCardComponent
+              key={a.id}
+              id={a.id}
+              title={a.title}
+              description={a.shortDescription}
+              minPrice={a.minPrice}
+              countOfPharmacies={a.count}
+              manufacturer={a.manufacturer}
+              imageUrl={a.pathToPhoto}
+              isFavorite={()=>true}
+              onChangeFavorite={()=>{setFavs(favs.filter(b=>b.id!==a.id))}}
+            />
 
-        {/* <MiniProductCardComponent
-          key="1"
-          id="1"
-          isFavorit="1"
-          title="1"
-          description="1"
-          minPrice="1"
-          countOfPharmacies="1"
-          manufacturer="1"
-          imageUrl="1"
-        /> */}
+          ))
 
-        {/* Якщо історія пуста */}
-        <AccordionComponent
-          id="1"
-          header="Як додавати товари в обране?"
-          title="Натисніть сердечко на картці товару."
-        />
-        <AccordionComponent
-          id="2"
-          header="Навіщо додавати товари в обране?"
-          title="..."
-        />
-        <img
-          className="mt-3"
-          src={srcImg}
-          style={{ width: "100%", height: "auto" }}
-        />
+          :
+
+          <div>
+
+            <AccordionComponent
+              id="1"
+              header="Як додавати товари в обране?"
+              title="Натисніть сердечко на картці товару."
+            />
+            <AccordionComponent
+              id="2"
+              header="Навіщо додавати товари в обране?"
+              title="..."
+            />
+            <img
+              className="mt-3"
+              src={srcImg}
+              style={{ width: "100%", height: "auto" }}
+            />
+          </div>
+        }
       </div>
     </div>
   );

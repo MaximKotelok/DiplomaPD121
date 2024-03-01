@@ -5,7 +5,9 @@ import "./CustomList.css"; // Файл для власних стилів
 import placeholder from "../../../../../../assets/images/placeholder.png";
 // import placeholder from "../../../assets/images/placeholder.png";
 import { ApiPath } from "../../../../../../utils/Constants";
-
+import {  
+  Link,
+} from 'react-router-dom';
 const CustomList = ({ data }) => {
   return (
     <ul className="category-list">
@@ -13,6 +15,8 @@ const CustomList = ({ data }) => {
         ? data.map((a) => {
             return (
               <li key={a.id} className="my-list-group-item">
+                <Link to={`category/${a.id}`}>
+                
                 <div className="d-flex align-items-center">
                   <img
                     className="category-icon"
@@ -24,12 +28,13 @@ const CustomList = ({ data }) => {
                   />
                   <span className="label">{a.title}</span>
                 </div>
+                </Link>
               </li>
             );
           })
         : new Array(9).fill(null).map((_, index) => {
             return;
-            <li key={index} className="my-list-group-item">
+             <li key={index} className="my-list-group-item">
               <div className="d-flex align-items-center">
                 <img
                   className="category-icon"

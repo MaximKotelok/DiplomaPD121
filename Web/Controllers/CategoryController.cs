@@ -83,6 +83,18 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
+		[HttpGet("GetByIdForMenu")]
+		public IActionResult GetByIdForMenu(int? id)
+		{
+			var result = _service.GetCategory(x => x.Id == id, "SubCategories,SubCategories.SubCategories");
+
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+
 
 		[HttpGet("GetWithProducts")]
 		public IActionResult GetWithProducts(int? id, int from, int to, int count)

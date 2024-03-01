@@ -10,6 +10,10 @@ export async function GetCategoryById(id) {
     return await getFromServer("Category/GetById", {id:id})
 } 
 
+export async function GetByIdForMenu(id) {
+    return await getFromServer("Category/GetByIdForMenu", {id:id})
+} 
+
 export async function GetProductsFromCategory(id, count) {
     let data = await getFromServer("Category/GetProductsFromCategory", {id: id, count: count});    
     

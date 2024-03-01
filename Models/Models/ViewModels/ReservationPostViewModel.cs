@@ -9,7 +9,7 @@ namespace Domain.Models.ViewModels
 {
 	public class ReservationPostViewModel
 	{		
-		public IEnumerable<int>? ConcreteProducts { get; set; }	
+		public IEnumerable<ReservationItemViewModel>? ConcreteProducts { get; set; }	
 		public string? Phone { get; set; }
 		public string? Email { get; set; }
 

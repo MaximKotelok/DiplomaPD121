@@ -4,6 +4,7 @@ using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240301045522_addOpenAndCloseTimeToPharmacy")]
+    partial class addOpenAndCloseTimeToPharmacy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,21 @@ namespace DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("ConcreteProductReservation", b =>
+                {
+                    b.Property<int>("ConcreteProductsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReservationsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ConcreteProductsId", "ReservationsId");
+
+                    b.HasIndex("ReservationsId");
+
+                    b.ToTable("ConcreteProductReservation");
+                });
 
             modelBuilder.Entity("Domain.Models.ActiveSubstance", b =>
                 {
@@ -1652,32 +1670,6 @@ namespace DataAccess.Migrations
                     b.ToTable("Reservations");
                 });
 
-            modelBuilder.Entity("Domain.Models.ReservationItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ConcreteProductID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ReservationID")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ConcreteProductID");
-
-                    b.HasIndex("ReservationID");
-
-                    b.ToTable("ReservationItems");
-                });
-
             modelBuilder.Entity("Domain.Models.ReservationStatus", b =>
                 {
                     b.Property<int>("Id")
@@ -2176,6 +2168,21 @@ namespace DataAccess.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ConcreteProductReservation", b =>
+                {
+                    b.HasOne("Domain.Models.ConcreteProduct", null)
+                        .WithMany()
+                        .HasForeignKey("ConcreteProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Reservation", null)
+                        .WithMany()
+                        .HasForeignKey("ReservationsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Domain.Models.Brand", b =>
                 {
                     b.HasOne("Domain.Models.Country", "CountryBrand")
@@ -2365,25 +2372,6 @@ namespace DataAccess.Migrations
                     b.Navigation("Status");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Models.ReservationItem", b =>
-                {
-                    b.HasOne("Domain.Models.ConcreteProduct", "ConcreteProduct")
-                        .WithMany()
-                        .HasForeignKey("ConcreteProductID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Models.Reservation", "Reservation")
-                        .WithMany("ReservationItems")
-                        .HasForeignKey("ReservationID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ConcreteProduct");
-
-                    b.Navigation("Reservation");
                 });
 
             modelBuilder.Entity("Domain.Models.SimilarProductItem", b =>
@@ -2590,11 +2578,6 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.Models.ProductConfirm", b =>
                 {
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Domain.Models.Reservation", b =>
-                {
-                    b.Navigation("ReservationItems");
                 });
 
             modelBuilder.Entity("Domain.Models.SimilarProductGroup", b =>

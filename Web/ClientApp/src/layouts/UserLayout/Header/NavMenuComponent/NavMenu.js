@@ -56,7 +56,7 @@ export class NavMenu extends Component {
               <Logo height={40} fill="black" className="logo-pharma" />
             </NavbarBrand>
 
-            <NavLink className="catalogue" tag={Link} to="/">
+            <NavLink className="catalogue" tag={Link}>
               {/* <IconButton iconPath={CatalogIcon} text="Каталог" /> */}
               <DropDown iconPath={CatalogIcon} />
 

@@ -79,13 +79,13 @@ export const Reservation = () => {
     if(isAuth){
       postLoggedReserve(
         
-          productFormData.items.map(a=>{return a.id}),cart[index].id
-        
+        productFormData.items.map(a=>{return {concreteProductId: a.id, quantity: a.quantity}}),
+        cart[index].id
       );
     }else{
       if(userFormData.phone && userFormData.email){
         postReservation(     
-            productFormData.items.map(a=>{return a.id}),
+            productFormData.items.map(a=>{return {concreteProductId: a.id, quantity: a.quantity}}),
           userFormData.phone, 
           userFormData.email, 
           cart[index].id

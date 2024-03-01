@@ -30,6 +30,7 @@ namespace DataAccess.Data
         public DbSet<ProductAttributeGroup>? ProductAttributeGroups { get; set; }
         public DbSet<ProductExistAttribute>? ProductExistAttributes { get; set; }
         public DbSet<ProductConfirm>? ProductConfirms { get; set; }
+        public DbSet<ReservationItem>? ReservationItems { get; set; }
         public DbSet<ProductProperty>? Properties { get; set; }
         public DbSet<SimilarProductGroup>? SimilarProductGroups { get; set; }
         public DbSet<SimilarProductItem>? SimilarProductItems { get; set; }
@@ -90,7 +91,6 @@ namespace DataAccess.Data
             
 			modelBuilder.Entity<User>().Navigation(e => e.FavProducts).AutoInclude();
 
-			modelBuilder.Entity<Reservation>().HasMany(a=>a.ConcreteProducts).WithMany(a=>a.Reservations);
 		}
     }
 }

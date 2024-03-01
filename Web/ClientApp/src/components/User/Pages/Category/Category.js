@@ -15,8 +15,7 @@ export const Category = () => {
   const {id} = useParams();
   useEffect(()=>{
     init();
-  },[])
-
+  },[id])
   async function init(){
     setType((await IsCategoryHasProducts(id)).data?"products":"subcategories");
   }

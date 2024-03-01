@@ -15,7 +15,8 @@ const MiniProductCardComponent =
         title = "...",
         description = "...",
         minPrice = 0.0,
-        isFavorite
+        isFavorite,
+        onChangeFavorite
     }) => {
         const [isFavoriteState, setIsFavoriteState] = useState(false);
         useEffect(()=>{
@@ -32,13 +33,17 @@ const MiniProductCardComponent =
             return "";
         }
 
-
+        function changeFavoriteState(state){
+            setIsFavoriteState(state)
+            if(onChangeFavorite)
+                onChangeFavorite();
+        }
             
 
         return (
             <div className="m-1 product-card">
                 <div className='position-relative'>
-                    <FavoriteButton id={id} isFavorite={isFavoriteState} setIsFavorite={setIsFavoriteState}></FavoriteButton>
+                    <FavoriteButton id={id} isFavorite={isFavoriteState} setIsFavorite={changeFavoriteState}></FavoriteButton>
                     <Link to={`/product-details/${id}`} className='text-decoration-none'>
                         <CustomImgComponent 
                         src={`${ApiPath}${imageUrl}`} 
