@@ -211,10 +211,10 @@ namespace Web.Controllers
 		{
             try
             {
-                var reservations = _reservationService.GetAllReservations();
+                var reservations = _reservationService.GetAllReservations(includeProperties: "ReservationItems,ReservationItems.ConcreteProduct");
 
                 var popularProducts = reservations
-					.SelectMany(a=>a.ConcreteProducts)
+					.SelectMany(a=>a.ReservationItems.Select(a=>a.ConcreteProduct))
                     .GroupBy(r => r.ProductID)
                     .Select(g => new
                     {

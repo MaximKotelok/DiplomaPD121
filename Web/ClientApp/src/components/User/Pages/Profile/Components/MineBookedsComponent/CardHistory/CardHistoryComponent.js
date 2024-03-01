@@ -8,7 +8,8 @@ const CardHistory = ({
   name = "Аптека зі",
   number = "32421421",
   price = "232",
-  data = "23.12.2022 в 00:21",
+  date = "23.12.2022 в 00:21",
+  address
 }) => {
   return (
     <div className={`row ${styles["peren-card-history"]} mb-3 `}>
@@ -27,7 +28,7 @@ const CardHistory = ({
           </span>
         </p>
 
-        <p className={`${styles["text-adress"]}`}>вул. Любінська 104, Львів</p>
+        <p className={`${styles["text-adress"]}`}>{address}</p>
       </div>
 
       <div
@@ -44,7 +45,7 @@ const CardHistory = ({
         <p className={`${styles["text-Number"]} mb-1`}>
           {price} <span>грн</span>
         </p>
-        <p className={`${styles["text-data"]}`}>{data}</p>
+        <p className={`${styles["text-data"]}`}>{date}</p>
       </div>
     </div>
   );

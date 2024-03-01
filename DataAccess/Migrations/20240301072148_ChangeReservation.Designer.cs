@@ -4,6 +4,7 @@ using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240301072148_ChangeReservation")]
+    partial class ChangeReservation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -492,22 +495,6 @@ namespace DataAccess.Migrations
                             Id = 3,
                             Name = "USA"
                         });
-                });
-
-            modelBuilder.Entity("Domain.Models.HistoryDate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("HistoryDates");
                 });
 
             modelBuilder.Entity("Domain.Models.Manufacturer", b =>
@@ -1434,32 +1421,6 @@ namespace DataAccess.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Domain.Models.ProductPriceHistory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("HistoryDateId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HistoryDateId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductPriceHistory");
-                });
-
             modelBuilder.Entity("Domain.Models.ProductProperty", b =>
                 {
                     b.Property<int>("ProductID")
@@ -2365,25 +2326,6 @@ namespace DataAccess.Migrations
                     b.Navigation("AttributeGroup");
                 });
 
-            modelBuilder.Entity("Domain.Models.ProductPriceHistory", b =>
-                {
-                    b.HasOne("Domain.Models.HistoryDate", "HistoryDate")
-                        .WithMany("PriceHistory")
-                        .HasForeignKey("HistoryDateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Models.Product", "Product")
-                        .WithMany("PriceHistory")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("HistoryDate");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("Domain.Models.ProductProperty", b =>
                 {
                     b.HasOne("Domain.Models.ProductAttribute", "Attribute")
@@ -2627,11 +2569,6 @@ namespace DataAccess.Migrations
                     b.Navigation("SubCategories");
                 });
 
-            modelBuilder.Entity("Domain.Models.HistoryDate", b =>
-                {
-                    b.Navigation("PriceHistory");
-                });
-
             modelBuilder.Entity("Domain.Models.Pharmacy", b =>
                 {
                     b.Navigation("ConcreteProducts");
@@ -2640,8 +2577,6 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.Models.Product", b =>
                 {
                     b.Navigation("ConcreteProducts");
-
-                    b.Navigation("PriceHistory");
 
                     b.Navigation("Properties");
 

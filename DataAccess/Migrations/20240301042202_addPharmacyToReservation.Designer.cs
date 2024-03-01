@@ -4,6 +4,7 @@ using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240301042202_addPharmacyToReservation")]
+    partial class addPharmacyToReservation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,21 @@ namespace DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("ConcreteProductReservation", b =>
+                {
+                    b.Property<int>("ConcreteProductsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReservationsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ConcreteProductsId", "ReservationsId");
+
+                    b.HasIndex("ReservationsId");
+
+                    b.ToTable("ConcreteProductReservation");
+                });
 
             modelBuilder.Entity("Domain.Models.ActiveSubstance", b =>
                 {
@@ -494,22 +512,6 @@ namespace DataAccess.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Domain.Models.HistoryDate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("HistoryDates");
-                });
-
             modelBuilder.Entity("Domain.Models.Manufacturer", b =>
                 {
                     b.Property<int>("Id")
@@ -653,19 +655,11 @@ namespace DataAccess.Migrations
                     b.Property<int>("CityID")
                         .HasColumnType("int");
 
-                    b.Property<string>("CloseTime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Latitude")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Longitude")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OpenTime")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -693,10 +687,8 @@ namespace DataAccess.Migrations
                             Id = 1,
                             Address = "Temp Address",
                             CityID = 1,
-                            CloseTime = "20:00",
                             Latitude = "49.842957",
                             Longitude = "24.031511",
-                            OpenTime = "10:00",
                             PharmaCompanyID = 1
                         },
                         new
@@ -704,10 +696,8 @@ namespace DataAccess.Migrations
                             Id = 2,
                             Address = "Temp Address2",
                             CityID = 1,
-                            CloseTime = "21:00",
                             Latitude = "49.842757",
                             Longitude = "24.031211",
-                            OpenTime = "11:00",
                             PharmaCompanyID = 1
                         },
                         new
@@ -715,10 +705,8 @@ namespace DataAccess.Migrations
                             Id = 3,
                             Address = "Temp Address3",
                             CityID = 1,
-                            CloseTime = "23:59",
                             Latitude = "49.842157",
                             Longitude = "24.031611",
-                            OpenTime = "00:00",
                             PharmaCompanyID = 1
                         },
                         new
@@ -726,10 +714,8 @@ namespace DataAccess.Migrations
                             Id = 4,
                             Address = "Temp Address4",
                             CityID = 1,
-                            CloseTime = "18:00",
                             Latitude = "49.842557",
                             Longitude = "24.031411",
-                            OpenTime = "09:00",
                             PharmaCompanyID = 1
                         });
                 });
@@ -1434,32 +1420,6 @@ namespace DataAccess.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Domain.Models.ProductPriceHistory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("HistoryDateId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HistoryDateId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductPriceHistory");
-                });
-
             modelBuilder.Entity("Domain.Models.ProductProperty", b =>
                 {
                     b.Property<int>("ProductID")
@@ -1692,32 +1652,6 @@ namespace DataAccess.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("Reservations");
-                });
-
-            modelBuilder.Entity("Domain.Models.ReservationItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ConcreteProductID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ReservationID")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ConcreteProductID");
-
-                    b.HasIndex("ReservationID");
-
-                    b.ToTable("ReservationItems");
                 });
 
             modelBuilder.Entity("Domain.Models.ReservationStatus", b =>
@@ -2218,6 +2152,21 @@ namespace DataAccess.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ConcreteProductReservation", b =>
+                {
+                    b.HasOne("Domain.Models.ConcreteProduct", null)
+                        .WithMany()
+                        .HasForeignKey("ConcreteProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Reservation", null)
+                        .WithMany()
+                        .HasForeignKey("ReservationsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Domain.Models.Brand", b =>
                 {
                     b.HasOne("Domain.Models.Country", "CountryBrand")
@@ -2365,25 +2314,6 @@ namespace DataAccess.Migrations
                     b.Navigation("AttributeGroup");
                 });
 
-            modelBuilder.Entity("Domain.Models.ProductPriceHistory", b =>
-                {
-                    b.HasOne("Domain.Models.HistoryDate", "HistoryDate")
-                        .WithMany("PriceHistory")
-                        .HasForeignKey("HistoryDateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Models.Product", "Product")
-                        .WithMany("PriceHistory")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("HistoryDate");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("Domain.Models.ProductProperty", b =>
                 {
                     b.HasOne("Domain.Models.ProductAttribute", "Attribute")
@@ -2426,25 +2356,6 @@ namespace DataAccess.Migrations
                     b.Navigation("Status");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Models.ReservationItem", b =>
-                {
-                    b.HasOne("Domain.Models.ConcreteProduct", "ConcreteProduct")
-                        .WithMany()
-                        .HasForeignKey("ConcreteProductID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Models.Reservation", "Reservation")
-                        .WithMany("ReservationItems")
-                        .HasForeignKey("ReservationID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ConcreteProduct");
-
-                    b.Navigation("Reservation");
                 });
 
             modelBuilder.Entity("Domain.Models.SimilarProductItem", b =>
@@ -2627,11 +2538,6 @@ namespace DataAccess.Migrations
                     b.Navigation("SubCategories");
                 });
 
-            modelBuilder.Entity("Domain.Models.HistoryDate", b =>
-                {
-                    b.Navigation("PriceHistory");
-                });
-
             modelBuilder.Entity("Domain.Models.Pharmacy", b =>
                 {
                     b.Navigation("ConcreteProducts");
@@ -2640,8 +2546,6 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.Models.Product", b =>
                 {
                     b.Navigation("ConcreteProducts");
-
-                    b.Navigation("PriceHistory");
 
                     b.Navigation("Properties");
 
@@ -2658,11 +2562,6 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.Models.ProductConfirm", b =>
                 {
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Domain.Models.Reservation", b =>
-                {
-                    b.Navigation("ReservationItems");
                 });
 
             modelBuilder.Entity("Domain.Models.SimilarProductGroup", b =>

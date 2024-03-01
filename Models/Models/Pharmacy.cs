@@ -16,6 +16,12 @@ namespace Domain.Models
         public string? Address { get; set; }
 
 		[Required]
+		public string? OpenTime { get; set; }
+
+		[Required]
+		public string? CloseTime { get; set; }
+
+		[Required]
 		public string? Longitude { get; set; }
 
 		[Required]

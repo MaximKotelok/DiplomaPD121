@@ -1,0 +1,15 @@
+.head-category-text{
+    font-family: var(--standart-font);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;    
+    color: black;
+}
+
+.body-category-text{
+    font-family: var(--standart-font);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 18px;
+    color: black;
+}

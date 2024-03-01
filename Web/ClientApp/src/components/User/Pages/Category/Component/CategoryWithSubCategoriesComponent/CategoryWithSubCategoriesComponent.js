@@ -24,7 +24,7 @@ export const CategoryWithSubCategoriesComponent = () => {
   useEffect(() => {
     init();
     initFavs(setFavs);
-  }, []);
+  }, [id]);
 
   
 

@@ -1,9 +1,25 @@
-import React from "react";
+import React, {useState,useEffect} from "react";
 import AccordionComponent from "../../../../../Common/AccordionQuestionComponent/accordionComponent";
 import CardHistory from "./CardHistory/CardHistoryComponent";
 import srcImg from "../../../../../../assets/images/authPage.png";
+import { getReservations } from "../../../../../../services/reservation";
+import { Success } from "../../../../../../utils/Constants";
 
 const MineBookeds = () => {
+  const [reservs, setReservs] = useState([]);
+  
+  useEffect(()=>{
+    init(reservs);    
+  },[])
+  async function init(){    
+    let res = await getReservations();
+    if(res.status === Success){
+      setReservs(res.data);
+    }
+  }
+
+  console.log(reservs)
+
   return (
     <div>
       {/* Якщо масив пустий*/}
@@ -30,10 +46,9 @@ const MineBookeds = () => {
       <div className=" ">
         {/* Якщо історія не пуста  */}
 
-        <CardHistory />
-        <CardHistory />
-        <CardHistory />
-
+        {reservs.length > 0 && reservs.map(a=>(
+          <CardHistory name={a.name} number={a.id} price={a.total} address={a.pharmacy.address} date={a.reservedTime}/>
+        ))}
         {/* Якщо історія пуста */}
         {/*  <AccordionComponent
           id="1"

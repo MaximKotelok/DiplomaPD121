@@ -22,7 +22,7 @@ export const CategoryWithProductsComponent = () => {
   useEffect(() => {
     init();
     initFavs(setFavs);
-  }, []);
+  }, [id]);
 
 
 

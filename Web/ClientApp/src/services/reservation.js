@@ -22,3 +22,8 @@ export async function postReservation(concreteProducts, phone, email, pharmacyId
     }
     return false;
 } 
+
+export async function getReservations() {
+    return await getFromServer("Reservation/GetReservations");
+    
+} 
