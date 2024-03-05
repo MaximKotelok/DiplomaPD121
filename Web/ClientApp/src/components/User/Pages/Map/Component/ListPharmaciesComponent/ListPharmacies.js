@@ -4,6 +4,7 @@ import ListPharmaciesItemComponent from "../ListPharmaciesItemComponent/ListProd
 import styles from "./ListPharmacies.module.css"
 
 const ListPharmacies = (props) => {
+    console.log(props.townPharmacy)
     return (
         <div className="map-left p-3">
             <h1 className={`${styles["header-text"]}`}>Аптеки у місті {props.city}</h1>
@@ -22,8 +23,8 @@ const ListPharmacies = (props) => {
                     lat={pharmacy.latitude}
                     address={pharmacy.address}
                     title={pharmacy.pharmaCompany.title}
-                    timeOpen="8:00"
-                    timeClosed="20:00"
+                    timeOpen={pharmacy.openTime}
+                    timeClosed={pharmacy.closeTime}
                     isSelected={props.selectedPharmacy && props.selectedPharmacy.id === pharmacy.id}
                     />
 

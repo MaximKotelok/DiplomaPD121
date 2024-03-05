@@ -49,9 +49,9 @@ namespace Web.Controllers
 				IMedicineService medicineService,
 				IProductStatusService productStatusService,
 				IProductConfirmService productConfirmService,
-                IReservationService reservationService
-            )
-        {
+				IReservationService reservationService
+			)
+		{
 
 			this._productConfirmService = productConfirmService;
 			this._productService = productService;
@@ -160,6 +160,33 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
+		[HttpGet("GetTopOffers")]
+		public IActionResult GetTopOffers(int count)
+		{
+			var result = _productService
+				.GetAllProducts(includeProperties: "Manufacturer,ProductConfirm,ProductConfirm.ProductStatus,Category")
+				.Where(a => (a.ProductConfirm == null || a!.ProductConfirm!.ProductStatus!.Status!.Equals(SD.ProductStatusConfirmed)))
+				.GroupBy(a => a.Category.Title)
+				.TakeLast(3).Select(a => new
+				{
+					title = a.Key,
+					data = a
+				.Select(b => new HomeProductViewModel
+				{
+					Id = b.Id,
+					Manufacturer = b.Manufacturer!.Name,
+					Title = b.Title,
+					ShortDescription = b.ShortDescription,
+					PathToPhoto = b.PathToPhoto
+				}).Take(count)
+				});
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+
 		[HttpPost("GetAllProductsFromIdArray")]
 		public IActionResult GetAllProductsFromIdArray(IEnumerable<int> ids)
 		{
@@ -205,35 +232,35 @@ namespace Web.Controllers
 			}
 			return BadRequest("No records found");
 		}
-        
+
 		[HttpGet("GetPopularProduct/{count}")]
-        public IActionResult GetPopularProduct(int count = 5)
+		public IActionResult GetPopularProduct(int count = 5)
 		{
-            try
-            {
-                var reservations = _reservationService.GetAllReservations(includeProperties: "ReservationItems,ReservationItems.ConcreteProduct");
+			try
+			{
+				var reservations = _reservationService.GetAllReservations(includeProperties: "ReservationItems,ReservationItems.ConcreteProduct");
 
-                var popularProducts = reservations
-					.SelectMany(a=>a.ReservationItems.Select(a=>a.ConcreteProduct))
-                    .GroupBy(r => r.ProductID)
-                    .Select(g => new
-                    {
-                        ConcreteProductID = g.Key,
-                        ReservationCount = g.Count()
-                    })
-                    .OrderByDescending(x => x.ReservationCount)
-                    .Take(count)
-                    .ToList();
+				var popularProducts = reservations
+					.SelectMany(a => a.ReservationItems.Select(a => a.ConcreteProduct))
+					.GroupBy(r => r.ProductID)
+					.Select(g => new
+					{
+						ConcreteProductID = g.Key,
+						ReservationCount = g.Count()
+					})
+					.OrderByDescending(x => x.ReservationCount)
+					.Take(count)
+					.ToList();
 
-                var result = popularProducts.Select(p => p.ConcreteProductID).ToList();
+				var result = popularProducts.Select(p => p.ConcreteProductID).ToList();
 
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Internal server error");
-            }
-        }
+				return Ok(result);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, "Internal server error");
+			}
+		}
 
 		[HttpPost("UpsertProduct")]
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
@@ -258,12 +285,13 @@ namespace Web.Controllers
 
 		private void UpsertMedicine(PostProductViewModel postModel)
 		{
-			
+
 			var props = (ICollection<ProductProperty>)_convertProperties(postModel!.Properties!).ToList();
-			var productConfirm = new ProductConfirm { 
-				PharmacompanyID = postModel.PharmaCompanyID, 
-				ProductStatusID = _productStatusService.GetProductStatusByName(SD.ProductStatusUnderConsideration).Id, 
-				CreationDate=DateTime.Now 
+			var productConfirm = new ProductConfirm
+			{
+				PharmacompanyID = postModel.PharmaCompanyID,
+				ProductStatusID = _productStatusService.GetProductStatusByName(SD.ProductStatusUnderConsideration).Id,
+				CreationDate = DateTime.Now
 			};
 			var medicine = new Medicine
 			{
@@ -309,10 +337,11 @@ namespace Web.Controllers
 		private void UpsertProductEntity(PostProductViewModel postModel)
 		{
 			var props = (ICollection<ProductProperty>)_convertProperties(postModel!.Properties!).ToList();
-			var productConfirm = new ProductConfirm { 
-				PharmacompanyID = postModel.PharmaCompanyID, 
-				ProductStatusID = _productStatusService.GetProductStatusByName(SD.ProductStatusUnderConsideration).Id, 
-				CreationDate=DateTime.Now
+			var productConfirm = new ProductConfirm
+			{
+				PharmacompanyID = postModel.PharmaCompanyID,
+				ProductStatusID = _productStatusService.GetProductStatusByName(SD.ProductStatusUnderConsideration).Id,
+				CreationDate = DateTime.Now
 			};
 			var product = new Product
 			{
@@ -327,7 +356,7 @@ namespace Web.Controllers
 				ProductAttributeGroupID = postModel.ProductAttributeGroupID,
 				ProductConfirm = productConfirm
 			};
-			
+
 
 			foreach (var item in props)
 			{
@@ -364,7 +393,7 @@ namespace Web.Controllers
 			var productConfirm = _productService!
 				.GetProduct(a => a.Id == id, "ProductConfirm")
 				!.ProductConfirm;
-			if(productConfirm is not null)
+			if (productConfirm is not null)
 			{
 				productConfirm!.ProductStatusID = statusID;
 				_productConfirmService.UpdateProductConfirm(productConfirm!);

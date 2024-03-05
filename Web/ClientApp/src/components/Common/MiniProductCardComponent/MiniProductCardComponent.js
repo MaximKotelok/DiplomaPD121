@@ -51,6 +51,7 @@ const MiniProductCardComponent =
                         style={{width:"183px", height:"170px"}}
                         className='product-image'
                         alt={title}
+                        key={title}
                         />
                     </Link>
                 </div>

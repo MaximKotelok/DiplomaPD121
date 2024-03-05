@@ -1,4 +1,4 @@
-import { UpsertProduct, GetProduct,  ClassHeader, GetAllProductsFromIdArray, Success, GetSupInfoForProductInYourCity } from "../utils/Constants";
+import { UpsertProduct, GetProduct,  ClassHeader, GetAllProductsFromIdArray, Success, GetSupInfoForProductInYourCity, GetTopOffers } from "../utils/Constants";
 import { getCookie } from "../utils/Cookies";
 import { postToServer, getFromServer, putToServer} from "../utils/Queries";
 
@@ -20,6 +20,12 @@ export async function upsertProduct(product, options) {
     await postToServer(UpsertProduct, {
         ...product,
         properties: options.additionalAttribute
+    }, ClassHeader)
+} 
+
+export async function getTopOffer() {
+    return await getFromServer(GetTopOffers, {
+        count: 6
     }, ClassHeader)
 } 
 

@@ -28,8 +28,8 @@ const ListPharmacies = (props) => {
                 productTitle={`${product.product.title} ${props.product.shortDescription}`}                
                 address={product.pharmacy.address}
                 manufacturer={product.product.manufacturer.name}
-                timeClosed="20:00"
-                timeOpen="09:00"
+                timeClosed={product.pharmacy.closeTime}
+                timeOpen={product.pharmacy.openTime}
                 onClick={() => { 
                     props.onProductClick(product)
                     if (props.onMapSelect) {

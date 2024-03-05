@@ -1,6 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
 import CarouselListComponent from "../../Common/CarouselListComponent/CarouselListComponent";
-import { ApiPath } from "../../../../utils/Constants";
+import { ApiPath, Success } from "../../../../utils/Constants";
 import {
   getRecentlyViewedProductsIds,
   getRecomendedRandomCategory,
@@ -26,6 +26,8 @@ import {
 import {
   getCountProducts,
   getProductsFromIdsArray,
+  getTopOffer,
+  getTopOffers,
 } from "../../../../services/product";
 import { getCountBrands } from "../../../../services/brand";
 import { getFavs } from "../../../../services/favProducts";
@@ -39,6 +41,9 @@ export const Home = () => {
   const [brands, setBrands] = useState({});
   const [favs, setFavs] = useState([]);
   const [pngCards, setPngCards] = useState({});
+  
+  const [topOffers, setTopOffers] = useState({});
+  const [selectedTopOfferIndex, setSelectedTopOfferIndex] = useState(null);
 
   async function initPngCards() {
     let id = getRecomendedRandomCategory("PNG");
@@ -62,10 +67,20 @@ export const Home = () => {
     setCategories(await getFirstNItemMainCategories(9));
   }
 
+  async function initTopOffers() {
+    let tmp = await getTopOffer();
+    console.log(tmp)
+    if(tmp.status === Success && tmp.data.length > 0) {
+      setTopOffers(tmp.data);
+      setSelectedTopOfferIndex(0);
+    }
+  }
+
   async function initBrands() {
     setBrands(await getCountBrands(7));
   }
   async function initRecentlyViewed() {
+    
     let ids = getRecentlyViewedProductsIds();
     if (ids.length == 0) return;
 
@@ -78,7 +93,8 @@ export const Home = () => {
     initRecentlyViewed();
     initCategories();
     initBrands();
-    initPngCards();
+    initPngCards();    
+    initTopOffers();    
   }, []);
 
   function isCustomFavorite(id) {
@@ -167,29 +183,41 @@ export const Home = () => {
                 })}
           </div>
         </div>
+            {selectedTopOfferIndex != null &&(
+            <>
         <div className="col-12">
           <div className="d-flex justify-content-between">
+            
             <h3 className="text-title">Популярні товари</h3>
             <MoreLink link="." />
           </div>
           <div className="d-flex justify-content-start">
-            <PopularButtonComponnent text="Вітаміни" />
-            <PopularButtonComponnent text="Вітаміни" />
-            <PopularButtonComponnent text="Вітаміни" />
-            <PopularButtonComponnent text="Вітаміни" />
+            {
+              topOffers.map((a,index)=><PopularButtonComponnent text={a.title} key={index} onClick={()=>setSelectedTopOfferIndex(index)}/>)
+            }
+            
           </div>
           <CarouselListComponent xlDisplayCount={6}>
-            {new Array(10).fill(null).map((_, index) => {
-              return (
-                <MiniProductCardComponent
-                  key={index}
-                ></MiniProductCardComponent>
-              );
-            })}
+            {topOffers[selectedTopOfferIndex].data.map((a,index)=>(<MiniProductCardComponent
+                key={index}
+                isFavorite={isCustomFavorite}
+                id={a.id}
+                title={a.title}
+                description={a.shortDescription}
+                minPrice={a.minPrice}
+                countOfPharmacies={a.count}
+                manufacturer={a.manufacturer}
+                imageUrl={a.pathToPhoto}
+
+            />))}
           </CarouselListComponent>
+        
         </div>
+        </>)}
         <div className="col-12 baner-bottom"></div>
+        
       </div>
+      
 
       {pngCards && pngCards.map && (
         <div className="col-12">

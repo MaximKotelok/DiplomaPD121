@@ -20,6 +20,7 @@ export const GetGroupsForProductAdd = "ProductAttributeGroup/GetGroupsForProduct
 export const GetGroupById = "ProductAttributeGroup/get";
 export const UpsertProduct = "Product/UpsertProduct";
 export const GetProduct = "Product/GetById";
+export const GetTopOffers = "Product/GetTopOffers";
 
 
 // Brand

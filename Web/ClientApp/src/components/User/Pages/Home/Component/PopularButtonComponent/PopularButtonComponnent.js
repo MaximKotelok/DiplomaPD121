@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./PopularButton.css"; // Створіть CSS файл для стилізації компонента
 
-const PopularButtonComponnent = ({ text }) => {
+const PopularButtonComponnent = ({ text, onClick }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseEnter = () => {
@@ -14,6 +14,7 @@ const PopularButtonComponnent = ({ text }) => {
 
   return (
     <div
+      onClick={onClick}
       className={`your-component ${isHovered ? "hovered" : ""}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
