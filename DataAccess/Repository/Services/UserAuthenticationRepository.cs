@@ -41,7 +41,8 @@ namespace Repository.Repository.Services
                 userRegistration.Roles = new List<string> { SD.Role_Customer };
 
             var result = await _userManager.CreateAsync(user, userRegistration.Password);
-            await _userManager.AddToRolesAsync(user, userRegistration.Roles);
+            if (result.Succeeded)
+                await _userManager.AddToRolesAsync(user, userRegistration.Roles);
 
             return result;
         }
@@ -51,14 +52,14 @@ namespace Repository.Repository.Services
 
             _user = await _userManager.FindByEmailAsync(loginDto.Email!);
             var result = _user != null && await _userManager.CheckPasswordAsync(_user, loginDto.Password!);
-            
+
             if (!result || (_user != null && _user.LockoutEnd.HasValue && _user.LockoutEnd > DateTimeOffset.UtcNow && _user.EmailConfirmed == true))
             {
                 return null;
             }
 
-			return new UserInfoDto { Email = _user!.Email, };
-		}
+            return new UserInfoDto { Email = _user!.Email, };
+        }
 
         public async Task<string> CreateTokenAsync()
         {
