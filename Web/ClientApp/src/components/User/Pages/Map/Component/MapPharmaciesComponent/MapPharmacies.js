@@ -38,7 +38,7 @@ const MapPharmacies = (props) => {
             }).addTo(myMap);
 
             let city = getCookie("city");
-            setCity(getCookie("city"));
+            setCity(city);
 
             setMap(myMap);
 

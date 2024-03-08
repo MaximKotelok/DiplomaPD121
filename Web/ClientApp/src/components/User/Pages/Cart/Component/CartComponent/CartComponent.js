@@ -30,13 +30,13 @@ const CartComponent = () => {
             if (res.status !== Success) {
               return {};
             }
-            res = res.data;
+            res = res.data;            
             let item = {
               title: res.product.title,
               shortDescription: res.product.shortDescription,
               pathToPhoto: res.product.pathToPhoto,
               quantity: b.count,
-              maxQuantity: b.quantity,
+              maxQuantity: res.quantity,
               id: res.id,
               price: res.price,
               pharmacyId: a.id,
@@ -44,10 +44,16 @@ const CartComponent = () => {
             return item;
           })
         );
-  
+
         items = items.filter((a) => a != {});
-  
-        return { id: res.id, title: res.pharmaCompany.title, address: res.address, items: items };
+        return { 
+          id: res.id, 
+          title: res.pharmaCompany.title, 
+          address: res.address, 
+          timeOpen: res.openTime, 
+          timeClosed: res.closeTime, 
+          items: items 
+        };
       })
     );
   

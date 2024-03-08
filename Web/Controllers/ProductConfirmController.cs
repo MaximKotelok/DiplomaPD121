@@ -26,7 +26,7 @@ namespace Web.Controllers
 		}
 
 		[HttpGet("")]
-		public IActionResult GetAllConcreteProducts()
+		public IActionResult GetAllRequests()
 		{
 			var rawResult = _productConfirmService.GetAllProductConfirm(includeProperties: "ProductStatus,Product,Product.Manufacturer,Product.Category");
 			if (rawResult is not null)

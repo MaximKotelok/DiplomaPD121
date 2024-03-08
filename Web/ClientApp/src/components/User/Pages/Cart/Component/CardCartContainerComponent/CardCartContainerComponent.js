@@ -3,8 +3,11 @@ import CartBYComponent from "../CartBYComponent/CartBYComponent";
 import styles from "./CardCartContainer.module.css";
 import btnOcloko from "../../../../../../assets/images/znakOkloko.svg";
 import { Link } from "react-router-dom";
+import { isPharmacyOpen } from "../../../../../../utils/Functions";
 
 const CardCartContainerComponent = ({data}) => {
+
+  let isOpen = isPharmacyOpen(data.timeOpen,data.timeClosed);
   return (
     <div className={`mb-4 ${styles["body-card-cart"]}`}>
       <div className="row">
@@ -17,7 +20,9 @@ const CardCartContainerComponent = ({data}) => {
               alt="Картинка"
             />{" "}
           </h1>
-          <p className={` ${styles["p-container"]}`}>Відкрито до 20:00</p>
+          <p className={` ${styles["p-container"]}`}>        
+            {isOpen?`Відкрито до ${data.timeClosed}`:`Буде відкрито з ${data.timeOpen}`}                
+          </p>
           <p className={` ${styles["p-container"]}`}>
             {data.address}
           </p>

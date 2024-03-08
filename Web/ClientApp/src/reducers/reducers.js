@@ -9,7 +9,7 @@ const cartSlice = createSlice({
     loader: StateInfos.LOADING
   },
   reducers: {
-    reloadCart: (state, action) => {
+    reloadCart: (state, action) => {      
       state.cart = action.payload;
     },
     initCart: (state, action) => {
@@ -19,5 +19,21 @@ const cartSlice = createSlice({
   },
 });
 
+const catalogueSlice = createSlice({
+  name: 'catalogue',
+  initialState: {
+    catalogue: []
+  },
+  reducers: {
+    addCategory: (state, action) => {      
+      state.catalogue.push(action.payload)
+    },
+  },
+});
+
+
 export const { reloadCart, initCart } = cartSlice.actions;
 export const cartReducer = cartSlice.reducer;
+
+export const { addCategory } = catalogueSlice.actions;
+export const catalogueReducer = catalogueSlice.reducer;

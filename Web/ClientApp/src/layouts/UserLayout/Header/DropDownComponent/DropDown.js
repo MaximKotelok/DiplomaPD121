@@ -5,11 +5,12 @@ import "./DropDown.css";
 import MenuComponentModal from "./MenuComponent/MenuComponentModal";
 import Content from "./ContentComponent/Content";
 import { getFirstNItemMainCategories } from "../../../../services/category";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import catalogueStore from "../../../../reducers/stores/catalogueStore";
 function DropDown({ iconPath }) {
   const [show, setShow] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState(null);
-  const [categories, setCategories] = useState([]);
-  
+  const [categories, setCategories] = useState([]);  
 
   useEffect(()=>{
     initCategories();
@@ -57,7 +58,9 @@ function DropDown({ iconPath }) {
               <MenuComponentModal categories={categories} onSelect={handleMenuSelect} />
             </div>
             <div className="col-8 ps-5 pe-5">
+            <Provider store={catalogueStore}>
               <Content selectedMenu={selectedMenu} />
+              </Provider>
             </div>
           </div>
         </Modal.Body>

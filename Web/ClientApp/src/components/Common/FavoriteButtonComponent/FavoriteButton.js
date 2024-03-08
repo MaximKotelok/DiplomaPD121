@@ -5,7 +5,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './FavoriteButton.css';
 import { addFavouriteProduct, removeFavouriteProduct } from '../../../services/favProducts';
 import { toast } from "react-toastify";
-
+import heart from "../../../assets/images/product-card/heart.svg"
+import heartActive from "../../../assets/images/product-card/active-heart.svg"
 const FavoriteButton = ({ isFavorite, setIsFavorite, id }) => {    
     
     async function handleClick() {
@@ -23,8 +24,8 @@ const FavoriteButton = ({ isFavorite, setIsFavorite, id }) => {
     }
 
     return (isFavorite ?
-        <i className="bi bi-heart-fill position-absolute top-0 end-0 favorite-icon" onClick={handleClick}></i> :
-        <i className="bi bi-heart position-absolute top-0 end-0 favorite-icon" onClick={handleClick}></i>
+        <img src={heartActive} className="position-absolute top-0 end-0 favorite-icon" onClick={handleClick}/>:
+        <img src={heart} className="position-absolute top-0 end-0 favorite-icon" onClick={handleClick}/>
     )
 };
 
