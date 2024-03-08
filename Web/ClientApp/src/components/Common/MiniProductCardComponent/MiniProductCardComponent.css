@@ -3,7 +3,8 @@
     display: inline-block;
     font-family: var(--standart-font);
     padding: 15px;
-    border: 1px solid #F0F0F0;    
+    border: 1px solid #F0F0F0;   
+    width: 190px; 
 }
 
 .product-info{

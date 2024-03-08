@@ -80,10 +80,7 @@ export const CategoryWithProductsComponent = () => {
             <ProductFilterComponent products={products} setProducts={setFilteredProducts} />
           }
         </div>
-        <div className="col-9">
-
-
-
+        <div className="col-9 d-flex">
           {filteredProducts && filteredProducts.map
             ? filteredProducts.map((a) => (
               <MiniProductCardComponent

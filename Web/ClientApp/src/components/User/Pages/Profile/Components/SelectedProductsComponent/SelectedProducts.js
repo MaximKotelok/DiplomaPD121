@@ -51,7 +51,7 @@ const SelectedProducts = () => {
         <Filter />
       </div> */}
 
-      <div>
+      <div className="d-flex">
         {favs.length > 0 ?
           favs.map(a => (
             <MiniProductCardComponent
@@ -90,7 +90,7 @@ const SelectedProducts = () => {
             />
           </div>
         }
-      </div>
+      </>
     </div>
   );
 };
