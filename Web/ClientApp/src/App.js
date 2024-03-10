@@ -37,10 +37,16 @@ import { Reservation } from "./components/User/Pages/Reservation/Reservation";
 // export default class App extends Component {
 // static displayName = App.name;
 
-// async componentDidMount() {
-//   await setupLocation();
-// }
+/* async componentDidMount() {
+   await setupLocation();
+ }*/
 export default class App extends Component {
+
+    async componentDidMount() {
+        await setupLocation();
+    }
+   
+
   render() {
     return (
       <>
