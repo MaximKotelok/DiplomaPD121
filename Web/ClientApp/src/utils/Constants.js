@@ -21,7 +21,6 @@ export const GetGroupById = "ProductAttributeGroup/get";
 export const UpsertProduct = "Product/UpsertProduct";
 export const GetProduct = "Product/GetById";
 
-
 // Brand
 export const GetAllBrands = "Brand/GetAllBrands";
 export const GetBrandById = "Brand/GetBrandById";
@@ -30,10 +29,22 @@ export const UpsertBrand = "Brand/UpsertBrand";
 //Country
 export const GetAllCountries = "Country/GetAllCountries";
 
+//City
+export const GetAllCities = "City/";
+
+
 //Company
 export const GetAllPharmaCompanies = "PharmaCompany/GetAllPharmaCompanies";
 export const GetPharmaCompanyById = "PharmaCompany/GetPharmaCompanyById";
 export const UpsertPharmaCompany = "PharmaCompany/UpsertPharmaCompany";
+
+//Pharmacy
+export const GetAllPharmacies = "Pharmacy/";
+export const GetPharmacyById = "Pharmacy/";
+export const GetListOfPharmacyInYourCity = "Pharmacy/GetListOfPharmacyInYourCity";
+export const GetAllConcreteProductsFromPharmacy = "Pharmacy/GetAllConcreteProductsFromPharmacy";
+export const UpsertPharmcy = "Pharmacy/UpsertPharmacy";
+export const GetPharmacyProduct = "Pharmacy/GetPharmacyProduct"
 
 
 export const ClassHeader = {

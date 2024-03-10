@@ -6,7 +6,7 @@ import { changeCountInCart, getCart } from "../../../../services/cartService";
 
 import styles from "./Reservation.module.css";
 import { ApiPath, StateInfos, Success } from "../../../../utils/Constants";
-import { getPharmacy, getPharmacyProduct } from "../../../../services/pharmacy";
+import { getPharmacyById, getPharmacyProduct } from "../../../../services/pharmacy";
 import { toast } from "react-toastify";
 import { redirect404 } from "../../../../utils/Functions";
 import { postLoggedReserve, postReservation } from "../../../../services/reservation";
@@ -34,7 +34,7 @@ export const Reservation = () => {
       redirect404();
     }
 
-    let pharmacyData = await getPharmacy(cart[index].id);
+      let pharmacyData = await getPharmacyById(cart[index].id);
     if (pharmacyData.status === Success) {
       pharmacyData = pharmacyData.data;
       let res = await Promise.all(
