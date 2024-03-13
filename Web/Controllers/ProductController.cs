@@ -112,6 +112,19 @@ namespace Web.Controllers
 					MedicineViewModel res = new MedicineViewModel { Product = productView };
 					res.ActiveSubstance = ((Medicine)product).ActiveSubstance!.Title;
 					res.ActiveSubstanceID = ((Medicine)product).ActiveSubstance!.Id;
+
+					PermissionIdWithDescription[] medicineTable = {
+						new PermissionIdWithDescription{ Id= ((Medicine)product).AdultsID, Description= "Дорослі" },
+						new PermissionIdWithDescription{ Id= ((Medicine)product).ChildrenID,Description="Діти" },
+						new PermissionIdWithDescription{ Id= ((Medicine)product).PregnantID,Description="Вагітні" },
+						new PermissionIdWithDescription{ Id= ((Medicine)product).NursingMothersID,Description="Годуючі мами" },
+						new PermissionIdWithDescription{ Id= ((Medicine)product).AllergiesID, Description="Алергіки" },
+						new PermissionIdWithDescription{ Id= ((Medicine)product).DiabeticsID, Description="Діабетики" },
+						new PermissionIdWithDescription{ Id= ((Medicine)product).DriversID, Description="Водії" },
+					};
+
+					res.MedicineTable = medicineTable;
+
 					return Ok(res);
 				}
 

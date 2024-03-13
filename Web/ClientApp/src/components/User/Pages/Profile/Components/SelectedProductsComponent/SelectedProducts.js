@@ -90,7 +90,7 @@ const SelectedProducts = () => {
             />
           </div>
         }
-      </>
+      </div>
     </div>
   );
 };

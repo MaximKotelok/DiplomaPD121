@@ -13,6 +13,7 @@ import HeadOfDetailsComponent from './Component/HeadOfDetailsComponent/HeadOfDet
 import { getCookie } from '../../../../utils/Cookies';
 import { getPathToCategory } from '../../../../services/category';
 import { getProductById } from '../../../../services/product';
+import MedicineTableComponent from './Component/MedicineTableComponent/MedicineTableComponent';
 
 
 
@@ -25,7 +26,7 @@ export const Details = () => {
     useEffect(() => {
         init();
     }, [])
-    const location = useLocation()
+    const location = useLocation();
 
     useEffect(() => {
         if (location.hash) {
@@ -49,20 +50,19 @@ export const Details = () => {
             }
         }
     }, [loader])
-
+    
     async function init() {
         const res = await getProductById(id);
         if (res.status === Success) {
             let product;
-            console.log(res)
             if (res.data.product) {
                 product = res.data.product;
                 product.properties.unshift({ name: "Діюча Речовина", value: res.data.activeSubstance })
+                product.medicineTable = res.data.medicineTable;
             }
             else {
                 product = res.data;
             }
-            console.log(product)
             let path = await getPathToCategory(product.categoryID);
             if (path.status === Success) {
                 product.city = getCookie("city")
@@ -118,6 +118,13 @@ export const Details = () => {
             >{product.description}</Description>
         </div>
         <hr />
+        
+        {
+            product.medicineTable &&
+            <MedicineTableComponent
+                data={product.medicineTable}
+            />
+        }
 
         <div className='row'>
             <p className='section-title' id='characteristic'>Характеристики</p>

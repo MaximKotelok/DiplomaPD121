@@ -4,6 +4,7 @@ using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240313115126_AddPathToPhotoToPermission")]
+    partial class AddPathToPhotoToPermission
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2179,14 +2182,7 @@ namespace DataAccess.Migrations
                             SeriesID = 1,
                             ShortDescription = "таблетки зі смак. апельсину по 25 мг №10 в етикет.",
                             Title = "Аскорбінка-КВ",
-                            ActiveSubstanceID = 1,
-                            AdultsID = 1,
-                            AllergiesID = 2,
-                            ChildrenID = 3,
-                            DiabeticsID = 4,
-                            DriversID = 3,
-                            NursingMothersID = 1,
-                            PregnantID = 2
+                            ActiveSubstanceID = 1
                         },
                         new
                         {
@@ -2200,14 +2196,7 @@ namespace DataAccess.Migrations
                             SeriesID = 1,
                             ShortDescription = "таблетки зі смак. манго по 25 мг №10 в етикет.",
                             Title = "Аскорбінка-КВ",
-                            ActiveSubstanceID = 1,
-                            AdultsID = 1,
-                            AllergiesID = 2,
-                            ChildrenID = 3,
-                            DiabeticsID = 2,
-                            DriversID = 3,
-                            NursingMothersID = 1,
-                            PregnantID = 3
+                            ActiveSubstanceID = 1
                         },
                         new
                         {
@@ -2221,14 +2210,7 @@ namespace DataAccess.Migrations
                             SeriesID = 1,
                             ShortDescription = "таблетки зі смак. полуниці по 25 мг №10 в етикет.",
                             Title = "Аскорбінка-КВ",
-                            ActiveSubstanceID = 1,
-                            AdultsID = 1,
-                            AllergiesID = 2,
-                            ChildrenID = 3,
-                            DiabeticsID = 4,
-                            DriversID = 1,
-                            NursingMothersID = 4,
-                            PregnantID = 4
+                            ActiveSubstanceID = 1
                         },
                         new
                         {
@@ -2242,14 +2224,7 @@ namespace DataAccess.Migrations
                             SeriesID = 1,
                             ShortDescription = "таблетки зі смак. тутті-фруті по 25 мг №10 в етикет.",
                             Title = "Аскорбінка-КВ",
-                            ActiveSubstanceID = 1,
-                            AdultsID = 1,
-                            AllergiesID = 2,
-                            ChildrenID = 3,
-                            DiabeticsID = 4,
-                            DriversID = 1,
-                            NursingMothersID = 1,
-                            PregnantID = 2
+                            ActiveSubstanceID = 1
                         });
                 });
 
