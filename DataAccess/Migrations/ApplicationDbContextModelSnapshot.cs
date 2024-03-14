@@ -36,7 +36,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ActiveSubstances", (string)null);
+                    b.ToTable("ActiveSubstances");
 
                     b.HasData(
                         new
@@ -86,7 +86,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("CountryBrandID");
 
-                    b.ToTable("Brands", (string)null);
+                    b.ToTable("Brands");
 
                     b.HasData(
                         new
@@ -144,7 +144,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ParentCategoryID");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
 
                     b.HasData(
                         new
@@ -329,7 +329,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Citys", (string)null);
+                    b.ToTable("Citys");
 
                     b.HasData(
                         new
@@ -367,7 +367,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("ConcreteProducts", (string)null);
+                    b.ToTable("ConcreteProducts");
 
                     b.HasData(
                         new
@@ -474,7 +474,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries", (string)null);
+                    b.ToTable("Countries");
 
                     b.HasData(
                         new
@@ -492,6 +492,22 @@ namespace DataAccess.Migrations
                             Id = 3,
                             Name = "USA"
                         });
+                });
+
+            modelBuilder.Entity("Domain.Models.HistoryDate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HistoryDates");
                 });
 
             modelBuilder.Entity("Domain.Models.Manufacturer", b =>
@@ -520,7 +536,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("CountryManufactureID");
 
-                    b.ToTable("Manufacturers", (string)null);
+                    b.ToTable("Manufacturers");
 
                     b.HasData(
                         new
@@ -557,33 +573,40 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("PathToPhoto")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("PermissionTypes", (string)null);
+                    b.ToTable("PermissionTypes");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
+                            PathToPhoto = "/images/permissionType/denied.png",
                             Title = "заборонено"
                         },
                         new
                         {
                             Id = 2,
+                            PathToPhoto = "/images/permissionType/allowed.png",
                             Title = "дозволено"
                         },
                         new
                         {
                             Id = 3,
+                            PathToPhoto = "/images/permissionType/warning.png",
                             Title = "за призначенням лікаря"
                         },
                         new
                         {
                             Id = 4,
+                            PathToPhoto = "/images/permissionType/warning.png",
                             Title = "з обережністю"
                         });
                 });
@@ -605,7 +628,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PharmaCompanies", (string)null);
+                    b.ToTable("PharmaCompanies");
 
                     b.HasData(
                         new
@@ -637,11 +660,19 @@ namespace DataAccess.Migrations
                     b.Property<int>("CityID")
                         .HasColumnType("int");
 
+                    b.Property<string>("CloseTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Latitude")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Longitude")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OpenTime")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -661,7 +692,7 @@ namespace DataAccess.Migrations
                         .IsUnique()
                         .HasFilter("[UserID] IS NOT NULL");
 
-                    b.ToTable("Pharmacies", (string)null);
+                    b.ToTable("Pharmacies");
 
                     b.HasData(
                         new
@@ -669,8 +700,10 @@ namespace DataAccess.Migrations
                             Id = 1,
                             Address = "Temp Address",
                             CityID = 1,
+                            CloseTime = "20:00",
                             Latitude = "49.842957",
                             Longitude = "24.031511",
+                            OpenTime = "10:00",
                             PharmaCompanyID = 1
                         },
                         new
@@ -678,8 +711,10 @@ namespace DataAccess.Migrations
                             Id = 2,
                             Address = "Temp Address2",
                             CityID = 1,
+                            CloseTime = "21:00",
                             Latitude = "49.842757",
                             Longitude = "24.031211",
+                            OpenTime = "11:00",
                             PharmaCompanyID = 1
                         },
                         new
@@ -687,8 +722,10 @@ namespace DataAccess.Migrations
                             Id = 3,
                             Address = "Temp Address3",
                             CityID = 1,
+                            CloseTime = "23:59",
                             Latitude = "49.842157",
                             Longitude = "24.031611",
+                            OpenTime = "00:00",
                             PharmaCompanyID = 1
                         },
                         new
@@ -696,8 +733,10 @@ namespace DataAccess.Migrations
                             Id = 4,
                             Address = "Temp Address4",
                             CityID = 1,
+                            CloseTime = "18:00",
                             Latitude = "49.842557",
                             Longitude = "24.031411",
+                            OpenTime = "09:00",
                             PharmaCompanyID = 1
                         });
                 });
@@ -757,7 +796,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("SeriesID");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
 
                     b.UseTptMappingStrategy();
 
@@ -787,6 +826,78 @@ namespace DataAccess.Migrations
                             SeriesID = 1,
                             ShortDescription = "Infopia Co. Ltd.",
                             Title = "Глюкометр GluNeo Lite"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            BrandID = 3,
+                            CategoryID = 15,
+                            Description = "Точний та швидкий термометр для вимірювання температури",
+                            ManufacturerID = 2,
+                            ProductAttributeGroupID = 2,
+                            SeriesID = 1,
+                            ShortDescription = "Medical Devices Corp.",
+                            Title = "Термометр для аптек"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            BrandID = 3,
+                            CategoryID = 16,
+                            Description = "Ефективний антисептик для регулярного використання",
+                            ManufacturerID = 2,
+                            ProductAttributeGroupID = 2,
+                            SeriesID = 1,
+                            ShortDescription = "Hygiene Solutions Ltd.",
+                            Title = "Антисептик для рук"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            BrandID = 2,
+                            CategoryID = 15,
+                            Description = "Комплект для першої допомоги з необхідним медичним обладнанням",
+                            ManufacturerID = 2,
+                            ProductAttributeGroupID = 4,
+                            SeriesID = 1,
+                            ShortDescription = "Safety First Medical",
+                            Title = "Перший допоміжний набір"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            BrandID = 2,
+                            CategoryID = 16,
+                            Description = "Одноразова медична маска для захисту від бактерій та вірусів",
+                            ManufacturerID = 1,
+                            ProductAttributeGroupID = 4,
+                            SeriesID = 1,
+                            ShortDescription = "Protective Gear Co.",
+                            Title = "Маска медична"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            BrandID = 1,
+                            CategoryID = 14,
+                            Description = "Ефективні таблетки для лікування та профілактики грипу",
+                            ManufacturerID = 2,
+                            ProductAttributeGroupID = 4,
+                            SeriesID = 1,
+                            ShortDescription = "Health Pharmaceuticals",
+                            Title = "Антигрипові таблетки"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            BrandID = 3,
+                            CategoryID = 15,
+                            Description = "Додатковий вітамін С для підтримки імунітету",
+                            ManufacturerID = 1,
+                            ProductAttributeGroupID = 4,
+                            SeriesID = 1,
+                            ShortDescription = "NutriWellness Labs",
+                            Title = "Вітамін С"
                         });
                 });
 
@@ -812,7 +923,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ProductAttributeGroupID");
 
-                    b.ToTable("Attributes", (string)null);
+                    b.ToTable("Attributes");
 
                     b.HasData(
                         new
@@ -1178,7 +1289,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductAttributeGroups", (string)null);
+                    b.ToTable("ProductAttributeGroups");
 
                     b.HasData(
                         new
@@ -1214,6 +1325,9 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("PharmacompanyID")
                         .IsRequired()
                         .HasColumnType("int");
@@ -1231,7 +1345,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ProductStatusID");
 
-                    b.ToTable("ProductConfirms", (string)null);
+                    b.ToTable("ProductConfirms");
                 });
 
             modelBuilder.Entity("Domain.Models.ProductExistAttribute", b =>
@@ -1258,7 +1372,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("GroupID");
 
-                    b.ToTable("ProductExistAttributes", (string)null);
+                    b.ToTable("ProductExistAttributes");
 
                     b.HasData(
                         new
@@ -1327,6 +1441,32 @@ namespace DataAccess.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Domain.Models.ProductPriceHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("HistoryDateId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HistoryDateId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductPriceHistory");
+                });
+
             modelBuilder.Entity("Domain.Models.ProductProperty", b =>
                 {
                     b.Property<int>("ProductID")
@@ -1343,7 +1483,141 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("AttributeID");
 
-                    b.ToTable("Properties", (string)null);
+                    b.ToTable("Properties");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductID = 5,
+                            AttributeID = 30,
+                            Value = "3 роки"
+                        },
+                        new
+                        {
+                            ProductID = 6,
+                            AttributeID = 30,
+                            Value = "3 роки"
+                        },
+                        new
+                        {
+                            ProductID = 7,
+                            AttributeID = 32,
+                            Value = "Білий"
+                        },
+                        new
+                        {
+                            ProductID = 8,
+                            AttributeID = 32,
+                            Value = "Чорний"
+                        },
+                        new
+                        {
+                            ProductID = 7,
+                            AttributeID = 38,
+                            Value = "1.5 л"
+                        },
+                        new
+                        {
+                            ProductID = 8,
+                            AttributeID = 38,
+                            Value = "2 л"
+                        },
+                        new
+                        {
+                            ProductID = 7,
+                            AttributeID = 33,
+                            Value = "Незначна"
+                        },
+                        new
+                        {
+                            ProductID = 7,
+                            AttributeID = 20,
+                            Value = "Медичний"
+                        },
+                        new
+                        {
+                            ProductID = 8,
+                            AttributeID = 20,
+                            Value = "Медичний"
+                        },
+                        new
+                        {
+                            ProductID = 8,
+                            AttributeID = 46,
+                            Value = "24 місяці"
+                        },
+                        new
+                        {
+                            ProductID = 9,
+                            AttributeID = 5,
+                            Value = "Додаткові функції для першої допомоги"
+                        },
+                        new
+                        {
+                            ProductID = 10,
+                            AttributeID = 5,
+                            Value = "Одноразова"
+                        },
+                        new
+                        {
+                            ProductID = 9,
+                            AttributeID = 21,
+                            Value = "Білий"
+                        },
+                        new
+                        {
+                            ProductID = 10,
+                            AttributeID = 21,
+                            Value = "Синій"
+                        },
+                        new
+                        {
+                            ProductID = 10,
+                            AttributeID = 49,
+                            Value = "5 мл"
+                        },
+                        new
+                        {
+                            ProductID = 10,
+                            AttributeID = 50,
+                            Value = "Не потребує калібрування"
+                        },
+                        new
+                        {
+                            ProductID = 11,
+                            AttributeID = 47,
+                            Value = "Лікування грипу"
+                        },
+                        new
+                        {
+                            ProductID = 12,
+                            AttributeID = 47,
+                            Value = "Імунітет"
+                        },
+                        new
+                        {
+                            ProductID = 11,
+                            AttributeID = 13,
+                            Value = "Для дорослих"
+                        },
+                        new
+                        {
+                            ProductID = 12,
+                            AttributeID = 13,
+                            Value = "Для всієї родини"
+                        },
+                        new
+                        {
+                            ProductID = 11,
+                            AttributeID = 50,
+                            Value = "Не потребує калібрування"
+                        },
+                        new
+                        {
+                            ProductID = 12,
+                            AttributeID = 50,
+                            Value = "Не потребує калібрування"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Models.ProductStatus", b =>
@@ -1354,27 +1628,33 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Color")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductStatuses", (string)null);
+                    b.ToTable("ProductStatuses");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
+                            Color = "rgba(52, 199, 89, 1)",
                             Status = "Підтверджено"
                         },
                         new
                         {
                             Id = 2,
+                            Color = "rgba(255, 149, 0, 1)",
                             Status = "На розгляді"
                         },
                         new
                         {
                             Id = 3,
+                            Color = "rgba(255, 59, 48, 1)",
                             Status = "Відхилено"
                         });
                 });
@@ -1387,8 +1667,16 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ConcreteProductID")
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PharmacyID")
                         .HasColumnType("int");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ReservedTime")
                         .HasColumnType("datetime2");
@@ -1400,18 +1688,43 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserID")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ConcreteProductID");
+                    b.HasIndex("PharmacyID");
 
                     b.HasIndex("StatusID");
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Reservations", (string)null);
+                    b.ToTable("Reservations");
+                });
+
+            modelBuilder.Entity("Domain.Models.ReservationItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ConcreteProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReservationID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConcreteProductID");
+
+                    b.HasIndex("ReservationID");
+
+                    b.ToTable("ReservationItems");
                 });
 
             modelBuilder.Entity("Domain.Models.ReservationStatus", b =>
@@ -1427,7 +1740,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ReservationStatuses", (string)null);
+                    b.ToTable("ReservationStatuses");
 
                     b.HasData(
                         new
@@ -1469,7 +1782,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Series", (string)null);
+                    b.ToTable("Series");
 
                     b.HasData(
                         new
@@ -1498,7 +1811,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SimilarProductGroups", (string)null);
+                    b.ToTable("SimilarProductGroups");
 
                     b.HasData(
                         new
@@ -1535,7 +1848,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("SimilarProductGroupID");
 
-                    b.ToTable("SimilarProductItems", (string)null);
+                    b.ToTable("SimilarProductItems");
 
                     b.HasData(
                         new
@@ -1610,6 +1923,9 @@ namespace DataAccess.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PharmaCompanyId")
+                        .HasColumnType("int");
+
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
@@ -1635,6 +1951,8 @@ namespace DataAccess.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("PharmaCompanyId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -1784,7 +2102,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("FavUsersId");
 
-                    b.ToTable("PharmacyUser", (string)null);
+                    b.ToTable("PharmacyUser");
                 });
 
             modelBuilder.Entity("ProductUser", b =>
@@ -1799,7 +2117,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("FavUsersId");
 
-                    b.ToTable("ProductUser", (string)null);
+                    b.ToTable("ProductUser");
                 });
 
             modelBuilder.Entity("Domain.Models.Medicine", b =>
@@ -1846,7 +2164,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("PregnantID");
 
-                    b.ToTable("Medicines", (string)null);
+                    b.ToTable("Medicines");
 
                     b.HasData(
                         new
@@ -1861,7 +2179,14 @@ namespace DataAccess.Migrations
                             SeriesID = 1,
                             ShortDescription = "таблетки зі смак. апельсину по 25 мг №10 в етикет.",
                             Title = "Аскорбінка-КВ",
-                            ActiveSubstanceID = 1
+                            ActiveSubstanceID = 1,
+                            AdultsID = 1,
+                            AllergiesID = 2,
+                            ChildrenID = 3,
+                            DiabeticsID = 4,
+                            DriversID = 3,
+                            NursingMothersID = 1,
+                            PregnantID = 2
                         },
                         new
                         {
@@ -1875,7 +2200,14 @@ namespace DataAccess.Migrations
                             SeriesID = 1,
                             ShortDescription = "таблетки зі смак. манго по 25 мг №10 в етикет.",
                             Title = "Аскорбінка-КВ",
-                            ActiveSubstanceID = 1
+                            ActiveSubstanceID = 1,
+                            AdultsID = 1,
+                            AllergiesID = 2,
+                            ChildrenID = 3,
+                            DiabeticsID = 2,
+                            DriversID = 3,
+                            NursingMothersID = 1,
+                            PregnantID = 3
                         },
                         new
                         {
@@ -1889,7 +2221,14 @@ namespace DataAccess.Migrations
                             SeriesID = 1,
                             ShortDescription = "таблетки зі смак. полуниці по 25 мг №10 в етикет.",
                             Title = "Аскорбінка-КВ",
-                            ActiveSubstanceID = 1
+                            ActiveSubstanceID = 1,
+                            AdultsID = 1,
+                            AllergiesID = 2,
+                            ChildrenID = 3,
+                            DiabeticsID = 4,
+                            DriversID = 1,
+                            NursingMothersID = 4,
+                            PregnantID = 4
                         },
                         new
                         {
@@ -1903,7 +2242,14 @@ namespace DataAccess.Migrations
                             SeriesID = 1,
                             ShortDescription = "таблетки зі смак. тутті-фруті по 25 мг №10 в етикет.",
                             Title = "Аскорбінка-КВ",
-                            ActiveSubstanceID = 1
+                            ActiveSubstanceID = 1,
+                            AdultsID = 1,
+                            AllergiesID = 2,
+                            ChildrenID = 3,
+                            DiabeticsID = 4,
+                            DriversID = 1,
+                            NursingMothersID = 1,
+                            PregnantID = 2
                         });
                 });
 
@@ -2054,6 +2400,25 @@ namespace DataAccess.Migrations
                     b.Navigation("AttributeGroup");
                 });
 
+            modelBuilder.Entity("Domain.Models.ProductPriceHistory", b =>
+                {
+                    b.HasOne("Domain.Models.HistoryDate", "HistoryDate")
+                        .WithMany("PriceHistory")
+                        .HasForeignKey("HistoryDateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Product", "Product")
+                        .WithMany("PriceHistory")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("HistoryDate");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Domain.Models.ProductProperty", b =>
                 {
                     b.HasOne("Domain.Models.ProductAttribute", "Attribute")
@@ -2075,9 +2440,9 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Domain.Models.Reservation", b =>
                 {
-                    b.HasOne("Domain.Models.ConcreteProduct", "ConcreteProduct")
+                    b.HasOne("Domain.Models.Pharmacy", "Pharmacy")
                         .WithMany()
-                        .HasForeignKey("ConcreteProductID")
+                        .HasForeignKey("PharmacyID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -2089,15 +2454,32 @@ namespace DataAccess.Migrations
 
                     b.HasOne("Domain.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserID")
+                        .HasForeignKey("UserID");
+
+                    b.Navigation("Pharmacy");
+
+                    b.Navigation("Status");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Models.ReservationItem", b =>
+                {
+                    b.HasOne("Domain.Models.ConcreteProduct", "ConcreteProduct")
+                        .WithMany()
+                        .HasForeignKey("ConcreteProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Reservation", "Reservation")
+                        .WithMany("ReservationItems")
+                        .HasForeignKey("ReservationID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("ConcreteProduct");
 
-                    b.Navigation("Status");
-
-                    b.Navigation("User");
+                    b.Navigation("Reservation");
                 });
 
             modelBuilder.Entity("Domain.Models.SimilarProductItem", b =>
@@ -2117,6 +2499,15 @@ namespace DataAccess.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("SimilarProductGroup");
+                });
+
+            modelBuilder.Entity("Domain.Models.User", b =>
+                {
+                    b.HasOne("Domain.Models.PharmaCompany", "PharmaCompany")
+                        .WithMany()
+                        .HasForeignKey("PharmaCompanyId");
+
+                    b.Navigation("PharmaCompany");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -2271,6 +2662,11 @@ namespace DataAccess.Migrations
                     b.Navigation("SubCategories");
                 });
 
+            modelBuilder.Entity("Domain.Models.HistoryDate", b =>
+                {
+                    b.Navigation("PriceHistory");
+                });
+
             modelBuilder.Entity("Domain.Models.Pharmacy", b =>
                 {
                     b.Navigation("ConcreteProducts");
@@ -2279,6 +2675,8 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.Models.Product", b =>
                 {
                     b.Navigation("ConcreteProducts");
+
+                    b.Navigation("PriceHistory");
 
                     b.Navigation("Properties");
 
@@ -2295,6 +2693,11 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.Models.ProductConfirm", b =>
                 {
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Domain.Models.Reservation", b =>
+                {
+                    b.Navigation("ReservationItems");
                 });
 
             modelBuilder.Entity("Domain.Models.SimilarProductGroup", b =>

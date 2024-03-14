@@ -7,13 +7,19 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-
+    
 namespace Domain.Models
 {
     public class Pharmacy: BaseEntity
 	{
 		[Required]
         public string? Address { get; set; }
+
+		[Required]
+		public string? OpenTime { get; set; }
+
+		[Required]
+		public string? CloseTime { get; set; }
 
 		[Required]
 		public string? Longitude { get; set; }

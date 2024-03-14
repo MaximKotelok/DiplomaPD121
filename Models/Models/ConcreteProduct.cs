@@ -22,6 +22,6 @@ namespace Domain.Models
 		public Product? Product { get; set; }
 		public int? PharmacyID { get; set; }
 		[ForeignKey("PharmacyID")]        
-		public Pharmacy? Pharmacy { get; set; }
+		public Pharmacy? Pharmacy { get; set; }		
 	}
 }

@@ -158,7 +158,7 @@ const MapProducts = (props) => {
 
             <div id="map" style={{ height: '400px' }}></div>
             {city !== "" && townProducts != null && product != null ? (
-                <ListProducts
+                <ListProducts 
                     product={product}
                     city={city}
                     selectedProduct={selectedProduct}

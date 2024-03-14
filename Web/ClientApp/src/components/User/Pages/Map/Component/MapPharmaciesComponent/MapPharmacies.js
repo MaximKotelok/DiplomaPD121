@@ -38,7 +38,7 @@ const MapPharmacies = (props) => {
             }).addTo(myMap);
 
             let city = getCookie("city");
-            setCity(getCookie("city"));
+            setCity(city);
 
             setMap(myMap);
 
@@ -72,7 +72,14 @@ const MapPharmacies = (props) => {
         var clickedMarker = e.target;
 
         let pharmacy = (await getFromServer(`Pharmacy/Coords/${clickedMarker._latlng.lat}/${clickedMarker._latlng.lng}`)).data;
-        setSelectedPharmacy(pharmacy);
+        if(pharmacy){                  
+            setSelectedPharmacy(pharmacy);
+            
+            let elem = document.getElementById(`pharmacy${pharmacy.id}`)
+            if (elem) {
+                elem.scrollIntoView({ behavior: "smooth" })
+            }
+        }
 
         await setSelectedMarker((prevMarker) => {
             if (prevMarker) {
@@ -109,9 +116,23 @@ const MapPharmacies = (props) => {
                     selectedPharmacy={selectedPharmacy}
                     townPharmacy={townPharmacy}
                     onPharmacyClick={pharmacy => {
-                        setSelectedPharmacy(pharmacy);
+                        if(pharmacy){
+                            setSelectedPharmacy(pharmacy); 
+                            let elem = document.getElementById(`pharmacy${pharmacy.id}`)
+                            if (elem) {
+                                elem.scrollIntoView({ behavior: "smooth" })
+                            }                          
+                        }
                     }}
-                    onMapSelect={handleMapSelect}
+                    onMapSelect={(pharmacy)=>{                              
+                        if(pharmacy){                  
+                            handleMapSelect(pharmacy)        
+                            let elem = document.getElementById(`pharmacy${pharmacy.id}`)
+                            if (elem) {
+                                elem.scrollIntoView({ behavior: "smooth" })
+                            }
+                        }
+                    }}
                 />
             ) : (
                 <p>Loading...</p>

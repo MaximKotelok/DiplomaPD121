@@ -1,10 +1,16 @@
 {
   "dependencies": {
+    "@chakra-ui/accordion": "^2.3.1",
+    "@chakra-ui/react": "^2.8.2",
+    "@tanstack/react-table": "^8.11.8",
     "bootstrap-icons": "^1.11.3",
+    "leaflet": "^1.9.4",
     "nuka-carousel": "^7.0.0",
     "react-bootstrap-icons": "^1.10.3",
+    "react-quill": "^2.0.0",
     "react-responsive-carousel": "^3.2.23",
     "react-scroll": "^1.9.0",
+    "react-select": "^5.8.0",
     "sweetalert2": "^11.10.3"
   }
 }

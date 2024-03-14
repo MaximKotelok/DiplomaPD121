@@ -24,7 +24,6 @@ namespace Domain.Models
 		public Category? ParentCategory { get; set; }
 		[JsonIgnore]
 		public IEnumerable<Product>? Products { get; set; }
-        [JsonIgnore]
 		public IEnumerable<Category>? SubCategories { get; set; }        
         public bool? IsRecomended { get; set; }
         public string? PathToPhoto { get;set; }        

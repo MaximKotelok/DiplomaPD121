@@ -17,6 +17,7 @@ using Services.PharmacyCompanyService;
 using Services.ProductConfirmService;
 using Services.ProductStatusService;
 using Services.PropertyService;
+using Services.ReservationService;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Principal;
@@ -37,6 +38,7 @@ namespace Web.Controllers
 		private readonly IConcreteProductService _concreteProductService;
 		private readonly IProductStatusService _productStatusService;
 		private readonly IProductConfirmService _productConfirmService;
+		private readonly IReservationService _reservationService;
 
 		public ProductController(
 				IProductService productService,
@@ -46,7 +48,8 @@ namespace Web.Controllers
 				IConcreteProductService concreteProductService,
 				IMedicineService medicineService,
 				IProductStatusService productStatusService,
-				IProductConfirmService productConfirmService
+				IProductConfirmService productConfirmService,
+				IReservationService reservationService
 			)
 		{
 
@@ -58,9 +61,8 @@ namespace Web.Controllers
 			this._propertyService = propertyService;
 			this._concreteProductService = concreteProductService;
 			this._productStatusService = productStatusService;
+			this._reservationService = reservationService;
 		}
-
-
 
 		private IEnumerable<ProductProperty> _convertProperties(List<PropertyViewModel> properties)
 		{
@@ -80,7 +82,6 @@ namespace Web.Controllers
 
 
 		}
-
 
 		[HttpGet("GetById")]
 		public IActionResult GetProduct(int id)
@@ -111,6 +112,19 @@ namespace Web.Controllers
 					MedicineViewModel res = new MedicineViewModel { Product = productView };
 					res.ActiveSubstance = ((Medicine)product).ActiveSubstance!.Title;
 					res.ActiveSubstanceID = ((Medicine)product).ActiveSubstance!.Id;
+
+					PermissionIdWithDescription[] medicineTable = {
+						new PermissionIdWithDescription{ Id= ((Medicine)product).AdultsID, Description= "Дорослі" },
+						new PermissionIdWithDescription{ Id= ((Medicine)product).ChildrenID,Description="Діти" },
+						new PermissionIdWithDescription{ Id= ((Medicine)product).PregnantID,Description="Вагітні" },
+						new PermissionIdWithDescription{ Id= ((Medicine)product).NursingMothersID,Description="Годуючі мами" },
+						new PermissionIdWithDescription{ Id= ((Medicine)product).AllergiesID, Description="Алергіки" },
+						new PermissionIdWithDescription{ Id= ((Medicine)product).DiabeticsID, Description="Діабетики" },
+						new PermissionIdWithDescription{ Id= ((Medicine)product).DriversID, Description="Водії" },
+					};
+
+					res.MedicineTable = medicineTable;
+
 					return Ok(res);
 				}
 
@@ -134,9 +148,6 @@ namespace Web.Controllers
 			}
 			return BadRequest("No records found");
 		}
-
-
-
 
 		[HttpGet("")]
 		public IActionResult GetProductOffer(int count)
@@ -162,6 +173,32 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
+		[HttpGet("GetTopOffers")]
+		public IActionResult GetTopOffers(int count)
+		{
+			var result = _productService
+				.GetAllProducts(includeProperties: "Manufacturer,ProductConfirm,ProductConfirm.ProductStatus,Category")
+				.Where(a => (a.ProductConfirm == null || a!.ProductConfirm!.ProductStatus!.Status!.Equals(SD.ProductStatusConfirmed)))
+				.GroupBy(a => a.Category.Title)
+				.TakeLast(3).Select(a => new
+				{
+					title = a.Key,
+					data = a
+				.Select(b => new HomeProductViewModel
+				{
+					Id = b.Id,
+					Manufacturer = b.Manufacturer!.Name,
+					Title = b.Title,
+					ShortDescription = b.ShortDescription,
+					PathToPhoto = b.PathToPhoto
+				}).Take(count)
+				});
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
 
 		[HttpPost("GetAllProductsFromIdArray")]
 		public IActionResult GetAllProductsFromIdArray(IEnumerable<int> ids)
@@ -193,7 +230,6 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-
 		[HttpGet("GetListOfConcreteProductInYourCity/{cityName}/{productId}")]
 		public IActionResult GetListOfConcreteProductInYourCity(int productId, string cityName)
 		{
@@ -208,6 +244,35 @@ namespace Web.Controllers
 				return Ok(result);
 			}
 			return BadRequest("No records found");
+		}
+
+		[HttpGet("GetPopularProduct/{count}")]
+		public IActionResult GetPopularProduct(int count = 5)
+		{
+			try
+			{
+				var reservations = _reservationService.GetAllReservations(includeProperties: "ReservationItems,ReservationItems.ConcreteProduct");
+
+				var popularProducts = reservations
+					.SelectMany(a => a.ReservationItems.Select(a => a.ConcreteProduct))
+					.GroupBy(r => r.ProductID)
+					.Select(g => new
+					{
+						ConcreteProductID = g.Key,
+						ReservationCount = g.Count()
+					})
+					.OrderByDescending(x => x.ReservationCount)
+					.Take(count)
+					.ToList();
+
+				var result = popularProducts.Select(p => p.ConcreteProductID).ToList();
+
+				return Ok(result);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, "Internal server error");
+			}
 		}
 
 		[HttpPost("UpsertProduct")]
@@ -245,9 +310,14 @@ namespace Web.Controllers
 
 		private void UpsertMedicine(PostProductViewModel postModel)
 		{
-			
+
 			var props = (ICollection<ProductProperty>)_convertProperties(postModel!.Properties!).ToList();
-			var productConfirm = new ProductConfirm { PharmacompanyID = postModel.PharmaCompanyID, ProductStatusID = _productStatusService.GetProductStatusByName(SD.ProductStatusUnderConsideration).Id };
+			var productConfirm = new ProductConfirm
+			{
+				PharmacompanyID = postModel.PharmaCompanyID,
+				ProductStatusID = _productStatusService.GetProductStatusByName(SD.ProductStatusUnderConsideration).Id,
+				CreationDate = DateTime.Now
+			};
 			var medicine = new Medicine
 			{
 				Title = postModel.Title,
@@ -275,7 +345,6 @@ namespace Web.Controllers
 			{
 				if (postModel.Id != null)
 					_propertyService.DeleteProperty(postModel.Id.Value);
-				item.Product = medicine;
 			}
 			if (postModel.Id == null)
 			{
@@ -293,7 +362,12 @@ namespace Web.Controllers
 		private void UpsertProductEntity(PostProductViewModel postModel)
 		{
 			var props = (ICollection<ProductProperty>)_convertProperties(postModel!.Properties!).ToList();
-			var productConfirm = new ProductConfirm { PharmacompanyID = postModel.PharmaCompanyID, ProductStatusID = _productStatusService.GetProductStatusByName(SD.ProductStatusUnderConsideration).Id };
+			var productConfirm = new ProductConfirm
+			{
+				PharmacompanyID = postModel.PharmaCompanyID,
+				ProductStatusID = _productStatusService.GetProductStatusByName(SD.ProductStatusUnderConsideration).Id,
+				CreationDate = DateTime.Now
+			};
 			var product = new Product
 			{
 				Title = postModel.Title,
@@ -307,7 +381,7 @@ namespace Web.Controllers
 				ProductAttributeGroupID = postModel.ProductAttributeGroupID,
 				ProductConfirm = productConfirm
 			};
-			
+
 
 			foreach (var item in props)
 			{
@@ -337,15 +411,14 @@ namespace Web.Controllers
 			return Ok("Data Deleted");
 		}
 
-		[HttpPut("ChangeStatus")]
+		[HttpPut("ChangeStatus/{id}/{statusID}")]
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
-
 		public IActionResult ChangeStatus(int id, int statusID)
 		{
 			var productConfirm = _productService!
-				.GetProduct(a => a.Id == id, "ProductConfirm,ProductConfirm.ProductStatus")
+				.GetProduct(a => a.Id == id, "ProductConfirm")
 				!.ProductConfirm;
-			if(productConfirm is not null)
+			if (productConfirm is not null)
 			{
 				productConfirm!.ProductStatusID = statusID;
 				_productConfirmService.UpdateProductConfirm(productConfirm!);

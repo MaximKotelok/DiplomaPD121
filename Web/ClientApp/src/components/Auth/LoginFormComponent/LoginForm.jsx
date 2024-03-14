@@ -2,12 +2,19 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { setToken } from '../../../utils/Login';
+import styles from "../AuthPage.module.css";
+import  { useNavigate } from 'react-router-dom'
+import { toast } from "react-toastify";
 
 const LoginForm = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     });
+
+    
+
 
 
     const handleInputChange = (e) => {
@@ -25,7 +32,9 @@ const LoginForm = () => {
             // Перевірка наявності токену у відповіді
             if (response.data && response.data.token) {
                 setToken(response.data.token);
-                Swal.fire('Success!', 'Login successful', 'success');
+                //Swal.fire('Success!', 'Login successful', 'success');
+                navigate("/profile");
+                toast.success("Ви успішно зайшли на сайт!");
                 // Додайте необхідні дії після успішного входу, наприклад, перенаправлення на іншу сторінку
             } else {
                 Swal.fire('Error!', 'An error occurred during login.', 'error');
@@ -37,11 +46,11 @@ const LoginForm = () => {
 
     return (
         <form onSubmit={handleLogin}>
-            <div>
-                <input className='input-text-form input-text-secondary-form mb-2' placeholder='Email' type="text" name="email" value={formData.email} onChange={handleInputChange} required/>
+            <div className='mb-2'>
+                <input className={`input-text-form input-text-secondary-form mb-2 ${styles["my-input-text-form"]}`} placeholder='Email' type="text" name="email" value={formData.email} onChange={handleInputChange} required/>
             </div>
-            <div>
-                <input className='input-text-form input-text-secondary-form mb-2' placeholder='Password' type="password" name="password" value={formData.password} onChange={handleInputChange} required/>
+            <div className='mb-2'>
+                <input className={`input-text-form input-text-secondary-form mb-2 ${styles["my-input-text-form"]}`} placeholder='Password' type="password" name="password" value={formData.password} onChange={handleInputChange} required/>
             </div>
 
             <button  className="brn-form brn-primary-form mb-2" type="submit">Вхід</button>
@@ -51,6 +60,8 @@ const LoginForm = () => {
 
 
     );
+
+    
 };
 
 export default LoginForm;

@@ -30,6 +30,7 @@ namespace DataAccess.Data
         public DbSet<ProductAttributeGroup>? ProductAttributeGroups { get; set; }
         public DbSet<ProductExistAttribute>? ProductExistAttributes { get; set; }
         public DbSet<ProductConfirm>? ProductConfirms { get; set; }
+        public DbSet<ReservationItem>? ReservationItems { get; set; }
         public DbSet<ProductProperty>? Properties { get; set; }
         public DbSet<SimilarProductGroup>? SimilarProductGroups { get; set; }
         public DbSet<SimilarProductItem>? SimilarProductItems { get; set; }
@@ -41,7 +42,8 @@ namespace DataAccess.Data
         public DbSet<ReservationStatus>? ReservationStatuses { get; set; }
         public DbSet<ProductStatus>? ProductStatuses { get; set; }
         public DbSet<PermissionType>? PermissionTypes { get; set; }
-		
+        public DbSet<ProductPriceHistory>? ProductPriceHistories { get; set; }
+		public DbSet<HistoryDate>? HistoryDates { get; set; }
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);			
@@ -87,8 +89,9 @@ namespace DataAccess.Data
             new ProductExistAttributeConfiguration().Configure(modelBuilder.Entity<ProductExistAttribute>());
             
             new PermissionTypeConfiguration().Configure(modelBuilder.Entity<PermissionType>());
-
+            
 			modelBuilder.Entity<User>().Navigation(e => e.FavProducts).AutoInclude();
+
 		}
     }
 }

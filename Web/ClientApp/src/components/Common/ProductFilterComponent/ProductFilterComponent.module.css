@@ -1,0 +1,25 @@
+.card{
+    padding: 18px;
+    border-radius: 20px;
+    border: 1px;
+    gap: 20px;    
+    border: 1px solid #007AFF26
+}
+
+.search img{
+    width: 21px!important;
+    height: 21px!important;
+    padding: 0!important;
+}
+
+.search{
+    width: 100%;
+    margin-top: 12px!important;
+font-family: var(--standart-font);
+font-size: 16px!important;
+font-weight: 500;
+line-height: 20px;
+letter-spacing: 0em;
+text-align: left;
+
+}

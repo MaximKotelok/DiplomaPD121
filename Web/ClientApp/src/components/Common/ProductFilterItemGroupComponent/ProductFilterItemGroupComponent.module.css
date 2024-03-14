@@ -1,0 +1,71 @@
+.description.active {
+  background-color: "#007AFF" !important;
+}
+
+.side-btn-togle-victorina {
+  background: none;
+  border: none;
+}
+
+
+.accordion p {
+  color: #0E3E75;
+
+  font-family: var(--standart-font);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0em;
+  text-align: left;
+
+}
+
+.collapsed .accordion {
+  color: #007AFF;  
+}
+
+.accordion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  font-family: var(--standart-font);
+  font-weight: 650;
+  font-size: 24px;
+}
+
+.side-btn-togle-victorina {
+  background: none;
+  border: none;
+
+}
+
+
+.side-text-header-victorina {
+  font-size: 16px;
+  font-weight: 600;
+  color: black;
+  line-height: 14px;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out;
+}
+
+
+.side-text-body-victorina {
+  border-bottom: #E5E5EA solid 1px;
+  font-size: 12px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
+}
+
+.side-text-header-victorina.collapsed .side-text-body-victorina {
+  max-height: 1000px;
+}
+
+.strow-dow {
+  transform: rotate(180deg);
+  transform-origin: center;
+  transition: transform 0.4s ease;
+
+}

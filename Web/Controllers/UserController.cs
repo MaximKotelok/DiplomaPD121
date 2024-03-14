@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Repository.Repository.Interfaces;
 using Services.ConcreteProductService;
 using Services.PharmacyService;
+using Services.UserService;
+using System.Security.Claims;
 using Utility;
 
 namespace Web.Controllers
@@ -13,23 +15,21 @@ namespace Web.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserManager<User> _userManager;
+        private readonly IUserService _userService;
         private readonly IProductService _productService;
         private readonly IPharmacyService _pharmacyService;
 
-
-        public UserController(UserManager<User> userManager, IProductService productService, IPharmacyService pharmacyService)
+        public UserController(IUserService userService)
         {
-            _userManager = userManager;
-            _productService = productService;
-            _pharmacyService = pharmacyService;
+            _userService = userService;
         }
 
-		[HttpPost("getFavorites")]
+
+        [HttpGet("getFavoriteProducts")]
 		[Authorize(AuthenticationSchemes = "Bearer")]
-		public async Task<IActionResult> GetFavorites()
+		public async Task<IActionResult> GetFavouriteProducts()
 		{
-			var user = await _userManager.FindByNameAsync(User.Identity.Name);
+			var user = await _userService.GetUserByName(User.Identity.Name);
             
             
 			if (user == null)
@@ -40,99 +40,64 @@ namespace Web.Controllers
 			return Ok(user!.FavProducts!.Select(a => a.Id).ToList());
 		}
 
-		[HttpPost("addFavouriteProduct/{productId}")]
-		[Authorize(AuthenticationSchemes = "Bearer")]
-		public async Task<IActionResult> AddFavouriteProduct(int productId)
-		{
-			var user = await _userManager.FindByNameAsync(User.Identity.Name);
+        [HttpPost("addFavouriteProduct/{productId}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> AddFavouriteProduct(int productId)
+        {
+            try
+            {
+                await _userService.AddFavouriteProduct(productId, User.Identity.Name);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-			if (user == null)
-			{
-				return NotFound("User not found.");
-			}
-
-			var product = _productService.GetProduct(x => x.Id == productId);
-
-			if (product == null)
-			{
-				return NotFound("Product not found.");
-			}
-
-			if (user.FavProducts != null && user.FavProducts.Any(p => p.Id == productId))
-			{
-				return BadRequest("Product is already in favorites.");
-			}
-
-			user.FavProducts = user.FavProducts.Append(product).ToList();
-
-			try
-			{			
-				await _userManager.UpdateAsync(user);
-				return Ok();
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine($"Error updating user: {ex.Message}");
-				return StatusCode(500, "Internal Server Error");
-			}
-		}
-
-		[HttpPost("removeFavouriteProduct/{productId}")]
+        [HttpPost("removeFavouriteProduct/{productId}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> RemoveFavouriteProduct(int productId)
         {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var product = _productService.GetProduct(x => x.Id == productId);
-
-            if (user == null || product == null)
+            try
             {
-                return NoContent();
+                await _userService.RemoveFavouriteProduct(productId, User.Identity.Name);
+                return Ok();
             }
-
-            if (user.FavProducts != null)
+            catch (Exception ex)
             {
-                user.FavProducts = user.FavProducts.Where(p => p.Id != productId).ToList();
-                await _userManager.UpdateAsync(user);
+                return BadRequest(ex.Message);
             }
-
-            return Ok();
         }
+
         [HttpPost("addFavouritePharmacy/{pharmacyId}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> AddFavouritePharcmacy(int pharmacyId)
         {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var pharmacy = _pharmacyService.GetPharmacy(x => x.Id == pharmacyId);
-
-            if (user == null || pharmacy == null)
+            try
             {
-                return NoContent();
+                await _userService.AddFavouritePharcmacy(pharmacyId, User.Identity.Name);
+                return Ok();
             }
-
-            user.FavPharmacies = user.FavPharmacies?.Append(pharmacy).ToList();
-            await _userManager.UpdateAsync(user);
-
-            return Ok();
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
+
         [HttpPost("removeFavouritePharmacy/{pharmacyId}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> RemoveFavouritePharcmacy(int pharmacyId)
         {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var pharmacy = _pharmacyService.GetPharmacy(x => x.Id == pharmacyId);
-
-            if (user == null || pharmacy == null)
+            try
             {
-                return NoContent();
+                await _userService.RemoveFavouritePharcmacy(pharmacyId, User.Identity.Name);
+                return Ok();
             }
-
-            if (user.FavPharmacies != null)
+            catch (Exception ex)
             {
-                user.FavPharmacies = user.FavPharmacies.Where(p => p.Id != pharmacyId).ToList();
-                await _userManager.UpdateAsync(user);
+                return BadRequest(ex.Message);
             }
-
-            return Ok();
         }
 
 
@@ -140,30 +105,30 @@ namespace Web.Controllers
         [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public async Task<IActionResult> BanUser(string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
-
-            if (user != null)
+            try
             {
-                user.LockoutEnd = DateTime.MaxValue;
-                await _userManager.UpdateAsync(user);
+                await _userService.BanUser(id);
                 return Ok();
             }
-            return NoContent();
+            catch
+            {
+                return NoContent();
+            }
         }
 
         [HttpPost("unban/{id}")]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public async Task<IActionResult> UnbanUser(string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
-
-            if (user != null)
+            try
             {
-                user.LockoutEnd = null;
-                await _userManager.UpdateAsync(user);
+                await _userService.UnbanUser(id);
                 return Ok();
             }
-            return NoContent();
+            catch
+            {
+                return NoContent();
+            }
         }
     }
 }

@@ -1,8 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
 import CarouselListComponent from "../../Common/CarouselListComponent/CarouselListComponent";
-import {
-  ApiPath
-} from "../../../../utils/Constants";
+import { ApiPath, Success } from "../../../../utils/Constants";
 import {
   getRecentlyViewedProductsIds,
   getRecomendedRandomCategory,
@@ -20,10 +18,20 @@ import homePageImg from "../../../../assets/images/homePageImg.png";
 import AdaptiveContainerComponent from "../../../Common/AdaptiveContainerComponent/AdaptiveContainerComponent";
 
 import "./Home.css";
-import { getFirstNItemRecomendedCategoryByPhoto, getFirstNItemMainCategories, getFirstNItemsOfRecomendedCategoryById } from "../../../../services/category";
-import { getCountProducts, getProductsFromIdsArray } from "../../../../services/product";
+import {
+  getFirstNItemRecomendedCategoryByPhoto,
+  getFirstNItemMainCategories,
+  getFirstNItemsOfRecomendedCategoryById,
+} from "../../../../services/category";
+import {
+  getCountProducts,
+  getProductsFromIdsArray,
+  getTopOffer,
+  getTopOffers,
+} from "../../../../services/product";
 import { getCountBrands } from "../../../../services/brand";
 import { getFavs } from "../../../../services/favProducts";
+import { initFavs, isFavorite } from "../../../../utils/Functions";
 export const Home = () => {
   var displayName = Home.name;
 
@@ -34,21 +42,23 @@ export const Home = () => {
   const [favs, setFavs] = useState([]);
   const [pngCards, setPngCards] = useState({});
   
+  const [topOffers, setTopOffers] = useState({});
+  const [selectedTopOfferIndex, setSelectedTopOfferIndex] = useState(null);
+
   async function initPngCards() {
     let id = getRecomendedRandomCategory("PNG");
     const count = 5;
     if (id) {
-      let pngCards = await getFirstNItemsOfRecomendedCategoryById(id, count);         
+      let pngCards = await getFirstNItemsOfRecomendedCategoryById(id, count);
       setPngCards(pngCards.data.result);
     } else {
       let pngCards = await getFirstNItemRecomendedCategoryByPhoto("PNG", count);
-      
+
       setRecomendedRandomCategory("PNG", pngCards.data.id);
       setPngCards(pngCards.data.result);
     }
   }
 
-  
   async function initProducts() {
     setProducts(await getCountProducts(8));
   }
@@ -57,41 +67,39 @@ export const Home = () => {
     setCategories(await getFirstNItemMainCategories(9));
   }
 
-  async function initRecentlyViewed() {
-    let ids = getRecentlyViewedProductsIds();
-    if (ids.length == 0) return;
-
-    setRecently(
-      await getProductsFromIdsArray(ids)
-    );
+  async function initTopOffers() {
+    let tmp = await getTopOffer();
+    console.log(tmp)
+    if(tmp.status === Success && tmp.data.length > 0) {
+      setTopOffers(tmp.data);
+      setSelectedTopOfferIndex(0);
+    }
   }
 
   async function initBrands() {
     setBrands(await getCountBrands(7));
   }
-  async function initFavs() {
-    setFavs(await getFavs());
+  async function initRecentlyViewed() {
+    
+    let ids = getRecentlyViewedProductsIds();
+    if (ids.length == 0) return;
+
+    setRecently(await getProductsFromIdsArray(ids));
   }
 
   useEffect(() => {
-    initFavs();
+    initFavs(setFavs);
     initProducts();
     initRecentlyViewed();
     initCategories();
     initBrands();
-    initPngCards();
+    initPngCards();    
+    initTopOffers();    
   }, []);
 
-  const isFavorite = (productId) => {
-    if(!favs)
-      return false;
-    const result = favs.findIndex(a=>a === productId) !== -1;    
-    return result;
-  };
-  
-  
-
-
+  function isCustomFavorite(id) {
+    return isFavorite(id, favs);
+  }
 
   return (
     <>
@@ -107,17 +115,13 @@ export const Home = () => {
           <div className="col-8">
             <div className="row" style={{ margin: 0, padding: 0 }}>
               <div>
-                <div className="d-flex justify-content-between">
-                  <h3 className="text-title">Пропозиції</h3>
-                  <MoreLink link="." />
-                </div>
-                <CarouselListComponent>
+                <CarouselListComponent title="Пропозиції">
                   {products && products.map
                     ? products.map((a) => (
                         <MiniProductCardComponent
                           key={a.id}
                           id={a.id}
-                          isFavorite = {isFavorite}
+                          isFavorite={isCustomFavorite}
                           title={a.title}
                           description={a.shortDescription}
                           minPrice={a.minPrice}
@@ -135,29 +139,22 @@ export const Home = () => {
               </div>
             </div>
             <div className="row" style={{ margin: 0, padding: 0 }}>
-              {recently && (
+              {recently && recently.map && (
                 <div>
-                  <h3 className="text-title">Нещодавно переглянуті товари</h3>
-                  <CarouselListComponent>
-                    {recently && recently.map
-                      ? recently.map((a) => (
-                          <MiniProductCardComponent
-                            key={a.id}
-                            isFavorite = {isFavorite}
-                            id={a.id}
-                            title={a.title}
-                            description={a.shortDescription}
-                            minPrice={a.minPrice}
-                            countOfPharmacies={a.count}
-                            manufacturer={a.manufacturer}
-                            imageUrl={a.pathToPhoto}
-                          />
-                        ))
-                      : new Array(15)
-                          .fill(null)
-                          .map((_, index) => (
-                            <MiniProductCardComponent key={index} />
-                          ))}
+                  <CarouselListComponent title="Нещодавно переглянуті товари">
+                    {recently.map((a) => (
+                      <MiniProductCardComponent
+                        key={a.id}
+                        isFavorite={isCustomFavorite}
+                        id={a.id}
+                        title={a.title}
+                        description={a.shortDescription}
+                        minPrice={a.minPrice}
+                        countOfPharmacies={a.count}
+                        manufacturer={a.manufacturer}
+                        imageUrl={a.pathToPhoto}
+                      />
+                    ))}
                   </CarouselListComponent>
                 </div>
               )}
@@ -186,29 +183,41 @@ export const Home = () => {
                 })}
           </div>
         </div>
+            {selectedTopOfferIndex != null &&(
+            <>
         <div className="col-12">
           <div className="d-flex justify-content-between">
+            
             <h3 className="text-title">Популярні товари</h3>
             <MoreLink link="." />
           </div>
           <div className="d-flex justify-content-start">
-            <PopularButtonComponnent text="Вітаміни" />
-            <PopularButtonComponnent text="Вітаміни" />
-            <PopularButtonComponnent text="Вітаміни" />
-            <PopularButtonComponnent text="Вітаміни" />
+            {
+              topOffers.map((a,index)=><PopularButtonComponnent text={a.title} key={index} onClick={()=>setSelectedTopOfferIndex(index)}/>)
+            }
+            
           </div>
           <CarouselListComponent xlDisplayCount={6}>
-            {new Array(10).fill(null).map((_, index) => {
-              return (
-                <MiniProductCardComponent
-                  key={index}
-                ></MiniProductCardComponent>
-              );
-            })}
+            {topOffers[selectedTopOfferIndex].data.map((a,index)=>(<MiniProductCardComponent
+                key={index}
+                isFavorite={isCustomFavorite}
+                id={a.id}
+                title={a.title}
+                description={a.shortDescription}
+                minPrice={a.minPrice}
+                countOfPharmacies={a.count}
+                manufacturer={a.manufacturer}
+                imageUrl={a.pathToPhoto}
+
+            />))}
           </CarouselListComponent>
+        
         </div>
+        </>)}
         <div className="col-12 baner-bottom"></div>
+        
       </div>
+      
 
       {pngCards && pngCards.map && (
         <div className="col-12">
@@ -234,50 +243,30 @@ export const Home = () => {
 
       <div className="row " style={{ margin: 0, padding: 0 }}>
         <div className="col-12 col-md-6">
-          <AccordionComponnent />
+          <AccordionComponnent
+            id="1"
+            title="Ви можете вибрати аптеку на сторінці оформлення замовлення, за умови, що товари з вашого замовлення є в наявності в цій аптеці."
+            header="Як мені вибрати конкретну аптеку?"
+          />
+          <AccordionComponnent
+            id="2"
+            title="......"
+            header="Як мені оформити замовлення із самовивозом з аптеки?"
+          />
+          <AccordionComponnent
+            id="3"
+            title="......"
+            header="Я можу зробити замовлення з самовивозом з аптеки і оплатити його карткою на сайті?"
+          />
+          <AccordionComponnent
+            id="4"
+            title="......"
+            header="Яка вартість доставки?"
+          />
         </div>
 
         <div className="col-12 col-md-6">7</div>
       </div>
     </>
-
-    // <>
-    //   <ProductCardComponent
-    //     title="Алохол"
-    //     description="таблетки, вкриті плівковою оболонкою блістер у пачці, №50"
-    //     manufacturer='ПАО НПЦ "Борщаговский ХФЗ"'
-    //     countOfPharmacies={1204}
-    //     minPrice={285.51}
-    //     imageUrl="https://img.zdorovi.ua/500-375/png/11189-alohol-tabl-v-o-50-10h5.png"
-    //   />
-    //   <ProductCardComponent
-    //     title='Аскорбінка-КВ'
-    //     description='таблетки зі смак. полун. по 25 мг №10 в етикет. лалалалалалалалалалла'
-    //     manufacturer='АТ «КИЇВСЬКИЙ ВІТАМІННИЙ ЗАВОД».'
-    //     minPrice={7.46}
-    //     countOfPharmacies={375}
-    //     imageUrl='https://www.add.ua/media/catalog/product/cache/0cb86aa621afec2b43f6f8736c54c157/_/-/_-_-__2_33_1.jpg'
-    //   ></ProductCardComponent>
-    //   <ProductCardComponent isFavorite={true}></ProductCardComponent>
-    // </>
   );
-
-  // return (
-  //   <div>
-  //     <h1>Hello, world!</h1>
-  //     <p>Welcome to your new single-page application, built with:</p>
-  //     <ul>
-  //       <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-  //       <li><a href='https://facebook.github.io/react/'>React</a> for client-side code</li>
-  //       <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-  //     </ul>
-  //     <p>To help you get started, we have also set up:</p>
-  //     <ul>
-  //       <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-  //       <li><strong>Development server integration</strong>. In development mode, the development server from <code>create-react-app</code> runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-  //       <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration produces minified, efficiently bundled JavaScript files.</li>
-  //     </ul>
-  //     <p>The <code>ClientApp</code> subdirectory is a standard React application based on the <code>create-react-app</code> template. If you open a command prompt in that directory, you can run <code>npm</code> commands such as <code>npm test</code> or <code>npm install</code>.</p>
-  //   </div>
-  // );
 };

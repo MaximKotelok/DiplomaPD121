@@ -2,18 +2,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap');
 
 
-.oops{
+.oops {
     font-family: 'Comfortaa', sans-serif;
-
-font-size: 36px;
-font-weight: 500;
-line-height: 40px;
-
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 70px;
+    margin-top: -120px; 
+    transition: margin-top 0.3s ease;
 }
-.my-10{
-    margin-top: 100px;
-    margin-bottom: 100;
-    height: 100vh;
+
+.my-10 {
+    margin-top: 70px; 
+    margin-bottom: 100px;
 }
 
 .to-main{
@@ -28,3 +28,29 @@ line-height: 40px;
     color: white;
     
 }
+
+@media (max-width: 1000px) {
+   
+
+    .oops {
+        margin-top: -80px;
+        font-size: 26px;
+    }
+    .to-main {
+        padding: 15px 60px;
+    }
+    
+}
+
+@media (max-width: 668px) {
+
+    .oops {
+        margin-top: -45px;
+        font-size: 20px;
+
+    }
+    .to-main {
+        padding: 15px 30px;
+    }
+}
+
