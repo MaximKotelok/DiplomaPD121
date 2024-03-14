@@ -87,7 +87,6 @@ export function updateObj (obj, name, value){
   }
 }
 
-}
 
 export function isPharmacyOpen(timeOpen, timeClosed) {
   const now = new Date();

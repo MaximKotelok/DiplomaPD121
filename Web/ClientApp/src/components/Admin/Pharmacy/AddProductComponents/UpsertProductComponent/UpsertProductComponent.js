@@ -2,7 +2,6 @@ import 'react-quill/dist/quill.snow.css';
 import "bootstrap-icons/font/bootstrap-icons.css";
 import ReactQuill from 'react-quill';
 import React, { useEffect, useState, useContext } from 'react';
-import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import Select from 'react-select';
 

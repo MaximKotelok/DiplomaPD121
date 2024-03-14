@@ -7,8 +7,6 @@ import RegistrationForm from "./components/Auth/RegistrationFormComponent/Regist
 import LoginForm from "./components/Auth/LoginFormComponent/LoginForm";
 import ConfirmEmail from "./components/Auth/ConfirmEmailComponent/ConfirmEmail";
 
-import ChooseACategoryComponent from "./components/Admin/Pharmacy/AddProductComponents/ChooseACategoryComponent/ChooseACategoryComponent";
-import ChooseATypeComponent from "./components/Admin/Pharmacy/AddProductComponents/ChooseATypeComponent/ChooseATypeComponent";
 import UpsertProductComponent from "./components/Admin/Pharmacy/AddProductComponents/UpsertProductComponent/UpsertProductComponent";
 import UpsertBrandComponent from "./components/Admin/Brand/AddBrandComponents/UpsertBrandComponent/UpsertBrandComponent";
 import { Layout } from "./layouts/UserLayout/Layout";
@@ -75,11 +73,6 @@ const AppRoutes = [
   //     Layout: Layout
   // },
   {
-    path: "/ChooseACategory",
-    element: <ChooseACategoryComponent />,
-    Layout: LayoutAdmin,
-  },
-  {
     path: "/category/:id",
     element: <Category />,
     Layout: Layout,
@@ -88,11 +81,6 @@ const AppRoutes = [
     path: "/category/:id/:currentPage",
     element: <Category />,
     Layout: Layout,
-  },
-  {
-    path: "/ChooseAType/:categoryId",
-    element: <ChooseATypeComponent />,
-    Layout: LayoutAdmin,
   },
   {
     path: "/AddProduct/:categoryId/:typeId",

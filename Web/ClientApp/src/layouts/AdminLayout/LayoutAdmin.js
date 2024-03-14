@@ -104,7 +104,7 @@ const LayoutAdmin = ({ children }) => {
         <div className="app-content-header app-content-container ">
           <SearchComponent />
           {
-            additionalHeader
+            // additionalHeader
           }
 
 
@@ -119,9 +119,8 @@ const LayoutAdmin = ({ children }) => {
           {/* {children} */}
           <Outlet />
         </div>
+        <ToastContainer position="bottom-right" autoClose={3000} />
       </div>
-      <ToastContainer position="bottom-right" autoClose={3000} />
-    </div>
   );
 };
 
