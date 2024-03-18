@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import "./NavMenu.css";
 import "./NavMenuMap.css";
 import IconButton from "../../../../components/Common/IconButtonComponent/IconButton";
-import CatalogIcon from "../../../../assets/images/header-icons/catalogue-icon.svg"
+import CatalogIcon from "../../../../assets/images/header-icons/catalogue-icon.svg";
 import ServiceIcon from "../../../../assets/images/header-icons/services-icon.svg";
 import GeoIcon from "../../../../assets/images/header-icons/geo-icon.svg";
 import CartIcon from "../../../../assets/images/header-icons/cart-icon.svg";
@@ -20,6 +20,7 @@ import { ReactComponent as Logo } from "../../../../assets/images/LogoCapsula.sv
 import SearchElement from "../../../../components/Common/SearchComponent/SearchComponent";
 import DropDown from "../DropDownComponent/DropDown";
 import { checkIsAuth } from "../../../../services/user";
+import DropDownLocation from "../DropDownLocationComponent/DropDownLocation";
 
 //import CatalogIcon from './catalog_icon_215654.svg';
 export class NavMenu extends Component {
@@ -48,45 +49,40 @@ export class NavMenu extends Component {
           container
           light
         >
-
           <div className="inner-custom-navbar navbar-nav flex-grow">
-            
-
             <NavbarBrand className="logo" tag={Link} to="/">
               <Logo height={40} fill="black" className="logo-pharma" />
             </NavbarBrand>
 
-            <NavLink className="catalogue" tag={Link} to="/">
+            {/* <NavLink className="catalogue" tag={Link} to="/"> */}
+            <div className="catalogue">
               {/* <IconButton iconPath={CatalogIcon} text="Каталог" /> */}
               <DropDown iconPath={CatalogIcon} />
-
-            </NavLink>
+            </div>
             <NavLink className="services" tag={Link} to="/counter">
               <IconButton iconPath={ServiceIcon} text="Сервіси" />
             </NavLink>
 
-            <NavLink className="geo" tag={Link} to="/map">
-              <IconButton iconPath={GeoIcon} text="Геолокація" />
-            </NavLink>
-                        
-            <SearchElement className="searchbar"/>
-            
-            
+            {/* <NavLink className="geo" tag={Link} to="/map"> */}
+            <div className="geo">
+              <DropDownLocation iconPath={GeoIcon} text="Геолокація" />
+              {/* <IconButton iconPath={GeoIcon} text="Геолокація" /> */}
+            </div>
 
+            <SearchElement className="searchbar" />
 
-            
             <NavLink tag={Link} className="cart" to="/cart">
               <IconButton iconPath={CartIcon} />
             </NavLink>
 
-
-
-            <NavLink tag={Link} className="profile" to={checkIsAuth()?"/profile":"/auth"}>
+            <NavLink
+              tag={Link}
+              className="profile"
+              to={checkIsAuth() ? "/profile" : "/auth"}
+            >
               <IconButton iconPath={ProfileIcon} />
             </NavLink>
-
           </div>
-
         </Navbar>
       </header>
     );

@@ -32,10 +32,9 @@ function DropDown({ iconPath }) {
           margin: "0 8%",
           borderRadius: "20px",
         }}
+        size="xl"
         show={show}
         onHide={() => setShow(false)}
-        // dialogClassName="modal-90w"  webpack://./node_modules/bootstrap/scss/_modal.scss
-        aria-labelledby="example-custom-modal-styling-title"
       >
         <Modal.Body>
           <div className="row">

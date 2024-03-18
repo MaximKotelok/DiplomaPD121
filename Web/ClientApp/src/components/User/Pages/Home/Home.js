@@ -14,7 +14,7 @@ import CircleCard from "../../../Common/CircleCardComponent/CircleCard";
 import CustomList from "./Component/CustomListComponent/CustomList";
 import AccordionComponnent from "../../../Common/AccordionQuestionComponent/accordionComponent";
 import MiniProductCardComponent from "../../../Common/MiniProductCardComponent/MiniProductCardComponent";
-import homePageImg from "../../../../assets/images/homePageImg.png";
+import homePageImg from "../../../../assets/images/BANNER.png";
 import AdaptiveContainerComponent from "../../../Common/AdaptiveContainerComponent/AdaptiveContainerComponent";
 
 import "./Home.css";
@@ -84,7 +84,7 @@ export const Home = () => {
   function isCustomFavorite(id) {
     return isFavorite(id, favs);
   }
-
+  // Макс поправ карточки і каруселі!!!!!!!!!!!!!!!!!!!!!!-!!!!!!!!!!!!!!!!!!!!!!!!!
   return (
     <>
       <div className="row">
@@ -93,11 +93,11 @@ export const Home = () => {
         <div className="row">
           <div className="col-4">
             <CustomList data={categories.data} />
-            <MoreLink link="." />
+            {/* <MoreLink link="." /> */}
           </div>
 
           <div className="col-8">
-            <div className="row" style={{ margin: 0, padding: 0 }}>
+            <div className="row mt-5" style={{ margin: 0, padding: 0 }}>
               <div>
                 <CarouselListComponent title="Пропозиції">
                   {products && products.map
@@ -122,7 +122,7 @@ export const Home = () => {
                 </CarouselListComponent>
               </div>
             </div>
-            <div className="row" style={{ margin: 0, padding: 0 }}>
+            <div className="row mt-5" style={{ margin: 0, padding: 0 }}>
               {recently && recently.map && (
                 <div>
                   <CarouselListComponent title="Нещодавно переглянуті товари">
@@ -146,12 +146,11 @@ export const Home = () => {
           </div>
         </div>
 
-        <div className="col-12">
-          <div className="d-flex justify-content-between">
-            <h3 className="text-title">Бренд</h3>
-            <MoreLink link="." />
+        <div className="col-12 mt-5">
+          <div className="d-flex justify-content-between mb-3">
+            <h3 className="text-title ">Бренд</h3>
           </div>
-          <div className="flex-container d-flex">
+          <div className="flex-container d-flex flex-wrap">
             {brands.data && brands.data.map
               ? brands.data.map((a) => {
                   return (
@@ -167,12 +166,12 @@ export const Home = () => {
                 })}
           </div>
         </div>
-        <div className="col-12">
+        <div className="col-12 mt-5">
           <div className="d-flex justify-content-between">
-            <h3 className="text-title">Популярні товари</h3>
+            <h3 className="text-title mb-4">Популярні товари</h3>
             <MoreLink link="." />
           </div>
-          <div className="d-flex justify-content-start">
+          <div className="d-flex justify-content-start  flex-wrap">
             <PopularButtonComponnent text="Вітаміни" />
             <PopularButtonComponnent text="Вітаміни" />
             <PopularButtonComponnent text="Вітаміни" />
@@ -188,13 +187,13 @@ export const Home = () => {
             })}
           </CarouselListComponent>
         </div>
-        <div className="col-12 baner-bottom"></div>
+        <div className="col-12 baner-bottom mt-5"></div>
       </div>
 
       {pngCards && pngCards.map && (
-        <div className="col-12">
+        <div className="col-12 mt-5">
           <div className=" d-flex justify-content-between">
-            <h3 className="text-title">Вітаміни та мінерали</h3>
+            <h3 className="text-title mb-4">Вітаміни та мінерали</h3>
             <MoreLink link="." />
           </div>
 
@@ -213,7 +212,7 @@ export const Home = () => {
         </div>
       )}
 
-      <div className="row " style={{ margin: 0, padding: 0 }}>
+      <div className="row mt-5 mb-4" style={{ margin: 0, padding: 0 }}>
         <div className="col-12 col-md-6">
           <AccordionComponnent
             id="1"

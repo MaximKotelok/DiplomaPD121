@@ -93,7 +93,7 @@ export const CategoryWithSubCategoriesComponent = () => {
             })
           }
         </div>
-        <div className="col-9">
+        <div  className="col-9">
           {
           categoriesProducts&&
           categoriesProducts.map &&

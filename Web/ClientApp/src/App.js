@@ -30,6 +30,8 @@ import SelectedProducts from "./components/User/Pages/Profile/Components/Selecte
 import WathcList from "./components/User/Pages/Profile/Components/WathcListComponent/WathcList";
 import UpsertBrandComponent from "./components/Admin/Brand/AddBrandComponents/UpsertBrandComponent/UpsertBrandComponent";
 import UpsertPharmaCompanyComponent from "./components/Admin/PharmaCompany/AddPharmaCompanyComponents/UpsertPharmaCompanyComponent/UpsertPharmaCompanyComponent";
+import EditProfile from "./components/User/Pages/Profile/Components/EditProfileComponent/EditProfile";
+import { Reservation } from "./components/User/Pages/Reservation/Reservation";
 
 // export default class App extends Component {
 // static displayName = App.name;
@@ -45,6 +47,7 @@ export default class App extends Component {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index path="" element={<Home />} />
+              <Route path="res" element={<Reservation />} />
               <Route path="auth/*" element={<AuthPageComponent />}>
                 <Route path="registration" element={<RegistrationForm />} />
                 <Route path="login" element={<LoginForm />} />
@@ -57,8 +60,9 @@ export default class App extends Component {
                 <Route path="minebookeds" element={<MineBookeds />} />
                 <Route path="selectedproducts" element={<SelectedProducts />} />
                 <Route path="wathclist" element={<WathcList />} />
+                <Route path="edit" element={<EditProfile />} />
               </Route>
-            <Route path="confirm-email" element={<ConfirmEmail />} />
+              <Route path="confirm-email" element={<ConfirmEmail />} />
               <Route path="map/:id?" element={<Map />} />
               <Route path="product-details/:id" element={<Details />} />
               <Route path="category/:id" element={<Category />} />
@@ -70,13 +74,21 @@ export default class App extends Component {
               <Route path="" element={<Home />} />
               <Route path="zayavka" element={<TableComponent />} />
               <Route path="addBrand" element={<UpsertBrandComponent />} />
-              <Route path="updateBrand/:brandId" element={<UpsertBrandComponent />} />
-              <Route path="addPharmaCompany" element={<UpsertBrandComponent />} />
-              <Route path="updatePharmaCompany/:companyId" element={<UpsertPharmaCompanyComponent />} />              
+              <Route
+                path="updateBrand/:brandId"
+                element={<UpsertBrandComponent />}
+              />
+              <Route
+                path="addPharmaCompany"
+                element={<UpsertBrandComponent />}
+              />
+              <Route
+                path="updatePharmaCompany/:companyId"
+                element={<UpsertPharmaCompanyComponent />}
+              />
             </Route>
           </Routes>
         </LayoutProvider>
-
       </>
     );
   }

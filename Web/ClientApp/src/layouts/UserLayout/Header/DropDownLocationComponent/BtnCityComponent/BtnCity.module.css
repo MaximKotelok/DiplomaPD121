@@ -1,0 +1,26 @@
+.btn-city{
+    padding: 8px 12px ;
+    border-radius: 8px  ;
+    border: 2px solid rgba(255, 149, 0, 1);
+
+
+    font-family: var(--standart-font);
+font-size: 14px;
+font-weight: 500;
+line-height: 18px;
+    color: rgba(13, 30, 49, 1);
+
+    width: min-content;
+    white-space: nowrap;
+    margin: 6px 0;
+}
+
+.btn-city:hover{
+    cursor: pointer;
+    background-color:  #ffeacc;
+}
+.btn-city-active{
+font-weight: 600;
+    color: rgba(242, 242, 247, 1);
+    background-color:  rgba(255, 149, 0, 1);
+}
