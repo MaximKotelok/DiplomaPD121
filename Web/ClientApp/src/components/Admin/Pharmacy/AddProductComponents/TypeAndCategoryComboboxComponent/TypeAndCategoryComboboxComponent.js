@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import CustomSelectComponent from '../CustomSelectComponent/CustomSelectComponent';
+import CustomSelectComponent from '../../../../Common/CustomSelectComponent/CustomSelectComponent';
 
 const TypeAndCategoryComboboxComponent = ({ categories, types, typeId, categoryId, setCategory, setType, isDisabled }) => {
         

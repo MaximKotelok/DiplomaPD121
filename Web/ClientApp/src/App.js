@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Routes, Route } from "react-router-dom";
-import AppRoutes from "./AppRoutes";
 // import { Layout } from './layouts/UserLayout/Layout';
 import "./custom.css";
 import { setupLocation } from "./utils/Location";

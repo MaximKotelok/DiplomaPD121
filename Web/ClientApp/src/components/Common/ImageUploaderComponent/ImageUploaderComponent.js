@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 
-import placeholder from "../../../../../assets/images/placeholder.png";
-import { ApiPath } from '../../../../../utils/Constants';
+import placeholder from "../../../assets/images/placeholder.png";
+import { ApiPath } from '../../../utils/Constants';
 
 import styles from "./ImageUploader.module.css"
 

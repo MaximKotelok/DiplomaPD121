@@ -14,8 +14,8 @@ import { getAllBrands } from "../../../../../services/brand"
 
 import { StateInfos, Success, LayoutProviderValues, GetCategoriesForProductAdd } from '../../../../../utils/Constants';
 
-import ImageUploaderComponent from '../ImageUploaderComponent/ImageUploaderComponent';
-import InputForProductComponent from '../InputForProductComponent/InputForProductComponent'
+import ImageUploaderComponent from '../../../../Common/ImageUploaderComponent/ImageUploaderComponent';
+import InputForProductComponent from '../../../../Common/InputForProductComponent/InputForProductComponent'
 
 
 import "./UpsertProductComponent.css"

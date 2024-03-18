@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styles from "./FormDataStandartInputsComponent.module.css"
 import ReactQuill from 'react-quill';
-import InputForProductComponent from '../InputForProductComponent/InputForProductComponent';
-import CustomSelectComponent from '../CustomSelectComponent/CustomSelectComponent';
+import InputForProductComponent from '../../../../Common/InputForProductComponent/InputForProductComponent';
+import CustomSelectComponent from '../../../../Common/CustomSelectComponent/CustomSelectComponent';
 
 const FormDataStandartInputsComponent = ({ formData, setFormData, listData}) => {
 
