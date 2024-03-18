@@ -33,6 +33,7 @@ import UpsertPharmaCompanyComponent from "./components/Admin/PharmaCompany/AddPh
 import UpsertPharmacyComponent from "./components/Admin/Pharmacy/AddPharmacyComponents/UpsertPharmacyComponent/UpsertPharmacyComponent";
 import { UpsertProduct } from "./utils/Constants";
 import { Reservation } from "./components/User/Pages/Reservation/Reservation";
+import UpsertProductComponent from "./components/Admin/Pharmacy/AddProductComponents/UpsertProductComponent/UpsertProductComponent";
 
 // export default class App extends Component {
 // static displayName = App.name;
@@ -49,7 +50,6 @@ export default class App extends Component {
 
   render() {
     return (
-      <>
         <LayoutProvider>
           <Routes>
             <Route path="/" element={<Layout />}>
@@ -81,7 +81,8 @@ export default class App extends Component {
             <Route path="admin" element={<LayoutAdmin />}>
               <Route path="" element={<Home />} />
               <Route path="zayavka" element={<TableComponent />} />
-              <Route path="updateProduct/:productId" element={<UpsertProduct />} />
+              <Route path="updateProduct/:productId" element={<UpsertProductComponent />} />
+              <Route path="addProduct" element={<UpsertProductComponent />} />
               <Route path="addBrand" element={<UpsertBrandComponent />} />
               <Route path="updateBrand/:brandId" element={<UpsertBrandComponent />} />
               <Route path="addPharmaCompany" element={<UpsertPharmaCompanyComponent />} />
@@ -91,8 +92,6 @@ export default class App extends Component {
             </Route>
           </Routes>
         </LayoutProvider>
-
-      </>
     );
   }
 }

@@ -1,3 +1,45 @@
+.round-white-div{
+    border-radius: 16px;
+    background-color: white;
+}
+
+.slider-container button:disabled {
+    display: none!important;
+}
+
+.slider-container .slider-control-centerright button,
+.slider-container .slider-control-centerleft button {
+    color: transparent!important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    font-size: 0px;
+    border-radius: 50%;
+    background-color: #139787!important;
+    opacity: 0.6!important;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    position: relative!important;
+    line-height: 0;
+    background-repeat: no-repeat!important;    
+    background-position: center!important;
+    background-size: 30px!important;
+}
+
+
+.slider-container .slider-control-centerright button {
+    
+    background-image: url("../assets/images/arrow-right-short.svg")!important;
+    
+}
+
+.slider-container .slider-control-centerleft button {
+    background-image: url("../assets/images/arrow-left-short.svg")!important;
+}
+
+
 header {
     background-color: white;
 }

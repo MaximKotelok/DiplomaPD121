@@ -80,6 +80,14 @@ export function toTwoDigitsNumber(number){
     })
 }
 
+export function updateObj (obj, name, value){
+  return {
+    ...obj,
+    [name]:value
+  }
+}
+
+
 export function isPharmacyOpen(timeOpen, timeClosed) {
   const now = new Date();
 

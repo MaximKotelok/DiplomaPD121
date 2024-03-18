@@ -77,11 +77,6 @@ const AppRoutes = [
   //     Layout: Layout
   // },
   {
-    path: "/ChooseACategory",
-    element: <ChooseACategoryComponent />,
-    Layout: LayoutAdmin,
-  },
-  {
     path: "/category/:id",
     element: <Category />,
     Layout: Layout,
@@ -90,11 +85,6 @@ const AppRoutes = [
     path: "/category/:id/:currentPage",
     element: <Category />,
     Layout: Layout,
-  },
-  {
-    path: "/ChooseAType/:categoryId",
-    element: <ChooseATypeComponent />,
-    Layout: LayoutAdmin,
   },
   {
     path: "/AddProduct/:categoryId/:typeId",

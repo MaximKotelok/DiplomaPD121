@@ -171,9 +171,9 @@ namespace Web.Controllers
 		}
 
 		[HttpGet("GetCategoriesForProductAdd")]
-		public IActionResult GetCategoriesForProductAdd(string title, int count)
+		public IActionResult GetCategoriesForProductAdd()
 		{
-			var result = _service.GetAllCategories(a => a!.Title!.Contains(title) && a.CanHasProducts == true).Take(count);
+			var result = _service.GetAllCategories();
 			if (result is not null)
 			{
 				return Ok(result);

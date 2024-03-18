@@ -282,6 +282,7 @@ namespace Web.Controllers
 			using var transaction = new TransactionScope();
 			try
 			{
+
 				if (postModel.ActiveSubstanceID is not null)
 					UpsertMedicine(postModel);
 				else

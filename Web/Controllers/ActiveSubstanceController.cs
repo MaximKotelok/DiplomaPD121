@@ -21,8 +21,8 @@ namespace Web.Controllers
             _medicineService = medicineService;
         }
 
-        [HttpGet("")]
-        public IActionResult GetAllIActiveSubstances()
+        [HttpGet("GetAllActiveSubstances")]
+        public IActionResult GetAllActiveSubstances()
         {
             var result = _service.GetAllActiveSubstances();
             if (result is not null)

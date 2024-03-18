@@ -3,6 +3,8 @@ import React, { useState, useRef } from 'react';
 import placeholder from "../../../../../assets/images/placeholder.png";
 import { ApiPath } from '../../../../../utils/Constants';
 
+import styles from "./ImageUploader.module.css"
+
 const ImageUploaderComponent = ({selectedImage, setSelectedImage, imageUrl}) => {
   const fileInputRef = useRef(null);
   const [preview, setPreview] = useState(null);
@@ -21,7 +23,7 @@ const ImageUploaderComponent = ({selectedImage, setSelectedImage, imageUrl}) => 
   };
 
   return (
-    <div>
+    <div role='button'>
       <input
         type="file"
         accept="image/*"
@@ -29,11 +31,10 @@ const ImageUploaderComponent = ({selectedImage, setSelectedImage, imageUrl}) => 
         style={{ display: 'none' }}
         ref={fileInputRef}
       />
-      <img
-        className='product-image'
+      <img    
         src={preview || (imageUrl && ApiPath + imageUrl) || placeholder}
         alt="Selected"
-        style={{ cursor: 'pointer', maxWidth: '300px', maxHeight: '300px' }}
+        className={`${styles["image-upload"]}`}        
         onClick={() => fileInputRef.current.click()}
       />
     </div>
