@@ -11,6 +11,16 @@ html {
     width: 100%;
 }
 
+.section-title{
+    font-family: var(--standart-font);
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 30px;
+    color: #1C1C1CCC;
+
+    
+}
+
 .brn-form {
     width: 100%;
     padding: 16px 20px;

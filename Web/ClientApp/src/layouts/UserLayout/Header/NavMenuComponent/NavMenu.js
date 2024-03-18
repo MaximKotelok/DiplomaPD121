@@ -65,7 +65,7 @@ export class NavMenu extends Component {
               <IconButton iconPath={ServiceIcon} text="Сервіси" />
             </NavLink>
 
-            <NavLink className="geo" tag={Link} to="/map">
+            <NavLink className="geo" tag={Link} to="/map/pharmacies">
               <IconButton iconPath={GeoIcon} text="Геолокація" />
             </NavLink>
                         

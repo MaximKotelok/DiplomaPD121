@@ -12,5 +12,6 @@ namespace Domain.Models
     {
         [Required]
         public string? Title { get; set; }
+        public string? PathToPhoto { get; set; }
 	}
 }

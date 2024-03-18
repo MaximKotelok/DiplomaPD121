@@ -8,13 +8,15 @@ import { isPharmacyOpen } from "../../../../../../utils/Functions";
 import SearchComponent from "../../../../../Common/SearchComponent/SearchComponent";
 import ConreteProductSearchComponent from "../ConreteProductSearchComponent/ConreteProductSearchComponent";
 import { Link } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
 
 const ListPharmaciesItemComponent = ({id, isSelected, title, address, timeClosed, timeOpen, onClick,lon,lat }) => {    
 
     let isOpen = isPharmacyOpen(timeOpen,timeClosed);
 
+
     return (
-        <div onClick={onClick} className={`${styles["card"]} ${(isSelected&&styles["active"])}`}>        
+        <div id={`pharmacy${id}`} onClick={onClick} className={`${styles["card"]} ${(isSelected&&styles["active"])}`}>        
             <p className={`${styles["pharma-name"]}`}>{title} <i className={`bi bi-info-circle ${styles["info-icon"]}`}></i></p>            
             <div className="my-2">
 
