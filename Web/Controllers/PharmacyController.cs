@@ -1,8 +1,11 @@
-﻿using Domain.Models;
+﻿using Domain.Dto;
+using Domain.Models;
+using Domain.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Repository.Repository.Interfaces;
 using Services.CategoryService;
 using Services.CityService;
 using Services.ConcreteProductService;
@@ -18,10 +21,13 @@ namespace Web.Controllers
 	{
 		private readonly IPharmacyService _pharmacyService;
 		private readonly ICityService _cityService;
+        private readonly IRepositoryManager _repository;
 
-		public PharmacyController(IPharmacyService service, ICityService _cityService) {
+
+        public PharmacyController(IPharmacyService service, ICityService _cityService, IRepositoryManager repository) {
 			this._pharmacyService = service;
 			this._cityService = _cityService;
+			this._repository = repository;
 		}
 
 		[HttpGet("")]
@@ -35,7 +41,7 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-		[HttpGet("/GetAllConcreteProductsFromPharmacy/{id}")]
+		[HttpGet("GetAllConcreteProductsFromPharmacy/{id}")]
 		public IActionResult GetAllConcreteProductsFromPharmacy(int id)
 		{
 			var result = _pharmacyService.GetPharmacy(a=>a.Id==id, "ConcreteProducts");
@@ -94,29 +100,71 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-        [HttpPost]
-				[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
-        public IActionResult AddPharmacy(Pharmacy pharmacy)
-		{
-			_pharmacyService.InsertPharmacy(pharmacy);
-			return Ok("Data inserted");
-		}
+        [HttpPost("UpsertPharmacy")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+        public async Task<IActionResult> UpsertBrand(PostPharmacyViewModel postModel)
+        {
+            /*using var transaction = new TransactionScope();*/
+            try
+            {
+                await UpsertPharmacyEntity(postModel);
 
-		[HttpPut("{id}")]
-                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
-        public IActionResult UpdatePharmacy(int id, Pharmacy pharmacy)
-		{
-			pharmacy.Id = id;
-			_pharmacyService.UpdatePharmacy(pharmacy);
-			return Ok("Updation done");
-		}
+                /* transaction.Complete();*/
+                return Ok("Data inserted");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Failed to upsert product. Error: {ex.Message}");
+            }
+        }
 
-		[HttpDelete("{id}")]
+        [HttpDelete("{id}")]
                 [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult DeletePharmacy(int id)
 		{
 			_pharmacyService.DeletePharmacy(id);
 			return Ok("Data Deleted");
 		}
-	}
+
+        private async Task UpsertPharmacyEntity(PostPharmacyViewModel postModel)
+        {
+            var pharmacy = new Pharmacy
+            {
+				Address = postModel.Address,
+				OpenTime = postModel.OpenTime,
+				CloseTime = postModel.CloseTime,
+				Longitude = postModel.Longitude,
+				Latitude = postModel.Latitude,
+				PharmaCompanyID = postModel.PharmaCompanyID,
+				CityID = postModel.CityID,
+            };
+
+
+            if (postModel.Id == null)
+            {
+                var user = new UserRegistrationDto
+                {
+                    UserName = postModel.Username,
+                    Password = postModel.Password,
+                    Email = postModel.Email,
+                };
+
+                user.Roles = new List<string>
+                {
+                    SD.Role_Company
+                };
+
+                _pharmacyService.InsertPharmacy(pharmacy);
+                await _repository.UserAuthentication.RegisterUserAsync(user);
+            }
+            else
+            {
+                pharmacy.Id = postModel.Id.Value;
+                _pharmacyService.UpdatePharmacy(pharmacy);
+            }
+
+            Console.WriteLine("added");
+        }
+
+    }
 }

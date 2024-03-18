@@ -23,7 +23,7 @@ namespace Web.Controllers
 		}
 
 		[HttpGet("GetAllCountries")]
-		public IActionResult GetAllBrands()
+		public IActionResult GetAllCountries()
 		{
 			var result = _service.GetAllCountries();
 			if (result is not null)
@@ -35,7 +35,7 @@ namespace Web.Controllers
 
 
         [HttpGet("GetCountryById")]
-        public IActionResult GetAllBrands(int brandId)
+        public IActionResult GetCountryById(int brandId)
         {
             var result = _service.GetCountry(x => x.Id == brandId);
             if (result is not null)

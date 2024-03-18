@@ -7,10 +7,12 @@ import RegistrationForm from "./components/Auth/RegistrationFormComponent/Regist
 import LoginForm from "./components/Auth/LoginFormComponent/LoginForm";
 import ConfirmEmail from "./components/Auth/ConfirmEmailComponent/ConfirmEmail";
 
-import ChooseACategoryComponent from "./components/Admin/Pharmacy/AddProductComponents/ChooseACategoryComponent/ChooseACategoryComponent";
-import ChooseATypeComponent from "./components/Admin/Pharmacy/AddProductComponents/ChooseATypeComponent/ChooseATypeComponent";
-import UpsertProductComponent from "./components/Admin/Pharmacy/AddProductComponents/UpsertProductComponent/UpsertProductComponent";
+import ChooseACategoryComponent from "./components/Admin/Product/AddProductComponents/ChooseACategoryComponent/ChooseACategoryComponent";
+import ChooseATypeComponent from "./components/Admin/Product/AddProductComponents/ChooseATypeComponent/ChooseATypeComponent";
+import UpsertProductComponent from "./components/Admin/Product/AddProductComponents/UpsertProductComponent/UpsertProductComponent";
 import UpsertBrandComponent from "./components/Admin/Brand/AddBrandComponents/UpsertBrandComponent/UpsertBrandComponent";
+import UpsertPharmaCompanyComponent from "./components/Admin/PharmaCompany/AddPharmaCompanyComponents/UpsertPharmaCompanyComponent/UpsertPharmaCompanyComponent";
+import UpsertPharmacyComponent from "./components/Admin/Pharmacy/AddPharmacyComponents/UpsertPharmacyComponent/UpsertPharmacyComponent";
 import { Layout } from "./layouts/UserLayout/Layout";
 import LayoutAdmin from "./layouts/AdminLayout/LayoutAdmin";
 import AuthPageComponent from "./components/Auth/AuthPageComponent";
@@ -20,7 +22,7 @@ import TableComponent from "./components/Admin/Admin/ZayavkaComponents/TableComp
 import Cart from "./components/User/Pages/Cart/Cart";
 import { Reservation } from "./components/User/Pages/Reservation/Reservation";
 import Profile from "./components/User/Pages/Profile/Profile";
-import UpsertPharmaCompanyComponent from "./components/Admin/PharmaCompany/AddPharmaCompanyComponents/UpsertPharmaCompanyComponent/UpsertPharmaCompanyComponent";
+
 const AppRoutes = [
   {
     index: true,
@@ -125,13 +127,23 @@ const AppRoutes = [
         Layout: LayoutAdmin
     },
     {
-        path: '/AddPharmaCompany',
+        path: '/AddPharmacy',
         element: <UpsertPharmaCompanyComponent />,
         Layout: LayoutAdmin
     },
     {
-        path: '/UpdatePharmaCompany/:companyId',
+        path: '/UpdatePharmacy/:pharmacyId',
         element: <UpsertPharmaCompanyComponent />,
+        Layout: LayoutAdmin
+    },
+    {
+        path: '/AddPharmaCompany',
+        element: <UpsertPharmacyComponent />,
+        Layout: LayoutAdmin
+    },
+    {
+        path: '/UpdatePharmaCompany/:companyId',
+        element: <UpsertPharmacyComponent />,
         Layout: LayoutAdmin
     },
   {

@@ -1,0 +1,15 @@
+
+
+.product-add-input::placeholder {
+    color: #A7A7A7;
+}
+.product-add-input{
+    height: 36.4px;
+    font-weight: 300;
+    font-size: 16px;
+    font-family:  var(--standart-font);
+    line-height: 20.08px;
+    padding: 10px 10px;
+    box-shadow: none !important;
+
+}
