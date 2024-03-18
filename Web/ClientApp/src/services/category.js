@@ -2,7 +2,7 @@ import { ClassHeader, GetCategoriesForProductAdd, GetMainCategories, GetRecomend
 import { getFromServer} from "../utils/Queries";
 import { getSupInfo } from "./product";
 
-export async function getAllCategories(title) {
+export async function getAllCategories() {
     return await getFromServer(GetCategoriesForProductAdd)
 } 
 

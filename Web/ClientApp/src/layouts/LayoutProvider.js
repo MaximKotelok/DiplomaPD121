@@ -13,13 +13,12 @@ const LayoutProvider = ({ children }) => {
     setComponentMounted("");
   };
 
-  const setAdditionalComponent = (data, component) => {
-    setComponentMounted(data);
+  const setAdditionalComponent = (component) => {    
     setAdditonalComponent(component)
   };
 
   const clearAdditionalComponent = () => {
-    setComponentMounted("");
+    setAdditonalComponent(null)
   };
 
   return (

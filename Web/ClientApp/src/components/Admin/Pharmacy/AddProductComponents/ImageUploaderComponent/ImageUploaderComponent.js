@@ -23,7 +23,7 @@ const ImageUploaderComponent = ({selectedImage, setSelectedImage, imageUrl}) => 
   };
 
   return (
-    <div>
+    <div role='button'>
       <input
         type="file"
         accept="image/*"

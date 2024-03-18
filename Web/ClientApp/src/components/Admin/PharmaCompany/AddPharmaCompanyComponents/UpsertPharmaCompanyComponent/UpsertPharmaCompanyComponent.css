@@ -35,24 +35,6 @@
 }
 
 
-.add-product-right-container{
-    position: fixed !important;
-    padding: 30px;
-    right: 0;
-    top:0;
-    max-width: 30%!important;
-    background-color: #F9F9F9!important;
-    border: #ACACAC 10px solid;
-    border-width: 0 0 0 1px;
-    height: 100%; 
-    overflow-y: scroll;
-    transform: scaleX(-1)!important;
-}
-
-.add-product-main-container{    
-    height: 100vh;
-}
-
 .css-1u9des2-indicatorSeparator{
     display: none !important;
 }
@@ -67,20 +49,6 @@
     border-radius: 9px!important;
 }
 
-.ql-editor{
-    position: relative;
-}
-
-.ql-editor, .ql-container{
-    height: 430px;
-}
-
-.ql-toolbar{
-    position: relative;
-    top: 10px;
-    z-index: 2!important;
-    background-color: white !important;
-}
 
 .select-div{
     display: flex;
@@ -121,9 +89,4 @@
 .product-image{
     height: 203px;
     width: 203px;
-}
-
-.quill  { 
-    height: 90%!important; 
-    position: relative;
 }

@@ -24,15 +24,10 @@ import { Outlet } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 const LayoutAdmin = ({ children }) => {
   const layoutContext = useContext(LayoutContext);
-
+  console.log(layoutContext.additonalComponent)
   return (
     <div
-      className={`app-container ${
-        layoutContext.stateComponentMounted === LayoutProviderValues.ADD ||
-        layoutContext.stateComponentMounted === LayoutProviderValues.UPDATE
-          ? "upsert-page"
-          : ""
-      }`}
+      className={`app-container`}
     >
       <div className="sidebar ">
         <div className="sidebar-header">
@@ -104,7 +99,7 @@ const LayoutAdmin = ({ children }) => {
         <div className="app-content-header app-content-container ">
           <SearchComponent />
           {
-            // additionalHeader
+            layoutContext.additonalComponent
           }
 
 
@@ -115,12 +110,12 @@ const LayoutAdmin = ({ children }) => {
         </div>
 
         {/* <div className="products-area-wrapper tableView"> */}
-          {/* <TableComponent /> */}
-          {/* {children} */}
-          <Outlet />
-        </div>
-        <ToastContainer position="bottom-right" autoClose={3000} />
+        {/* <TableComponent /> */}
+        {/* {children} */}
+        <Outlet />
       </div>
+      <ToastContainer position="bottom-right" autoClose={3000} />
+    </div>
   );
 };
 

@@ -282,17 +282,6 @@ namespace Web.Controllers
 			using var transaction = new TransactionScope();
 			try
 			{
-				if (postModel.Id != null)
-				{
-					var product = _productService.GetProduct(a=>a.Id == postModel.Id);
-					
-					if(product != null && postModel.ProductAttributeGroupID != product.ProductAttributeGroupID)
-					{
-						_productService.DeleteProduct(postModel.Id.Value);
-					}
-
-				}
-
 
 				if (postModel.ActiveSubstanceID is not null)
 					UpsertMedicine(postModel);

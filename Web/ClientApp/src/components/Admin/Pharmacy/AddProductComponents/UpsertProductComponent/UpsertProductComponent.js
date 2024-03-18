@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import 'react-quill/dist/quill.snow.css';
 import "bootstrap-icons/font/bootstrap-icons.css";
 import ReactQuill from 'react-quill';
@@ -25,13 +26,13 @@ import { getAllCategories, getFirstNCategoryByTitle } from '../../../../../servi
 import TypeAndCategoryComboboxComponent from '../TypeAndCategoryComboboxComponent/TypeAndCategoryComboboxComponent';
 import { listData, listDataTemplate, productTemplate } from './ProductTemplates';
 import { updateObj } from '../../../../../utils/Functions';
-import Swal from 'sweetalert2';
+import LayoutContext from '../../../../../layouts/LayoutContext';
 
 const UpsertProductComponent = () => {
-
+    const { setAdditionalComponent, clearAdditionalComponent } = useContext(LayoutContext);    
     const [stateInfo, setStateInfo] = useState(StateInfos.LOADING);
 
-    const { categoryId, typeId, productId } = useParams();
+    const { productId } = useParams();
 
     const [data, setData] = useState({
         descriptionName: "Опис",
@@ -43,26 +44,47 @@ const UpsertProductComponent = () => {
     const [dataFromServer, setDataFromServer] = useState(listDataTemplate);
 
     const [additionalAttribute, setAdditionalAttribute] = useState([]);
+    const [category, setCategory] = useState(null);
+    const [type, setType] = useState(null);
+    const [disableButtonState, setDisableButtonState] = useState(false);
 
     const setCustomState = (setState, name, updates) => {
         setState((prevState) => updateObj(prevState, name, updates));
     };
 
     async function getDataOrSetError(getService, setData) {
+
         if (stateInfo !== StateInfos.ERROR) {
             let res = await getService()
             if (res.status === Success)
                 await setData(res.data);
             else
-                setStateInfo(StateInfos.ERROR)
+                setStateInfo(StateInfos.ERROR);
         }
     }
 
     //#region init
 
-    async function init() {
-        if (categoryId || typeId)
-            setCustomState(setData, "formData", { ...data.formData, categoryID: categoryId, typeID: typeId })
+    async function init(){
+
+
+        setCustomState(setData, "isHeaderDisabled", false);
+        await getDataOrSetError(
+            getAllCategories,
+            async (value) => { setCustomState(setDataFromServer, "categories", value) }
+            )
+        await getDataOrSetError(
+            getAllTypes,
+            async (value) => { setCustomState(setDataFromServer, "types", value) }
+            )
+            if(productId){             
+                initAfterConfirm();
+            }
+        }
+
+    async function initAfterConfirm() {
+        setCustomState(setData, "isHeaderDisabled", true);
+        setCustomState(setData, "formData", { ...data.formData, categoryID: category, productAttributeGroupID: type });
         let tmpObject;
         try {
             if (productId) {
@@ -73,7 +95,6 @@ const UpsertProductComponent = () => {
                             ...value,
                             ...(value.product || {})
                         };
-
                         if (tmpObject.properties) {
                             setAdditionalAttribute(tmpObject.properties.map(a => {
                                 return {
@@ -85,32 +106,35 @@ const UpsertProductComponent = () => {
                         }
                     },
                 );
-                setCustomState(setData, "isTypeDisabled", true);
             }
             
 
             await getDataOrSetError(
                 async () => {
-                    return await getGroupById(tmpObject && tmpObject.productAttributeGroupID ? tmpObject.productAttributeGroupID : typeId)
+                    return await getGroupById(tmpObject && tmpObject.productAttributeGroupID ? tmpObject.productAttributeGroupID : type)
                 },
                 async (value) => {
                     
                         let tmpMainAttributes = await getExistAttributeVariantsList(value.existAttributes);
-
+                        
                         let newData = { ...data.formData };
                         if (!productId) {
                             newData = { ...newData, description: value.description }
+                            newData.categoryID = category;
+                            newData.productAttributeGroupID = type;
+    
                         }
                         if (tmpMainAttributes) {
                             newData = { ...newData, ...Object.fromEntries(tmpMainAttributes.map(a => [a.name, undefined])) };
                             setCustomState(setDataFromServer, "mainAttribute", tmpMainAttributes)
                         }
                         if (tmpObject) {
-                            newData = fillNullValues(newData, tmpObject)
+                            setCategory(tmpObject.categoryID)
+                            setType(tmpObject.productAttributeGroupID)
+                            newData = fillNullValues(newData, tmpObject)                            
                         }
-                        
+
                         setCustomState(setData, "formData", newData);
-                    
                     if (value.descriptionName) {
                         setCustomState(setData, "descriptionName", value.descriptionName);
                     }
@@ -121,7 +145,7 @@ const UpsertProductComponent = () => {
                 }
 
             )
-
+        
 
             await getDataOrSetError(
                 getAllManufacturers,
@@ -132,25 +156,40 @@ const UpsertProductComponent = () => {
                 getAllBrands,
                 async (value) => { setCustomState(setDataFromServer, "brands", value) }
             )
-            await getDataOrSetError(
-                getAllCategories,
-                async (value) => { setCustomState(setDataFromServer, "categories", value) }
-            )
-            await getDataOrSetError(
-                getAllTypes,
-                async (value) => { setCustomState(setDataFromServer, "types", value) }
-            )
             if (stateInfo == StateInfos.LOADING)
                 setStateInfo(StateInfos.LOADED);
-
-
+               
         } catch (error) {
             console.error("Error in init function:", error);
             setStateInfo(StateInfos.ERROR);
         }
+
     }
+    
+    useEffect(()=>{
+        if(category && type && !data.isHeaderDisabled){
+            initAfterConfirm();
+        }
 
 
+    },[category,type])
+
+    useEffect(()=>{
+
+        setAdditionalComponent(    
+            <TypeAndCategoryComboboxComponent
+                typeId={type}
+                categoryId={category}
+                categories={dataFromServer.categories}
+                types={dataFromServer.types}
+                setCategory={setCategory}
+                setType={setType}                
+                isDisabled={data.isHeaderDisabled}
+        />
+        )
+
+
+    },[dataFromServer])
 
     useEffect(() => {
         init();
@@ -175,7 +214,8 @@ const UpsertProductComponent = () => {
 
     //#region submit
     const submit = async () => {
-        let a = "/images/product/1.png";
+        setDisableButtonState(true);
+        let a = "";        
         if (data.image) {
             if (data.pathToPhoto)
                 a = await postPhotoToServer("Photo/Update", data.pathToPhoto.replace(/[\/\\]images[\/\\]/g, ""), data.image);
@@ -185,12 +225,15 @@ const UpsertProductComponent = () => {
         } else if (data.formData.pathToPhoto) {
             a = data.formData.pathToPhoto;
         }
-
         data.formData["pathToPhoto"] = a;
-
-        upsertProduct(data.formData, { additionalAttribute });
-
-
+        console.log(data.formData)
+        let res = await upsertProduct(data.formData, { additionalAttribute });
+        setDisableButtonState(false)
+        if(res.status === Success){
+            toast.success(`Операція пройшла успішно`);
+        }else{        
+            toast.error(`Помилка ${res.error.response.status}`);
+        }
     }
 
     //#endregion
@@ -253,21 +296,21 @@ const UpsertProductComponent = () => {
     //#endregion
 
     if (stateInfo == StateInfos.LOADING)
-        return <LayoutAdmin>Loading</LayoutAdmin>
+        return "Loading"
 
-    return (
-        <LayoutAdmin additionalHeader={
-            <TypeAndCategoryComboboxComponent
-                typeId={data.formData.productAttributeGroupID}
-                categoryId={data.formData.categoryID}
-                categories={dataFromServer.categories}
-                types={dataFromServer.types}
-                formData={data.formData}
-                setFormData={(value) => setCustomState(setData, "formData", value)}
-                isTypeDisabled={data.isTypeDisabled}
-            />
-        }>
-            <div className='row add-product-main-container m-2'>
+        // <LayoutAdmin additionalHeader={
+        //     <TypeAndCategoryComboboxComponent
+        //         typeId={data.formData.productAttributeGroupID}
+        //         categoryId={data.formData.categoryID}
+        //         categories={dataFromServer.categories}
+        //         types={dataFromServer.types}
+        //         formData={data.formData}
+        //         setFormData={(value) => setCustomState(setData, "formData", value)}
+        //         isTypeDisabled={data.isTypeDisabled}
+        //     />
+        // }></LayoutAdmin>
+    return (        
+            <div className='row upsert-product-main-container m-2'>
                 <div className='row scroll d-flex'>
                     <div className='col-8'>
                         <div className='add-product-left-container'>
@@ -275,9 +318,7 @@ const UpsertProductComponent = () => {
                                 <UpsertDescriptionComponent
                                     descriptionName={data.descriptionName}
                                     description={data.formData.description}
-                                    setDescription={(a) => {
-                                        if(!data.isTypeDisabled)
-                                            setCustomState(setData, "isTypeDisabled", true);
+                                    setDescription={(a) => {                                        
                                         setFormDataAttribute("description", a)
                                     }}
                                 />
@@ -285,12 +326,10 @@ const UpsertProductComponent = () => {
                         </div>
                     </div>
                     <div className='col-4 round-white-div p-4 upsert-fields-div'>
-                        <div className='add-product-right-container'>
+                        <div className='upsert-product-right-container'>
                             <FormDataStandartInputsComponent
                                 formData={data.formData}
-                                setFormData={(name, value) => {
-                                    if(!data.isTypeDisabled)
-                                            setCustomState(setData, "isTypeDisabled", true);
+                                setFormData={(name, value) => {                                    
                                     setCustomState(setData, "formData", {
                                     ...data.formData,
                                     [name]: value
@@ -311,9 +350,7 @@ const UpsertProductComponent = () => {
                                         return !additionalAttribute.length || !additionalAttribute.map || !additionalAttribute.map(b => b.id).includes(a.id)
                                     }).map(item => ({ value: item.id, label: item.name }))
                                     }
-                                    onChange={selectedOption => {
-                                        if(!data.isTypeDisabled)
-                                            setCustomState(setData, "isTypeDisabled", true);
+                                    onChange={selectedOption => {                                        
                                         handleAddAdditionalAttribute(selectedOption.value, true)
                                     }}
                                     isSearchable={true}
@@ -347,13 +384,13 @@ const UpsertProductComponent = () => {
                                 }
                                 <p className='product-label'>Оберіть фото</p>
                                 <ImageUploaderComponent imageUrl={data.formData.pathToPhoto} selectedImage={data.image} setSelectedImage={(value) => setCustomState(setData, "image", value)} />
-                                <button className='mt-2 btn btn-custom additional-input' onClick={() => submit()}>ЗБЕРЕГТИ</button>
+                                <button disabled={disableButtonState} className='mt-2 btn btn-custom additional-input' onClick={() => submit()}>ЗБЕРЕГТИ</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </LayoutAdmin>
+        
     );
 
 

@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 
 import CustomSelectComponent from '../CustomSelectComponent/CustomSelectComponent';
 
-const TypeAndCategoryComboboxComponent = ({ categories, types, typeId, categoryId, setFormData, formData
-    , isTypeDisabled }) => {
+const TypeAndCategoryComboboxComponent = ({ categories, types, typeId, categoryId, setCategory, setType, isDisabled }) => {
         
     if (!(categories && types))
         return (<></>)
@@ -16,9 +15,10 @@ const TypeAndCategoryComboboxComponent = ({ categories, types, typeId, categoryI
                     selectedId={categoryId}
                     name="category"
                     options={categories.map(item => ({ value: item.id, label: item.title }))}
-                    onChange={a => { setFormData({ ...formData, categoryID: a.value }); }}
+                    onChange={a => { setCategory( a.value); }}
                     placeholder="Категорія товару"
                     isSearchable={true}
+                    isDisabled={isDisabled}
                 />
 
             </div>
@@ -28,8 +28,8 @@ const TypeAndCategoryComboboxComponent = ({ categories, types, typeId, categoryI
                     selectedId={typeId}
                     name="productAttributeGroupID"
                     options={types.map(item => ({ value: item.id, label: item.name }))}
-                    isDisabled={isTypeDisabled}
-                    onChange={a => setFormData({ ...formData, productAttributeGroupID: a.value })}
+                    isDisabled={isDisabled}
+                    onChange={a => setType(a.value)}
                     placeholder="Тип товару"
                     isSearchable={true}
                 />

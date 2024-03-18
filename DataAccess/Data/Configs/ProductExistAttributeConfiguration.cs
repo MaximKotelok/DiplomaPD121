@@ -19,7 +19,7 @@ namespace Repository.Data.Configs
 					Name = "activeSubstanceID", 
 					Description="Діюча речовина", 
 					GroupID=2,
-					ActionGetPath=nameof(ActiveSubstance)				
+					ActionGetPath= "ActiveSubstance/GetAllActiveSubstances"
 				},
 				new ProductExistAttribute
 				{
@@ -27,7 +27,7 @@ namespace Repository.Data.Configs
 					Name = "allergiesId",
 					Description = "Алергіки",
 					GroupID = 2,
-					ActionGetPath = nameof(PermissionType)
+					ActionGetPath = "PermissionType/GetAllPermissions"
 				},
 				new ProductExistAttribute
 				{
@@ -35,7 +35,7 @@ namespace Repository.Data.Configs
 					Name = "diabeticsId",
 					Description = "Діабетики",
 					GroupID = 2,
-					ActionGetPath = nameof(PermissionType)
+					ActionGetPath = "PermissionType/GetAllPermissions"
 				},
 				new ProductExistAttribute
 				{
@@ -43,7 +43,7 @@ namespace Repository.Data.Configs
 					Name = "nursingMothersId",
 					Description = "Годуючі мами",
 					GroupID = 2,
-					ActionGetPath = nameof(PermissionType)
+					ActionGetPath = "PermissionType/GetAllPermissions"
 				},
 				new ProductExistAttribute
 				{
@@ -51,7 +51,7 @@ namespace Repository.Data.Configs
 					Name = "adultsId",
 					Description = "Дорослі",
 					GroupID = 2,
-					ActionGetPath = nameof(PermissionType)
+					ActionGetPath = "PermissionType/GetAllPermissions"
 				},
 				new ProductExistAttribute
 				{
@@ -59,7 +59,7 @@ namespace Repository.Data.Configs
 					Name = "pregnantId",
 					Description = "Вагітні",
 					GroupID = 2,
-					ActionGetPath = nameof(PermissionType)
+					ActionGetPath = "PermissionType/GetAllPermissions"
 				},
 				new ProductExistAttribute
 				{
@@ -67,7 +67,7 @@ namespace Repository.Data.Configs
 					Name = "childrenId",
 					Description = "Діти",
 					GroupID = 2,
-					ActionGetPath = nameof(PermissionType)
+					ActionGetPath = "PermissionType/GetAllPermissions"
 				},
 				new ProductExistAttribute
 				{
@@ -75,7 +75,7 @@ namespace Repository.Data.Configs
 					Name = "driversId",
 					Description = "Водії",
 					GroupID = 2,
-					ActionGetPath = nameof(PermissionType)
+					ActionGetPath = "PermissionType/GetAllPermissions"
 				}
 				);
 		}

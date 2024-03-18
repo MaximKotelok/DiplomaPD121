@@ -1,6 +1,7 @@
 .upsert-fields-div{
     align-self: flex-start!important;
     align-items: flex-start!important;
+    
 }
 
 .btn-custom{
@@ -58,8 +59,8 @@
     
 } 
 
-.add-product-main-container{    
-    height: 85vh;
+.upsert-product-main-container{    
+    height: 90vh;
 }
 
 .css-1u9des2-indicatorSeparator{
@@ -117,7 +118,20 @@
     width: 203px;
 }
 
+.upsert-product-right-container{
+    max-height: 100%;
+}
+
 .quill  { 
-    height: 90%!important; 
+    max-height: 60vh;
     position: relative;
 }
+
+.ql-container{
+    max-height: 60vh!important;
+}
+
+.ql-editor{
+    max-height: 50vh!important;
+}
+
