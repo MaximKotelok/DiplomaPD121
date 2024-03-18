@@ -1,4 +1,4 @@
-export const Success = 'Success';
+﻿export const Success = 'Success';
 export const ServerURL = 'https://localhost:7133';
 export const ApiPath = `${ServerURL}/api`;
 export const PhotoPath = `${ApiPath}/Photo`;
@@ -32,7 +32,7 @@ export const GetAllCountries = "Country/GetAllCountries";
 
 //City
 export const GetAllCities = "City/";
-
+export const DefualtCity = "Львів";
 
 //Company
 export const GetAllPharmaCompanies = "PharmaCompany/GetAllPharmaCompanies";
@@ -47,6 +47,9 @@ export const GetAllConcreteProductsFromPharmacy = "Pharmacy/GetAllConcreteProduc
 export const UpsertPharmcy = "Pharmacy/UpsertPharmacy";
 export const GetPharmacyProduct = "Pharmacy/GetPharmacyProduct"
 
+//Favoutire LocalStorages
+export const favouriteProducts = "favsProducts";
+export const favouriteMedicines = "favsMedicines";
 
 export const ClassHeader = {
     Accept: "application/json",

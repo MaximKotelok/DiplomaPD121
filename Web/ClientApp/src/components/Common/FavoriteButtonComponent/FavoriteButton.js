@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import "bootstrap-icons/font/bootstrap-icons.css";
 import 'bootstrap/dist/css/bootstrap.css';
 import './FavoriteButton.css';
-import { addFavouriteProduct, removeFavouriteProduct } from '../../../services/favProducts';
+import { addFavouriteProduct, removeFavouriteProduct, getFavs } from '../../../services/favProducts';
 import { toast } from "react-toastify";
 import heart from "../../../assets/images/product-card/heart.svg"
 import heartActive from "../../../assets/images/product-card/active-heart.svg"
@@ -15,6 +15,9 @@ const FavoriteButton = ({ isFavorite, setIsFavorite, id }) => {
             status = await addFavouriteProduct(id);
         else
             status = await removeFavouriteProduct(id);
+
+        let favs = await getFavs();
+        localStorage.setItem("favs", favs)
 
         if(status == 401){    
             toast.error("Помилка")

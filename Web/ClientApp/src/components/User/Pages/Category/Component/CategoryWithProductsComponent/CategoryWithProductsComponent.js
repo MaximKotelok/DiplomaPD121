@@ -25,7 +25,6 @@ export const CategoryWithProductsComponent = () => {
   }, [id]);
 
 
-
   async function init() {
     let category = await GetCategoryById(id);
     if (currentPageParam)
@@ -65,10 +64,6 @@ export const CategoryWithProductsComponent = () => {
     return <>Error</>
   }
 
-  function isCustomFavorite(id) {
-    isFavorite(id, favs);
-  }
-
   return (
     <>
 
@@ -86,7 +81,7 @@ export const CategoryWithProductsComponent = () => {
               <MiniProductCardComponent
                 key={a.id}
                 id={a.id}
-                isFavorite={isCustomFavorite}
+                isFavorite={isFavorite}
                 title={a.title}
                 description={a.shortDescription}
                 minPrice={a.minPrice}

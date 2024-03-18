@@ -11,6 +11,8 @@ import { useNavigate } from 'react-router-dom';
 import { NavLink, Outlet } from "react-router-dom";
 import { checkIsAuth } from "../../services/user";
 
+
+
 var active = ({ isActive }) =>
   isActive
     ? ` ms-3 ${styles["navigation-h"]} ${styles["navigation-h-active"]}`
@@ -20,10 +22,10 @@ const AuthPageComponent = () => {
   const navigate = useNavigate();
   
   useEffect(()=>{
-    if(checkIsAuth()){
-       navigate("/profile");
-  }
-  },[]);
+      if (checkIsAuth()) {
+        navigate("/profile");
+    }
+  }, []);
 
   return (
     <div

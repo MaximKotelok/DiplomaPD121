@@ -14,6 +14,7 @@ const MenuComponent = () => {
   const navigate = useNavigate();
   function OnExit(){  
     removeToken();
+    localStorage.removeItem("favs");
     navigate("/auth");  
   }
 
