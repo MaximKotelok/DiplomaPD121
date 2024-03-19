@@ -322,9 +322,15 @@ width: 100%;
   border-radius: 4px;
   margin-bottom: 16px;
 }
-.gridView .box-absolute
+.gridView .pos-absolute
 {
 position: absolute;
+}
+
+.gridView .top-end-pos
+{
+  top: 14px;
+  right: 14px;
 }
 .gridView .content-info
 {
@@ -338,9 +344,15 @@ position: absolute;
   padding: 0px 20px;
 }
 
-.tableView .box-absolute
+.tableView .pos-absolute
 {
 position: relative;
+}
+
+.tableView .top-end-pos
+{
+  top: 0px;
+  right: 0px;
 }
 
 .tableView .btn-pr{

@@ -34,6 +34,7 @@ import { UpsertProduct } from "./utils/Constants";
 import { Reservation } from "./components/User/Pages/Reservation/Reservation";
 import UpsertProductComponent from "./components/Admin/Pharmacy/AddProductComponents/UpsertProductComponent/UpsertProductComponent";
 import EditProfile from "./components/User/Pages/Profile/Components/EditProfileComponent/EditProfile";
+import PharmacyInfo from "./components/User/Pages/PharmacyInfo/PharmacyInfo";
 
 // export default class App extends Component {
 // static displayName = App.name;
@@ -54,6 +55,7 @@ export default class App extends Component {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index path="" element={<Home />} />
+              <Route index path="/PharmacyMap" element={<PharmacyInfo />} />
               <Route index path="/ReservationConfirm/:pharmacyId" element={<Reservation />} />
               <Route path="res" element={<Reservation />} />
               <Route path="auth/*" element={<AuthPageComponent />}>
