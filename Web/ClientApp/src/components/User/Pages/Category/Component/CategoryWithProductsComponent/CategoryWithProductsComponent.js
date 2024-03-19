@@ -70,10 +70,6 @@ export const CategoryWithProductsComponent = () => {
     return <>Error</>;
   }
 
-  function isCustomFavorite(id) {
-    isFavorite(id, favs);
-  }
-
   return (
     <>
       <p className={`${styles["category-header"]}`}>{category.title}</p>
@@ -180,7 +176,7 @@ export const CategoryWithProductsComponent = () => {
                   <MiniCardProductANDTableProductComponent
                     key={a.id}
                     id={a.id}
-                    isFavorite={isCustomFavorite}
+                      isFavorite={isFavorite}
                     title={a.title}
                     description={a.shortDescription}
                     minPrice={a.minPrice}

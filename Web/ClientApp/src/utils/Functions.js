@@ -1,5 +1,6 @@
 ﻿import { Element } from "react-scroll";
 import { getFavs } from "../services/favProducts";
+import { favouriteProducts } from "./Constants";
 
 export function updateObj(obj, name, value) {
   return {
@@ -89,17 +90,34 @@ export const breakpoints = {
   xl: 1200,
 };
 
-export const isFavorite = (productId, favs) => {
-  if (!favs)
-    return false;
-  const result = favs.findIndex(a => a === productId) !== -1;
-  return result;
+export const isFavorite = (productId) => {
+    let favs = localStorage.getItem(favouriteProducts).split(',');
+    if(!favs)
+        return false;
+    const result = favs.findIndex(a=>a == productId) !== -1;    
+    return result;
 };
 
 export async function initFavs(setFavs) {
-  setFavs(await getFavs());
+    if (!localStorage.hasOwnProperty("authToken"))
+        setFavs([]);
+
+    let favs = localStorage.getItem("favs")
+    if (favs == null || favs == "undefined") {
+        let favs = await getFavs();
+        localStorage.setItem(favouriteProducts, favs);
+        setFavs(favs());
+     }
+    else {
+        setFavs(favs.split(','));
+    }
+    
 }
 
+export async function initStorageFavs() {
+    let favsProducts = await getFavs();
+    localStorage.setItem(favouriteProducts, favsProducts);
+}
 
 export function isWidthDown(breakpoint, width) {
   const breakpointWidth = breakpoints[breakpoint];

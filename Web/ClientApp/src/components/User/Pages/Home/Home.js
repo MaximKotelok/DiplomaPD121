@@ -1,6 +1,7 @@
 import React, { Component, useEffect, useState } from "react";
 import CarouselListComponent from "../../Common/CarouselListComponent/CarouselListComponent";
 import { ApiPath, Success } from "../../../../utils/Constants";
+
 import {
   getRecentlyViewedProductsIds,
   getRecomendedRandomCategory,
@@ -98,7 +99,7 @@ export const Home = () => {
   }, []);
 
   function isCustomFavorite(id) {
-    return isFavorite(id, favs);
+    return isFavorite(id);
   }
   // Макс поправ карточки і каруселі!!!!!!!!!!!!!!!!!!!!!!-!!!!!!!!!!!!!!!!!!!!!!!!!
   return (

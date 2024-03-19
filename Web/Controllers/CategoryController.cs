@@ -95,7 +95,7 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-
+		//*********
 		[HttpGet("GetWithProducts")]
 		public IActionResult GetWithProducts(int? id, int from, int to, int count)
 		{
@@ -131,6 +131,7 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
+		//**********
 		[HttpGet("GetCategoryProductsForFilter")]
 		public IActionResult GetCategoryProductsForFilter(int? id, int from, int to)
 		{

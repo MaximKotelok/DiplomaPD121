@@ -1,5 +1,6 @@
 ﻿import { getFromServer } from "./Queries"
 import { getCookie, setCookie } from "./Cookies"
+import { DefualtCity } from "./Constants"
 
 
 export function getCity(position) {
@@ -23,15 +24,13 @@ export function getCity(position) {
                             resolve(city);
                         } else {
                             // City doesn't exist in the database, set default city
-                            const defaultCity = "Львів"; // Set your default city here
-                            resolve(defaultCity);
+                            resolve(DefualtCity);
                         }
                     })
                     .catch(error => {
                         console.error('Error checking city:', error);
                         // In case of error, resolve with default city
-                        const defaultCity = "Львів"; // Set your default city here
-                        resolve(defaultCity);
+                        resolve(DefualtCity);
                     });
             })
             .catch(error => {
@@ -61,14 +60,12 @@ export function setupLocation() {
                     } catch (error) {
                         // Error handling in case user denies geolocation permission
                         console.error("Error getting location:", error);
-                        const defaultCity = "Львів"; // Set your default city here
-                        setCookie("city", defaultCity);
-                        console.log("Default city set:", defaultCity);
+                        setCookie("city", DefualtCity);
+                        console.log("Default city set:", DefualtCity);
                     }
                 } else {
-                    const defaultCity = "Львів"; // Set your default city here
-                    setCookie("city", defaultCity);
-                    console.log("Default city set:", defaultCity);
+                    setCookie("city", DefualtCity);
+                    console.log("Default city set:", DefualtCity);
                 }
 
             }
