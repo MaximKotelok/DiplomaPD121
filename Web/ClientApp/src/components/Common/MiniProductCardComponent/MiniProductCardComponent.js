@@ -44,7 +44,7 @@ const MiniProductCardComponent =
             <div className="p-1 pb-5 d-inline-block">
             <div className="mt-2 product-card d-inline-block">
                 <div className='position-relative'>
-                    <FavoriteButton id={id} isFavorite={isFavoriteState} setIsFavorite={changeFavoriteState}></FavoriteButton>
+                    <FavoriteButton id={id} isFavorite={isFavoriteState} setIsFavorite={changeFavoriteState}/>
                     <Link to={`/product-details/${id}`} className='text-decoration-none d-flex justify-content-center'>
                         <CustomImgComponent 
                         src={`${ApiPath}${imageUrl}`} 
