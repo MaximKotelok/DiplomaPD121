@@ -1,166 +1,155 @@
 import React, { Component, useEffect, useState } from "react";
-// import { checkIsAuth } from "../../../../services/user";
-// import { useParams } from "react-router-dom";
+import { checkIsAuth } from "../../../../services/user";
+import { useParams } from "react-router-dom";
 
-// import { changeCountInCart, getCart } from "../../../../services/cartService";
+import { changeCountInCart, getCart } from "../../../../services/cartService";
 
 import styles from "./Reservation.module.css";
 import btnOcloko from "../../../../assets/images/znakOkloko.svg";
 import ProductComponent from "./ProductComponent/ProductComponent";
 
-// import { ApiPath, StateInfos, Success } from "../../../../utils/Constants";
-// import { getPharmacy, getPharmacyProduct } from "../../../../services/pharmacy";
-// import { toast } from "react-toastify";
-// import { redirect404 } from "../../../../utils/Functions";
-// import {
-//   postLoggedReserve,
-//   postReservation,
-// } from "../../../../services/reservation";
+import { ApiPath, StateInfos, Success } from "../../../../utils/Constants";
+import { getPharmacyById, getPharmacyProduct } from "../../../../services/pharmacy";
+import { toast } from "react-toastify";
+import { addMinutes, getCurrentTimeInUkraine, isPharmacyOpen, redirect404 } from "../../../../utils/Functions";
+import {
+  postLoggedReserve,
+  postReservation,
+} from "../../../../services/reservation";
 
 export const Reservation = () => {
-  // const { pharmacyId } = useParams();
-  // const [productFormData, setProductFormData] = useState({});
-  // const [userFormData, setUserFormData] = useState({ phone: "", email: "" });
-  // const [isAuth, setIsAuth] = useState(null);
+  const { pharmacyId } = useParams();
+  const [productFormData, setProductFormData] = useState({});
+  const [userFormData, setUserFormData] = useState({ phone: "", email: "" });
+  const [isAuth, setIsAuth] = useState(null);
 
-  // const [loader, setLoader] = useState(StateInfos.LOADING);
+  const [loader, setLoader] = useState(StateInfos.LOADING);
 
-  // useEffect(() => {
-  //   init();
-  // }, []);
 
-  // async function init() {
-  //   setIsAuth(await checkIsAuth());
 
-  //   const cart = getCart();
-  //   const index = cart.findIndex(a => a.id == pharmacyId);
-  //   if (index === -1) {
-  //     redirect404();
-  //   }
+  useEffect(() => {
+    init();
+  }, []);
 
-  //   let pharmacyData = await getPharmacy(cart[index].id);
-  //   if (pharmacyData.status === Success) {
-  //     pharmacyData = pharmacyData.data;
-  //     let res = await Promise.all(
-  //       await cart[index].items.map(async a => {
+  async function init() {
+    setIsAuth(checkIsAuth());
 
-  //         let res = await getPharmacyProduct(cart[index].id, a.id);
-  //         if (res.status === Success) {
-  //           res = res.data;
-  //           let quantity = a.count;
-  //           if (quantity > res.quantity) {
-  //             quantity = res.quantity;
-  //             changeCountInCart(cart[index].id, a.id, quantity);
-  //             toast.error(`Нажаль на складі є лише ${res.quantity} од. ${res.product.title}`);
-  //           }
-  //           return { id: res.id, title: res.product.title, pathToPhoto: res.product.pathToPhoto, price: res.price, quantity: quantity };
-  //         }
-  //         return null;
-  //       })
-  //     );
-  //     res = res.filter(a => a);
-  //     setProductFormData({
-  //       pharmaId: pharmacyData.id,
-  //       pharmacyName: pharmacyData.pharmaCompany.title,
-  //       pharmacyAddress: pharmacyData.address,
-  //       items: res
-  //     });
 
-  //     setLoader(StateInfos.LOADED);
-  //   }else{
-  //     redirect404();
-  //   }
 
-  // }
+    const cart = getCart();
+    const index = cart.findIndex(a => a.id == pharmacyId);
+    if (index === -1) {
+      redirect404();
+    }
 
-  // function userFormDataUpdate(e){
-  //   setUserFormData({...userFormData, [e.target.name]:e.target.value});
-  // }
+    let pharmacyData = await getPharmacyById(cart[index].id);
+    if (pharmacyData.status === Success) {
+      pharmacyData = pharmacyData.data;
+      let res = await Promise.all(
+        await cart[index].items.map(async a => {
 
-  // function submit(){
-  //   const cart = getCart();
-  //   const index = cart.findIndex(a => a.id == pharmacyId);
-  //   if(isAuth){
-  //     postLoggedReserve(
+          let res = await getPharmacyProduct(cart[index].id, a.id);
+          if (res.status === Success) {
+            res = res.data;
+            let quantity = a.count;
+            if (quantity > res.quantity) {
+              quantity = res.quantity;
+              changeCountInCart(cart[index].id, a.id, quantity);
+              toast.error(`Нажаль на складі є лише ${res.quantity} од. ${res.product.title}`);
+            }
+            return { id: res.id, title: res.product.title, shortDescription: res.product.shortDescription, pathToPhoto: res.product.pathToPhoto, price: res.price, quantity: quantity };
+          }
+          return null;
+        })
+      );
+      res = res.filter(a => a);
+      setProductFormData({
+        pharmaId: pharmacyData.id,
+        pharmacyName: pharmacyData.pharmaCompany.title,
+        pharmacyAddress: pharmacyData.address,
+        isOpen: isPharmacyOpen(pharmacyData.openTime, pharmacyData.closeTime),
+        openTime: pharmacyData.openTime,
+        closeTime: pharmacyData.closeTime,
+        items: res
+      });
 
-  //         productFormData.items.map(a=>{return a.id}),cart[index].id
+      setLoader(StateInfos.LOADED);
+    } else {
+      redirect404();
+    }
 
-  //     );
-  //   }else{
-  //     if(userFormData.phone && userFormData.email){
-  //       postReservation(
-  //           productFormData.items.map(a=>{return a.id}),
-  //         userFormData.phone,
-  //         userFormData.email,
-  //         cart[index].id
-  //       );
-  //     }
-  //   }
-  // }
+  }
 
-  // if(loader == StateInfos.LOADING)
-  //   return "Loading...";
+  function userFormDataUpdate(e) {
+    setUserFormData({ ...userFormData, [e.target.name]: e.target.value });  
+  }
 
+  async function submit() {
+    const cart = getCart();
+    const index = cart.findIndex(a => a.id == pharmacyId);
+    let res;
+    if (isAuth) {
+      res = await postLoggedReserve(
+        productFormData.items.map(a => { return { concreteProductId: a.id, quantity: a.quantity } }), 
+        cart[index].id
+      );
+    } else {
+      if (userFormData.phone && userFormData.email) {
+        res = await postReservation(
+          productFormData.items.map(a => { return { concreteProductId: a.id, quantity: a.quantity } }),
+          userFormData.phone,
+          userFormData.email,
+          cart[index].id
+        );
+      }
+    }
+    if (res) {
+      toast.success("Успіх")
+    } else {
+      toast.error("Помилка")
+    }
+  }
+
+
+  if (loader == StateInfos.LOADING)
+    return "Loading...";
   return (
-    // <>
-    //   {
-    //     !isAuth && (
-    //       <div>
-    //         <input name="phone" placeholder="+38" onChange={userFormDataUpdate} value={userFormData.phone}/>
-    //         <input name="email" onChange={userFormDataUpdate} value={userFormData.email}/>
-    //       </div>
-    //     )
-    //   }
-
-    //   <div>
-    //     <h5>{productFormData.pharmacyName}</h5>
-    //     <h6>{productFormData.pharmacyAddress}</h6>
-    //     {productFormData.items.map(a=>{
-    //       return <>
-    //         <img src={`${ApiPath}${a.pathToPhoto}`} width={100}/>
-    //         <p>{a.title}</p>
-    //         <p>{a.quantity} одиниць</p>
-    //       </>
-    //     })}
-
-    //     <button onClick={submit}>Submit</button>
-
-    //   </div>
-    // </>
-
     <div className={`row ${styles["global-text"]}`}>
       <h2 className={` ${styles["head-text"]}`}>Бронювання</h2>
       <div className={`col-md-8`}>
-        <div className={`${styles["div-form"]} ${styles["div-block"]}`}>
-          <div className={`mb-4`}>
-            <h4 className={`${styles["head-text-form"]}`}>Телефон</h4>
-            <input
-              className={`${styles["placholder-style"]} input-text-form  mb-2 ${styles["my-input-text-form"]}`}
-              placeholder="phoneNumber"
-              type="phoneNumber"
-              name="phoneNumber"
-              required
-            />
-            <p className={`${styles["p-text-form"]}`}>
-              На цей номер прийде повідомлення з підтвердженням броні.
-            </p>
-          </div>
-          <div className={`pt-2`}>
-            <h4 className={`${styles["head-text-form"]}`}>Email</h4>
-            <input
-              className={`${styles["placholder-style"]} input-text-form  mb-2 ${styles["my-input-text-form"]}`}
-              placeholder="Email"
-              type="Email"
-              name="Email"
-              required
-            />
-          </div>
-        </div>
+        {!isAuth && (
+          <div className={`${styles["div-form"]} ${styles["div-block"]}`}>
+            <div className={`mb-4`}>
+              <h4 className={`${styles["head-text-form"]}`}>Телефон</h4>
+              <input
+                className={`${styles["placholder-style"]} input-text-form  mb-2 ${styles["my-input-text-form"]}`}
+                placeholder="Ваш номер телефону"
+
+                name="phone"
+                onChange={userFormDataUpdate}
+                required
+              />
+              <p className={`${styles["p-text-form"]}`}>
+                На цей номер прийде повідомлення з підтвердженням броні.
+              </p>
+            </div>
+            <div className={`pt-2`}>
+              <h4 className={`${styles["head-text-form"]}`}>Email</h4>
+              <input
+                className={`${styles["placholder-style"]} input-text-form  mb-2 ${styles["my-input-text-form"]}`}
+                placeholder="Ваш email"
+                type="email"
+                name="email"
+                onChange={userFormDataUpdate}
+                required
+              />
+            </div>
+          </div>)}
         <div
           className={` ${styles["div-info-pharmacy"]} ${styles["div-block"]}  `}
         >
           <h3 className={`head-text-info`}>
-            Аптека подорожник{" "}
+            {`${productFormData.pharmacyName} `}
             <img
               style={{ height: "24px", cursor: "pointer" }}
               src={btnOcloko}
@@ -168,10 +157,10 @@ export const Reservation = () => {
             />
           </h3>
           <p className={`mt-4 mb-2 ${styles["p-text-info"]}`}>
-            Відкрито до 23:00
+            {productFormData.isOpen ? `Відкрито до ${productFormData.closeTime}` : `Буде відкрито з ${productFormData.openTime}`}
           </p>
           <p className={`${styles["p-text-info"]}`}>
-            вул. Гетьмана Мазепи 12, Львів
+            {productFormData.pharmacyAddress}
           </p>
         </div>
         <div
@@ -191,7 +180,10 @@ export const Reservation = () => {
             Дочекайтеся Viber або SMS-повідомлення з кодом броні, що є
             підтвердженням броні аптекою:
             <span>
-              <br />о <span c>14:15</span>
+              <br />до <span c>{productFormData.isOpen ?
+                addMinutes(getCurrentTimeInUkraine(), 15) :
+                addMinutes(productFormData.openTime, 15)
+              }</span>
             </span>
           </p>
         </div>
@@ -201,17 +193,25 @@ export const Reservation = () => {
         <div className={` ${styles["div-block"]} ${styles["div-pidsum"]}`}>
           <h3 className={`${styles["text-pidsum"]} mb-5`}>Підсумок</h3>
           <div>
-            <ProductComponent />
-            <ProductComponent />
-            <ProductComponent />
+            {productFormData.items.map(a => {
+              return <ProductComponent
+                key={a.id}
+                title={a.title}
+                shortDescription={a.shortDescription}
+                quantity={a.quantity}
+                image={`${ApiPath}${a.pathToPhoto}`}
+                price={a.price}
+              />
+
+            })}
           </div>
           <div className={`d-flex mb-2   justify-content-between`}>
             <h6 className={`text-zag-sum`}>Загальна сума: </h6>
             <h5 className={`number-text`}>
-              3444.20 <span>грн</span>{" "}
+              {productFormData.items.map(a => a.price * a.quantity).reduce((a, b) => a + b, 0).toFixed(2)} <span>грн</span>{" "}
             </h5>
           </div>
-          <button className="brn-form brn-primary-form mb-3 " type="submit">
+          <button className="brn-form brn-primary-form mb-3 " onClick={submit}>
             Забронювати
           </button>
         </div>

@@ -13,9 +13,9 @@ const MenuBottomPhone = () => {
     >
       <div className="container d-flex  justify-content-around">
         <BtnPhoneMenuBottom to="/" text="Головна" iconPath={TablerHome} />
-        <BtnPhoneMenuBottom to="/" text="Каталог" iconPath={TablerCategory} />
-        <BtnPhoneMenuBottom to="/" text="Кошик" iconPath={Cart} />
-        <BtnPhoneMenuBottom to="/" text="Профіль" iconPath={Account} />
+        <BtnPhoneMenuBottom to="/category/1" text="Каталог" iconPath={TablerCategory} />
+        <BtnPhoneMenuBottom to="/cart" text="Кошик" iconPath={Cart} />
+        <BtnPhoneMenuBottom to="/auth" text="Профіль" iconPath={Account} />
       </div>
     </div>
   );
