@@ -1,0 +1,69 @@
+h4,p{
+    font-family: var(--standart-font) ;
+}
+.text-opus{
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 28px;
+    color: rgba(28, 28, 28, 0.8);
+}
+
+
+.btn-prosta{
+  
+background-color: transparent;
+border: 2px solid rgba(255, 149, 0, 1);
+    font-weight: 500;
+    color: rgba(13, 30, 49, 1);
+}
+
+.btn-style{
+font-family: var(--standart-font) ;
+padding: 8px 12px;
+border-radius: 8px;
+line-height: 18px;
+font-size: 14px;
+white-space: nowrap;
+width: min-content;
+margin: 12px 0;
+}
+
+
+
+.btn-img{
+    margin-left: 16px;
+background-color: rgba(255, 149, 0, 1);
+    border: 2px solid rgba(255, 149, 0, 1);
+    font-weight: 700;
+    color: rgba(255, 255, 255, 1);
+
+}
+
+
+.btn-prosta:hover{
+    cursor: pointer;
+    background-color:  #ffeacc;
+}
+
+.oclock-style{
+font-weight: 700;
+color: rgba(13, 30, 49, 1);
+}
+
+
+
+.title-pharnacy{
+font-size: 24px;
+font-weight: 700;
+line-height: 30px;
+color: rgba(14, 62, 117, 1);
+}
+
+.path-text{
+font-size: 14px;
+font-weight: 600;
+line-height: 15px;
+
+    color: rgba(14, 62, 117, 1);
+margin: 30px 0   40px 0;
+}

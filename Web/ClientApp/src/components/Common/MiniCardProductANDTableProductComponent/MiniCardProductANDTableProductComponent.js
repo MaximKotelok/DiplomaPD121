@@ -38,7 +38,7 @@ const MiniCardProductANDTableProductComponent = ({
         <CustomImgComponent
           src={`${ApiPath}${imageUrl}`}
           defaultSrc="https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png"
-          style={{ width: "183px", height: "170px" }}
+          style={{ width: "100%", height: "170px" }}
           className={`${stylesMiniCard["product-image"]}`}
           alt={title}
         />
