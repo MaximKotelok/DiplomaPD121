@@ -1,0 +1,22 @@
+.btn-form-control{
+margin-bottom: 8px;
+border: none;
+padding-right: 15px;
+border-radius: 0 12px 12px 0px;
+color: rgba(0, 122, 255, 1);
+font-family: var(--standart-font);
+font-size: 14px;
+font-weight: 500;
+line-height: 15px;
+
+}
+.btn-zmina{
+border: none;
+background-color: transparent;
+color: rgba(0, 122, 255, 1);
+    font-family: var(--standart-font);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 15px;
+margin: 0 0 20px 16px ;
+}

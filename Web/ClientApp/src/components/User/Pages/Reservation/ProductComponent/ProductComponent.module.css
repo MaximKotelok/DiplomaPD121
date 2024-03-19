@@ -1,0 +1,25 @@
+.text-title{
+    font-family: var(--standart-font);
+font-size: 18px;
+font-weight: 700;
+line-height: 23px;
+color: rgba(28, 28, 28, 0.8);
+}
+
+.text-linyika{
+    font-family: var(--standart-font);
+font-size: 16px;
+font-weight: 300;
+line-height: 20px;
+color: rgba(83, 83, 83, 1);
+}
+
+
+.text-sum-count{
+    font-family: var(--standart-font);
+font-size: 16px;
+font-weight: 500;
+line-height: 20px;
+
+color: rgba(14, 62, 117, 1);
+}

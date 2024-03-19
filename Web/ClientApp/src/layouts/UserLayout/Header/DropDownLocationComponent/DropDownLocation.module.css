@@ -1,0 +1,15 @@
+.text-header-modal{
+    font-family:  var(--standart-font);
+font-size: 16px;
+font-weight: 700;
+line-height: 20px;
+color: rgba(28, 28, 28, 0.8);
+}
+
+.custom-modal{
+    width: 370px;
+    margin: 10% 40%;
+    padding: 32px;
+    border-radius: 32px;
+    border: none;
+  }

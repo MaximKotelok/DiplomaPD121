@@ -44,7 +44,8 @@ header {
     background-color: white;
 }
 
-
+.container{
+    padding: 0;}
 body,
 html {
     margin: 0;
@@ -72,6 +73,14 @@ html {
     font-weight: 700;
     line-height: 20px;
 
+}
+
+.brn-form_2 {
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
 }
 
 .brn-primary-form {

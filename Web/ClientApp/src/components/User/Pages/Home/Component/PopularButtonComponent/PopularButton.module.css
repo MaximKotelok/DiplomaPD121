@@ -1,0 +1,22 @@
+.container-component {
+    margin: 10px 8px ;
+    border: 1px solid rgba(0, 122, 255, 1);
+    border-radius: 10px;
+   min-width: 171px;
+   color: rgba(28, 28, 28, 1);
+    transition: background-color 0.3s, border 0.3s,colo 0.3s;
+  }
+  
+  .container-component:hover {
+    border: 1px solid transparent;
+background-color: rgba(0, 122, 255, 0.15);
+color: rgba(0, 122, 255, 1);
+  }
+  
+  .inner-text {
+    cursor: pointer; 
+padding: 8px 14px;
+margin: 0;
+text-align: center;
+  }
+  

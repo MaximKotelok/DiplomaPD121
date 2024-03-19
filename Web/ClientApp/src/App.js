@@ -33,6 +33,8 @@ import UpsertPharmacyComponent from "./components/Admin/Pharmacy/AddPharmacyComp
 import { UpsertProduct } from "./utils/Constants";
 import { Reservation } from "./components/User/Pages/Reservation/Reservation";
 import UpsertProductComponent from "./components/Admin/Pharmacy/AddProductComponents/UpsertProductComponent/UpsertProductComponent";
+import EditProfile from "./components/User/Pages/Profile/Components/EditProfileComponent/EditProfile";
+import { Reservation } from "./components/User/Pages/Reservation/Reservation";
 
 // export default class App extends Component {
 // static displayName = App.name;
@@ -54,6 +56,7 @@ export default class App extends Component {
             <Route path="/" element={<Layout />}>
               <Route index path="" element={<Home />} />
               <Route index path="/ReservationConfirm/:pharmacyId" element={<Reservation />} />
+              <Route path="res" element={<Reservation />} />
               <Route path="auth/*" element={<AuthPageComponent />}>
                 <Route path="registration" element={<RegistrationForm />} />
                 <Route path="login" element={<LoginForm />} />
@@ -66,8 +69,9 @@ export default class App extends Component {
                 <Route path="minebookeds" element={<MineBookeds />} />
                 <Route path="selectedproducts" element={<SelectedProducts />} />
                 <Route path="wathclist" element={<WathcList />} />
+                <Route path="edit" element={<EditProfile />} />
               </Route>
-            <Route path="confirm-email" element={<ConfirmEmail />} />
+              <Route path="confirm-email" element={<ConfirmEmail />} />
               <Route path="map/:id?" element={<Map />} />
               <Route path="map/pharmacies/:pharmacyId" element={<Map />} />
               <Route path="map/pharmacies" element={<Map />} />
@@ -83,6 +87,18 @@ export default class App extends Component {
               <Route path="updateProduct/:productId" element={<UpsertProductComponent />} />
               <Route path="addProduct" element={<UpsertProductComponent />} />
               <Route path="addBrand" element={<UpsertBrandComponent />} />
+              <Route
+                path="updateBrand/:brandId"
+                element={<UpsertBrandComponent />}
+              />
+              <Route
+                path="addPharmaCompany"
+                element={<UpsertBrandComponent />}
+              />
+              <Route
+                path="updatePharmaCompany/:companyId"
+                element={<UpsertPharmaCompanyComponent />}
+              />
               <Route path="updateBrand/:brandId" element={<UpsertBrandComponent />} />
               <Route path="addPharmaCompany" element={<UpsertPharmaCompanyComponent />} />
               <Route path="updatePharmaCompany/:companyId" element={<UpsertPharmaCompanyComponent />} />    
@@ -91,6 +107,7 @@ export default class App extends Component {
             </Route>
           </Routes>
         </LayoutProvider>
+
     );
   }
 }

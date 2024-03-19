@@ -5,8 +5,8 @@ import styles from "./AuthPage.module.css";
 import RegistrationForm from "./RegistrationFormComponent/RegistrationForm";
 import BtnSocialComponenent from "./components/BtnSocialComponenent/BtnSocialComponenent";
 import google from "../../assets/images/google.svg";
-import authPage from "../../assets/images/authPage.png";
 import faceboo from "../../assets/images/Facebook.svg";
+import authPage from "../../assets/images/authPage.png";
 import { useNavigate } from 'react-router-dom';
 import { NavLink, Outlet } from "react-router-dom";
 import { checkIsAuth } from "../../services/user";
@@ -72,6 +72,7 @@ const AuthPageComponent = () => {
             </a>
           </div>
         </div>
+
       </div>
 
       <div className="col-12 col-md-12 col-lg-7  ">
