@@ -14,9 +14,9 @@ namespace Repository.Data.Configs
 		public void Configure(EntityTypeBuilder<Category> builder)
 		{
 			builder.HasData(
-				new Category { Id = 1, Title = "Каталог Товарів", SubCategoriesTypeOfPhoto = TypeOfPhoto.ICON, PathToPhoto = "" },
-				new Category { Id = 2, Title = "Ліки та профілактичні засоби", ParentCategoryID = 1, PathToPhoto = "/images/category/icon/Medicines.png", SubCategoriesTypeOfPhoto = TypeOfPhoto.NONE },
-				new Category { Id = 3, Title = "Вітаміни", ParentCategoryID = 2, IsRecomended = true, SubCategoriesTypeOfPhoto = TypeOfPhoto.PNG },
+				new Category { Id = 1, Title = "Каталог Товарів", PathToPhoto = "" },
+				new Category { Id = 2, Title = "Ліки та профілактичні засоби", ParentCategoryID = 1, PathToPhoto = "/images/category/icon/Medicines.png"},
+				new Category { Id = 3, Title = "Вітаміни", ParentCategoryID = 2, IsDisplayOnBottom = true },
 				new Category { Id = 4, Title = "Вітамін С", ParentCategoryID = 3, PathToPhoto = "/images/category/png/C.png", CanHasProducts = true },
 				new Category { Id = 5, Title = "Аскорбінка", ParentCategoryID = 4 },
 				new Category { Id = 6, Title = "Аскорбінка-КВ", ParentCategoryID = 5 },

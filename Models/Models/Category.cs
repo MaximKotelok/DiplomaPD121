@@ -25,9 +25,10 @@ namespace Domain.Models
 		[JsonIgnore]
 		public IEnumerable<Product>? Products { get; set; }
 		public IEnumerable<Category>? SubCategories { get; set; }        
-        public bool? IsRecomended { get; set; }
+        public bool? IsDisplayOnBottom { get; set; }
         public string? PathToPhoto { get;set; }        
-        public TypeOfPhoto? SubCategoriesTypeOfPhoto { get; set; }
+        public bool? IsRecomended { get; set; }
+        public string? PathToRecomendedPhoto { get;set; }        
         public bool? CanHasProducts { get; set; } = false;
 	}
 }

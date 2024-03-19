@@ -38,11 +38,11 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-		[HttpGet("GetRecomendedCategory")]
-		public IActionResult GetRecomendedCategory(string typeOfPhoto, int count)
+		[HttpGet("GetRecomendedCategory")]  // GetBottomCategory
+		public IActionResult GetRecomendedCategory(int count)
 		{
 			var result = _service.GetAllCategories(a =>
-				(a.IsRecomended != null && a.IsRecomended.Value && a.SubCategoriesTypeOfPhoto == Enum.Parse<TypeOfPhoto>(typeOfPhoto)));
+				(a.IsDisplayOnBottom != null && a.IsDisplayOnBottom.Value));
 
 
 			if (result is not null && result.Count() > 0)
