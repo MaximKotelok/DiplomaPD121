@@ -20,7 +20,7 @@ const ListPharmaciesItemComponent = ({id, isSelected, title, address, timeClosed
             <p className={`${styles["pharma-name"]}`}>{title} <i className={`bi bi-info-circle ${styles["info-icon"]}`}></i></p>            
             <div className="my-2">
 
-            <Link className={`${styles["pharma-info-link"]}`} to={`/PharmaInfo/${id}`}>
+            <Link className={`${styles["pharma-info-link"]}`} to={`/PharmacyInfo/${id}`}>
                 Інформація про аптеку <img src={externalLink} height={14} width={14}/>
             </Link>
             </div>

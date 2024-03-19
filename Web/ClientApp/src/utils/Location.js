@@ -1,6 +1,7 @@
 ﻿import { getFromServer } from "./Queries"
 import { getCookie, setCookie } from "./Cookies"
 
+
 export function getCity(position) {
     return new Promise((resolve, reject) => {
         const latitude = position.coords.latitude;

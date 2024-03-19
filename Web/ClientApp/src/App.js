@@ -55,7 +55,7 @@ export default class App extends Component {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index path="" element={<Home />} />
-              <Route index path="/PharmacyMap" element={<PharmacyInfo />} />
+              <Route index path="/PharmacyInfo/:pharmacyId" element={<PharmacyInfo />} />
               <Route index path="/ReservationConfirm/:pharmacyId" element={<Reservation />} />
               <Route path="res" element={<Reservation />} />
               <Route path="auth/*" element={<AuthPageComponent />}>
