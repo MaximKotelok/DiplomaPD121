@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CategoryPathDetailsComponent from "../Details/Component/CategoryPathDetailsComponent/CategoryPathDetailsComponent";
 import styles from "./PharmacyInfo.module.css";
+import 'leaflet/dist/leaflet.css'
 import { ReactComponent as Save } from "./Vector.svg";
 import { useParams } from "react-router";
 import { getPharmacyById } from "../../../../services/pharmacy";
@@ -9,17 +10,44 @@ import { addMinutes, getCurrentTimeInUkraine, isPharmacyOpen } from "../../../..
 import { getCity } from "../../../../utils/Location";
 import { getCityById } from "../../../../services/city";
 import { Link } from "react-router-dom";
-const PharmacyInfo = () => {
+import L from 'leaflet';
+
+const PharmacyInfo = (props) => {
   const {pharmacyId} = useParams();
   
   const [loading, setLoading] = useState(StateInfos.LOADING);
   const [pharmacy, setPharmacy] = useState(null);
   const [isOpen, setIsOpen] = useState(null);
   const [city, setCity] = useState(null);
-  
+  const [map, setMap] = useState(null);
+
+
+    let icon = L.icon({
+        iconUrl: '/images/icons/marker-icon-selected.png',
+        iconSize: [28, 40],
+        iconAnchor: [14, 40]
+    });
+
   useEffect(()=>{
     init();
-  },[]);
+  }, []);
+
+    useEffect(() => {
+        if (loading != StateInfos.LOADED) 
+            return
+        
+        const myMap = L.map('pharmacyMap').setView([pharmacy.latitude, pharmacy.longitude], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }).addTo(myMap);
+
+        L.marker([pharmacy.latitude, pharmacy.longitude], { icon: icon }).addTo(myMap)
+            .openPopup()
+
+        setMap(myMap);
+
+    }, [loading]);
   
   async function init(){
     let res = await getPharmacyById(pharmacyId);
@@ -37,7 +65,7 @@ const PharmacyInfo = () => {
       
       setCity(resCity.data);
       setLoading(StateInfos.LOADED);
-      setIsOpen(isPharmacyOpen(res.data.openTime,res.data.closeTime));
+      setIsOpen(isPharmacyOpen(res.data.openTime, res.data.closeTime));
     }
   }
 
@@ -77,7 +105,9 @@ const PharmacyInfo = () => {
             </button>
           </div>
         </div>
-        <div className="col-12 col-md-4">2</div>
+            <div className="col-12 col-md-4">
+                  <div id="pharmacyMap" style={{ height: '200px' }}></div>
+            </div>
       </div>
     </div>
   );
