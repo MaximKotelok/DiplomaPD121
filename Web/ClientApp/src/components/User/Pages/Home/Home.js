@@ -228,6 +228,7 @@ export const Home = () => {
               return (
                 <VitaminCardComponnent
                   key={a.id}
+                  id={a.id}
                   imageUrl={`${ApiPath}${a.pathToPhoto}`}
                   text={a.title}
                   color="#E0E0E0"

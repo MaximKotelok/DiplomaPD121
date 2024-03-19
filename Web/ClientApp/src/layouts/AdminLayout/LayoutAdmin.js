@@ -39,18 +39,18 @@ const LayoutAdmin = ({ children }) => {
         </div>
 
         <ul className="sidebar-list">
-          <li className="sidebar-list-item">
+          {/* <li className="sidebar-list-item">
             <ButtonSideMenuComponents
               text="Повідомлення"
               icon={Question}
               link="https://www.example.com"
             />
-          </li>
+          </li> */}
           <li className="sidebar-list-item active">
             <ButtonSideMenuComponents
               text="Заявки на підтвердження"
               icon={Mail}
-              link="https://www.example.com"
+              link="/admin/zayavka"
             />
           </li>
           <li className="sidebar-list-item">

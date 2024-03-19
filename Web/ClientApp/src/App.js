@@ -73,7 +73,9 @@ export default class App extends Component {
                 <Route path="edit" element={<EditProfile />} />
               </Route>
               <Route path="confirm-email" element={<ConfirmEmail />} />
+              <Route path="map/:city/:id?" element={<Map />} />
               <Route path="map/:id?" element={<Map />} />
+              <Route path="map/pharmacies/:city/:pharmacyId" element={<Map />} />
               <Route path="map/pharmacies/:pharmacyId" element={<Map />} />
               <Route path="map/pharmacies" element={<Map />} />
               <Route path="product-details/:id" element={<Details />} />

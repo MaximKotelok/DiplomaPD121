@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import "./VitaminCard.css"; // Стилі можна налаштувати в окремому CSS файлі
 
-const VitaminCardComponnent = ({ imageUrl, text, color }) => {
+const VitaminCardComponnent = ({ id,imageUrl, text, color }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="category-card">
+    <div role="button" className="category-card" onClick={()=>{window.location.href = `/category/${id}`;}}>
       <div
         className={`image-container position-relative`}
         //   className="image-container"

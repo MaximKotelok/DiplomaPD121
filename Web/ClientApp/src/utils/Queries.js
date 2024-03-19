@@ -16,6 +16,7 @@ export async function postToServer(url, data, headers) {
         
     } catch (error) {
         console.log(error);
+        
         return { status: 'Error', error };
     }
 }
