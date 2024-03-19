@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { ReactComponent as BtnEditProfile } from "../../../../../../assets/images/EditProfile.svg";
 import photo from "../../../../../../assets/images/download.jpg";
 
@@ -11,8 +11,9 @@ const AvatarComponent = () => {
         <img src={photo} className={` ${styles["circle-avatar"]} `} />
         <p className={`ms-3  ${styles["name-user"]}`}>Олег Мельник</p>
       </div>
-
-      <BtnEditProfile />
+      <Link to="/profile/edit">
+        <BtnEditProfile />
+      </Link>
     </div>
   );
 };

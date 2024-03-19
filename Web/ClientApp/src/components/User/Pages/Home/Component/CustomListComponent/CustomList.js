@@ -20,21 +20,23 @@ const CustomList = ({ data }) => {
       {data && data.map
         ? data.map((a) => {
             return (
+              
               <li key={a.id} style={{ margin: "14px 0" }}>
-                <div className={active}>
-              <li key={a.id} className="my-list-group-item">
-                <div className="d-flex align-items-center">
-                    height={24}
-                    width={24}
-                    src={
-                      a.pathToPhoto ? `${ApiPath}${a.pathToPhoto}` : placeholder
-                    }
-                  />
+              <Link to={`/category/${a.id}`}>
+              <div className={active}>
+                <img
+                  className={styles["category-icon"]}
+                  height={24}
+                  width={24}
+                  src={
+                    a.pathToPhoto ? `${ApiPath}${a.pathToPhoto}` : placeholder
+                  }
+                />
 
-                  <a className={`label ${styles["link-text"]} `}>{a.title}</a>
-                </div>
-                </Link>
-              </li>
+                <a className={`label ${styles["link-text"]} `}>{a.title}</a>
+              </div>
+              </Link>
+            </li>
             );
           })
         : new Array(9).fill(null).map((_, index) => {

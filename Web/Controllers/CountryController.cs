@@ -34,15 +34,15 @@ namespace Web.Controllers
 		}
 
 
-        [HttpGet("GetCountryById")]
-        public IActionResult GetCountryById(int brandId)
-        {
-            var result = _service.GetCountry(x => x.Id == brandId);
-            if (result is not null)
-            {
-                return Ok(result);
-            }
-            return BadRequest("No records found");
-        }
-    }
+		[HttpGet("GetCountryById")]
+		public IActionResult GetCountryById(int brandId)
+		{
+			var result = _service.GetCountry(x => x.Id == brandId);
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+	}
 }

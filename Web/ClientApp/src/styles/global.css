@@ -16,11 +16,9 @@
     width: 45px;
     height: 45px;
     font-size: 0px;
-    border-radius: 50%;
     background-color: #139787!important;
     opacity: 0.6!important;
     cursor: pointer;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     position: relative!important;
     line-height: 0;
     background-repeat: no-repeat!important;    

@@ -34,7 +34,6 @@ import { UpsertProduct } from "./utils/Constants";
 import { Reservation } from "./components/User/Pages/Reservation/Reservation";
 import UpsertProductComponent from "./components/Admin/Pharmacy/AddProductComponents/UpsertProductComponent/UpsertProductComponent";
 import EditProfile from "./components/User/Pages/Profile/Components/EditProfileComponent/EditProfile";
-import { Reservation } from "./components/User/Pages/Reservation/Reservation";
 
 // export default class App extends Component {
 // static displayName = App.name;

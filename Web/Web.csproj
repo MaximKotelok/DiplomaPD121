@@ -37,6 +37,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\ProductConfirmController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="ClientApp\public\images\icons\marker-icon.png" />
   </ItemGroup>
 

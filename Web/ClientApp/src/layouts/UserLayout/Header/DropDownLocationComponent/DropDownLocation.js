@@ -27,7 +27,7 @@ const cities = [
   "Хмельницький",
 ];
 
-function DropDownLocation({ iconPath }) {
+function DropDownLocation({ iconPath,text }) {
   const [show, setShow] = useState(false);
 
   return (
@@ -42,7 +42,7 @@ function DropDownLocation({ iconPath }) {
           className="mr-2"
           style={{ width: "28px", height: "28px", marginRight: "8px" }}
         />
-        <span className="text-center flex-grow-1">Каталог</span>
+        <span className="text-center flex-grow-1">{text}</span>
       </button>
 
       <Modal

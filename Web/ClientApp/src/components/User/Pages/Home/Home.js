@@ -182,11 +182,14 @@ export const Home = () => {
                 })}
           </div>
         </div>
-        <div className="col-12 mt-5">
+        {topOffers && topOffers.map && 
+        (<div className="col-12 mt-5">
           <div className="d-flex justify-content-between">
             <h3 className="text-title mb-4">Популярні товари</h3>
             <MoreLink link="." />
           </div>
+         
+          
           <div className="d-flex justify-content-start">
             {
               topOffers.map((a,index)=><PopularButtonComponnent text={a.title} key={index} onClick={()=>setSelectedTopOfferIndex(index)}/>)
@@ -205,10 +208,10 @@ export const Home = () => {
                 manufacturer={a.manufacturer}
                 imageUrl={a.pathToPhoto}
 
-            />))}
+                />))}
           </CarouselListComponent>
-        
-        </div>
+        </div>)
+      }
         <div className="col-12 baner-bottom mt-5"></div>
       </div>
       

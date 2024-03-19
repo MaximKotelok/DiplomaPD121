@@ -1,6 +1,14 @@
 ﻿import { Element } from "react-scroll";
 import { getFavs } from "../services/favProducts";
 
+export function updateObj (obj, name, value){
+  return {
+    ...obj,
+    [name]:value
+  }
+}
+
+
 export function wrapTagIntoDiv(text, tag, className) {
   const parser = new DOMParser();
   const doc = parser.parseFromString(text, 'text/html');
@@ -80,12 +88,6 @@ export function toTwoDigitsNumber(number){
     })
 }
 
-export function updateObj (obj, name, value){
-  return {
-    ...obj,
-    [name]:value
-  }
-}
 
 
 export function isPharmacyOpen(timeOpen, timeClosed) {
