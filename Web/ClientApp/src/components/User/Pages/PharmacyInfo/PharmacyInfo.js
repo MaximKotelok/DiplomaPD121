@@ -11,6 +11,8 @@ import { getCity } from "../../../../utils/Location";
 import { getCityById } from "../../../../services/city";
 import { Link } from "react-router-dom";
 import L from 'leaflet';
+import { getCookie } from "../../../../utils/Cookies";
+import {ReactComponent as Geo} from "../../../../assets/images/geo.svg"
 
 const PharmacyInfo = (props) => {
   const {pharmacyId} = useParams();
@@ -33,19 +35,21 @@ const PharmacyInfo = (props) => {
   }, []);
 
     useEffect(() => {
-        if (loading != StateInfos.LOADED) 
-            return
-        
-        const myMap = L.map('pharmacyMap').setView([pharmacy.latitude, pharmacy.longitude], 13);
+        if (loading === StateInfos.LOADED) 
+            {
 
+              
+              const myMap = L.map('pharmacyMap').setView([pharmacy.latitude, pharmacy.longitude], 100);
+              
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }).addTo(myMap);
 
         L.marker([pharmacy.latitude, pharmacy.longitude], { icon: icon }).addTo(myMap)
             .openPopup()
-
-        setMap(myMap);
+            
+            setMap(myMap);
+          }
 
     }, [loading]);
   
@@ -77,8 +81,8 @@ const PharmacyInfo = (props) => {
       {/* <CategoryPathDetailsComponent data={product.pathToCategory} /> */}
       {/* <CategoryPathDetailsComponent /> */}
 <p className={` ${styles["path-text"]} `}>Аптеки   |    Інформація про аптеку</p>
-      <div className="row" style={{ marginBottom: "80px" }}>
-        <div className="col-12 col-md-8">
+      <div className={`row`} style={{ marginBottom: "80px" }}>
+        <div className={`col-12 col-md-8 ${styles["pharmacy-info-container"]}`}>
           <h4 className={`${styles["title-pharnacy"]}`}>
             {pharmacy.title}
           </h4>
@@ -95,7 +99,7 @@ const PharmacyInfo = (props) => {
               to={`/map/pharmacies/${pharmacy.id}`}
               className={`btn brn-form ${styles["btn-style"]} ${styles["btn-prosta"]} `}
             >
-              Аптека у {city.nameCity}
+              Аптеки {pharmacy.title} у місті {getCookie("city")}
             </Link>
             <button 
               className={`brn-form ${styles["btn-style"]} ${styles["btn-img"]} `}
@@ -106,7 +110,13 @@ const PharmacyInfo = (props) => {
           </div>
         </div>
             <div className="col-12 col-md-4">
+              <div className={`${styles["map-container"]}`}>
+                  <button onClick={()=>{
+                        const mapsUrl = `https://www.google.com/maps?q=${pharmacy.latitude},${pharmacy.longitude}&z=15&t=m`;
+                        window.open(mapsUrl, '_blank');                    
+                  }} className={`btn ${styles["geo"]} my-3`}>Маршрут <Geo className="geo-icon"/></button>
                   <div id="pharmacyMap" style={{ height: '200px' }}></div>
+              </div>
             </div>
       </div>
     </div>

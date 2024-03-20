@@ -1,6 +1,40 @@
+.map-container{
+border-radius: 24px;
+border: 2px solid #007AFF;
+overflow: hidden;
+position: relative;
+}
+
+.pharmacy-info-container{
+ display: flex;
+ flex-direction: column;
+ justify-content: space-between;   
+}
+
+
+.geo {
+    font-family: var(--standart-font);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
+    color: #007AFF;
+    border-radius: 50px;
+    border: #007AFF 1px solid;
+    padding: 7px 10px;
+    width: 100px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: absolute;
+    top:6px;
+    right: 10px;
+    z-index: 9999;
+    background: white!important;
+}
 h4,p{
     font-family: var(--standart-font) ;
 }
+
 .text-opus{
     font-size: 16px;
     font-weight: 400;
