@@ -12,9 +12,12 @@
 font-size: 18px;
 font-weight: 500;
 line-height: 23px;
-
+margin-bottom: 8px;
 }
-
+.in-your-city{
+font-weight: 700;
+  color: rgba(14, 62, 117, 1);
+}
 .product-price-range {
   font-family: var(--standart-font);
   font-size: 16px;
@@ -35,8 +38,9 @@ line-height: 23px;
   margin-top: 15px;
   margin-bottom: 0;
   font-weight: 600;
-  font-size: 24px;
+  font-size: 32px;
   font-family: var(--standart-font);
+  color: rgba(14, 62, 117, 1);
 }
 
 .product-details-info-container {
@@ -45,6 +49,11 @@ line-height: 23px;
   flex-direction: column;
   justify-content: space-between;
   height: 90%;
+}
+
+.heart-styles{
+  right: 90%;
+  cursor: pointer;
 }
 
 .btn-details {
