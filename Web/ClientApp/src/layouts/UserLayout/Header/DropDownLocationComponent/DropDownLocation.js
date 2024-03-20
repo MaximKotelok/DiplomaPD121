@@ -1,34 +1,53 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import styles from "./DropDownLocation.module.css";
 import BtnCity from "./BtnCityComponent/BtnCity";
+import { getAllCities } from "../../../../services/city";
+import { Success } from "../../../../utils/Constants";
 // import MenuComponentModal from "./MenuComponent/MenuComponentModal";
 // import Content from "./ContentComponent/Content";
-const cities = [
-  "Вінниця",
-  "Тернопіль",
-  "Полтава",
-  "Кропивницький",
-  "Чернівці",
-  "Харків",
-  "Луцьк",
-  "Львів",
-  "Івано-Франківськ",
-  "Ужгород",
-  "Одеса",
-  "Київ",
-  "Суми",
-  "Миколаїв",
-  "Чернігів",
-  "Черкаси",
-  "Рівне",
-  "Дніпро",
-  "Хмельницький",
-];
+// const cities = [
+//   "Вінниця",
+//   "Тернопіль",
+//   "Полтава",
+//   "Кропивницький",
+//   "Чернівці",
+//   "Харків",
+//   "Луцьк",
+//   "Львів",
+//   "Івано-Франківськ",
+//   "Ужгород",
+//   "Одеса",
+//   "Київ",
+//   "Суми",
+//   "Миколаїв",
+//   "Чернігів",
+//   "Черкаси",
+//   "Рівне",
+//   "Дніпро",
+//   "Хмельницький",
+// ];
 
 function DropDownLocation({ iconPath,text }) {
   const [show, setShow] = useState(false);
+  const [cities, setCities] = useState([]);
+  const [filteredCities, setFilteredCities] = useState([]);
+
+  useEffect(()=>{
+    init();
+  },[])
+  async function init(){
+    let res = await getAllCities();
+    if(res.status === Success){
+      setCities(res.data.map(a=>a.nameCity))
+      setFilteredCities(res.data.map(a=>a.nameCity))
+    }
+  }
+
+  function filter(e){
+    return setFilteredCities(cities.filter(a=> a.startsWith(e.target.value)));
+  }
 
   return (
     <>
@@ -66,6 +85,7 @@ function DropDownLocation({ iconPath,text }) {
             <input
               className={`input-text-form input-text-secondary-form mb-2 ${styles["my-input-text-form"]}`}
               placeholder="Вкажіть назву населеного пункту"
+              onChange={filter}
               type="text"
               // name="email"
               // value={formData.email}
@@ -74,9 +94,9 @@ function DropDownLocation({ iconPath,text }) {
             />
           </div>
           <div className=" d-flex justify-content-between flex-wrap ">
-            {cities.map((city) => (
+            {filteredCities.length>0? filteredCities.map((city) => (
               <BtnCity key={city} NameCity={city} />
-            ))}
+            )):<p>Міст не знайдено</p>}
           </div>
         </Modal.Body>
       </Modal>
