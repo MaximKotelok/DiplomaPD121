@@ -2,6 +2,33 @@
 import { getFavs } from "../services/favProducts";
 import { favouriteProducts } from "./Constants";
 
+export function formatDate(str) {
+  const date = new Date(str);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  return `${day}.${month}.${year} в ${hours}:${minutes}`;
+}
+
+export function groupBy(xs, key) {
+  return xs.reduce(function(rv, x) {
+    (rv[x[key]] = rv[x[key]] || []).push(x);
+    return rv;
+  }, {});
+};
+
+export function toLocalString(str){
+
+    const date = new Date(str);
+    const options = { month: 'long', day: 'numeric', year: "numeric" };
+    return date.toLocaleDateString('uk-UA', options);
+
+}
+
+
 export function updateObj(obj, name, value) {
   return {
     ...obj,
