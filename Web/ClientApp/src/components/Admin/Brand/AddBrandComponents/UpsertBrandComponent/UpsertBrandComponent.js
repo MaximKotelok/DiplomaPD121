@@ -60,7 +60,6 @@ const UpsertBrandComponent = () => {
         countryID: undefined,
         pathToPhoto: undefined,
     });
-    console.log(formData)
      
 
     async function init() {

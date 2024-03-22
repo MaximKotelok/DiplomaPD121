@@ -7,6 +7,7 @@ import { setupLocation } from "./utils/Location";
 // import LayoutAdmin from "./components/pages/Admin/LayoutAdmin";
 import "./styles/variables.css";
 import "./styles/global.css";
+import 'react-international-phone/style.css';
 import { ToastContainer } from "react-toastify";
 import { Home } from "./components/User/Pages/Home/Home";
 import { Layout } from "./layouts/UserLayout/Layout";
