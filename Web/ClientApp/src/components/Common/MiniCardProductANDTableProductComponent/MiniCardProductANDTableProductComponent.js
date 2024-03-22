@@ -4,11 +4,11 @@ import stylesMiniCard from "./MiniCardProductANDTableProductComponent.module.css
 import { Link } from "react-router-dom";
 import styles from "../../User/Pages/Category/Component/CategoryWithProductsComponent/CategoryWithSubCategoriesComponent.module.css";
 import React, { useEffect, useState } from "react";
-import FavoriteButton from "../FavoriteButtonComponent/FavoriteButton.js";
+import FavoriteProductButton from "../FavoriteProductButtonComponent/FavoriteProductButton.js";
 import { ApiPath } from "../../../utils/Constants.js";
 import CustomImgComponent from "../CustomImgComponent/CustomImgComponent.js";
 import { ReactComponent as Galochka } from "../../../assets/images/category/galochka.svg";
-import { isFavorite } from "../../../utils/Functions.js";
+import { isFavoriteProduct } from "../../../utils/Functions.js";
 
 const MiniCardProductANDTableProductComponent = ({
   id = 0,
@@ -22,7 +22,7 @@ const MiniCardProductANDTableProductComponent = ({
   const [isFavoriteState, setIsFavoriteState] = useState(false);
   useEffect(()=>{
       if(id)
-          setIsFavoriteState(isFavorite(id));
+          setIsFavoriteState(isFavoriteProduct(id));
   },[id])
   function minimizeText(text, maxSymbols) {
       if (text) {
@@ -39,7 +39,7 @@ const MiniCardProductANDTableProductComponent = ({
   }
       
   useEffect(() => {
-    if (id) setIsFavoriteState(isFavorite(id));
+      if (id) setIsFavoriteState(isFavoriteProduct(id));
   }, [id]);
   function minimizeText(text, maxSymbols) {
     if (text) {
@@ -99,7 +99,7 @@ const MiniCardProductANDTableProductComponent = ({
           Ціни в аптеках
         </button>
       </div>
-      <FavoriteButton
+      <FavoriteProductButton
         style={{  
           top: "14px",
           right: "14px"

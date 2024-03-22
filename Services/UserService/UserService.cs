@@ -30,7 +30,7 @@ namespace Services.UserService
             _pharmacyService = pharmacyService;
         }
 
-        public async Task AddFavouritePharcmacy(int pharmacyId, string userName)
+        public async Task AddFavouritePharmacy(int pharmacyId, string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
 
@@ -117,7 +117,7 @@ namespace Services.UserService
             return await _userManager.FindByNameAsync(name);
         }
 
-        public async Task RemoveFavouritePharcmacy(int pharmacyId, string userName)
+        public async Task RemoveFavouritePharmacy(int pharmacyId, string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
 

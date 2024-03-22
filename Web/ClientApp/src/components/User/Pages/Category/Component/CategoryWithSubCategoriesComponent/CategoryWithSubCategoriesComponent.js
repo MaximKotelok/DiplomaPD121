@@ -4,7 +4,7 @@ import React, { Component, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { GetCategoryById, GetCategoryProductsForFilter, GetProductsFromCategory, GetWithProducts } from "../../../../../../services/category";
 import { StateInfos, Success } from "../../../../../../utils/Constants";
-import { initFavs, isFavorite } from "../../../../../../utils/Functions";
+import { initFavsProducts, isFavoriteProduct } from "../../../../../../utils/Functions";
 import CarouselListComponent from "../../../../Common/CarouselListComponent/CarouselListComponent";
 import MiniProductCardComponent from "../../../../../Common/MiniProductCardComponent/MiniProductCardComponent";
 import ProductFilterComponent from "../../../../../Common/ProductFilterComponent/ProductFilterComponent";
@@ -23,7 +23,7 @@ export const CategoryWithSubCategoriesComponent = () => {
   const [loader, setLoader] = useState(StateInfos.LOADING);
   useEffect(() => {
     init();
-    initFavs(setFavs);
+    initFavsProducts(setFavs);
   }, [id]);
 
   
@@ -74,7 +74,7 @@ export const CategoryWithSubCategoriesComponent = () => {
   }
   
   function isCustomFavorite(id){
-    isFavorite(id, favs);
+      isFavoriteProduct(id, favs);
   }
 
   return (

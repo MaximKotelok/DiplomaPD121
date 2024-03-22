@@ -4,6 +4,7 @@ import shpruc from "../../../../../../assets/images/shpruc.svg";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import { removeToken } from "../../../../../../utils/Login";
+import { favouriteProducts, favouritePharmacies } from "../../../../../../utils/Constants"
 var active = ({ isActive }) =>
   isActive
     ? ` d-flex align-items-center ${styles["my-list-group-item"]} ${styles["my-list-group-item-active"]} ${styles["link-text-active"]}`
@@ -14,7 +15,8 @@ const MenuComponent = () => {
   const navigate = useNavigate();
   function OnExit(){  
     removeToken();
-    localStorage.removeItem("favs");
+    localStorage.removeItem(favouriteProducts);
+    localStorage.removeItem(favouritePharmacies);
     navigate("/auth");  
   }
 

@@ -40,6 +40,21 @@ namespace Web.Controllers
 			return Ok(user!.FavProducts!.Select(a => a.Id).ToList());
 		}
 
+        [HttpGet("getFavoritePharmacies")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> GetFavouritePharmacies()
+        {
+            var user = await _userService.GetUserByName(User.Identity.Name);
+
+
+            if (user == null)
+            {
+                return NoContent();
+            }
+
+            return Ok(user!.FavPharmacies!.Select(a => a.Id).ToList());
+        }
+
         [HttpPost("addFavouriteProduct/{productId}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> AddFavouriteProduct(int productId)
@@ -76,7 +91,7 @@ namespace Web.Controllers
         {
             try
             {
-                await _userService.AddFavouritePharcmacy(pharmacyId, User.Identity.Name);
+                await _userService.AddFavouritePharmacy(pharmacyId, User.Identity.Name);
                 return Ok();
             }
             catch (Exception ex)
@@ -91,7 +106,7 @@ namespace Web.Controllers
         {
             try
             {
-                await _userService.RemoveFavouritePharcmacy(pharmacyId, User.Identity.Name);
+                await _userService.RemoveFavouritePharmacy(pharmacyId, User.Identity.Name);
                 return Ok();
             }
             catch (Exception ex)

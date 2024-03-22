@@ -18,8 +18,8 @@ namespace Services.UserService
         public Task<User> GetUserByName(string name);
         public Task AddFavouriteProduct(int productId, string userName);
         public Task RemoveFavouriteProduct(int productId, string userName);
-        public Task AddFavouritePharcmacy(int pharmacyId, string userName);
-        public Task RemoveFavouritePharcmacy(int pharmacyId, string userName);
+        public Task AddFavouritePharmacy(int pharmacyId, string userName);
+        public Task RemoveFavouritePharmacy(int pharmacyId, string userName);
         public Task BanUser(string id);
         public Task UnbanUser(string id);
     }

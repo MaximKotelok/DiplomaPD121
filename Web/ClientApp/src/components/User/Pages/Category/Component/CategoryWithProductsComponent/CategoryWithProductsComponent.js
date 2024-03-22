@@ -5,7 +5,7 @@ import {
   GetCategoryProductsForFilter,
 } from "../../../../../../services/category";
 import { StateInfos, Success } from "../../../../../../utils/Constants";
-import { initFavs, isFavorite } from "../../../../../../utils/Functions";
+import { initFavsProducts, isFavoriteProduct } from "../../../../../../utils/Functions";
 
 import styles from "./CategoryWithSubCategoriesComponent.module.css";
 import ProductFilterComponent from "../../../../../Common/ProductFilterComponent/ProductFilterComponent";
@@ -33,7 +33,7 @@ export const CategoryWithProductsComponent = () => {
 
   useEffect(() => {
     init();
-    initFavs(setFavs);
+      initFavsProducts(setFavs);
   }, [id]);
 
   async function init() {
@@ -176,7 +176,7 @@ export const CategoryWithProductsComponent = () => {
                   <MiniCardProductANDTableProductComponent
                     key={a.id}
                     id={a.id}
-                      isFavorite={isFavorite}
+                      isFavorite={isFavoriteProduct}
                     title={a.title}
                     description={a.shortDescription}
                     minPrice={a.minPrice}

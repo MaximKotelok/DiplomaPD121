@@ -32,7 +32,7 @@ import {
 } from "../../../../services/product";
 import { getCountBrands } from "../../../../services/brand";
 import { getFavs } from "../../../../services/favProducts";
-import { initFavs, isFavorite } from "../../../../utils/Functions";
+import { initFavsProducts, isFavoriteProduct } from "../../../../utils/Functions";
 export const Home = () => {
   var displayName = Home.name;
 
@@ -89,7 +89,7 @@ export const Home = () => {
   }
 
   useEffect(() => {
-    initFavs(setFavs);
+    initFavsProducts(setFavs);
     initProducts();
     initRecentlyViewed();
     initCategories();
@@ -99,7 +99,7 @@ export const Home = () => {
   }, []);
 
   function isCustomFavorite(id) {
-    return isFavorite(id);
+      return isFavoriteProduct(id);
   }
   // Макс поправ карточки і каруселі!!!!!!!!!!!!!!!!!!!!!!-!!!!!!!!!!!!!!!!!!!!!!!!!
   return (

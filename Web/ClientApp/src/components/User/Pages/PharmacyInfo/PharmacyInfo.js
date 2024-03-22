@@ -12,7 +12,9 @@ import { getCityById } from "../../../../services/city";
 import { Link } from "react-router-dom";
 import L from 'leaflet';
 import { getCookie } from "../../../../utils/Cookies";
-import {ReactComponent as Geo} from "../../../../assets/images/geo.svg"
+import { ReactComponent as Geo } from "../../../../assets/images/geo.svg"
+import { isFavoritePharmacy } from "../../../../utils/Functions"
+import  FavoritePharmacyButton from "../../../Common/FavoritePharmacyButtonComponent/FavoritePharmacyButton"
 
 const PharmacyInfo = (props) => {
   const {pharmacyId} = useParams();
@@ -22,8 +24,9 @@ const PharmacyInfo = (props) => {
   const [isOpen, setIsOpen] = useState(null);
   const [city, setCity] = useState(null);
   const [map, setMap] = useState(null);
+  const [isFavoriteState, setIsFavoriteState] = useState(false);
 
-
+   
     let icon = L.icon({
         iconUrl: '/images/icons/marker-icon-selected.png',
         iconSize: [28, 40],
@@ -35,21 +38,25 @@ const PharmacyInfo = (props) => {
   }, []);
 
     useEffect(() => {
+        if (pharmacy)
+            setIsFavoriteState(isFavoritePharmacy(pharmacy.id));
+    }, [pharmacy])
+
+    useEffect(() => {
         if (loading === StateInfos.LOADED) 
-            {
+        {
 
+            const myMap = L.map('pharmacyMap').setView([pharmacy.latitude, pharmacy.longitude], 100);
               
-              const myMap = L.map('pharmacyMap').setView([pharmacy.latitude, pharmacy.longitude], 100);
-              
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        }).addTo(myMap);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            }).addTo(myMap);
 
-        L.marker([pharmacy.latitude, pharmacy.longitude], { icon: icon }).addTo(myMap)
-            .openPopup()
+            L.marker([pharmacy.latitude, pharmacy.longitude], { icon: icon }).addTo(myMap)
+                .openPopup()
             
-            setMap(myMap);
-          }
+                setMap(myMap);
+        }
 
     }, [loading]);
   
@@ -60,6 +67,7 @@ const PharmacyInfo = (props) => {
       setPharmacy({
         id: res.data.id, 
         title: res.data.pharmaCompany.title, 
+        pharmaCompanyId: res.data.pharmaCompany.id, 
         address: res.data.address, 
         openTime: res.data.openTime,
         closeTime: res.data.closeTime,
@@ -71,7 +79,11 @@ const PharmacyInfo = (props) => {
       setLoading(StateInfos.LOADED);
       setIsOpen(isPharmacyOpen(res.data.openTime, res.data.closeTime));
     }
-  }
+    }
+
+    function changeFavoriteState(state) {
+        setIsFavoriteState(state)
+    }
 
   console.log(city);
   if(loading !== StateInfos.LOADED)
@@ -96,17 +108,12 @@ const PharmacyInfo = (props) => {
           </p>
           <div className={` d-flex `}>
             <Link 
-              to={`/map/pharmacies/${pharmacy.id}`}
+              to={`/map/pharmacies/${pharmacy.id}/${pharmacy.pharmaCompanyId}`}
               className={`btn brn-form ${styles["btn-style"]} ${styles["btn-prosta"]} `}
             >
               Аптеки {pharmacy.title} у місті {getCookie("city")}
             </Link>
-            <button 
-              className={`brn-form ${styles["btn-style"]} ${styles["btn-img"]} `}
-            >
-              <Save />{" "}
-              <span style={{ marginLeft: "8px" }}>Зберегти в мої аптеки</span>
-            </button>
+            <FavoritePharmacyButton id={pharmacyId} isFavorite={isFavoriteState} setIsFavorite={changeFavoriteState} />    
           </div>
         </div>
             <div className="col-12 col-md-4">

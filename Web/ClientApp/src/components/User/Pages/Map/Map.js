@@ -12,7 +12,7 @@ import { NavigationDetailsComponent } from '../../Common/NavigationDetailsCompon
 import { getCookie } from '../../../../utils/Cookies';
 
 export const Map = (props) => {
-    const { id,city } = useParams();
+    const { id, companyId } = useParams();
     const { onComponentMount, onComponentUnmount } = useContext(LayoutContext);
 
     useEffect(() => {    
@@ -24,10 +24,10 @@ export const Map = (props) => {
 
     return (
         <div className='p-2'>            {
-                id != null ? (
-                    <MapProduct productId={id} city={city?city:getCookie("city")}></MapProduct>
+            id != null ? (
+                    <MapProduct productId={id} city={getCookie("city")}></MapProduct>
                 ) : (
-                    <MapPharmacies city={city?city:getCookie("city")}></MapPharmacies>
+                    <MapPharmacies companyId={companyId} city={getCookie("city")}></MapPharmacies>
                 )
             }
         </div>

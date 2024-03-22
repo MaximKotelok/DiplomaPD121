@@ -92,6 +92,8 @@ namespace DataAccess.Data
             
 			modelBuilder.Entity<User>().Navigation(e => e.FavProducts).AutoInclude();
 
-		}
+			modelBuilder.Entity<User>().Navigation(e => e.FavPharmacies).AutoInclude();
+
+        }
     }
 }

@@ -49,7 +49,7 @@ export const GetPharmacyProduct = "Pharmacy/GetPharmacyProduct"
 
 //Favoutire LocalStorages
 export const favouriteProducts = "favsProducts";
-export const favouriteMedicines = "favsMedicines";
+export const favouritePharmacies = "favsPharmacies";
 
 export const ClassHeader = {
     Accept: "application/json",

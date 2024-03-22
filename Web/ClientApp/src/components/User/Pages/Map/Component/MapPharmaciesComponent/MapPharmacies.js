@@ -48,12 +48,17 @@ const MapPharmacies = (props) => {
     useEffect(() => {
         if (city != null && map != null) {
             showLocation(city, map);
-            setPharmacyOfTown(city, map);
+            setPharmacyOfTown(city, map, props.companyId);
         }
     }, [map])
 
-    const setPharmacyOfTown = async (city, map) => {
-        let pharmacy = (await getFromServer(`Pharmacy/GetListOfPharmacyInYourCity/${city}`)).data;
+    const setPharmacyOfTown = async (city, map, companyId) => {
+        let pharmacy;
+        if (!companyId) {
+            pharmacy = (await getFromServer(`Pharmacy/GetListOfPharmacyInYourCity/${city}`)).data;
+        } else {
+            pharmacy = (await getFromServer(`Pharmacy/GetListOfPharmacyInYourCityByCompany/${city}/${companyId}`)).data;
+        }
 
         const markers = {};
         pharmacy.forEach((element) => {

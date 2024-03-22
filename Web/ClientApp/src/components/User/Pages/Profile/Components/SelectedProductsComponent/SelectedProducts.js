@@ -5,10 +5,10 @@ import Filter from "./FilterComponent/Filter";
 import MiniProductCardComponent from "../../../../../Common/MiniProductCardComponent/MiniProductCardComponent";
 import AccordionComponent from "../../../../../Common/AccordionQuestionComponent/accordionComponent";
 import srcImg from "../../../../../../assets/images/authPage.png";
-import { initFavs } from "../../../../../../utils/Functions";
-import { getFavs } from "../../../../../../services/favProducts";
+import { getFavsProducts } from "../../../../../../services/favProducts";
 import { getProductsFromIdsArray } from "../../../../../../services/product";
 import { Success } from "../../../../../../utils/Constants";
+import { initFavsProducts } from "../../../../../../utils/Functions";
 
 const SelectedProducts = () => {
   const [favs, setFavs] = useState([]);
@@ -19,7 +19,7 @@ const SelectedProducts = () => {
   }, [])
 
   async function init() {
-    let favs = await getFavs();
+    let favs = await getFavsProducts();
     let res = await getProductsFromIdsArray(favs);
     setFavs(res);
   }

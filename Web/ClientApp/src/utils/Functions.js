@@ -1,6 +1,7 @@
 ﻿import { Element } from "react-scroll";
-import { getFavs } from "../services/favProducts";
-import { favouriteProducts } from "./Constants";
+import { getFavsProducts } from "../services/favProducts";
+import { getFavsPharmacies } from "../services/favPharmacies";
+import { favouriteProducts, favouritePharmacies } from "./Constants";
 
 export function formatDate(str) {
   const date = new Date(str);
@@ -117,33 +118,59 @@ export const breakpoints = {
   xl: 1200,
 };
 
-export const isFavorite = (productId) => {
-    let favs = localStorage.getItem(favouriteProducts).split(',');
-    if(!favs)
+export const isFavoriteProduct = (productId) => {
+    let storageFavs = localStorage.getItem(favouriteProducts);
+    if (storageFavs == null)
         return false;
-    const result = favs.findIndex(a=>a == productId) !== -1;    
+    let favs = storageFavs.split(',');
+    const result = favs.findIndex(a => a == productId) !== -1;
     return result;
 };
 
-export async function initFavs(setFavs) {
+export const isFavoritePharmacy = (pharmacyId) => {
+    let storageFavs = localStorage.getItem(favouritePharmacies);
+    if (storageFavs == null)
+        return false;
+    let favs = storageFavs.split(',');
+    const result = favs.findIndex(a => a == pharmacyId) !== -1;
+    return result;
+};
+
+export async function initFavsProducts(setFavs) {
     if (!localStorage.hasOwnProperty("authToken"))
         setFavs([]);
 
-    let favs = localStorage.getItem("favs")
+    let favs = localStorage.getItem(favouriteProducts)
     if (favs == null || favs == "undefined") {
-        let favs = await getFavs();
+        let favs = await getFavsProducts();
         localStorage.setItem(favouriteProducts, favs);
         setFavs(favs());
      }
     else {
         setFavs(favs.split(','));
     }
-    
 }
 
+/*export async function initFavsPharmacies(setFavs) {
+    if (!localStorage.hasOwnProperty("authToken"))
+        setFavs([]);
+
+    let favs = localStorage.getItem(favouritePharmacies)
+    if (favs == null || favs == "undefined") {
+        let favs = await getFavsPharmacies();
+        localStorage.setItem(favouritePharmacies, favs);
+        setFavs(favs());
+    }
+    else {
+        setFavs(favs.split(','));
+    }
+}*/
+
 export async function initStorageFavs() {
-    let favsProducts = await getFavs();
+    let favsProducts = await getFavsProducts();
+    let favsPharmacies = await getFavsPharmacies();
     localStorage.setItem(favouriteProducts, favsProducts);
+    localStorage.setItem(favouritePharmacies, favsPharmacies);
 }
 
 export function isWidthDown(breakpoint, width) {

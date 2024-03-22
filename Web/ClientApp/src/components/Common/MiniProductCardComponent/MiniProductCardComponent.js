@@ -4,7 +4,7 @@ import './MiniProductCardComponent.css';
 import { Link } from 'react-router-dom';
 
 import React, {useEffect,useState} from 'react';
-import FavoriteButton from '../../Common/FavoriteButtonComponent/FavoriteButton.js'
+import FavoriteButton from '../FavoriteProductButtonComponent/FavoriteProductButton.js'
 import { ApiPath } from '../../../utils/Constants.js';
 import CustomImgComponent from '../CustomImgComponent/CustomImgComponent.js';
 

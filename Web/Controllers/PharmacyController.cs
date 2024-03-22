@@ -100,6 +100,19 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
+        [HttpGet("GetListOfPharmacyInYourCityByCompany/{cityName}/{companyId}")]
+        public IActionResult GetListOfPharmacyInYourCity(string cityName, int companyId)
+        {
+            var city = _cityService.GetCity(a => a.NameCity == cityName);
+            if (city is not null)
+            {
+                var result = _pharmacyService.GetAllPharmacies(a => a.CityID == city.Id && a.PharmaCompanyID == companyId, "PharmaCompany");
+
+                return Ok(result);
+            }
+            return BadRequest("No records found");
+        }
+
         [HttpPost("UpsertPharmacy")]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public async Task<IActionResult> UpsertBrand(PostPharmacyViewModel postModel)
