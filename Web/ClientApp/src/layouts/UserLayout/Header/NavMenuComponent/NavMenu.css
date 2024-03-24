@@ -37,6 +37,7 @@ html {
 }
 
 .searchbar {
+  width: 100%;
   grid-area: searchbar;
 }
 
@@ -123,5 +124,9 @@ html {
 
 .custom-navbar * {
   font-family: var(--standart-font);
-  color: white !important;
+  /* color: white !important; */
+}
+
+.nav-link-my{
+  width: max-content;;
 }

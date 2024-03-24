@@ -27,14 +27,16 @@ const cities = [
   "Хмельницький",
 ];
 
-function DropDownLocation({ iconPath,text }) {
+function DropDownLocation({ iconPath, text }) {
   const [show, setShow] = useState(false);
 
   return (
     <>
       <button
         onClick={() => setShow(true)}
-        className="btn d-flex align-items-center"
+        className={`btn d-flex align-items-center ${
+          show ? styles["btn-style-active"] : styles["btn-style-hover"]
+        } `}
       >
         <img
           src={iconPath}

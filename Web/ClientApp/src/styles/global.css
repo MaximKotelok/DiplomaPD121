@@ -63,6 +63,7 @@ html {
 }
 
 .brn-form {
+    font-family: var(--standart-font);
     width: 100%;
     padding: 16px 20px;
     border: none;
@@ -86,6 +87,18 @@ html {
     color: rgba(242, 242, 247, 1);
 }
 
+.btn-primary-form-pharmacy {
+    background-color: rgba(0, 122, 255, 0.15);
+    color: rgba(0, 122, 255, 1);
+    padding: 12px;
+    font-size: 18px;
+font-weight: 700;
+}
+
+.btn-primary-form-pharmacy:hover {
+    background-color: #e6f4fe;
+}
+
 .input-text-form {
     width: 100%;
     padding: 16px 20px;
@@ -97,6 +110,19 @@ html {
     text-align: left;
     outline: none;
 }
+
+.my-form-select {
+    width: 100%;
+    padding: 16px 20px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 500;
+    text-align: left;
+    outline: none;
+}
+
 
 .input-text-secondary-form {
     background-color: rgba(239, 239, 239, 1);
@@ -112,4 +138,9 @@ html {
     -khtml-user-select: none;
     -webkit-user-select: none;
     user-select: none;
+}
+
+
+.row{
+    margin: 0;
 }

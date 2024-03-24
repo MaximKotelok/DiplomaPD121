@@ -1,0 +1,13 @@
+﻿.btn-style-hover{
+    color: white;
+    padding: 10px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+
+}
+
+.btn-style-hover:hover{
+    color: white;
+    border-radius: 8px;
+    border: 1px solid #0e3e75;
+}

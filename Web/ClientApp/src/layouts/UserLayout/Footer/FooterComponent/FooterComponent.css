@@ -52,6 +52,12 @@
 }
 
 
+.link-body-emphasis{
+
+    text-decoration: none;
+}
+
+
 .bottom-div {
     border-radius: 30px 30px 0 0;
     margin-top: 10px;
@@ -60,22 +66,25 @@
     background-color: var(--dark-blue);
     position: relative;
     z-index: 10;
+    text-align: center;
 }
 
 .bottom-div a {
-    color: white !important;
+font-size: 12px;
+font-weight: 400;
+    color: rgba(255, 255, 255, 1) !important;
     font-family: var(--standart-font);
 }
 
 .bottom-div a:hover {
-    color: white !important;
-    text-decoration: underline !important;
+    color: rgba(255, 255, 255, 1) !important;
+    text-decoration: none !important;
 }
 
 
 
 .top-div {
-    padding: 95px 60px 0 60px;
+    padding: 95px 40px 0 40px;
     margin: 0;
     border-radius: 30px;
     background-color: var(--light-blue);
@@ -85,33 +94,12 @@
 
 
 
-.bottom-ul {
-    list-style: none;
-    display: flex;
-    font-size: 12px;
-}
-
-.bottom-li {
-    padding: 0 40px;
-    margin-left: 3px;
-
-}
-
-.border-li {
-    border-right: 1px solid white;
-}
-
-
-.link-body-emphasis {
-    text-decoration: none;
-    color: rgba(28, 28, 28, 0.35);
-}
 
 .section-4 * {
-    font-family: Rubik;
+    /* font-family: Rubik;
     font-size: 18px;
     font-weight: 500;
-    line-height: 21px;
+    line-height: 21px; */
 }
 
 
@@ -120,7 +108,7 @@
         display: none !important;
     }
 
-    .section-1 {
+    /* .section-1 {
         width: 33% !important;
     }
 
@@ -130,20 +118,48 @@
 
     .section-3 {
         width: 33% !important;
-    }
+    } */
 
     .section-4 {
-        display: flex !important;
+        /* display: flex !important; */
         margin: 0 !important;
-        flex-direction: row !important;
-        width: 100% !important;
+        /* flex-direction: row !important; */
+        /* width: 100% !important; */
         margin-bottom: 20px !important;
     }
 
     .section-4 h5 {
-        margin-right: 20px;
-        align-self: center !important;
+        /* margin-right: 20px; */
+        /* align-self: center !important; */
 
     }
 
 }
+
+
+.div-center{
+    border-right: 1px solid rgba(255, 255, 255, 1);
+    border-left: 1px solid rgba(255, 255, 255, 1);
+}
+
+.my-dflex-justyf-end{
+    justify-content: end;
+}
+@media (max-width: 768px) {
+    .bottom-div .col-12:last-child {
+        margin-top: 12px;
+    }
+
+    .div-center{
+        border-right: none;
+    }
+}
+
+@media (max-width: 991.9px) {
+   
+    .my-dflex-justyf-end{
+        justify-content: start;
+    }
+}
+
+
