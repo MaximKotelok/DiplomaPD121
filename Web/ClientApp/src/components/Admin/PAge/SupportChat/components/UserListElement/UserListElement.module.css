@@ -1,0 +1,45 @@
+
+
+.avatar-chat {
+    width: 40px; 
+    height: 40px; 
+    border-radius: 50%; 
+    object-fit: cover; 
+    border: 2px solid rgba(13, 30, 49, 1); 
+    margin: 0 10px 0 10px;
+  }
+  
+
+  .nikname-text-chat{
+    font-family: var(--standart-font);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20.02px;
+color: rgba(0, 0, 0, 0.87);      
+}
+
+  .email-text{
+    font-family: var(--standart-font);
+     text-transform: lowercase; /* малий реєстер */
+font-size: 14px;
+font-weight: 400;
+line-height: 20.02px;
+color:rgba(0, 0, 0, 0.6) ;
+}
+
+
+.time-chat{
+    font-family: var(--standart-font);
+font-size: 12px;
+font-weight: 400;
+line-height: 17.16px;
+color: rgba(13, 30, 49, 1);
+;
+
+}
+
+.element-user-perent{
+    padding: 0 20px 16px 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    margin-bottom: 16px;
+}

@@ -1,0 +1,30 @@
+.text-head{
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 30.12px;
+    text-align: left;
+    color: rgba(255, 149, 0, 1);
+    }
+    
+    .text-head2{
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 25.1px;
+    text-align: left;
+    
+    color: rgba(0, 0, 0, 1);
+    }
+
+    .div-osnova{
+        border-radius: 32px;
+        border: 1px solid rgba(255, 149, 0, 1);
+        height: 100%;
+        padding: 39px;
+    }
+    
+
+    .text-login-phar{
+        font-family: var(--standart-font);
+        }
+        
+        

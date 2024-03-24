@@ -1,20 +1,10 @@
-.text-header-modal{
-    font-family:  var(--standart-font);
-font-size: 16px;
-font-weight: 700;
-line-height: 20px;
-color: rgba(28, 28, 28, 0.8);
-}
+/* .modal-dialog{
+    max-width: none ;
+    margin-right: none;
+    margin-left: none;
+} */
 
-.custom-modal{
-    width: 370px;
-    margin: 10% 40%;
-    padding: 32px;
-    border-radius: 32px;
-    border: none;
-  }
-
-  .btn-style-hover{
+.btn-style-hover{
     color: white;
     padding: 10px;
     border: 1px solid transparent;

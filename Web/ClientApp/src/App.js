@@ -16,26 +16,29 @@ import Cart from "./components/User/Pages/Cart/Cart";
 import Profile from "./components/User/Pages/Profile/Profile";
 import Status404 from "./components/StatusesPage/Status404";
 import ConfirmEmail from "./components/Auth/ConfirmEmailComponent/ConfirmEmail";
-import TableComponent from "./components/Admin/Admin/ZayavkaComponents/TableComponent/TableComponent";
 import { Map } from "./components/User/Pages/Map/Map";
 import { Details } from "./components/User/Pages/Details/Details";
 import { Category } from "./components/User/Pages/Category/Category";
 import RegistrationForm from "./components/Auth/RegistrationFormComponent/RegistrationForm";
 import LoginForm from "./components/Auth/LoginFormComponent/LoginForm";
 import LayoutProvider from "./layouts/LayoutProvider";
-import LayoutAdmin from "./layouts/AdminLayout/LayoutAdmin";
 import MyPharmacies from "./components/User/Pages/Profile/Components/MyPharmaciesComponent/MyPharmacies";
 import MineBookeds from "./components/User/Pages/Profile/Components/MineBookedsComponent/MineBookedsComponent";
 import SelectedProducts from "./components/User/Pages/Profile/Components/SelectedProductsComponent/SelectedProducts";
 import WathcList from "./components/User/Pages/Profile/Components/WathcListComponent/WathcList";
-import UpsertBrandComponent from "./components/Admin/Brand/AddBrandComponents/UpsertBrandComponent/UpsertBrandComponent";
-import UpsertPharmaCompanyComponent from "./components/Admin/PharmaCompany/AddPharmaCompanyComponents/UpsertPharmaCompanyComponent/UpsertPharmaCompanyComponent";
-import UpsertPharmacyComponent from "./components/Admin/Pharmacy/AddPharmacyComponents/UpsertPharmacyComponent/UpsertPharmacyComponent";
 import { UpsertProduct } from "./utils/Constants";
 import { Reservation } from "./components/User/Pages/Reservation/Reservation";
-import UpsertProductComponent from "./components/Admin/Pharmacy/AddProductComponents/UpsertProductComponent/UpsertProductComponent";
 import EditProfile from "./components/User/Pages/Profile/Components/EditProfileComponent/EditProfile";
 import PharmacyInfo from "./components/User/Pages/PharmacyInfo/PharmacyInfo";
+import { LoginLayuotPharmacy } from "./layouts/LoginPharmacy/LoginLayuotPharmacy";
+import LayoutAdmin from "./layouts/AdminLayout/LayoutAdmin";
+import TableComponent from "./components/Admin/PAge/TableComponent/TableComponent";
+import { UserPharmacy } from "./components/Admin/PAge/UsersPharmacy/UserPharmacy";
+import UpsertProductComponent from "./components/Admin/PAge/Pharmacy/AddProductComponents/UpsertProductComponent/UpsertProductComponent";
+import UpsertBrandComponent from "./components/Admin/PAge/Brand/AddBrandComponents/UpsertBrandComponent/UpsertBrandComponent";
+import UpsertPharmaCompanyComponent from "./components/Admin/PAge/PharmaCompany/AddPharmaCompanyComponents/UpsertPharmaCompanyComponent/UpsertPharmaCompanyComponent";
+import UpsertPharmacyComponent from "./components/Admin/PAge/Pharmacy/AddPharmacyComponents/UpsertPharmacyComponent/UpsertPharmacyComponent";
+import { SupportChat } from "./components/Admin/PAge/SupportChat/SupportChat";
 
 // export default class App extends Component {
 // static displayName = App.name;
@@ -55,7 +58,7 @@ export default class App extends Component {
         <LayoutProvider>
           <Routes>
             <Route path="/" element={<Layout />}>
-              <Route index path="" element={<Home />} />
+                <Route index path="" element={<Home />} />
               <Route index path="/PharmacyInfo/:pharmacyId" element={<PharmacyInfo />} />
               <Route index path="/ReservationConfirm/:pharmacyId" element={<Reservation />} />
               <Route path="res" element={<Reservation />} />
@@ -83,13 +86,16 @@ export default class App extends Component {
               <Route path="category/:id/:currentPage" element={<Category />} />
               <Route path="*" element={<Status404 />} />
             </Route>
+            <Route path="loginPharmacy" element={<LoginLayuotPharmacy />}>
+            </Route>
 
             <Route path="admin" element={<LayoutAdmin />}>
-              <Route path="" element={<Home />} />
               <Route path="zayavka" element={<TableComponent />} />
+              <Route path="pharmacyUser" element={<UserPharmacy />} />
               <Route path="updateProduct/:productId" element={<UpsertProductComponent />} />
               <Route path="addProduct" element={<UpsertProductComponent />} />
               <Route path="addBrand" element={<UpsertBrandComponent />} />
+              <Route path="supportChat" element={<SupportChat />} />
               <Route
                 path="updateBrand/:brandId"
                 element={<UpsertBrandComponent />}
