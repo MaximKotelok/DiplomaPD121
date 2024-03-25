@@ -29,8 +29,8 @@ color: rgba(122, 122, 122, 1);
 .back-serach-bar {
     border-radius: 12px;
     background: rgba(242, 242, 247, 1);
-    /* max-width: 621px; */
-    /* width: 40vw; */
+    max-width: 621px!important;
+    width: 40vw!important;
     padding: 8px 10px;
     display: flex;
     justify-content: space-between;

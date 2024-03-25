@@ -23,6 +23,7 @@ import { checkIsAuth } from "../../../../services/user";
 import DropDownLocation from "../DropDownLocationComponent/DropDownLocation";
 import AutoCompleteInput from "../../../../components/Common/AutoCompleteInputComponent/AutoCompleteInput ";
 import { IconButtonNoText } from "../../../../components/Common/IconButtonNoTextComponent/IconButtonNoText";
+import { GetProductByTitle } from "../../../../services/product";
 
 //import CatalogIcon from './catalog_icon_215654.svg';
 export class NavMenu extends Component {
@@ -68,7 +69,7 @@ export class NavMenu extends Component {
             </div>
 
             {/* <SearchElement className="searchbar" /> */}
-            <AutoCompleteInput className="searchbar" />
+            <AutoCompleteInput className="searchbar" getData={(title)=>GetProductByTitle(title)}/>
 
             <NavLink tag={Link} className="cart nav-link-my" to="/cart">
               <IconButtonNoText iconPath={CartIcon} />

@@ -1,35 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ReactComponent as ArrowRight } from "./arrow-right.svg";
 
 import searchIcon from "../../../assets/images/header-icons/search-icon.svg"; // Замініть шлях імпорту на ваш шлях до зображення
 import styles from "./AutoCompleteInput.module.css";
+import { ApiPath, Success } from "../../../utils/Constants";
 
-const AutoCompleteInput = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [options] = useState([
-    "San Francisco",
-    "New York",
-    "Seattle",
-    "Los Angeles",
-    "Chicago",
-  ]);
+const AutoCompleteInput = ({ className, getData }) => {
+  const [dataFromServer, setDataFromServer] = useState([]);
+  const [searchTerm, setSearchTerm] = useState([]);
+  const [isFocused, setIsFocused] = useState(false);
 
-  const handleChange = (event) => {
+
+
+  const handleChange = async (event) => {
+
     setSearchTerm(event.target.value);
+    if (event.target.value !== "") {
+      let res = await getData(event.target.value);
+      if (res.status === Success)
+        setDataFromServer(res.data);
+    } else {
+      setDataFromServer([]);
+    }
   };
 
-  const filteredOptions = options.filter((option) =>
-    option.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   return (
-    <div>
+    <div className={className} 
+      onMouseEnter={() => setIsFocused(true)} 
+      onMouseLeave={() => setIsFocused(false)}
+    >
       <div
-        className={`input-group ${
-          searchTerm === ""
-            ? styles["border-bottom-none"]
-            : styles["border-bottom"]
-        } ${styles["input-style-search"]} center back-serach-bar `}
+        className={`input-group ${(searchTerm === "" || !isFocused)
+          ? styles["border-bottom-none"]
+          : styles["border-bottom"]
+          } ${styles["input-style-search"]} center back-serach-bar `}
       >
         <button className="social-btn" type="button">
           <img
@@ -45,31 +49,34 @@ const AutoCompleteInput = () => {
           className="my-search-bar"
           placeholder="Type to search..."
           value={searchTerm}
-          onChange={handleChange}
+          onInput={handleChange}          
         />
       </div>
 
       <div style={{ position: "relative", width: "100%" }}>
-        {searchTerm && (
+        {searchTerm && isFocused && (
           <ul className={`${styles["ul-class"]}`}>
             <hr style={{ margin: "0px" }} />
             <p className={`${styles["pidkazka"]}`}>За назвою товару</p>
-            {filteredOptions.length > 0 ? (
-              filteredOptions.map((option, index) => (
+            {dataFromServer.length > 0 ? (
+              dataFromServer.map((option, index) => (
                 <li
                   key={index}
                   style={{}}
                   className={`${styles["li-class"]} d-flex justify-content-between  align-items-center`}
-                  onClick={() => setSearchTerm(option)}
+                  onClick={() => {
+                    window.location.href = `/product-details/${option.id}`
+                    setSearchTerm("");
+                  }}
                 >
                   <div className="d-flex">
                     <img
                       style={{ width: "40px", height: "40px" }}
-                      src="https://root.tblcdn.com/img/goods/8dbb0b8c-a56b-11ea-bab4-000c29ab36d9/1/img_0.jpg?v=AAAAAAjZg0"
+                      src={`${ApiPath}${option.pathToPhoto}`}
                     />
                     <div className="ms-3">
-                      <h4 className={`${styles["text-head"]}`}>{option}</h4>
-                      <p className={`${styles["text-opus"]}`}>djfgpdolfwe</p>
+                      <h4 className={`${styles["text-head"]}`}>{option.title}</h4>
+                      <p className={`${styles["text-opus"]}`}>{option.shortDescription}</p>
                     </div>
                   </div>
                   <ArrowRight />
