@@ -10,16 +10,14 @@ namespace Domain.Models.ViewModels
     {
         public int? Id { get; set; }
         public string? Address { get; set; }
-        public string? OpenTime { get; set; }
-        public string? CloseTime { get; set; }
+        public string? WorkingWeekOpenTime { get; set; }
+        public string? WorkingWeekCloseTime { get; set; }
+        public string? WeekendOpenTime { get; set; }
+        public string? WeekendCloseTime { get; set; }
         public string? Longitude { get; set; }
         public string? Latitude { get; set; }
         public int PharmaCompanyID { get; set; }
         public int CityID { get; set; }
 
-
-        public string? Username { get; set; }
-        public string? Email { get; set; }
-        public string? Password { get; set; }
     }
 }

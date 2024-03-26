@@ -31,13 +31,19 @@ namespace Services.UserService
             _pharmacyService = pharmacyService;
         }
 
-		public async Task UpdateUser(string id, string firstName, string lastName, string phoneNumber, string email)
+		public async Task UpdateUser(string id, string firstName = "", string lastName = "", string phoneNumber = "", string email="", string userName="")
 		{
 			var user = await _userManager.FindByIdAsync(id);
-            user.FirstName = firstName;
-            user.LastName = lastName;
-            user.PhoneNumber = phoneNumber;
-            user.Email = email;
+            if(firstName != "")
+                user.FirstName = firstName;
+			if (lastName != "")
+				user.LastName = lastName;
+			if (phoneNumber != "")
+				user.PhoneNumber = phoneNumber;
+			if (email != "")
+				user.Email = email;
+			if (userName != "")
+				user.UserName = userName;
 			await _userManager.UpdateAsync(user);
 		}
 

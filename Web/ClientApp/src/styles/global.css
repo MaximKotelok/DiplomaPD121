@@ -1,3 +1,9 @@
+div[disabled]
+{
+  pointer-events: none;
+  opacity: 0.7;
+  
+}
 .react-international-phone-input-container{
     background-color: rgba(239, 239, 239, 1)!important;
     color: rgba(122, 122, 122, 1)!important;

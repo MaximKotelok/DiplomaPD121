@@ -16,10 +16,39 @@ namespace Domain.Models
         public string? Address { get; set; }
 
 		[Required]
-		public string? OpenTime { get; set; }
+		public string? WorkingWeekOpenTime { get; set; }
 
 		[Required]
-		public string? CloseTime { get; set; }
+		public string? WorkingWeekCloseTime { get; set; }		
+		[Required]		
+		public string? WeekendOpenTime { get; set; }
+
+		[Required]		
+		public string? WeekendCloseTime { get; set; }
+		[NotMapped]
+		public string? OpenTime
+		{
+			get
+			{
+				DateTime now = DateTime.Now;
+				return
+					(now.DayOfWeek == DayOfWeek.Saturday || now.DayOfWeek == DayOfWeek.Sunday)
+					? WeekendOpenTime : WorkingWeekOpenTime;
+
+			}
+		}
+		[NotMapped]
+		public string? CloseTime
+		{
+			get
+			{
+				DateTime now = DateTime.Now;
+				return
+					(now.DayOfWeek == DayOfWeek.Saturday || now.DayOfWeek == DayOfWeek.Sunday)
+					? WeekendCloseTime : WorkingWeekCloseTime;
+
+			}
+		}
 
 		[Required]
 		public string? Longitude { get; set; }

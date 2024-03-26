@@ -8,7 +8,8 @@ import { setupLocation } from "./utils/Location";
 import "./styles/variables.css";
 import "./styles/global.css";
 import 'react-international-phone/style.css';
-import { ToastContainer } from "react-toastify";
+import { 
+    Container } from "react-toastify";
 import { Home } from "./components/User/Pages/Home/Home";
 import { Layout } from "./layouts/UserLayout/Layout";
 import AuthPageComponent from "./components/Auth/AuthPageComponent";
