@@ -1,0 +1,140 @@
+/* 
+.my-accordion-item {
+    margin: 40px;
+    border-radius: 12px;
+    border: 1px solid #E8E7E7;
+    
+    }
+      
+    
+    .btn-togle-victorina{
+    background:none;
+    border: none;
+    
+    }
+      
+    
+    .text-header-victorina{
+       font-size: 16px;
+    }
+    
+   
+     */
+
+     
+@media (max-width: 768.9px) {
+  .btn-displplay{
+    display: none;
+  }
+  
+}
+
+
+
+
+     .text-body-victorina{
+      font-family: var(--standart-font);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 18px;
+      color: rgba(14, 62, 117, 1);
+    }
+
+    
+
+    .parent-container-bg {
+      /* background-color: rgba(0, 122, 255, 0.15); */
+      border: none;
+      transition: border 0.4s ease, background-color 0.4s ease; 
+    }
+   
+
+
+
+      .hd-text {
+        color: rgba(13, 30, 49, 1);
+        font-family: var(--standart-font);
+font-size: 18px;
+font-weight: 500;
+line-height: 22.59px;
+/* text-align: left; */
+        /* transition: color 1.4s ease;  */
+      }
+      
+    
+
+     .side-my-accordion-item {
+        margin: 40px;
+        border-radius: 12px;
+        border: 1px solid #E8E7E7;
+        
+        }
+          
+     .side-btn-togle-victorina{
+        background:none;
+        border: none;
+        
+        }
+
+
+        .side-text-header-victorina{
+            font-size: 16px;
+            font-weight: 600;
+            color: #F3F4F6;
+            line-height: 14px;
+             overflow: hidden;
+            transition: max-height 0.4s ease-out; 
+        }
+        
+        .hr-cordeon{
+            margin: 7px 0;
+            border-width: 2px;
+            border-color: rgba(255, 149, 0, 1);
+        }
+
+
+      .accordion-button {
+        width: 100%;
+        text-align: left;
+        background-color: #f9f9f9;
+        border: none;
+        outline: none;
+        cursor: pointer;
+      }
+      
+      .side-text-body-victorina {
+        padding: 0 20px;
+        font-size: 12px;
+        max-height: 0;
+
+        overflow: hidden;
+        transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out; 
+      }
+      
+      .side-text-header-victorina.collapsed .side-text-body-victorina {
+        padding:  20px 20px 0 20px;
+        max-height: 500px; 
+    }
+      
+      .hide{
+        display: none;
+      }
+
+
+/* 
+      .strow-dow{
+        background-color: red;
+
+        transform: rotate(180deg);
+        transform-origin: center;
+        transition: transform 0.4s ease; 
+        
+      }
+      
+      .strow-left{
+      background-color: red;
+        transform: rotate(0deg);
+        transform-origin: center;
+        transition: transform 0.4s ease; 
+    }
+ */

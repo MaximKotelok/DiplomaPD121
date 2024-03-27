@@ -7,7 +7,7 @@ import { setupLocation } from "./utils/Location";
 // import LayoutAdmin from "./components/pages/Admin/LayoutAdmin";
 import "./styles/variables.css";
 import "./styles/global.css";
-import 'react-international-phone/style.css';
+// import 'react-international-phone/style.css';
 import { ToastContainer } from "react-toastify";
 import { Home } from "./components/User/Pages/Home/Home";
 import { Layout } from "./layouts/UserLayout/Layout";
@@ -47,76 +47,95 @@ import { SupportChat } from "./components/Admin/PAge/SupportChat/SupportChat";
    await setupLocation();
  }*/
 export default class App extends Component {
-
-    async componentDidMount() {
-        await setupLocation();
-    }
-   
+  async componentDidMount() {
+    await setupLocation();
+  }
 
   render() {
     return (
-        <LayoutProvider>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-                <Route index path="" element={<Home />} />
-              <Route index path="/PharmacyInfo/:pharmacyId" element={<PharmacyInfo />} />
-              <Route index path="/ReservationConfirm/:pharmacyId" element={<Reservation />} />
-              <Route path="res" element={<Reservation />} />
-              <Route path="auth/*" element={<AuthPageComponent />}>
-                <Route path="registration" element={<RegistrationForm />} />
-                <Route path="login" element={<LoginForm />} />
-                <Route path="" element={<LoginForm />} />
-              </Route>
-
-              <Route path="cart" element={<Cart />} />
-              <Route path="profile/*" element={<Profile />}>
-                <Route path="mypharmacies" element={<MyPharmacies />} />
-                <Route path="minebookeds" element={<MineBookeds />} />
-                <Route path="selectedproducts" element={<SelectedProducts />} />
-                <Route path="wathclist" element={<WathcList />} />
-                <Route path="edit" element={<EditProfile />} />
-              </Route>
-              <Route path="confirm-email" element={<ConfirmEmail />} />           
-              <Route path="map/:id?" element={<Map />} />              
-              <Route path="map/pharmacies/:pharmacyId" element={<Map />} />
-              <Route path="map/pharmacies/:pharmacyId/:companyId" element={<Map />} />
-              <Route path="map/pharmacies" element={<Map />} />
-              <Route path="product-details/:id" element={<Details />} />
-              <Route path="category/:id" element={<Category />} />
-              <Route path="category/:id/:currentPage" element={<Category />} />
-              <Route path="*" element={<Status404 />} />
-            </Route>
-            <Route path="loginPharmacy" element={<LoginLayuotPharmacy />}>
+      <LayoutProvider>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index path="" element={<Home />} />
+            <Route
+              index
+              path="/PharmacyInfo/:pharmacyId"
+              element={<PharmacyInfo />}
+            />
+            <Route
+              index
+              path="/ReservationConfirm/:pharmacyId"
+              element={<Reservation />}
+            />
+            <Route path="res" element={<Reservation />} />
+            <Route path="auth/*" element={<AuthPageComponent />}>
+              <Route path="registration" element={<RegistrationForm />} />
+              <Route path="login" element={<LoginForm />} />
+              <Route path="" element={<LoginForm />} />
             </Route>
 
-            <Route path="admin" element={<LayoutAdmin />}>
-              <Route path="zayavka" element={<TableComponent />} />
-              <Route path="pharmacyUser" element={<UserPharmacy />} />
-              <Route path="updateProduct/:productId" element={<UpsertProductComponent />} />
-              <Route path="addProduct" element={<UpsertProductComponent />} />
-              <Route path="addBrand" element={<UpsertBrandComponent />} />
-              <Route path="supportChat" element={<SupportChat />} />
-              <Route
-                path="updateBrand/:brandId"
-                element={<UpsertBrandComponent />}
-              />
-              <Route
-                path="addPharmaCompany"
-                element={<UpsertBrandComponent />}
-              />
-              <Route
-                path="updatePharmaCompany/:companyId"
-                element={<UpsertPharmaCompanyComponent />}
-              />
-              <Route path="updateBrand/:brandId" element={<UpsertBrandComponent />} />
-              <Route path="addPharmaCompany" element={<UpsertPharmaCompanyComponent />} />
-              <Route path="updatePharmaCompany/:companyId" element={<UpsertPharmaCompanyComponent />} />    
-              <Route path="addPharmacy" element={<UpsertPharmacyComponent />} />
-              <Route path="updatePharmacy/:pharmacyId" element={<UpsertPharmacyComponent />} /> 
+            <Route path="cart" element={<Cart />} />
+            <Route path="profile/*" element={<Profile />}>
+              <Route path="mypharmacies" element={<MyPharmacies />} />
+              <Route path="minebookeds" element={<MineBookeds />} />
+              <Route path="selectedproducts" element={<SelectedProducts />} />
+              <Route path="wathclist" element={<WathcList />} />
+              <Route path="edit" element={<EditProfile />} />
             </Route>
-          </Routes>
-        </LayoutProvider>
+            <Route path="confirm-email" element={<ConfirmEmail />} />
+            <Route path="map/:id?" element={<Map />} />
+            <Route path="map/pharmacies/:pharmacyId" element={<Map />} />
+            <Route
+              path="map/pharmacies/:pharmacyId/:companyId"
+              element={<Map />}
+            />
+            <Route path="map/pharmacies" element={<Map />} />
+            <Route path="product-details/:id" element={<Details />} />
+            <Route path="category/:id" element={<Category />} />
+            <Route path="category/:id/:currentPage" element={<Category />} />
+            <Route path="*" element={<Status404 />} />
+          </Route>
+          <Route path="loginPharmacy" element={<LoginLayuotPharmacy />}></Route>
 
+          <Route path="admin" element={<LayoutAdmin />}>
+            <Route path="zayavka" element={<TableComponent />} />
+            <Route path="pharmacyUser" element={<UserPharmacy />} />
+            <Route
+              path="updateProduct/:productId"
+              element={<UpsertProductComponent />}
+            />
+            <Route path="addProduct" element={<UpsertProductComponent />} />
+            <Route path="addBrand" element={<UpsertBrandComponent />} />
+            <Route path="supportChat" element={<SupportChat />} />
+            <Route
+              path="updateBrand/:brandId"
+              element={<UpsertBrandComponent />}
+            />
+            <Route path="addPharmaCompany" element={<UpsertBrandComponent />} />
+            <Route
+              path="updatePharmaCompany/:companyId"
+              element={<UpsertPharmaCompanyComponent />}
+            />
+            <Route
+              path="updateBrand/:brandId"
+              element={<UpsertBrandComponent />}
+            />
+            <Route
+              path="addPharmaCompany"
+              element={<UpsertPharmaCompanyComponent />}
+            />
+            <Route
+              path="updatePharmaCompany/:companyId"
+              element={<UpsertPharmaCompanyComponent />}
+            />
+            <Route path="addPharmacy" element={<UpsertPharmacyComponent />} />
+            <Route
+              path="updatePharmacy/:pharmacyId"
+              element={<UpsertPharmacyComponent />}
+            />
+          </Route>
+        </Routes>
+      </LayoutProvider>
     );
   }
 }
