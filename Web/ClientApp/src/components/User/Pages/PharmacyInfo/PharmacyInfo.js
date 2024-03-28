@@ -14,7 +14,7 @@ import L from 'leaflet';
 import { getCookie } from "../../../../utils/Cookies";
 import { ReactComponent as Geo } from "../../../../assets/images/geo.svg"
 import { isFavoritePharmacy } from "../../../../utils/Functions"
-import  FavoritePharmacyButton from "../../../Common/FavoritePharmacyButtonComponent/FavoritePharmacyButton"
+import FavoritePharmacyButton from "../../../Common/FavoritePharmacyButtonComponent/FavoritePharmacyButton"
 
 const PharmacyInfo = (props) => {
   const {pharmacyId} = useParams();

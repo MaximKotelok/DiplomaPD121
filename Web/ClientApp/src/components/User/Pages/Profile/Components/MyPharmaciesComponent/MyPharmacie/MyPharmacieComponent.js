@@ -36,16 +36,12 @@ const MyPharmacie = (props) => {
             <BtnDump onClick={handlDeleteCardClick} />
           </div>
         </div>
-        {/*ДОРОБИТИ*/}
         <hr />
         <div className="d-flex justify-content-between  align-items-center">
           <div>
-            <p className={`${styles["text-p-card"]} mb-2`}>
-              Пн-Пт: 7:30 - 21:00
-            </p>
-            <p className={`${styles["text-p-card"]}`}>Сб-Нд: 8:00 - 20:00</p>
+            <p className={`${styles["text-p-card"]} mb-2`}>Пн-Пт: {props.pharmacy.workingWeekOpenTime} - {props.pharmacy.workingWeekCloseTime}</p>
+            <p className={`${styles["text-p-card"]}`}>Сб-Нд: {props.pharmacy.weekendOpenTime} - {props.pharmacy.weekendCloseTime}</p>
           </div>
-          {/*ДОРОБИТИ*/}
            <div className="d-flex justify-content-end">
             <Link to={`/map/pharmacies/${props.pharmacy.id}`}>
                 <MapCard  />

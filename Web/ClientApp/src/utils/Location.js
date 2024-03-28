@@ -67,8 +67,9 @@ export function setupLocation(callback) {
                     setCookie("city", DefualtCity);
                     console.log("Default city set:", DefualtCity);
                 }
-                callback();
             }
+            if (callback)
+                callback();
             resolve(); 
         } catch (error) {
             console.error("Error getting location:", error);

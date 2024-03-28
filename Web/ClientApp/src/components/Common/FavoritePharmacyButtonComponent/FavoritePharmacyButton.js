@@ -5,7 +5,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './FavoritePharmacyButton.css';
 import { addFavouritePharmacy, removeFavouritePharmacy, getFavsPharmacies } from '../../../services/favPharmacies';
 import { toast } from "react-toastify";
-import { ReactComponent as Save } from "./Vector.svg";
+import { ReactComponent as Save } from "./Save.svg";
+import { ReactComponent as Saved } from "./Saved.svg";
 import heart from "../../../assets/images/product-card/heart.svg"
 import heartActive from "../../../assets/images/product-card/active-heart.svg"
 import { FavouritePharmacies } from '../../../utils/Constants';
@@ -14,10 +15,12 @@ const FavoritePharmacyButton = ({ isFavorite, setIsFavorite, id, style }) => {
     
     async function handleClick() {
         let status = 401;
-        if (!isFavorite)
+        if (!isFavorite) {
             status = await addFavouritePharmacy(id);
-        else
+        }
+        else {
             status = await removeFavouritePharmacy(id);
+        }
 
         let favs = await getFavsPharmacies();
         localStorage.setItem(FavouritePharmacies, favs)
@@ -31,8 +34,8 @@ const FavoritePharmacyButton = ({ isFavorite, setIsFavorite, id, style }) => {
 
     return(
         <button style={style} className={`brn-form btn-style btn-img `} onClick={handleClick}>
-        <Save />{" "}
-        <span style={{ marginLeft: "8px" }}>Зберегти в мої аптеки</span>
+            {isFavorite ? <Saved/> : <Save />} {" "}
+            <span style={{ marginLeft: "8px" }}>{isFavorite ? "Видалити з юлюблених" : "Зберегти в мої аптеки"  }</span>
     </button>
     )
 };
