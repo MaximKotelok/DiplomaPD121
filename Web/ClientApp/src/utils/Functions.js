@@ -1,7 +1,7 @@
 ﻿import { Element } from "react-scroll";
 import { getFavsProducts } from "../services/favProducts";
 import { getFavsPharmacies } from "../services/favPharmacies";
-import { favouriteProducts, favouritePharmacies } from "./Constants";
+import { FavouriteProducts, FavouritePharmacies } from "./Constants";
 
 export function formatDate(str) {
   const date = new Date(str);
@@ -119,7 +119,7 @@ export const breakpoints = {
 };
 
 export const isFavoriteProduct = (productId) => {
-    let storageFavs = localStorage.getItem(favouriteProducts);
+    let storageFavs = localStorage.getItem(FavouriteProducts);
     if (storageFavs == null)
         return false;
     let favs = storageFavs.split(',');
@@ -128,7 +128,7 @@ export const isFavoriteProduct = (productId) => {
 };
 
 export const isFavoritePharmacy = (pharmacyId) => {
-    let storageFavs = localStorage.getItem(favouritePharmacies);
+    let storageFavs = localStorage.getItem(FavouritePharmacies);
     if (storageFavs == null)
         return false;
     let favs = storageFavs.split(',');
@@ -140,10 +140,10 @@ export async function initFavsProducts(setFavs) {
     if (!localStorage.hasOwnProperty("authToken"))
         setFavs([]);
 
-    let favs = localStorage.getItem(favouriteProducts)
+    let favs = localStorage.getItem(FavouriteProducts)
     if (favs == null || favs == "undefined") {
         let favs = await getFavsProducts();
-        localStorage.setItem(favouriteProducts, favs);
+        localStorage.setItem(FavouriteProducts, favs);
         setFavs(favs());
      }
     else {
@@ -169,8 +169,8 @@ export async function initFavsProducts(setFavs) {
 export async function initStorageFavs() {
     let favsProducts = await getFavsProducts();
     let favsPharmacies = await getFavsPharmacies();
-    localStorage.setItem(favouriteProducts, favsProducts);
-    localStorage.setItem(favouritePharmacies, favsPharmacies);
+    localStorage.setItem(FavouriteProducts, favsProducts);
+    localStorage.setItem(FavouritePharmacies, favsPharmacies);
 }
 
 export function isWidthDown(breakpoint, width) {

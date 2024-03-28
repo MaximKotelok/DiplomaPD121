@@ -43,13 +43,36 @@ import PharmacyInfo from "./components/User/Pages/PharmacyInfo/PharmacyInfo";
    await setupLocation();
  }*/
 export default class App extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            locationAllowed: false,
+            isLoading: true
+        };
+    }
 
     async componentDidMount() {
-        await setupLocation();
+        try {
+            await setupLocation(this.handleLocationSetup);
+        } finally {
+            this.setState({ isLoading: false });
+        }
     }
-   
+    
+    handleLocationSetup = () => {
+        this.setState({ locationAllowed: true });
+    }
 
-  render() {
+    render() {
+        const { isLoading, locationAllowed } = this.state;
+
+        if (isLoading) {
+            return <div>Loading...</div>;
+        }
+
+        if (!locationAllowed) {
+            return <div>Location not allowed. Please enable location services.</div>;
+        }
     return (
         <LayoutProvider>
           <Routes>

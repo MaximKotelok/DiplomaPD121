@@ -48,8 +48,21 @@ export const UpsertPharmcy = "Pharmacy/UpsertPharmacy";
 export const GetPharmacyProduct = "Pharmacy/GetPharmacyProduct"
 
 //Favoutire LocalStorages
-export const favouriteProducts = "favsProducts";
-export const favouritePharmacies = "favsPharmacies";
+export const FavouriteProducts = "favsProducts";
+export const FavouritePharmacies = "favsPharmacies";
+
+//Fav Product
+export const GetFavoriteProducts = "User/getFavoriteProducts";
+export const AddFavouriteProduct = "User/addFavouriteProduct/";
+export const RemoveFavouriteProduct = "User/removeFavouriteProduct/";
+
+
+//Fav Pharmacy
+export const GetFavoritePharmacies = "User/getFavoritePharmacies";
+export const GetFavoritePharmaciesWithSupInfo = "User/getFavoritePharmaciesWithSupInfo";
+export const AddFavouritePharmacy = "User/addFavouritePharmacy/";
+export const RemoveFavouritePharmacy = "User/removeFavouritePharmacy/";
+
 
 export const ClassHeader = {
     Accept: "application/json",

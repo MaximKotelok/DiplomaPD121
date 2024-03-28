@@ -1,12 +1,20 @@
-﻿export function setCookie(cname, cvalue, exdays) {
-    const d = new Date();
+﻿import Cookies from "js-cookie";
+
+export function setCookie(cname, cvalue, exdays) {
+
+    Cookies.set(cname, cvalue)
+
+    /*const d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
     let expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";*/
 }
 
 export function getCookie(cname) {
-    let name = cname + "=";
+
+    return Cookies.get(cname);
+
+    /*let name = cname + "=";
     let ca = document.cookie.split(';');
     for (let i = 0; i < ca.length; i++) {
         let c = ca[i];
@@ -17,5 +25,5 @@ export function getCookie(cname) {
             return c.substring(name.length, c.length);
         }
     }
-    return "";
+    return "";*/
 }

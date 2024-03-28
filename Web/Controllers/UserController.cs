@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Repository.Interfaces;
 using Services.ConcreteProductService;
+using Services.PharmacyCompanyService;
 using Services.PharmacyService;
 using Services.UserService;
 using System.Security.Claims;
@@ -16,12 +17,12 @@ namespace Web.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly IProductService _productService;
-        private readonly IPharmacyService _pharmacyService;
+        private readonly IPharmaCompanyService _pharmaCompanyService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IPharmaCompanyService pharmaCompanyService)
         {
             _userService = userService;
+            _pharmaCompanyService = pharmaCompanyService;
         }
 
 
@@ -54,6 +55,48 @@ namespace Web.Controllers
 
             return Ok(user!.FavPharmacies!.Select(a => a.Id).ToList());
         }
+
+        [HttpGet("getFavoritePharmaciesWithSupInfo")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> GetFavouritePharmaciesWithSupInfo()
+        {
+            var user = await _userService.GetUserByName(User.Identity.Name);
+
+
+            if (user == null)
+            {
+                return NoContent();
+            }
+
+            var pharmacies = user!.FavPharmacies;
+
+            if (pharmacies == null)
+            {
+                return NoContent();
+            }
+
+
+            for (int i = 0; i < pharmacies.Count(); i++)
+            {
+                var pharmaCompany = _pharmaCompanyService.GetPharmaCompany(x => x.Id == pharmacies.ElementAt(i).PharmaCompanyID);
+
+                pharmacies.ElementAt(i).PharmaCompany = pharmaCompany;
+            }
+
+            /*foreach (var pharmacy in pharmacies)
+            {
+                var pharmaCompany = _pharmaCompanyService.GetPharmaCompany(x => x.Id == pharmacy.PharmaCompanyID);
+
+                list.Add(new
+                {
+                    Pharmacy = pharmacy,
+                    PharmaCompany = pharmaCompany
+                });
+            }*/
+
+            return Ok(pharmacies);
+        }
+        /*includeProperties: "Manufacturer,ProductConfirm,ProductConfirm.ProductStatus"*/
 
         [HttpPost("addFavouriteProduct/{productId}")]
         [Authorize(AuthenticationSchemes = "Bearer")]

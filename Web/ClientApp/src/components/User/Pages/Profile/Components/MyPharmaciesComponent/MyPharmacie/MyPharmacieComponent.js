@@ -1,24 +1,42 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./MyPharmacie.module.css";
+import { addMinutes, getCurrentTimeInUkraine, isPharmacyOpen } from "../../../../../../../utils/Functions"
 import { ReactComponent as BtnDump } from "../../../../../../../assets/images/Dump.svg";
 import { ReactComponent as MapCard } from "../../../../../../../assets/images/MapCard.svg";
-const MyPharmacie = () => {
+import { Link } from 'react-router-dom';
+
+
+const MyPharmacie = (props) => {
+    const [isOpen, setIsOpen] = useState(null);
+
+    useEffect(() => {
+        init();
+    }, []);
+
+    async function init() {
+        setIsOpen(isPharmacyOpen(props.pharmacy.openTime, props.pharmacy.closeTime));
+    }
+
+    const handlDeleteCardClick = () => {
+        props.onRemoveClick(props.pharmacy.id);
+    };
+
   return (
     <div className={`col-6 p-2`}>
       <div className={`${styles["perent-card-pharmacie"]}`}>
         <div className="d-flex justify-content-between">
           <div>
             <h6 className={` ${styles["text-h6-bottom"]}`}>
-              Аптека подорожник
+                {props.pharmacy.pharmaCompany.title}
             </h6>
-            <p className={`${styles["text-p-card"]}`}>Зачиниться о 21:00</p>
+                <p className={`${styles["text-p-card"]}`}>Зачиниться о {props.pharmacy.closeTime}</p>
           </div>
 
           <div className="d-flex justify-content-end">
-            <BtnDump />
+            <BtnDump onClick={handlDeleteCardClick} />
           </div>
         </div>
-
+        {/*ДОРОБИТИ*/}
         <hr />
         <div className="d-flex justify-content-between  align-items-center">
           <div>
@@ -27,9 +45,11 @@ const MyPharmacie = () => {
             </p>
             <p className={`${styles["text-p-card"]}`}>Сб-Нд: 8:00 - 20:00</p>
           </div>
-
-          <div className="d-flex justify-content-end">
-            <MapCard />
+          {/*ДОРОБИТИ*/}
+           <div className="d-flex justify-content-end">
+            <Link to={`/map/pharmacies/${props.pharmacy.id}`}>
+                <MapCard  />
+            </Link>
           </div>
         </div>
 
@@ -39,13 +59,13 @@ const MyPharmacie = () => {
             className={`${styles["text-p-card"]} mb-2`}
             style={{ fontWeight: 700 }}
           >
-            Львів, вул.Івана Виговського 3
+            {props.pharmacy.address}
           </p>
           <h6
             className={` ${styles["text-h6-bottom"]}`}
             style={{ fontWeight: 500 }}
           >
-            Очікуваний час підтвердження броні:<span> о 20:50</span>
+            Очікуваний час підтвердження броні:<span> о {isOpen ? addMinutes(getCurrentTimeInUkraine(), 15) : addMinutes(props.pharmacy.openTime, 15)}</span>
           </h6>
         </div>
       </div>

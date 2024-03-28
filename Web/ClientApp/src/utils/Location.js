@@ -41,11 +41,11 @@ export function getCity(position) {
 }
 
 
-export function setupLocation() {
+export function setupLocation(callback) {
     return new Promise(async (resolve, reject) => {
         try {
-           let cCity = getCookie("city");
-            if (cCity === "") {
+           let cCity = await getCookie("city");
+            if (!cCity) {
                 if (navigator.geolocation) {
                     try {
                         const position = await new Promise((resolve, reject) => {
@@ -67,7 +67,7 @@ export function setupLocation() {
                     setCookie("city", DefualtCity);
                     console.log("Default city set:", DefualtCity);
                 }
-
+                callback();
             }
             resolve(); 
         } catch (error) {

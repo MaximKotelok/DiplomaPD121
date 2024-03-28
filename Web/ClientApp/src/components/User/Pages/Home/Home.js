@@ -1,6 +1,7 @@
 import React, { Component, useEffect, useState } from "react";
 import CarouselListComponent from "../../Common/CarouselListComponent/CarouselListComponent";
 import { ApiPath, Success } from "../../../../utils/Constants";
+import Cookies from "js-cookie";
 
 import {
   getRecentlyViewedProductsIds,
@@ -42,6 +43,7 @@ export const Home = () => {
   const [brands, setBrands] = useState({});
   const [favs, setFavs] = useState([]);
   const [pngCards, setPngCards] = useState({});
+  const [city, setCity] = useState(Cookies.get("city"));
   
   const [topOffers, setTopOffers] = useState({});
   const [selectedTopOfferIndex, setSelectedTopOfferIndex] = useState(null);
@@ -88,7 +90,7 @@ export const Home = () => {
     setRecently(await getProductsFromIdsArray(ids));
   }
 
-  useEffect(() => {
+    useEffect(() => {
     initFavsProducts(setFavs);
     initProducts();
     initRecentlyViewed();
@@ -96,11 +98,17 @@ export const Home = () => {
     initBrands();
     initPngCards();    
     initTopOffers();    
-  }, []);
+  }, [city]);
 
   function isCustomFavorite(id) {
       return isFavoriteProduct(id);
-  }
+    }
+
+    const presenceCookie = Cookies.get("city");
+    if (presenceCookie && city !== presenceCookie ) {
+        setCity(presenceCookie);
+    }
+
   // Макс поправ карточки і каруселі!!!!!!!!!!!!!!!!!!!!!!-!!!!!!!!!!!!!!!!!!!!!!!!!
   return (
     <>

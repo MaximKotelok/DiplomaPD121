@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { ReactComponent as Save } from "./Vector.svg";
 import heart from "../../../assets/images/product-card/heart.svg"
 import heartActive from "../../../assets/images/product-card/active-heart.svg"
-import { favouritePharmacies, favouriteProducts } from '../../../utils/Constants';
+import { FavouritePharmacies } from '../../../utils/Constants';
 
 const FavoritePharmacyButton = ({ isFavorite, setIsFavorite, id, style }) => {    
     
@@ -20,7 +20,7 @@ const FavoritePharmacyButton = ({ isFavorite, setIsFavorite, id, style }) => {
             status = await removeFavouritePharmacy(id);
 
         let favs = await getFavsPharmacies();
-        localStorage.setItem(favouritePharmacies, favs)
+        localStorage.setItem(FavouritePharmacies, favs)
 
         if(status == 401){    
             toast.error("Помилка")
