@@ -8,7 +8,7 @@ export async function postToServer(url, data, headers) {
             `${ApiPath}/${url}`,
             data,
             {
-                headers: { ...headers, Authorization: 'Bearer ' + localStorage.getItem('authToken') },
+                headers: { ...headers, Authorization: 'Bearer ' + getToken() },
             }
         );
                 
@@ -26,7 +26,7 @@ export async function putToServer(url, data, headers) {
             `${ApiPath}/${url}`,
             data,
             {
-                headers: {...headers, Authorization: 'Bearer ' +localStorage.getItem('authToken')},
+                headers: {...headers, Authorization: 'Bearer ' +getToken()},
             }
         );    
         return { status: 'Success', data: response.data };
@@ -45,7 +45,7 @@ export async function getFromServer(url, params = {}) {
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
-                Authorization: 'Bearer ' +localStorage.getItem('authToken')
+                Authorization: 'Bearer ' +getToken()
             },
         });        
         

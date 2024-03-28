@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import styles from "./Profile.module.css";
 import { Outlet } from "react-router-dom";
 import MenuComponent from "./Components/MenuComponent/MenuComponent";
@@ -7,9 +7,9 @@ import { useNavigate } from "react-router-dom";
 import { checkIsAuth } from "../../../../services/user";
 import { ToastContainer } from "react-toastify";
 const Profile = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate();  
   useEffect(() => {
-    if (!checkIsAuth()) navigate("/auth");
+    if (!checkIsAuth()) navigate("/auth");    
   }, []);
 
   return (

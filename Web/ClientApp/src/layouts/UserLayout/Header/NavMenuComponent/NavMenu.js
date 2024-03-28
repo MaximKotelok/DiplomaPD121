@@ -21,6 +21,9 @@ import SearchElement from "../../../../components/Common/SearchComponent/SearchC
 import DropDown from "../DropDownComponent/DropDown";
 import { checkIsAuth } from "../../../../services/user";
 import DropDownLocation from "../DropDownLocationComponent/DropDownLocation";
+import AutoCompleteInput from "../../../../components/Common/AutoCompleteInputComponent/AutoCompleteInput ";
+import { IconButtonNoText } from "../../../../components/Common/IconButtonNoTextComponent/IconButtonNoText";
+import { GetProductByTitle } from "../../../../services/product";
 
 //import CatalogIcon from './catalog_icon_215654.svg';
 export class NavMenu extends Component {
@@ -54,33 +57,30 @@ export class NavMenu extends Component {
               <Logo height={40} fill="black" className="logo-pharma" />
             </NavbarBrand>
 
-            {/* <NavLink className="catalogue" tag={Link} to="/"> */}
             <div className="catalogue">
-              {/* <IconButton iconPath={CatalogIcon} text="Каталог" /> */}
               <DropDown iconPath={CatalogIcon} />
             </div>
             <NavLink className="services" tag={Link} to="/counter">
               <IconButton iconPath={ServiceIcon} text="Сервіси" />
             </NavLink>
 
-            {/* <NavLink className="geo" tag={Link} to="/map"> */}
             <div className="geo">
               <DropDownLocation iconPath={GeoIcon} text="Геолокація" />
-              {/* <IconButton iconPath={GeoIcon} text="Геолокація" /> */}
             </div>
 
-            <SearchElement className="searchbar" />
+            {/* <SearchElement className="searchbar" /> */}
+            <AutoCompleteInput className="searchbar" getData={(title)=>GetProductByTitle(title)}/>
 
-            <NavLink tag={Link} className="cart" to="/cart">
-              <IconButton iconPath={CartIcon} />
+            <NavLink tag={Link} className="cart nav-link-my" to="/cart">
+              <IconButtonNoText iconPath={CartIcon} />
             </NavLink>
 
             <NavLink
               tag={Link}
-              className="profile"
+              className="profile nav-link-my"
               to={checkIsAuth() ? "/profile" : "/auth"}
             >
-              <IconButton iconPath={ProfileIcon} />
+              <IconButtonNoText iconPath={ProfileIcon} />
             </NavLink>
           </div>
         </Navbar>

@@ -173,6 +173,18 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
+		[HttpGet("GetProductByTitle")]
+		public IActionResult GetProductByTitle(string title, int count)
+		{
+			var result = _productService
+				.GetAllProducts(a => a.Title.StartsWith(title)).Take(count);
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+
 		[HttpGet("GetTopOffers")]
 		public IActionResult GetTopOffers(int count)
 		{

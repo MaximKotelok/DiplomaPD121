@@ -18,13 +18,19 @@
     flex: 1; 
     font-size: 16px;
     font-weight: 500;
+font-family: var(--standart-font);
+font-size: 16px;
+font-weight: 500;
+line-height: 20.08px;
+text-align: left;
+color: rgba(122, 122, 122, 1);
 }
 
 .back-serach-bar {
     border-radius: 12px;
-    background: #e5e7eb;
-    max-width: 621px;
-    width: 40vw;
+    background: rgba(242, 242, 247, 1);
+    max-width: 621px!important;
+    width: 40vw!important;
     padding: 8px 10px;
     display: flex;
     justify-content: space-between;

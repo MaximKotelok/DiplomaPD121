@@ -2,6 +2,7 @@
 using Domain.Dto;
 using Domain.Models;
 using Domain.Models.ViewModels;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Identity;
 using Repository.Repository.Interfaces;
 using Services.ConcreteProductService;
@@ -19,18 +20,34 @@ namespace Services.UserService
 {
 	public class UserService : IUserService
 	{
-        private readonly UserManager<User> _userManager;
+        private readonly Microsoft.AspNetCore.Identity.UserManager<User> _userManager;
         private readonly IProductService _productService;
         private readonly IPharmacyService _pharmacyService;
 
-        public UserService(UserManager<User> userManager, IProductService productService, IPharmacyService pharmacyService)
+        public UserService(Microsoft.AspNetCore.Identity.UserManager<User> userManager, IProductService productService, IPharmacyService pharmacyService)
 		{
             _userManager = userManager;
             _productService = productService;
             _pharmacyService = pharmacyService;
         }
 
-        public async Task AddFavouritePharmacy(int pharmacyId, string userName)
+		public async Task UpdateUser(string id, string firstName = "", string lastName = "", string phoneNumber = "", string email="", string userName="")
+		{
+			var user = await _userManager.FindByIdAsync(id);
+            if(firstName != "")
+                user.FirstName = firstName;
+			if (lastName != "")
+				user.LastName = lastName;
+			if (phoneNumber != "")
+				user.PhoneNumber = phoneNumber;
+			if (email != "")
+				user.Email = email;
+			if (userName != "")
+				user.UserName = userName;
+			await _userManager.UpdateAsync(user);
+		}
+
+		public async Task AddFavouritePharmacy(int pharmacyId, string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
 
@@ -177,5 +194,6 @@ namespace Services.UserService
             user.LockoutEnd = null;
             await _userManager.UpdateAsync(user);
         }
-    }
+
+	}
 }

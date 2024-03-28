@@ -688,10 +688,6 @@ namespace DataAccess.Migrations
                     b.Property<int>("CityID")
                         .HasColumnType("int");
 
-                    b.Property<string>("CloseTime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Latitude")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -700,15 +696,27 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("OpenTime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("PharmaCompanyID")
                         .HasColumnType("int");
 
                     b.Property<string>("UserID")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("WeekendCloseTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WeekendOpenTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WorkingWeekCloseTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WorkingWeekOpenTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -728,44 +736,52 @@ namespace DataAccess.Migrations
                             Id = 1,
                             Address = "Temp Address",
                             CityID = 1,
-                            CloseTime = "20:00",
                             Latitude = "49.842957",
                             Longitude = "24.031511",
-                            OpenTime = "10:00",
-                            PharmaCompanyID = 1
+                            PharmaCompanyID = 1,
+                            WeekendCloseTime = "19:00",
+                            WeekendOpenTime = "11:00",
+                            WorkingWeekCloseTime = "20:00",
+                            WorkingWeekOpenTime = "10:00"
                         },
                         new
                         {
                             Id = 2,
                             Address = "Temp Address2",
                             CityID = 1,
-                            CloseTime = "21:00",
                             Latitude = "49.842757",
                             Longitude = "24.031211",
-                            OpenTime = "11:00",
-                            PharmaCompanyID = 1
+                            PharmaCompanyID = 1,
+                            WeekendCloseTime = "21:00",
+                            WeekendOpenTime = "11:00",
+                            WorkingWeekCloseTime = "21:00",
+                            WorkingWeekOpenTime = "11:00"
                         },
                         new
                         {
                             Id = 3,
                             Address = "Temp Address3",
                             CityID = 1,
-                            CloseTime = "23:59",
                             Latitude = "49.842157",
                             Longitude = "24.031611",
-                            OpenTime = "00:00",
-                            PharmaCompanyID = 1
+                            PharmaCompanyID = 1,
+                            WeekendCloseTime = "23:59",
+                            WeekendOpenTime = "00:00",
+                            WorkingWeekCloseTime = "23:59",
+                            WorkingWeekOpenTime = "00:00"
                         },
                         new
                         {
                             Id = 4,
                             Address = "Temp Address4",
                             CityID = 1,
-                            CloseTime = "18:00",
                             Latitude = "49.842557",
                             Longitude = "24.031411",
-                            OpenTime = "09:00",
-                            PharmaCompanyID = 1
+                            PharmaCompanyID = 1,
+                            WeekendCloseTime = "17:00",
+                            WeekendOpenTime = "11:00",
+                            WorkingWeekCloseTime = "18:00",
+                            WorkingWeekOpenTime = "09:00"
                         });
                 });
 

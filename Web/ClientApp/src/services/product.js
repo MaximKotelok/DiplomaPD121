@@ -29,6 +29,13 @@ export async function getTopOffer() {
     }, ClassHeader)
 } 
 
+export async function GetProductByTitle(title, count = 6) {
+    return await getFromServer("Product/GetProductByTitle", {
+        title,
+        count
+    }, ClassHeader)
+} 
+
 export async function changeStatus(productId, statusId) {
     return await putToServer(`Product/ChangeStatus/${productId}/${statusId}`, ClassHeader)
 } 

@@ -21,14 +21,12 @@ import { Outlet } from "react-router-dom";
 //import TableComponent from "../../components/pages/Admin/components/TableComponents/TableComponent";
 // import { Container } from "reactstrap";
 
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 const LayoutAdmin = ({ children }) => {
   const layoutContext = useContext(LayoutContext);
-  console.log(layoutContext.additonalComponent)
+  console.log(layoutContext.additonalComponent);
   return (
-    <div
-      className={`app-container`}
-    >
+    <div className={`app-container`}>
       <div className="sidebar ">
         <div className="sidebar-header">
           <div className="app-icon">
@@ -96,14 +94,11 @@ const LayoutAdmin = ({ children }) => {
       </div>
 
       <div className="app-content">
-        <div className="app-content-header app-content-container ">
-          <SearchComponent />
-          {
-            layoutContext.additonalComponent
-          }
+        <div className="app-content-header app-content-container  d-flex">
+          {/* <SearchComponent /> */}
+          {layoutContext.additonalComponent}
 
-
-          <div className="app-content-header">
+          <div className="app-content-header ms-auto">
             <BadgeComponennt />
             <AvatarComponennt />
           </div>

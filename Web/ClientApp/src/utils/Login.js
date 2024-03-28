@@ -1,10 +1,12 @@
+import { getCookie, setCookie } from "./Cookies";
+
 export function setToken(token){
-    localStorage.setItem('authToken', token);               
+    setCookie('authToken', token);               
 }
 export function getToken(){
-    return localStorage.getItem('authToken');
+    return getCookie('authToken');
 }
 
 export function removeToken(){
-    return localStorage.removeItem('authToken');
+    return setCookie('authToken', "", 0);
 }
