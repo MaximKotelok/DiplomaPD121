@@ -35,6 +35,14 @@ padding: 6px 18px;
 
  }
 
+ .product-back-serach-bar {
+   max-width: 621px!important;
+   width: 40vw!important;
+   padding: 4px 6px!important;
+   
+}
+
+
  .li-class{
     list-style-type: none;
     padding: 8px;

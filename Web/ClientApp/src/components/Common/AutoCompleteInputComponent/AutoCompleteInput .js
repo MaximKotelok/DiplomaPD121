@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ReactComponent as ArrowRight } from "./arrow-right.svg";
+import { Link } from "react-router-dom";
 
 import searchIcon from "../../../assets/images/header-icons/search-icon.svg"; // Замініть шлях імпорту на ваш шлях до зображення
 import styles from "./AutoCompleteInput.module.css";
@@ -33,9 +34,9 @@ const AutoCompleteInput = ({ className, getData }) => {
         className={`input-group ${(searchTerm === "" || !isFocused)
           ? styles["border-bottom-none"]
           : styles["border-bottom"]
-          } ${styles["input-style-search"]} center back-serach-bar `}
+          } ${styles["input-style-search"]} center ${styles["product-back-serach-bar"]} back-serach-bar `}
       >
-        <button className="social-btn" type="button">
+        <Link to={`/Search/ByTitle/${searchTerm}`} className="btn social-btn" >            
           <img
             src={searchIcon}
             width="28px"
@@ -43,7 +44,7 @@ const AutoCompleteInput = ({ className, getData }) => {
             alt="My Icon"
             className="icon"
           />
-        </button>
+        </Link>
         <input
           type="text"
           className="my-search-bar"

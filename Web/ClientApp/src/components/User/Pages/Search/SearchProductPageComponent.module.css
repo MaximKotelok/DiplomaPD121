@@ -1,0 +1,426 @@
+.category-header{
+  font-family:  var(--standart-font);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 30px;
+  color: #007AFF;
+
+}
+
+.category-link-box{
+  margin: 8px 0;
+}
+
+.category-link-box a{
+  font-family:  var(--standart-font);
+font-size: 16px;
+font-weight: 400;
+line-height: 16px;
+color: #0E3E75;
+text-decoration: none;
+
+
+}
+
+
+
+.btn-nav-menu{
+  border-radius: 8px;
+  padding: 6px;
+  border: 2px solid  rgba(255, 149, 0, 1);
+
+}
+
+.btn-nav-menu-active{
+
+  border-radius: 0px;
+  border: none;
+  padding: 6px;
+
+border-bottom: 2px solid  rgba(255, 149, 0, 1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.dropdown {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  width: 140px;
+  border: 1px solid;
+  border: none;
+  border-bottom:  2px solid rgba(229, 229, 234, 1);
+  background-color: transparent;
+
+  /* border-radius: 3px; */
+  /* box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08); */
+}
+.dropdown:focus{
+  outline: none;
+}
+.dropdown:before, .dropdown:after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  top: 9px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 4px dashed;
+  border-color: rgba(0, 122, 255, 1) transparent;
+  pointer-events: none;
+}
+
+.dropdown:before {
+  border-bottom-style: solid;
+  border-top: none;
+}
+
+.dropdown:after {
+  margin-top: 7px;
+  border-top-style: solid;
+  border-bottom: none;
+}
+
+.dropdown-select {
+  position: relative;
+  width: 130%;
+  margin: 0;
+  padding: 6px 8px 6px 10px;
+  height: 28px;
+  line-height: 14px;
+  font-size: 12px;
+  color: #62717a;
+  text-shadow: 0 1px white;
+  background: #f2f2f2; /* Fallback for IE 8 */
+  background: rgba(0, 0, 0, 0) !important; /* "transparent" doesn't work with Opera */
+  border: 0;
+  border-radius: 0;
+  border: none;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.dropdown-select:focus {
+  z-index: 3;
+  width: 100%;
+  color: #394349;
+  outline: 2px solid #49aff2;
+  outline: 2px solid -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
+.dropdown-select > option {
+  margin: 3px;
+  padding: 6px 8px;
+  text-shadow: none;
+  background: #f2f2f2;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* Fix for IE 8 putting the arrows behind the select element. */
+
+.lt-ie9 .dropdown {
+  z-index: 1;
+}
+
+.lt-ie9 .dropdown-select {
+  z-index: -1;
+}
+
+.lt-ie9 .dropdown-select:focus {
+  z-index: 3;
+}
+
+/* Dirty fix for Firefox adding padding where it shouldn't. */
+
+@-moz-document url-prefix() {
+  .dropdown-select {
+    padding-left: 6px;
+  }
+}
+
+
+
+
+
+.custom-select {
+  position: relative;
+  width: 150px; /* Задайте ширину, яка вам потрібна */
+}
+
+.custom-select select {
+border: none;
+background-color: white;
+
+}
+
+.custom-select:after {
+  content: '▼'; /* Додаємо трикутник */
+  font-size: 12px; /* Розмір трикутника */
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none; /* Щоб клікати на випадаючий список */
+}
+
+.custom-select select option {
+  background-color: white; /* Фон опцій */
+  color: blue; /* Колір тексту опцій */
+  border-bottom: 1px solid blue; /* Нижній бордюр */
+  padding-right: 10px; /* Зміщення тексту праворуч */
+}
+
+/* 
+
+
+.customDropdown {
+  position: relative;
+}
+
+.dropdownSelect {
+  width: 100%;
+
+  border: none;
+  border-bottom: 2px solid black;
+  background-color: transparent;
+  cursor: pointer;
+  outline: none;
+}
+
+.select-option {
+
+  background-color: transparent;
+  color: red;
+
+  border-bottom: 2px solid red;
+  margin-top: 20px;
+  
+}
+
+.select-option-last-child {
+  border-bottom: none;
+}
+
+
+.select-selected {
+  background-color: transparent;
+  color: #000;
+} */
+
+
+
+
+
+
+
+/* //////////////////////// */
+
+
+
+
+
+
+.products-area-wrapper {
+  width: 100%;
+  max-height: 100%;
+  overflow: auto;
+  padding: 0 4px;
+}
+
+
+
+
+/* grid View */
+
+
+.gridView {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -8px;
+}
+.gridView  .btn-pr{
+padding: 8px 10px;
+width: 100%;
+}
+
+.gridView .products-header {
+  display: none;
+}
+.gridView .products-row {
+  margin: 8px;
+  width: calc(25% - 16px);
+  background-color: var(--app-content-secondary-color);
+  padding: 8px;
+  /* border-radius: 4px; */
+  cursor: pointer;
+  transition: transform 0.2s;
+  position: relative;
+}
+.gridView .products-row:hover {
+  /* transform: scale(1.01); */
+  /* box-shadow: var(--filter-shadow); */
+}
+.gridView .products-row:hover .cell-more-button {
+  /* display: flex; */
+}
+
+.gridView .products-row .cell-more-button {
+  border: none;
+  padding: 0;
+  /* border-radius: 4px; */
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background-color: rgba(16, 24, 39, 0.7);
+  color: #fff;
+  cursor: pointer;
+  display: none;
+}
+.gridView .product-cell {
+  color: var(--app-content-main-color);
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+.gridView .product-cell:not(.image) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.gridView .product-cell.image span {
+  font-size: 18px;
+  line-height: 24px;
+}
+.gridView .product-cell.image .img {
+  width: 100%;
+  height: 140px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+.gridView .pos-absolute
+{
+position: absolute;
+}
+
+.gridView .top-end-pos
+{
+  top: 14px;
+  right: 14px;
+}
+.gridView .content-info
+{
+  padding: 14px 0px 0 0;
+
+}
+/* table view */
+
+.tableView .content-info
+{
+  padding: 0px 20px;
+}
+
+.tableView .pos-absolute
+{
+position: relative;
+}
+
+.tableView .top-end-pos
+{
+  top: 0px;
+  right: 0px;
+}
+
+.tableView .btn-pr{
+width: max-content;
+padding: 8px 80px;
+}
+
+.tableView .products-header {
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  background-color: var(--app-content-secondary-color);
+  position: sticky;
+  top: 0;
+}
+.tableView .products-row {
+  display: flex;
+  align-items: start;
+  /* border-radius: 4px; */
+  width: auto;
+}
+.tableView .products-row:hover {
+  box-shadow: var(--filter-shadow);
+  background-color: var(--app-content-secondary-color);
+}
+.tableView .products-row .cell-more-button {
+  display: none;
+}
+.tableView .product-cell {
+  flex: 1;
+  padding: 8px 16px;
+  color: var(--app-content-main-color);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+.tableView .product-cell .img {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  margin-right: 6px;
+}
+
+.tableView .sort-button {
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--app-content-main-color);
+  margin-left: 4px;
+  display: flex;
+  align-items: center;
+}
+.tableView .sort-button:hover {
+  color: var(--action-color);
+}
+.tableView .sort-button svg {
+  width: 12px;
+}
+.tableView .cell-label {
+  display: none;
+}
+
+
+.active path{
+fill: rgba(255, 149, 0, 1);
+}
+
+.no-active path{
+fill: rgba(229, 229, 234, 1);
+}

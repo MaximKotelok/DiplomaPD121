@@ -181,6 +181,7 @@ export const Home = () => {
                   return (
                     <CircleCard
                       key={a.id}
+                      id={a.id}
                       text={a.name}
                       imageUrl={`${ApiPath}${a.pathToPhoto}`}
                     />

@@ -92,12 +92,11 @@ const MiniCardProductANDTableProductComponent = ({
           </span>
           грн
         </p>
-        <button
-          className={`brn-form_2 brn-primary-form mb-2 ${styles["btn-pr"]}`}
-          type="submit"
+        <Link to={`/map/${id}`}
+          className={`btn brn-form_2 btn-primary mb-2 ${styles["btn-pr"]}`}
         >
           Ціни в аптеках
-        </button>
+        </Link>
       </div>
       <FavoriteProductButton
         style={{  

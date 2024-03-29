@@ -1,4 +1,7 @@
-
+.btn-pr{
+    background: #007AFF!important;
+    border-radius: 8px!important;
+}
 
 
 .product-card {
@@ -6,7 +9,7 @@
     display: inline-block;
     font-family: var(--standart-font);
     padding: 20px 10px;
-    /* width: 203px; */
+    width: 203px!important;
     border: 1px solid rgba(240, 240, 240, 1);
 }
 

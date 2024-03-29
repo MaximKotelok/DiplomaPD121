@@ -10,15 +10,17 @@ import MiniProductCardComponent from "../../../Common/MiniProductCardComponent/M
 import ProductFilterComponent from "../../../Common/ProductFilterComponent/ProductFilterComponent";
 import { CategoryWithSubCategoriesComponent } from "./Component/CategoryWithSubCategoriesComponent/CategoryWithSubCategoriesComponent";
 import { CategoryWithProductsComponent } from "./Component/CategoryWithProductsComponent/CategoryWithProductsComponent";
+import { SearchProductPageComponent } from "../Search/SearchProductPageComponent";
 export const Category = () => {
   const [type, setType] = useState(null);
-  const {id} = useParams();
+  const {categoryId} = useParams();
   useEffect(()=>{
     init();
-  },[id])
+  },[categoryId])
   async function init(){
-    setType((await IsCategoryHasProducts(id)).data?"products":"subcategories");
+    setType((await IsCategoryHasProducts(categoryId)).data?"products":"subcategories");
   }
+
 
   if(type == null)
     {
@@ -29,7 +31,7 @@ export const Category = () => {
     <>
     {
       type == "products"?
-      <CategoryWithProductsComponent/>:
+      <SearchProductPageComponent />:
       <CategoryWithSubCategoriesComponent/>
     }
     </>
