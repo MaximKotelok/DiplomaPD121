@@ -14,7 +14,7 @@ export const CategoryWithSubCategoriesComponent = () => {
 
   const categoriesPerPage = 4;  
 
-  const {id, currentPageParam} = useParams();
+  const {categoryId, currentPageParam} = useParams();
   const [category, setCategory] = useState(null);
   const [favs, setFavs] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
@@ -24,12 +24,12 @@ export const CategoryWithSubCategoriesComponent = () => {
   useEffect(() => {
     init();
     initFavsProducts(setFavs);
-  }, [id]);
+  }, [categoryId]);
 
   
 
   async function init() {
-    let category = await GetCategoryById(id);
+    let category = await GetCategoryById(categoryId);
     if(currentPageParam)
       setCurrentPage(currentPageParam)
     if (category.status == Success) {
@@ -60,7 +60,7 @@ export const CategoryWithSubCategoriesComponent = () => {
   async function loadCategoryProducts(){   
     let res = calculateRange(currentPage, categoriesPerPage);
     
-    let products = await GetWithProducts(id, res.startNumber, res.endNumber, 10);
+    let products = await GetWithProducts(categoryId, res.startNumber, res.endNumber, 10);
     
     setCategoriesProducts([...categoriesProducts, ...products.data]);
   }

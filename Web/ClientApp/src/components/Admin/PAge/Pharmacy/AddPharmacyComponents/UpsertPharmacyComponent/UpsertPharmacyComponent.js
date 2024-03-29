@@ -312,7 +312,7 @@ export const UpsertPharmacyComponent = () => {
           </div>
 
           <button className="brn-form brn-primary-form mt-auto" type="submit" onClick={submitPharmacy}>
-            Вхід
+            Зберегти
           </button>
         </div>
       </div>
@@ -367,7 +367,7 @@ export const UpsertPharmacyComponent = () => {
           </div>
 
           <button className="brn-form brn-primary-form mt-auto" onClick={submitPharmacist}>
-            Вхід
+            Зберегти
           </button>
         </div>
       </div>

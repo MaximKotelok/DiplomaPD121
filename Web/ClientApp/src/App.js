@@ -40,6 +40,8 @@ import UpsertBrandComponent from "./components/Admin/PAge/Brand/AddBrandComponen
 import UpsertPharmaCompanyComponent from "./components/Admin/PAge/PharmaCompany/AddPharmaCompanyComponents/UpsertPharmaCompanyComponent/UpsertPharmaCompanyComponent";
 import UpsertPharmacyComponent from "./components/Admin/PAge/Pharmacy/AddPharmacyComponents/UpsertPharmacyComponent/UpsertPharmacyComponent";
 import { SupportChat } from "./components/Admin/PAge/SupportChat/SupportChat";
+import SearchComponent from "./components/Common/SearchComponent/SearchComponent";
+import { SearchProductPageComponent } from "./components/User/Pages/Search/SearchProductPageComponent";
 
 // export default class App extends Component {
 // static displayName = App.name;
@@ -60,8 +62,12 @@ export default class App extends Component {
           <Routes>
             <Route path="/" element={<Layout />}>
                 <Route index path="" element={<Home />} />
-              <Route index path="/PharmacyInfo/:pharmacyId" element={<PharmacyInfo />} />
-              <Route index path="/ReservationConfirm/:pharmacyId" element={<Reservation />} />
+              <Route path="/PharmacyInfo/:pharmacyId" element={<PharmacyInfo />} />
+              <Route path="/ReservationConfirm/:pharmacyId" element={<Reservation />} />
+              <Route path="/Search/ByTitle/:title" element={<SearchProductPageComponent />} />
+              <Route path="/Search/ByTitle/" element={<SearchProductPageComponent />} />
+              <Route path="/Search/ByCategory/:categoryId" element={<SearchProductPageComponent />} />
+              <Route path="/Search/ByBrand/:brandId" element={<SearchProductPageComponent />} />
               <Route path="res" element={<Reservation />} />
               <Route path="auth/*" element={<AuthPageComponent />}>
                 <Route path="registration" element={<RegistrationForm />} />
@@ -83,8 +89,8 @@ export default class App extends Component {
               <Route path="map/pharmacies/:pharmacyId/:companyId" element={<Map />} />
               <Route path="map/pharmacies" element={<Map />} />
               <Route path="product-details/:id" element={<Details />} />
-              <Route path="category/:id" element={<Category />} />
-              <Route path="category/:id/:currentPage" element={<Category />} />
+              <Route path="category/:categoryId" element={<Category />} />
+              <Route path="category/:categoryId/:currentPage" element={<Category />} />
               <Route path="*" element={<Status404 />} />
             </Route>
             <Route path="loginPharmacy" element={<LoginLayuotPharmacy />}>

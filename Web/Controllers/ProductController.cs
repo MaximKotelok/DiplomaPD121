@@ -149,6 +149,151 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
+		[HttpPost("GetSearchInput")]
+		public IActionResult GetSearchInput([FromBody] SearchViewModel model)
+		{
+			var result = _productService
+				.GetAllProducts(includeProperties: "Manufacturer,Properties,Properties.Attribute,Category,Brand,Category")
+				.Where(a =>
+				{
+					if (model.Title != null)
+					{
+						return a.Title!.StartsWith(model.Title);
+					}
+					return true;
+				}
+				)
+				.Where(a =>
+				{
+					if (model.Brands != null)
+					{
+						return model.Brands.Contains(a.BrandID!.Value);
+					}
+					return true;
+				}
+				)
+				.Where(a =>
+				{
+					if (model.Categories != null)
+					{
+						return model.Categories.Contains(a.CategoryID!.Value);
+					}
+					return true;
+				}
+				)
+				.Where(a =>
+				{
+					if (model.Properties != null)
+					{
+						return a.Properties!.Any(b =>
+						model.Properties.Any(c => (c.Name == b.Attribute.Name && b.Value == c.Value))
+
+						);
+					}
+					return true;
+				}
+				);
+			if (result is not null)
+			{
+				Dictionary<string, List<string>> attributes = new Dictionary<string, List<string>>();
+				foreach (var product in result)
+				{
+					foreach (var property in product.Properties)
+					{
+						var value = property.Value;
+						var name = property.Attribute!.Name;
+						if (!name.IsNullOrEmpty() && !value.IsNullOrEmpty())
+						{
+							var attributeName = name ?? "";
+							var attributeValue = value;
+							if (!attributes.TryGetValue(attributeName, out _))
+							{
+								attributes.Add(attributeName, new List<string>());
+							}
+							if (!attributes[attributeName].Any(a => a == attributeValue))
+							{
+								attributes[attributeName].Add(attributeValue);
+							}
+						}
+
+					}
+				
+				};
+
+				Dictionary<int, string> categories = new Dictionary<int, string>();
+
+				foreach(var product in result)
+				{
+					if(!categories.TryGetValue(product.CategoryID.Value,out _))
+						categories.Add(product.CategoryID.Value, product.Category.Title);
+				}
+
+				Dictionary<int, string> brands = new Dictionary<int, string>();
+
+				foreach (var product in result)
+				{
+					if (!brands.TryGetValue(product.BrandID.Value, out _))
+						brands.Add(product.BrandID.Value, product.Brand.Name);
+				}
+
+
+				return Ok(new { attributes, categories, brands });
+			}
+			return BadRequest("No records found");
+		}
+
+		[HttpPost("Search")]
+		public IActionResult Search([FromBody] SearchViewModel model)
+		{
+			var result = _productService
+				.GetAllProducts(includeProperties: "Manufacturer,Properties,Properties.Attribute,Category,Brand,Category")
+				.Where(a =>
+				{
+					if (model.Title != null && model.Title.Length>0)
+					{
+						return a.Title!.StartsWith(model.Title);
+					}
+					return true;
+				}
+				)
+				.Where(a =>
+				{
+					if (model.Brands != null && model.Brands.Length>0)
+					{
+						return model.Brands.Contains(a.BrandID!.Value);
+					}
+					return true;
+				}
+				)
+				.Where(a =>
+				{
+					if (model.Categories != null && model.Categories.Length > 0)
+					{
+						return model.Categories.Contains(a.CategoryID!.Value);
+					}
+					return true;
+				}
+				)
+				.Where(a =>
+				{
+					if (model.Properties != null && model.Properties.Length > 0)
+					{
+						return a.Properties!.Any(b =>
+						model.Properties.Any(c => (c.Name == b.Attribute.Name && b.Value == c.Value))
+
+						);
+					}
+					return true;
+				}
+				)
+				;
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+
 		[HttpGet("")]
 		public IActionResult GetProductOffer(int count)
 		{
