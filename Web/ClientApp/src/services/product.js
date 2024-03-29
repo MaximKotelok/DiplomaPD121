@@ -2,7 +2,6 @@ import { UpsertProduct, GetProduct,  ClassHeader, GetAllProductsFromIdArray, Suc
 import { getCookie } from "../utils/Cookies";
 import { postToServer, getFromServer, putToServer} from "../utils/Queries";
 import { postPhotoToServer } from "./photo";
-
 export async function getSupInfo(products){
     return await Promise.all(products.map(async a => {
         var res = await getFromServer(GetSupInfoForProductInYourCity, { city: getCookie("city"), id: a.id });      
@@ -27,6 +26,13 @@ export async function upsertProduct(product, options) {
 export async function getTopOffer() {
     return await getFromServer(GetTopOffers, {
         count: 6
+    }, ClassHeader)
+} 
+
+export async function getMinAndMaxPrice(id) {
+    return await getFromServer("ConcreteProduct/GetMinAndMaxPrice", {
+        id: id,
+        city: getCookie("city")
     }, ClassHeader)
 } 
 

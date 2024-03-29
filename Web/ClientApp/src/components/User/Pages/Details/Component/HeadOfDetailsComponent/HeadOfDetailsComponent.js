@@ -5,14 +5,27 @@ import CustomImgComponent from "../../../../../Common/CustomImgComponent/CustomI
 import { BtnRadioSelectedProduct } from "../../../../../Common/BtnRadioSelectedProductComponent/BtnRadioSelectedProduct";
 import { AdditionalDivRadio } from "../AdditionalComponent/AdditionalDivRadio";
 import { ReactComponent as Heart } from "../../../../../../assets/images/details/heart.svg";
+import HeartComponent from "../HeartComponent/HeartComponent";
+import { isFavoriteProduct } from "../../../../../../utils/Functions";
 // import setupAccordion from "./AccordionSideMenuJQ";
 // import $ from "jquery";
 
 const HeadOfDetailsComponent = ({ product }) => {
+  const [isFavoriteState, setIsFavoriteState] = useState(false);
+  useEffect(() => {
+    if (product.id)
+      setIsFavoriteState(isFavoriteProduct(product.id));
+  }, [product])
   return (
     <div className="d-flex w-100 mb-5">
       <div style={{ position: "relative" }}>
-        <Heart className={`position-absolute top-0  ${styles["heart-styles"]} `}  />
+        <HeartComponent
+          id={product.id}
+          isFavorite={isFavoriteState}
+          setIsFavorite={setIsFavoriteState}
+          className={`position-absolute top-0  ${styles["heart-styles"]} `}  
+        />
+        {/* <Heart className={`position-absolute top-0  ${styles["heart-styles"]} `}  /> */}
         <CustomImgComponent
           className="me-2"
           style={{ width: "568px", height: "400px", objectFit: "cover" }}

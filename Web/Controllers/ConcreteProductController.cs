@@ -49,7 +49,20 @@ namespace Web.Controllers
 			return Ok(new { minPrice = 0.0, count = 0 });
 		}
 
-        [HttpGet("GetListOfConcreteProductInYourCity/{cityName}/{productId}")]
+		[HttpGet("GetMinAndMaxPrice")]
+		public IActionResult GetMinAndMaxPrice(string city, int id)
+		{
+			var result = _concreteProductService.GetAllConcreteProducts(a => a.ProductID == id
+			&&
+			a.Pharmacy!.City!.NameCity == city && a.Quantity > 0, "Pharmacy,Pharmacy.City");
+			if (!result.IsNullOrEmpty())
+			{
+				return Ok(new { minPrice = result.Min(a => a.Price), maxPrice = result.Max(a => a.Price) });
+			}
+			return Ok(new { minPrice = 0.0, count = 0 });
+		}
+
+		[HttpGet("GetListOfConcreteProductInYourCity/{cityName}/{productId}")]
         public IActionResult GetListOfConcreteProductInYourCity(string cityName, int productId)
         {
             var cityRes = _cityService.GetCity(a => a.NameCity == cityName);

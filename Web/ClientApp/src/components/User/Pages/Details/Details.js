@@ -19,7 +19,7 @@ import AccordionComponent from "../../../Common/AccordionQuestionComponent/accor
 import HeadOfDetailsComponent from "./Component/HeadOfDetailsComponent/HeadOfDetailsComponent";
 import { getCookie } from "../../../../utils/Cookies";
 import { getPathToCategory } from "../../../../services/category";
-import { getProductById } from "../../../../services/product";
+import { getMinAndMaxPrice, getProductById } from "../../../../services/product";
 import MedicineTableComponent from "./Component/MedicineTableComponent/MedicineTableComponent";
 
 export const Details = () => {
@@ -71,11 +71,12 @@ export const Details = () => {
         product = res.data;
       }
       let path = await getPathToCategory(product.categoryID);
-      if (path.status === Success) {
+      let minAndMaxPrice = await getMinAndMaxPrice(id);
+      if (path.status === Success && minAndMaxPrice.status === Success) {
         product.city = getCookie("city");
         product.pathToPhoto = `${ApiPath}${product.pathToPhoto}`;
-        product.from = 23.66;
-        product.to = 38.6;
+        product.from = minAndMaxPrice.data.minPrice;
+        product.to = minAndMaxPrice.data.maxPrice;
         product.pathToCategory = path.data;
         product.properties.unshift({
           name: "Категорія",
