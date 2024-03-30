@@ -18,13 +18,12 @@ namespace Web.Controllers
 	{
 		private readonly IAttributeGroupService _service;
 		
-
 		public ProductAttributeGroupController(IAttributeGroupService service) {
 			this._service = service;		
 		}
 
 		[HttpGet("GetGroupsForProductAdd")]
-		//[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_PharmaCompany)]
 		public IActionResult GetGroupsForProductAdd(string title, int count)
 		{
 			var result = _service.GetAllProductAttributeGroups(a=>a.Name.Contains(title) && 
@@ -37,7 +36,7 @@ namespace Web.Controllers
 		}
 
 		[HttpGet("")]
-		//[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = $"{SD.Role_Admin},{SD.Role_PharmaCompany}")]
 		public IActionResult GetAllGroups()
 		{
 			var result = _service.GetAllProductAttributeGroups();
@@ -48,9 +47,8 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-
 		[HttpGet("get")]
-		//[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = $"{SD.Role_Admin},{SD.Role_PharmaCompany}")]
 		public IActionResult GetGroupById(int id)
 		{
 			var result = _service.GetProductAttributeGroup(
@@ -62,8 +60,5 @@ namespace Web.Controllers
 			}
 			return BadRequest("No records found");
 		}
-
-
-
 	}
 }

@@ -26,6 +26,5 @@ namespace Web.Controllers
 			return Ok(result);
 		}
 
-
 	}
 }

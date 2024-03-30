@@ -12,39 +12,40 @@ using Utility;
 
 namespace Web.Controllers
 {
-	[Route("api/[controller]")]
-	[ApiController]
-	public class PharmaCompanyController : ControllerBase
-	{
-		private readonly IPharmaCompanyService _service;
+    [Route("api/[controller]")]
+    [ApiController]
+    public class PharmaCompanyController : ControllerBase
+    {
+        private readonly IPharmaCompanyService _service;
         private readonly IRepositoryManager _repository;
 
-        public PharmaCompanyController(IPharmaCompanyService service, IRepositoryManager _repository) {
-			this._service = service;
+        public PharmaCompanyController(IPharmaCompanyService service, IRepositoryManager _repository)
+        {
+            this._service = service;
             this._repository = _repository;
-		}
+        }
 
-		[HttpGet("GetAllPharmaCompanies")]
-		public IActionResult GetPharmaCompanies()
-		{
-			var result = _service.GetAllPharmaCompanies();
-			if (result is not null)
-			{
-				return Ok(result);
-			}
-			return BadRequest("No records found");
-		}
+        [HttpGet("GetAllPharmaCompanies")]
+        public IActionResult GetPharmaCompanies()
+        {
+            var result = _service.GetAllPharmaCompanies();
+            if (result is not null)
+            {
+                return Ok(result);
+            }
+            return BadRequest("No records found");
+        }
 
-		[HttpGet("GetPharmaCompanyById")]
-		public IActionResult GetPharmaCompany(int companyId)
-		{
-			var result = _service.GetPharmaCompany(x => x.Id == companyId);
-			if (result is not null)
-			{
-				return Ok(result);
-			}
-			return BadRequest("No records found");
-		}
+        [HttpGet("GetPharmaCompanyById")]
+        public IActionResult GetPharmaCompany(int companyId)
+        {
+            var result = _service.GetPharmaCompany(x => x.Id == companyId);
+            if (result is not null)
+            {
+                return Ok(result);
+            }
+            return BadRequest("No records found");
+        }
 
         [HttpPost("UpsertPharmaCompany")]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
@@ -55,7 +56,7 @@ namespace Web.Controllers
             {
                 await UpsertCompanyEntity(postModel);
 
-               /* transaction.Complete();*/
+                /* transaction.Complete();*/
                 return Ok("Data inserted");
             }
             catch (Exception ex)
@@ -65,13 +66,12 @@ namespace Web.Controllers
         }
 
         [HttpDelete("{id}")]
-                [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult DeletePharmCompany(int id)
-		{
-			_service.DeletePharmaCompany(id);
-			return Ok("Data Deleted");
-		}
-
+        {
+            _service.DeletePharmaCompany(id);
+            return Ok("Data Deleted");
+        }
 
         private async Task UpsertCompanyEntity(PostPharmaCompanyViewModel postModel)
         {
@@ -93,7 +93,7 @@ namespace Web.Controllers
 
                 user.Roles = new List<string>
                 {
-                    SD.Role_Company
+                    SD.Role_PharmaCompany
                 };
 
                 _service.InsertPharmaCompany(company);

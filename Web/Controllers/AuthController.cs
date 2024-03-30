@@ -61,7 +61,6 @@ namespace Web.Controllers
             if (result is not null)
             {
                 var token = await _repository.UserAuthentication.CreateTokenAsync();
-                //var token = await _repository.UserAuthentication.CreateTokenAsync(result);
                 return Ok(new { Token = token, User = result });
             }
             else

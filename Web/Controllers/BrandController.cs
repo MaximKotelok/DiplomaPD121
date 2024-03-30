@@ -43,7 +43,6 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-
         [HttpGet("GetBrandById")]
         public IActionResult GetBrandById(int brandId)
         {
@@ -57,7 +56,6 @@ namespace Web.Controllers
 
         [HttpPost("UpsertBrand")]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
-
         public IActionResult UpsertBrand(PostBrandViewModel postModel)
         {
             using var transaction = new TransactionScope();

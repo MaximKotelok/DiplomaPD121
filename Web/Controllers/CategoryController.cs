@@ -95,7 +95,6 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-
 		[HttpGet("GetWithProducts")]
 		public IActionResult GetWithProducts(int? id, int from, int to, int count)
 		{
@@ -157,7 +156,6 @@ namespace Web.Controllers
 			}
 			return BadRequest("No records found");
 		}
-
 
 		[HttpGet("Main/All")]
 		public IActionResult GetAllMainCategories(int count)
@@ -225,8 +223,6 @@ namespace Web.Controllers
 			return Ok(products);
 
 		}
-
-
 
 		[HttpGet("PathToCategory")]
 		public IActionResult GetCategoryPath(int id)

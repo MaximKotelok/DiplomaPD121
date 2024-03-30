@@ -262,6 +262,8 @@ namespace Web.Controllers
 			}
 		}
 
+		//Update - admin
+		//Add - pharamacy & admin
 		[HttpPost("UpsertProduct")]
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
 		public IActionResult UpsertProduct(PostProductViewModel postModel)
@@ -378,7 +380,8 @@ namespace Web.Controllers
 		}
 
 		[HttpDelete("{id}")]
-		public IActionResult DeleteProduct(int id)
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+        public IActionResult DeleteProduct(int id)
 		{
 
 			_propertyService.DeleteProperty(id);

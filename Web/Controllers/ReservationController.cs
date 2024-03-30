@@ -145,8 +145,8 @@ namespace Web.Controllers
             return Ok();
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         [HttpPost("SetStatus")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Pharmacist)]
         public IActionResult SetStatus(ReservationStatusViewModel statusViewModel)
         {
             ReservationStatus reservationStatus = _reservationStatusService.GetReservationStatus(x => x.Id == statusViewModel.StatusId);

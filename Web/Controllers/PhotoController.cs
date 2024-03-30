@@ -1,14 +1,17 @@
 ﻿using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Utility;
 
 namespace Web.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class PhotoController : ControllerBase
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    public class PhotoController : ControllerBase
 	{
 		private readonly IWebHostEnvironment _hostingEnvironment;
 
