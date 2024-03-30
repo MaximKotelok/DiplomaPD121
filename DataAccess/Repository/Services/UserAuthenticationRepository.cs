@@ -69,6 +69,7 @@ namespace Repository.Repository.Services
 
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
         }
+
         public async Task<bool> ConfirmEmailAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
@@ -82,6 +83,21 @@ namespace Repository.Repository.Services
 
             return false;
         }
+
+        public async Task<IdentityResult> ChangePasswordAsync(string email, string currentPassword, string newPassword)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                return IdentityResult.Failed(new IdentityError { Description = "User not found." });
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+
+            return result;
+        }
+
         private SigningCredentials GetSigningCredentials()
         {
             var jwtConfig = _configuration.GetSection("JwtConfig");
