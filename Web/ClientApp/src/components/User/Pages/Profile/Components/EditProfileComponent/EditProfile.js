@@ -1,0 +1,199 @@
+import React, { useEffect, useState } from "react";
+import Modal from "react-bootstrap/Modal";
+import google from "../../../../../../assets/images/google.svg";
+import faceboo from "../../../../../../assets/images/Facebook.svg";
+import BtnSocialComponenent from "../../../../../Auth/components/BtnSocialComponenent/BtnSocialComponenent";
+import stylesAuth from "../../../../../Auth/AuthPage.module.css";
+import { ReactComponent as BtnClose } from "./BtnClose.svg";
+import styles from "./EditProfile.module.css";
+import "./EditPro.css";
+import { PhoneInput } from "react-international-phone";
+import { getMyInfo, updateUser } from "../../../../../../services/user";
+import { Success } from "../../../../../../utils/Constants";
+import { toast } from "react-toastify";
+import Swal from 'sweetalert2';
+// import stylesAuth from "../AuthPage.module.css";
+const EditProfile = () => {
+  const [show, setShow] = useState(false);
+  // const [showEmail, setShowEmail] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: undefined,
+    lastName: undefined,
+    email: undefined,
+    phoneNumber: undefined
+});
+
+  useEffect(()=>{
+    init();
+
+  },[]);
+
+  console.log(formData)
+
+
+  async function init(){
+    let res = await getMyInfo();
+    if(res.status == Success){
+      let userData = res.data;
+      Object.keys(userData).forEach(function(key) {
+        if(userData[key] === null) {
+          userData[key] = "";
+        }
+      })
+      setFormData(userData);
+    }
+  }
+
+  async function submit(){
+    
+    let res = await updateUser(formData); 
+    if(res.status == Success){
+      Swal.fire('Success!', res.data, 'success');      
+    }else{
+      toast.error("Помилка");
+    }
+  }
+
+  const setFormDataAttribute = (name, value) => {
+
+    setFormData({
+        ...formData,
+        [name]: value,
+    });
+
+  }
+
+  const handleInputChange = (e) => {
+    setFormDataAttribute(e.target.name, e.target.value);
+
+  };
+
+  return (
+    <>
+      <div className="row">
+        <div className={`col-md-7`}>
+          <h3 className="mb-3">Особисті дані</h3>
+
+          <form>
+            {/* <form onSubmit={handleLogin}> */}
+            <div className="mb-2">
+              <input
+                className={`input-text-form input-text-secondary-form mb-2 ${stylesAuth["my-input-text-form"]}`}
+                placeholder="Ім'я"
+                type="text"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="mb-2">
+              <input
+                className={`input-text-form input-text-secondary-form mb-2 ${stylesAuth["my-input-text-form"]}`}
+                placeholder="Фамілія"
+                type="text"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="mb-2">
+            <PhoneInput
+                defaultCountry="ua"
+                name="phoneNumber"
+                className={`mb-2`}       
+                value={formData.phoneNumber}         
+                placeholder="Мобільний номер"
+                onChange={(e)=>setFormDataAttribute("phoneNumber",e)}
+                required
+              />
+            </div>
+            <div className="mb-2">
+              {/* <input className={`input-text-form input-text-secondary-form mb-2 ${stylesAuth["my-input-text-form"]}`} placeholder='Email' type="text" name="email" value={formData.email} onChange={handleInputChange} required/> */}
+              <input
+                className={`input-text-form input-text-secondary-form mb-2 ${stylesAuth["my-input-text-form"]}`}
+                placeholder="Пошта"
+                type="text"
+                name="email"
+                value={formData.email}         
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="mb-2">            
+            </div>            
+
+            {/* <div className="input-group mb-1">
+              <input
+                type="text"
+                className={`form-control input-text-form input-text-secondary-form mb-2 ${stylesAuth["my-input-text-form"]}`}
+                placeholder="Recipient's username"
+                aria-label="Recipient's username"
+                aria-describedby="button-addon2"
+              />
+              <button
+                className={`${styles["btn-form-control"]}`}
+                type="button"
+                id="button-addon2"
+                onClick={() => setShowEmail(true)}
+              >
+                змінити
+              </button>
+            </div> */}
+            <button
+              onClick={() => setShow(true)}
+              className={`${styles["btn-zmina"]}`}
+              type="button"
+            >
+              Змінити пароль
+            </button>
+
+            <button className="brn-form brn-primary-form mb-2" onClick={(e)=>{
+              e.preventDefault();
+              submit();
+            }}>
+            Зберегти
+            </button>
+          </form>
+        </div>
+        <div className={`col-md-5`}>
+          <h3 className="mb-3">Зв’язати з соцмережею</h3>
+          <BtnSocialComponenent icon={google} text={"Вхід через Google"} />
+          <BtnSocialComponenent icon={faceboo} text={"Вхід через Facebook"} />
+        </div>
+      </div>
+
+
+      {/* <Modal show={showEmail} onHide={() => setShowEmail(false)} centered>
+        <Modal.Body className="test">
+          <div className={`d-flex justify-content-end mb-3`}>
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={() => setShowEmail(false)}
+            >
+              <BtnClose />
+            </div>
+          </div>
+          <form>
+            <div className="mb-2">
+              <input
+                className={`input-text-form input-text-secondary-form mb-2 ${stylesAuth["my-input-text-form"]}`}
+                placeholder="Змініть Email"
+                type="email"
+                name="email"
+                required
+              />
+            </div>
+
+            <button className="brn-form brn-primary-form mb-3 " type="submit">
+              Зберегти
+            </button>
+          </form>
+        </Modal.Body>
+      </Modal> */}
+    </>
+  );
+};
+
+export default EditProfile;

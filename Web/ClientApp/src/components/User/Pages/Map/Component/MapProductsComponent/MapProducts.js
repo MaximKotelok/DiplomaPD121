@@ -37,8 +37,8 @@ const MapProducts = (props) => {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             }).addTo(myMap);
 
-            let city = getCookie("city");
-            setCity(city);
+            
+            setCity(props.city);
 
             setMap(myMap);
 

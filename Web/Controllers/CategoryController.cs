@@ -38,11 +38,11 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-		[HttpGet("GetRecomendedCategory")]
-		public IActionResult GetRecomendedCategory(string typeOfPhoto, int count)
+		[HttpGet("GetRecomendedCategory")]  // GetBottomCategory
+		public IActionResult GetRecomendedCategory(int count)
 		{
 			var result = _service.GetAllCategories(a =>
-				(a.IsRecomended != null && a.IsRecomended.Value && a.SubCategoriesTypeOfPhoto == Enum.Parse<TypeOfPhoto>(typeOfPhoto)));
+				(a.IsDisplayOnBottom != null && a.IsDisplayOnBottom.Value));
 
 
 			if (result is not null && result.Count() > 0)
@@ -95,6 +95,7 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
+		//*********
 		[HttpGet("GetWithProducts")]
 		public IActionResult GetWithProducts(int? id, int from, int to, int count)
 		{
@@ -130,6 +131,7 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
+		//**********
 		[HttpGet("GetCategoryProductsForFilter")]
 		public IActionResult GetCategoryProductsForFilter(int? id, int from, int to)
 		{
@@ -169,9 +171,9 @@ namespace Web.Controllers
 		}
 
 		[HttpGet("GetCategoriesForProductAdd")]
-		public IActionResult GetCategoriesForProductAdd(string title, int count)
+		public IActionResult GetCategoriesForProductAdd()
 		{
-			var result = _service.GetAllCategories(a => a!.Title!.Contains(title) && a.CanHasProducts == true).Take(count);
+			var result = _service.GetAllCategories();
 			if (result is not null)
 			{
 				return Ok(result);

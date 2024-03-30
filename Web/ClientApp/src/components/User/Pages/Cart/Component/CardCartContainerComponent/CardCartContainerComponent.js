@@ -3,8 +3,10 @@ import CartBYComponent from "../CartBYComponent/CartBYComponent";
 import styles from "./CardCartContainer.module.css";
 import btnOcloko from "../../../../../../assets/images/znakOkloko.svg";
 import { Link } from "react-router-dom";
+import { isPharmacyOpen } from "../../../../../../utils/Functions";
 
 const CardCartContainerComponent = ({data}) => {
+  let isOpen = isPharmacyOpen(data.timeOpen,data.timeClosed);
   return (
     <div className={`mb-4 ${styles["body-card-cart"]}`}>
       <div className="row">
@@ -17,7 +19,9 @@ const CardCartContainerComponent = ({data}) => {
               alt="Картинка"
             />{" "}
           </h1>
-          <p className={` ${styles["p-container"]}`}>Відкрито до 20:00</p>
+          <p className={` ${styles["p-container"]}`}>        
+            {isOpen?`Відкрито до ${data.timeClosed}`:`Буде відкрито з ${data.timeOpen}`}                
+          </p>
           <p className={` ${styles["p-container"]}`}>
             {data.address}
           </p>
@@ -46,11 +50,12 @@ const CardCartContainerComponent = ({data}) => {
               </div>
               <div className="row mt-4">
                 <div className="col-6 ps-2 pe-2">
-                  <button
-                    className={`brn-form ${styles["card-btn-primary-500"]}  w-100 `}
+                  <a
+                    className={`btn brn-form ${styles["card-btn-primary-500"]}  w-100 `}
+                    href={`/map/pharmacies/${data.id}`}
                   >
                     Продовжити підбір в цій аптеці
-                  </button>
+                  </a>
                 </div>
                 <div className="col-6 ps-2 pe-2">
                   <Link to={`/ReservationConfirm/${data.id}`}

@@ -21,19 +21,12 @@ import { Outlet } from "react-router-dom";
 //import TableComponent from "../../components/pages/Admin/components/TableComponents/TableComponent";
 // import { Container } from "reactstrap";
 
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 const LayoutAdmin = ({ children }) => {
   const layoutContext = useContext(LayoutContext);
-
+  console.log(layoutContext.additonalComponent);
   return (
-    <div
-      className={`app-container ${
-        layoutContext.stateComponentMounted === LayoutProviderValues.ADD ||
-        layoutContext.stateComponentMounted === LayoutProviderValues.UPDATE
-          ? "upsert-page"
-          : ""
-      }`}
-    >
+    <div className={`app-container`}>
       <div className="sidebar ">
         <div className="sidebar-header">
           <div className="app-icon">
@@ -44,18 +37,18 @@ const LayoutAdmin = ({ children }) => {
         </div>
 
         <ul className="sidebar-list">
-          <li className="sidebar-list-item">
+          {/* <li className="sidebar-list-item">
             <ButtonSideMenuComponents
               text="Повідомлення"
               icon={Question}
               link="https://www.example.com"
             />
-          </li>
+          </li> */}
           <li className="sidebar-list-item active">
             <ButtonSideMenuComponents
               text="Заявки на підтвердження"
               icon={Mail}
-              link="https://www.example.com"
+              link="/admin/zayavka"
             />
           </li>
           <li className="sidebar-list-item">
@@ -101,20 +94,20 @@ const LayoutAdmin = ({ children }) => {
       </div>
 
       <div className="app-content">
-        {/* <div className="app-content-header app-content-container  "> */}
-        {/* <SearchComponent /> */}
-        <div className="app-content-header app-content-container d-flex justify-content-end">
-          <div className="app-content-header">
+        <div className="app-content-header app-content-container  d-flex">
+          {/* <SearchComponent /> */}
+          {layoutContext.additonalComponent}
+
+          <div className="app-content-header ms-auto">
             <BadgeComponennt />
             <AvatarComponennt />
           </div>
         </div>
 
-        <div className="products-area-wrapper tableView">
-          {/* <TableComponent /> */}
-          {/* {children} */}
-          <Outlet />
-        </div>
+        {/* <div className="products-area-wrapper tableView"> */}
+        {/* <TableComponent /> */}
+        {/* {children} */}
+        <Outlet />
       </div>
       <ToastContainer position="bottom-right" autoClose={3000} />
     </div>

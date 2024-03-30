@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import "./NavMenu.css";
 import "./NavMenuMap.css";
 import IconButton from "../../../../components/Common/IconButtonComponent/IconButton";
-import CatalogIcon from "../../../../assets/images/header-icons/catalogue-icon.svg"
+import CatalogIcon from "../../../../assets/images/header-icons/catalogue-icon.svg";
 import ServiceIcon from "../../../../assets/images/header-icons/services-icon.svg";
 import GeoIcon from "../../../../assets/images/header-icons/geo-icon.svg";
 import CartIcon from "../../../../assets/images/header-icons/cart-icon.svg";
@@ -20,6 +20,10 @@ import { ReactComponent as Logo } from "../../../../assets/images/LogoCapsula.sv
 import SearchElement from "../../../../components/Common/SearchComponent/SearchComponent";
 import DropDown from "../DropDownComponent/DropDown";
 import { checkIsAuth } from "../../../../services/user";
+import DropDownLocation from "../DropDownLocationComponent/DropDownLocation";
+import AutoCompleteInput from "../../../../components/Common/AutoCompleteInputComponent/AutoCompleteInput ";
+import { IconButtonNoText } from "../../../../components/Common/IconButtonNoTextComponent/IconButtonNoText";
+import { GetProductByTitle } from "../../../../services/product";
 
 //import CatalogIcon from './catalog_icon_215654.svg';
 export class NavMenu extends Component {
@@ -48,45 +52,37 @@ export class NavMenu extends Component {
           container
           light
         >
-
           <div className="inner-custom-navbar navbar-nav flex-grow">
-            
-
             <NavbarBrand className="logo" tag={Link} to="/">
               <Logo height={40} fill="black" className="logo-pharma" />
             </NavbarBrand>
 
-            <NavLink className="catalogue" tag={Link}>
-              {/* <IconButton iconPath={CatalogIcon} text="Каталог" /> */}
+            <div className="catalogue">
               <DropDown iconPath={CatalogIcon} />
-
-            </NavLink>
+            </div>
             <NavLink className="services" tag={Link} to="/counter">
               <IconButton iconPath={ServiceIcon} text="Сервіси" />
             </NavLink>
 
-            <NavLink className="geo" tag={Link} to="/map">
-              <IconButton iconPath={GeoIcon} text="Геолокація" />
-            </NavLink>
-                        
-            <SearchElement className="searchbar"/>
-            
-            
+            <div className="geo">
+              <DropDownLocation iconPath={GeoIcon} text="Геолокація" />
+            </div>
 
+            {/* <SearchElement className="searchbar" /> */}
+            <AutoCompleteInput className="searchbar" getData={(title)=>GetProductByTitle(title)}/>
 
-            
-            <NavLink tag={Link} className="cart" to="/cart">
-              <IconButton iconPath={CartIcon} />
+            <NavLink tag={Link} className="cart nav-link-my" to="/cart">
+              <IconButtonNoText iconPath={CartIcon} />
             </NavLink>
 
-
-
-            <NavLink tag={Link} className="profile" to={checkIsAuth()?"/profile":"/auth"}>
-              <IconButton iconPath={ProfileIcon} />
+            <NavLink
+              tag={Link}
+              className="profile nav-link-my"
+              to={checkIsAuth() ? "/profile" : "/auth"}
+            >
+              <IconButtonNoText iconPath={ProfileIcon} />
             </NavLink>
-
           </div>
-
         </Navbar>
       </header>
     );

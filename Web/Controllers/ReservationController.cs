@@ -121,8 +121,8 @@ namespace Web.Controllers
             {
                 var total = reservation.ReservationItems.Sum(a => a.ConcreteProduct.Price * a.Quantity);
                 var pharmacy = reservation.Pharmacy;
-                return new { Id = reservation.Id,Name=reservation.Pharmacy.PharmaCompany.Title, ReservedTime = reservation.ReservedTime.ToString("dd.MM.yyyy в HH:mm"), Pharmacy = pharmacy, Total = total, Status = reservation.Status };
-            });
+                return new { Id = reservation.Id,Name=reservation.Pharmacy.PharmaCompany.Title, ReservedTime = reservation.ReservedTime, Pharmacy = pharmacy, Total = total, Status = reservation.Status };
+            }).OrderByDescending(a=>a.ReservedTime);
 
             return Ok(data);
 

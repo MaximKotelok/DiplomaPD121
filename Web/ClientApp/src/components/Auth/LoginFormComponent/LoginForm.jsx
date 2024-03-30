@@ -5,6 +5,8 @@ import { setToken } from '../../../utils/Login';
 import styles from "../AuthPage.module.css";
 import  { useNavigate } from 'react-router-dom'
 import { toast } from "react-toastify";
+import { getFavs } from "../../../services/favProducts";
+import { initStorageFavs } from "../../../utils/Functions";
 
 const LoginForm = () => {
     const navigate = useNavigate();
@@ -12,10 +14,6 @@ const LoginForm = () => {
         email: '',
         password: '',
     });
-
-    
-
-
 
     const handleInputChange = (e) => {
         setFormData({
@@ -32,6 +30,7 @@ const LoginForm = () => {
             // Перевірка наявності токену у відповіді
             if (response.data && response.data.token) {
                 setToken(response.data.token);
+                initStorageFavs();
                 //Swal.fire('Success!', 'Login successful', 'success');
                 navigate("/profile");
                 toast.success("Ви успішно зайшли на сайт!");

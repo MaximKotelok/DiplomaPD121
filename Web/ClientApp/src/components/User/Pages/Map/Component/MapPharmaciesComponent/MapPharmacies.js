@@ -37,8 +37,8 @@ const MapPharmacies = (props) => {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             }).addTo(myMap);
 
-            let city = getCookie("city");
-            setCity(getCookie("city"));
+            
+            setCity(props.city);
 
             setMap(myMap);
 
@@ -48,12 +48,17 @@ const MapPharmacies = (props) => {
     useEffect(() => {
         if (city != null && map != null) {
             showLocation(city, map);
-            setPharmacyOfTown(city, map);
+            setPharmacyOfTown(city, map, props.companyId);
         }
     }, [map])
 
-    const setPharmacyOfTown = async (city, map) => {
-        let pharmacy = (await getFromServer(`Pharmacy/GetListOfPharmacyInYourCity/${city}`)).data;
+    const setPharmacyOfTown = async (city, map, companyId) => {
+        let pharmacy;
+        if (!companyId) {
+            pharmacy = (await getFromServer(`Pharmacy/GetListOfPharmacyInYourCity/${city}`)).data;
+        } else {
+            pharmacy = (await getFromServer(`Pharmacy/GetListOfPharmacyInYourCityByCompany/${city}/${companyId}`)).data;
+        }
 
         const markers = {};
         pharmacy.forEach((element) => {
@@ -72,7 +77,14 @@ const MapPharmacies = (props) => {
         var clickedMarker = e.target;
 
         let pharmacy = (await getFromServer(`Pharmacy/Coords/${clickedMarker._latlng.lat}/${clickedMarker._latlng.lng}`)).data;
-        setSelectedPharmacy(pharmacy);
+        if(pharmacy){                  
+            setSelectedPharmacy(pharmacy);
+            
+            let elem = document.getElementById(`pharmacy${pharmacy.id}`)
+            if (elem) {
+                elem.scrollIntoView({ behavior: "smooth" })
+            }
+        }
 
         await setSelectedMarker((prevMarker) => {
             if (prevMarker) {
@@ -109,9 +121,23 @@ const MapPharmacies = (props) => {
                     selectedPharmacy={selectedPharmacy}
                     townPharmacy={townPharmacy}
                     onPharmacyClick={pharmacy => {
-                        setSelectedPharmacy(pharmacy);
+                        if(pharmacy){
+                            setSelectedPharmacy(pharmacy); 
+                            let elem = document.getElementById(`pharmacy${pharmacy.id}`)
+                            if (elem) {
+                                elem.scrollIntoView({ behavior: "smooth" })
+                            }                          
+                        }
                     }}
-                    onMapSelect={handleMapSelect}
+                    onMapSelect={(pharmacy)=>{                              
+                        if(pharmacy){                  
+                            handleMapSelect(pharmacy)        
+                            let elem = document.getElementById(`pharmacy${pharmacy.id}`)
+                            if (elem) {
+                                elem.scrollIntoView({ behavior: "smooth" })
+                            }
+                        }
+                    }}
                 />
             ) : (
                 <p>Loading...</p>

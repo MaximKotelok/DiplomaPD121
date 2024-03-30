@@ -7,7 +7,7 @@ import Filter from "../SelectedProductsComponent/FilterComponent/Filter";
 import { getRecentlyViewedProductsIds } from "../../../../../../utils/SessionStorage";
 import { getProductsFromIdsArray } from "../../../../../../services/product";
 import MiniProductCardComponent from "../../../../../Common/MiniProductCardComponent/MiniProductCardComponent";
-import { initFavs, isFavorite } from "../../../../../../utils/Functions";
+import { initFavsProducts, isFavoriteProduct } from "../../../../../../utils/Functions";
 
 const WathcList = () => {
   const [recently, setRecently] = useState([]);
@@ -15,7 +15,7 @@ const WathcList = () => {
 
 
   useEffect(() => {
-    initFavs(setFavs);
+    initFavsProducts(setFavs);
     initRecentlyViewed();
   }, [])
 
@@ -28,7 +28,7 @@ const WathcList = () => {
   }
 
   function isCustomFavorite(id) {
-    return isFavorite(id, favs);
+      return isFavoriteProduct(id, favs);
   }
 
 

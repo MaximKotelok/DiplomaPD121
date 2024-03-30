@@ -1,8 +1,85 @@
+div[disabled]
+{
+  pointer-events: none;
+  opacity: 0.7;
+  
+}
+.react-international-phone-input-container{
+    background-color: rgba(239, 239, 239, 1)!important;
+    color: rgba(122, 122, 122, 1)!important;
+    border-radius: 12px!important;    
+    width: 100%!important;
+    padding: 16px 20px;
+}
+
+.react-international-phone-input-container, .input-text-form{    
+    height: 52px !important;
+    display: flex;
+    align-items: center;
+}
+
+.react-international-phone-input-container>*, .react-international-phone-country-selector-button{
+    border: none!important;
+    background-color: transparent!important;
+}
+
+.react-international-phone-input{
+    font-family: var(--standart-font);
+    font-size: 16px!important;
+    font-weight: 500!important;
+    line-height: 20px!important;
+    letter-spacing: 0em!important;
+    text-align: left!important;
+
+}
+
+
+.round-white-div{
+    border-radius: 16px;
+    background-color: white;
+}
+
+.slider-container button:disabled {
+    display: none!important;
+}
+
+.slider-container .slider-control-centerright button,
+.slider-container .slider-control-centerleft button {
+    color: transparent!important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    font-size: 0px;
+    background-color: #139787!important;
+    opacity: 0.6!important;
+    cursor: pointer;
+    position: relative!important;
+    line-height: 0;
+    background-repeat: no-repeat!important;    
+    background-position: center!important;
+    background-size: 30px!important;
+}
+
+
+.slider-container .slider-control-centerright button {
+    
+    background-image: url("../assets/images/arrow-right-short.svg")!important;
+    
+}
+
+.slider-container .slider-control-centerleft button {
+    background-image: url("../assets/images/arrow-left-short.svg")!important;
+}
+
+
 header {
     background-color: white;
 }
 
-
+.container{
+    padding: 0;}
 body,
 html {
     margin: 0;
@@ -11,7 +88,18 @@ html {
     width: 100%;
 }
 
+.section-title{
+    font-family: var(--standart-font);
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 30px;
+    color: #1C1C1CCC;
+
+    
+}
+
 .brn-form {
+    font-family: var(--standart-font);
     width: 100%;
     padding: 16px 20px;
     border: none;
@@ -22,9 +110,29 @@ html {
 
 }
 
+.brn-form_2 {
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+}
+
 .brn-primary-form {
     background-color: rgba(0, 122, 255, 1);
     color: rgba(242, 242, 247, 1);
+}
+
+.btn-primary-form-pharmacy {
+    background-color: rgba(0, 122, 255, 0.15);
+    color: rgba(0, 122, 255, 1);
+    padding: 12px;
+    font-size: 18px;
+font-weight: 700;
+}
+
+.btn-primary-form-pharmacy:hover {
+    background-color: #e6f4fe;
 }
 
 .input-text-form {
@@ -38,6 +146,19 @@ html {
     text-align: left;
     outline: none;
 }
+
+.my-form-select {
+    width: 100%;
+    padding: 16px 20px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 500;
+    text-align: left;
+    outline: none;
+}
+
 
 .input-text-secondary-form {
     background-color: rgba(239, 239, 239, 1);
@@ -53,4 +174,9 @@ html {
     -khtml-user-select: none;
     -webkit-user-select: none;
     user-select: none;
+}
+
+
+.row{
+    margin: 0;
 }

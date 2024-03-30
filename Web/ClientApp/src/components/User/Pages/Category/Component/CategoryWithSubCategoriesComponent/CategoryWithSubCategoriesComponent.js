@@ -4,7 +4,7 @@ import React, { Component, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { GetCategoryById, GetCategoryProductsForFilter, GetProductsFromCategory, GetWithProducts } from "../../../../../../services/category";
 import { StateInfos, Success } from "../../../../../../utils/Constants";
-import { initFavs, isFavorite } from "../../../../../../utils/Functions";
+import { initFavsProducts, isFavoriteProduct } from "../../../../../../utils/Functions";
 import CarouselListComponent from "../../../../Common/CarouselListComponent/CarouselListComponent";
 import MiniProductCardComponent from "../../../../../Common/MiniProductCardComponent/MiniProductCardComponent";
 import ProductFilterComponent from "../../../../../Common/ProductFilterComponent/ProductFilterComponent";
@@ -14,7 +14,7 @@ export const CategoryWithSubCategoriesComponent = () => {
 
   const categoriesPerPage = 4;  
 
-  const {id, currentPageParam} = useParams();
+  const {categoryId, currentPageParam} = useParams();
   const [category, setCategory] = useState(null);
   const [favs, setFavs] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
@@ -23,13 +23,13 @@ export const CategoryWithSubCategoriesComponent = () => {
   const [loader, setLoader] = useState(StateInfos.LOADING);
   useEffect(() => {
     init();
-    initFavs(setFavs);
-  }, [id]);
+    initFavsProducts(setFavs);
+  }, [categoryId]);
 
   
 
   async function init() {
-    let category = await GetCategoryById(id);
+    let category = await GetCategoryById(categoryId);
     if(currentPageParam)
       setCurrentPage(currentPageParam)
     if (category.status == Success) {
@@ -60,7 +60,7 @@ export const CategoryWithSubCategoriesComponent = () => {
   async function loadCategoryProducts(){   
     let res = calculateRange(currentPage, categoriesPerPage);
     
-    let products = await GetWithProducts(id, res.startNumber, res.endNumber, 10);
+    let products = await GetWithProducts(categoryId, res.startNumber, res.endNumber, 10);
     
     setCategoriesProducts([...categoriesProducts, ...products.data]);
   }
@@ -74,7 +74,7 @@ export const CategoryWithSubCategoriesComponent = () => {
   }
   
   function isCustomFavorite(id){
-    isFavorite(id, favs);
+      isFavoriteProduct(id, favs);
   }
 
   return (
@@ -93,7 +93,7 @@ export const CategoryWithSubCategoriesComponent = () => {
             })
           }
         </div>
-        <div className="col-9">
+        <div  className="col-9">
           {
           categoriesProducts&&
           categoriesProducts.map &&

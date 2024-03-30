@@ -1,15 +1,69 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import MyPharmacie from "./MyPharmacie/MyPharmacieComponent";
 import AccordionComponent from "../../../../../Common/AccordionQuestionComponent/accordionComponent";
-// import srcImg from "../../../../../../assets/images/placeholder.png";
 import srcImg from "../../../../../../assets/images/authPage.png";
+import { getFavsPharmaciesWithSupInfo, removeFavouritePharmacy } from "../../../../../../services/favPharmacies";
+import { toast } from "react-toastify";
+
 
 const MyPharmacies = () => {
-  return (
-    <div>
-      {/* Якщо масив пустий*/}
+    
+    const [pharmacies, setPharmacies] = useState([]);
 
-      {/* <h5
+    useEffect(() => {
+        init();
+
+    }, [])
+
+    async function init() {
+        let res = await getFavsPharmaciesWithSupInfo();
+        setPharmacies(res);
+    }
+
+    const handleRemovePharmacy = (pharmacyIdToRemove) => {
+        setPharmacies(prevPharmacies => prevPharmacies.filter(pharmacy => pharmacy.id !== pharmacyIdToRemove));
+        removeFavouritePharmacy(pharmacyIdToRemove);
+        toast.success("Ви успішно видалили аптеку з улюблених!");
+    };
+
+  return (
+      <div>
+          <h4>Мої аптеки</h4>
+          {pharmacies.length === 0 ? (
+              <div>
+                  <h5
+                      style={{
+                          fontFamily: 'var(--standart-font)',
+                          fontWeight: 700,
+                          fontSize: '16px',
+                      }}
+                  >
+                      Список "Мої аптеки" порожній
+                  </h5>
+                  <AccordionComponent
+                      header="Навіщо додавати аптеки в список?"
+                      title="Додавайте аптеки для швидкого доступу до інформації про них."
+                      id="1"
+                  />
+                  <img src={srcImg} style={{ width: "100%", height: "auto" }} />
+              </div>
+              
+          ) : (
+              <div className="d-flex row">
+                  {/* Render each pharmacy from the 'pharmacies' array */}
+                  {pharmacies.map((pharmacy, index) => (
+                      <MyPharmacie key={index} pharmacy={pharmacy} onRemoveClick={handleRemovePharmacy} />
+                  ))}
+              </div>
+          )}
+      </div>
+  );
+};
+
+export default MyPharmacies;
+
+
+{/* <h5
         style={{
           fontFamily: "var(--standart-font)",
           fontWeight: 700,
@@ -19,30 +73,14 @@ const MyPharmacies = () => {
         Список "Мої аптеки" порожній{" "}
       </h5> */}
 
-      <h4>Мої аптеки</h4>
 
-      <div className="d-flex row ">
-        {/* Якщо масив не пустий  */}
-        <MyPharmacie />
 
-        <MyPharmacie />
-        <MyPharmacie />
-        <MyPharmacie />
-        <MyPharmacie />
-        <MyPharmacie />
+{/* Якщо масив пустий */ }
 
-        {/* Якщо масив пустий */}
-
-        {/*
+{/*
         <AccordionComponent
           header="Навіщо додавати аптеки в список?"
           title="Додавайте аптеки для швидкого доступу до інформації про них."
           id="1"
         />
         <img src={srcImg} style={{ width: "100%", height: "auto" }} /> */}
-      </div>
-    </div>
-  );
-};
-
-export default MyPharmacies;

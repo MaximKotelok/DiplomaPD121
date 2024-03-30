@@ -1,0 +1,36 @@
+.text-header-modal{
+    font-family:  var(--standart-font);
+font-size: 16px;
+font-weight: 700;
+line-height: 20px;
+color: rgba(28, 28, 28, 0.8);
+}
+
+.custom-modal{
+    width: 370px;
+    margin: 10% 40%;
+    padding: 32px;
+    border-radius: 32px;
+    border: none;
+  }
+
+  .btn-style-hover{
+    color: white;
+    padding: 10px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    
+}
+
+.btn-style-hover:hover{
+    color: white;
+    border-radius: 8px;
+    border: 1px solid #0e3e75;
+}
+
+.btn-style-active{
+    color: white;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #0e3e75;
+}

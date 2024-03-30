@@ -1,24 +1,34 @@
-import React, {useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import AccordionComponent from "../../../../../Common/AccordionQuestionComponent/accordionComponent";
 import CardHistory from "./CardHistory/CardHistoryComponent";
 import srcImg from "../../../../../../assets/images/authPage.png";
 import { getReservations } from "../../../../../../services/reservation";
 import { Success } from "../../../../../../utils/Constants";
+import { formatDate, groupBy, toLocalString } from "../../../../../../utils/Functions";
 
 const MineBookeds = () => {
   const [reservs, setReservs] = useState([]);
-  
-  useEffect(()=>{
-    init(reservs);    
-  },[])
-  async function init(){    
+
+  useEffect(() => {
+    init();
+  }, [])
+  async function init() {
     let res = await getReservations();
-    if(res.status === Success){
-      setReservs(res.data);
+    if (res.status === Success) {
+      let selected = res.data.map(a => {
+        return {
+          id: a.id,
+          name: a.name,
+          pharmacy: a.pharmacy,
+          status: a.status,
+          reservedTimeGroup: toLocalString(a.reservedTime),
+          reservedTime: formatDate(a.reservedTime)
+        }
+      })
+      console.log(groupBy(selected, "reservedTimeGroup"))
+      setReservs(groupBy(selected, "reservedTimeGroup"));
     }
   }
-
-  console.log(reservs)
 
   return (
     <div>
@@ -36,19 +46,32 @@ const MineBookeds = () => {
 
       {/* Якщо є історія */}
       <h4>Історія</h4>
-      <h6
-        className="mb-4 mt-2"
-        style={{ color: "rgba(122, 122, 122, 1)", fontSize: "14px" }}
-      >
-        грудень 23
-      </h6>
+
 
       <div className=" ">
         {/* Якщо історія не пуста  */}
 
-        {reservs.length > 0 && reservs.map(a=>(
-          <CardHistory name={a.name} number={a.id} price={a.total} address={a.pharmacy.address} date={a.reservedTime}/>
-        ))}
+        {Object.keys(reservs).length > 0 && Object.keys(reservs).map(date => {
+          console.log(date)
+          return (
+            <div>
+              <h6
+                className="mb-4 mt-2"
+                style={{ color: "rgba(122, 122, 122, 1)", fontSize: "14px" }}
+              >
+                {date}
+              </h6>
+              {
+                reservs[date].map(a =>
+                (
+                  <CardHistory name={a.name} number={a.id} price={a.total} address={a.pharmacy.address} date={a.reservedTimeGroup} />
+                )
+                )
+              }
+            </div>
+          )
+        })
+        }
         {/* Якщо історія пуста */}
         {/*  <AccordionComponent
           id="1"

@@ -9,9 +9,10 @@ import MapProduct from "./Component/MapProductsComponent/MapProducts"
 
 import LayoutContext from '../../../../layouts/LayoutContext';
 import { NavigationDetailsComponent } from '../../Common/NavigationDetailsComponent/NavigationDetailsComponent';
+import { getCookie } from '../../../../utils/Cookies';
 
 export const Map = (props) => {
-    const { id } = useParams();
+    const { id, companyId } = useParams();
     const { onComponentMount, onComponentUnmount } = useContext(LayoutContext);
 
     useEffect(() => {    
@@ -23,10 +24,10 @@ export const Map = (props) => {
 
     return (
         <div className='p-2'>            {
-                id != null ? (
-                    <MapProduct productId={id}></MapProduct>
+            id != null ? (
+                    <MapProduct productId={id} city={getCookie("city")}></MapProduct>
                 ) : (
-                    <MapPharmacies></MapPharmacies>
+                    <MapPharmacies companyId={companyId} city={getCookie("city")}></MapPharmacies>
                 )
             }
         </div>

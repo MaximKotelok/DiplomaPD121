@@ -4,10 +4,17 @@ import {
   Link
 } from 'react-router-dom';
 import styles from "./Content.module.css"
+import { useDispatch, useSelector } from "react-redux";
+import { addCategory } from "../../../../../reducers/reducers";
+import { Success } from "../../../../../utils/Constants";
 const Content = ({ selectedMenu }) => {
   const COUNT_OF_SUBCATEGORIES = 4;
 
   const [generatedData, setGeneratedData] = useState([]);
+
+  
+  const dispatch = useDispatch();
+  const { catalogue } = useSelector((state) =>state.catalogue);
 
   useEffect(() => {
     // Генерація нових даних залежно від вибраного меню
@@ -16,8 +23,16 @@ const Content = ({ selectedMenu }) => {
 
   const generateData = async (menuId) => {
     // Логіка генерації даних на основі вибраного меню
-    
-    setGeneratedData((await GetByIdForMenu(menuId)).data);
+    let dataIndex = catalogue.findIndex(a=>a.id === menuId);
+    if(dataIndex === -1){      
+      let data = (await GetByIdForMenu(menuId));
+      if(data.status === Success){
+        dispatch(addCategory(data.data));
+        setGeneratedData(data.data);
+      }
+    }else{
+      setGeneratedData(catalogue[dataIndex]);
+    }
   };
 if(generatedData && generatedData.subCategories)
 

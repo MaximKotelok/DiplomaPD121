@@ -1,0 +1,18 @@
+.card-search-box{
+    background-color: #EEEEEE;
+    width: 203px;
+    height: 203px;
+    max-width: 25%;
+    margin: 7px;
+    border-radius: 5px;
+    color: black;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-search-box img{
+    object-fit: cover;    
+}

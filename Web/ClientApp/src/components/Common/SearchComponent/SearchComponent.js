@@ -2,11 +2,11 @@
 import './SearchComponent.css';
 import searchIcon from "../../../assets/images/header-icons/search-icon.svg"; // Замініть шлях імпорту на ваш шлях до зображення
 
-const SearchComponent = ({className, callback}) => {
+const SearchComponent = ({className,onClick, callback}) => {
     return (
         // <div className="input-group mb-3 center back-serach-bar">
         <div className={`input-group  center back-serach-bar ${className}`}>
-            <button className="social-btn" type="button" >
+            <button className="social-btn" type="button" onClick={()=>{if(onClick)onClick();}}>
                 <img src={searchIcon} width="28px" height="28px"  alt="My Icon" className="icon" />
             </button>
             <input 

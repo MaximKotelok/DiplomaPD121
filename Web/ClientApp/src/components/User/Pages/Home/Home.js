@@ -1,6 +1,8 @@
 import React, { Component, useEffect, useState } from "react";
 import CarouselListComponent from "../../Common/CarouselListComponent/CarouselListComponent";
 import { ApiPath, Success } from "../../../../utils/Constants";
+import Cookies from "js-cookie";
+
 import {
   getRecentlyViewedProductsIds,
   getRecomendedRandomCategory,
@@ -14,7 +16,7 @@ import CircleCard from "../../../Common/CircleCardComponent/CircleCard";
 import CustomList from "./Component/CustomListComponent/CustomList";
 import AccordionComponnent from "../../../Common/AccordionQuestionComponent/accordionComponent";
 import MiniProductCardComponent from "../../../Common/MiniProductCardComponent/MiniProductCardComponent";
-import homePageImg from "../../../../assets/images/homePageImg.png";
+import homePageImg from "../../../../assets/images/BANNER.png";
 import AdaptiveContainerComponent from "../../../Common/AdaptiveContainerComponent/AdaptiveContainerComponent";
 
 import "./Home.css";
@@ -31,7 +33,7 @@ import {
 } from "../../../../services/product";
 import { getCountBrands } from "../../../../services/brand";
 import { getFavs } from "../../../../services/favProducts";
-import { initFavs, isFavorite } from "../../../../utils/Functions";
+import { initFavsProducts, isFavoriteProduct } from "../../../../utils/Functions";
 export const Home = () => {
   var displayName = Home.name;
 
@@ -41,6 +43,7 @@ export const Home = () => {
   const [brands, setBrands] = useState({});
   const [favs, setFavs] = useState([]);
   const [pngCards, setPngCards] = useState({});
+  const [city, setCity] = useState(Cookies.get("city"));
   
   const [topOffers, setTopOffers] = useState({});
   const [selectedTopOfferIndex, setSelectedTopOfferIndex] = useState(null);
@@ -87,20 +90,26 @@ export const Home = () => {
     setRecently(await getProductsFromIdsArray(ids));
   }
 
-  useEffect(() => {
-    initFavs(setFavs);
+    useEffect(() => {
+    initFavsProducts(setFavs);
     initProducts();
     initRecentlyViewed();
     initCategories();
     initBrands();
     initPngCards();    
     initTopOffers();    
-  }, []);
+  }, [city]);
 
   function isCustomFavorite(id) {
-    return isFavorite(id, favs);
-  }
+      return isFavoriteProduct(id);
+    }
 
+    const presenceCookie = Cookies.get("city");
+    if (presenceCookie && city !== presenceCookie ) {
+        setCity(presenceCookie);
+    }
+
+  // Макс поправ карточки і каруселі!!!!!!!!!!!!!!!!!!!!!!-!!!!!!!!!!!!!!!!!!!!!!!!!
   return (
     <>
       <div className="row">
@@ -109,11 +118,11 @@ export const Home = () => {
         <div className="row">
           <div className="col-4">
             <CustomList data={categories.data} />
-            <MoreLink link="." />
+            {/* <MoreLink link="." /> */}
           </div>
 
           <div className="col-8">
-            <div className="row" style={{ margin: 0, padding: 0 }}>
+            <div className="row mt-5" style={{ margin: 0, padding: 0 }}>
               <div>
                 <CarouselListComponent title="Пропозиції">
                   {products && products.map
@@ -138,7 +147,7 @@ export const Home = () => {
                 </CarouselListComponent>
               </div>
             </div>
-            <div className="row" style={{ margin: 0, padding: 0 }}>
+            <div className="row mt-5" style={{ margin: 0, padding: 0 }}>
               {recently && recently.map && (
                 <div>
                   <CarouselListComponent title="Нещодавно переглянуті товари">
@@ -162,17 +171,17 @@ export const Home = () => {
           </div>
         </div>
 
-        <div className="col-12">
-          <div className="d-flex justify-content-between">
-            <h3 className="text-title">Бренд</h3>
-            <MoreLink link="." />
+        <div className="col-12 mt-5">
+          <div className="d-flex justify-content-between mb-3">
+            <h3 className="text-title ">Бренд</h3>
           </div>
-          <div className="flex-container d-flex">
+          <div className="flex-container d-flex flex-wrap">
             {brands.data && brands.data.map
               ? brands.data.map((a) => {
                   return (
                     <CircleCard
                       key={a.id}
+                      id={a.id}
                       text={a.name}
                       imageUrl={`${ApiPath}${a.pathToPhoto}`}
                     />
@@ -183,14 +192,14 @@ export const Home = () => {
                 })}
           </div>
         </div>
-            {selectedTopOfferIndex != null &&(
-            <>
-        <div className="col-12">
+        {topOffers && topOffers.map && 
+        (<div className="col-12 mt-5">
           <div className="d-flex justify-content-between">
-            
-            <h3 className="text-title">Популярні товари</h3>
+            <h3 className="text-title mb-4">Популярні товари</h3>
             <MoreLink link="." />
           </div>
+         
+          
           <div className="d-flex justify-content-start">
             {
               topOffers.map((a,index)=><PopularButtonComponnent text={a.title} key={index} onClick={()=>setSelectedTopOfferIndex(index)}/>)
@@ -209,20 +218,18 @@ export const Home = () => {
                 manufacturer={a.manufacturer}
                 imageUrl={a.pathToPhoto}
 
-            />))}
+                />))}
           </CarouselListComponent>
-        
-        </div>
-        </>)}
-        <div className="col-12 baner-bottom"></div>
-        
+        </div>)
+      }
+        <div className="col-12 baner-bottom mt-5"></div>
       </div>
       
 
       {pngCards && pngCards.map && (
-        <div className="col-12">
+        <div className="col-12 mt-5">
           <div className=" d-flex justify-content-between">
-            <h3 className="text-title">Вітаміни та мінерали</h3>
+            <h3 className="text-title mb-4">Вітаміни та мінерали</h3>
             <MoreLink link="." />
           </div>
 
@@ -231,6 +238,7 @@ export const Home = () => {
               return (
                 <VitaminCardComponnent
                   key={a.id}
+                  id={a.id}
                   imageUrl={`${ApiPath}${a.pathToPhoto}`}
                   text={a.title}
                   color="#E0E0E0"
@@ -241,7 +249,7 @@ export const Home = () => {
         </div>
       )}
 
-      <div className="row " style={{ margin: 0, padding: 0 }}>
+      <div className="row mt-5 mb-4" style={{ margin: 0, padding: 0 }}>
         <div className="col-12 col-md-6">
           <AccordionComponnent
             id="1"

@@ -1,7 +1,7 @@
 import { UpsertProduct, GetProduct,  ClassHeader, GetAllProductsFromIdArray, Success, GetSupInfoForProductInYourCity, GetTopOffers } from "../utils/Constants";
 import { getCookie } from "../utils/Cookies";
 import { postToServer, getFromServer, putToServer} from "../utils/Queries";
-
+import { postPhotoToServer } from "./photo";
 export async function getSupInfo(products){
     return await Promise.all(products.map(async a => {
         var res = await getFromServer(GetSupInfoForProductInYourCity, { city: getCookie("city"), id: a.id });      
@@ -17,7 +17,7 @@ export async function getSupInfo(products){
 }
 
 export async function upsertProduct(product, options) {
-    await postToServer(UpsertProduct, {
+    return await postToServer(UpsertProduct, {
         ...product,
         properties: options.additionalAttribute
     }, ClassHeader)
@@ -26,6 +26,37 @@ export async function upsertProduct(product, options) {
 export async function getTopOffer() {
     return await getFromServer(GetTopOffers, {
         count: 6
+    }, ClassHeader)
+} 
+
+export async function getMinAndMaxPrice(id) {
+    return await getFromServer("ConcreteProduct/GetMinAndMaxPrice", {
+        id: id,
+        city: getCookie("city")
+    }, ClassHeader)
+} 
+
+export async function GetProductByTitle(title, count = 6) {
+    return await getFromServer("Product/GetProductByTitle", {
+        title,
+        count
+    }, ClassHeader)
+} 
+
+export async function Search(title = null, categories = null, brands = null, properties = null) {
+    return await postToServer("Product/Search", {
+        title,
+        categories,
+        brands,
+        properties
+    }, ClassHeader)
+} 
+export async function GetSearchInput(title = null, categories = null, brands = null, properties = null) {
+    return await postToServer("Product/GetSearchInput", {
+        title,
+        categories,
+        brands,
+        properties
     }, ClassHeader)
 } 
 

@@ -11,6 +11,7 @@ import { ApiPath } from "../../../../../../utils/Constants";
 import { useDispatch, useSelector } from "react-redux";
 import { reloadCart } from "../../../../../../reducers/reducers";
 import { changeCountInCart } from "../../../../../../services/cartService";
+import { toast } from "react-toastify";
 
 const CartBYComponent = ({data}) => {
   const dispatch = useDispatch();
@@ -87,7 +88,13 @@ const CartBYComponent = ({data}) => {
               </button>
               <button
                 className={`${styles["btn-group-cout"]} ${styles["btn-right"]}`}
-                onClick={()=> updateCart(data.pharmacyId, data.id, data.quantity+1)}
+                onClick={()=> {
+                  if(data.maxQuantity >= data.quantity+1)
+                    updateCart(data.pharmacyId, data.id, data.quantity+1)
+                  else
+                    toast.warning(`В наявності є тільки ${data.maxQuantity} од.`);
+                }
+              }
               >
                 <BtnPlusCount />
               </button>

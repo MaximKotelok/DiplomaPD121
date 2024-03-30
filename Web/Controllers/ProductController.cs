@@ -112,6 +112,19 @@ namespace Web.Controllers
 					MedicineViewModel res = new MedicineViewModel { Product = productView };
 					res.ActiveSubstance = ((Medicine)product).ActiveSubstance!.Title;
 					res.ActiveSubstanceID = ((Medicine)product).ActiveSubstance!.Id;
+
+					PermissionIdWithDescription[] medicineTable = {
+						new PermissionIdWithDescription{ Id= ((Medicine)product).AdultsID, Description= "Дорослі" },
+						new PermissionIdWithDescription{ Id= ((Medicine)product).ChildrenID,Description="Діти" },
+						new PermissionIdWithDescription{ Id= ((Medicine)product).PregnantID,Description="Вагітні" },
+						new PermissionIdWithDescription{ Id= ((Medicine)product).NursingMothersID,Description="Годуючі мами" },
+						new PermissionIdWithDescription{ Id= ((Medicine)product).AllergiesID, Description="Алергіки" },
+						new PermissionIdWithDescription{ Id= ((Medicine)product).DiabeticsID, Description="Діабетики" },
+						new PermissionIdWithDescription{ Id= ((Medicine)product).DriversID, Description="Водії" },
+					};
+
+					res.MedicineTable = medicineTable;
+
 					return Ok(res);
 				}
 
@@ -129,6 +142,151 @@ namespace Web.Controllers
 			var result = _productService
 				.GetAllProducts(includeProperties: "Manufacturer,ProductConfirm,ProductConfirm.ProductStatus")
 				.Where(a => (a.ProductConfirm == null || a!.ProductConfirm!.ProductStatus!.Status!.Equals(SD.ProductStatusConfirmed)));
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+
+		[HttpPost("GetSearchInput")]
+		public IActionResult GetSearchInput([FromBody] SearchViewModel model)
+		{
+			var result = _productService
+				.GetAllProducts(includeProperties: "Manufacturer,Properties,Properties.Attribute,Category,Brand,Category")
+				.Where(a =>
+				{
+					if (model.Title != null)
+					{
+						return a.Title!.StartsWith(model.Title);
+					}
+					return true;
+				}
+				)
+				.Where(a =>
+				{
+					if (model.Brands != null)
+					{
+						return model.Brands.Contains(a.BrandID!.Value);
+					}
+					return true;
+				}
+				)
+				.Where(a =>
+				{
+					if (model.Categories != null)
+					{
+						return model.Categories.Contains(a.CategoryID!.Value);
+					}
+					return true;
+				}
+				)
+				.Where(a =>
+				{
+					if (model.Properties != null)
+					{
+						return a.Properties!.Any(b =>
+						model.Properties.Any(c => (c.Name == b.Attribute.Name && b.Value == c.Value))
+
+						);
+					}
+					return true;
+				}
+				);
+			if (result is not null)
+			{
+				Dictionary<string, List<string>> attributes = new Dictionary<string, List<string>>();
+				foreach (var product in result)
+				{
+					foreach (var property in product.Properties)
+					{
+						var value = property.Value;
+						var name = property.Attribute!.Name;
+						if (!name.IsNullOrEmpty() && !value.IsNullOrEmpty())
+						{
+							var attributeName = name ?? "";
+							var attributeValue = value;
+							if (!attributes.TryGetValue(attributeName, out _))
+							{
+								attributes.Add(attributeName, new List<string>());
+							}
+							if (!attributes[attributeName].Any(a => a == attributeValue))
+							{
+								attributes[attributeName].Add(attributeValue);
+							}
+						}
+
+					}
+				
+				};
+
+				Dictionary<int, string> categories = new Dictionary<int, string>();
+
+				foreach(var product in result)
+				{
+					if(!categories.TryGetValue(product.CategoryID.Value,out _))
+						categories.Add(product.CategoryID.Value, product.Category.Title);
+				}
+
+				Dictionary<int, string> brands = new Dictionary<int, string>();
+
+				foreach (var product in result)
+				{
+					if (!brands.TryGetValue(product.BrandID.Value, out _))
+						brands.Add(product.BrandID.Value, product.Brand.Name);
+				}
+
+
+				return Ok(new { attributes, categories, brands });
+			}
+			return BadRequest("No records found");
+		}
+
+		[HttpPost("Search")]
+		public IActionResult Search([FromBody] SearchViewModel model)
+		{
+			var result = _productService
+				.GetAllProducts(includeProperties: "Manufacturer,Properties,Properties.Attribute,Category,Brand,Category")
+				.Where(a =>
+				{
+					if (model.Title != null && model.Title.Length>0)
+					{
+						return a.Title!.StartsWith(model.Title);
+					}
+					return true;
+				}
+				)
+				.Where(a =>
+				{
+					if (model.Brands != null && model.Brands.Length>0)
+					{
+						return model.Brands.Contains(a.BrandID!.Value);
+					}
+					return true;
+				}
+				)
+				.Where(a =>
+				{
+					if (model.Categories != null && model.Categories.Length > 0)
+					{
+						return model.Categories.Contains(a.CategoryID!.Value);
+					}
+					return true;
+				}
+				)
+				.Where(a =>
+				{
+					if (model.Properties != null && model.Properties.Length > 0)
+					{
+						return a.Properties!.Any(b =>
+						model.Properties.Any(c => (c.Name == b.Attribute.Name && b.Value == c.Value))
+
+						);
+					}
+					return true;
+				}
+				)
+				;
 			if (result is not null)
 			{
 				return Ok(result);
@@ -156,6 +314,18 @@ namespace Web.Controllers
 					}
 					);
 				return Ok(products);
+			}
+			return BadRequest("No records found");
+		}
+
+		[HttpGet("GetProductByTitle")]
+		public IActionResult GetProductByTitle(string title, int count)
+		{
+			var result = _productService
+				.GetAllProducts(a => a.Title.StartsWith(title)).Take(count);
+			if (result is not null)
+			{
+				return Ok(result);
 			}
 			return BadRequest("No records found");
 		}
@@ -271,6 +441,7 @@ namespace Web.Controllers
 			using var transaction = new TransactionScope();
 			try
 			{
+
 				if (postModel.ActiveSubstanceID is not null)
 					UpsertMedicine(postModel);
 				else

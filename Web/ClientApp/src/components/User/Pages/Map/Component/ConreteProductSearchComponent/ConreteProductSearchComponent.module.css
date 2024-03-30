@@ -23,8 +23,8 @@
 .back-serach-bar {
     border-radius: 12px;
     background: #e5e7eb;
-    max-width: 621px;
-    width: 40vw;
+    max-width: 621px !important;
+    width: 40vw !important;
     padding: 8px 10px;
     display: flex;
     justify-content: space-between;

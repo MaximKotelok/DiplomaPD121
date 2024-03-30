@@ -2,7 +2,7 @@ import React, { useEffect,useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCart } from "../../../../../../services/cartService";
 import { StateInfos, Success } from "../../../../../../utils/Constants";
-import { getPharmacy, getPharmacyProduct } from "../../../../../../services/pharmacy";
+import { getPharmacyById, getPharmacyProduct } from "../../../../../../services/pharmacy";
 import { initCart } from "../../../../../../reducers/reducers";
 import CardCartContainerComponent from "../CardCartContainerComponent/CardCartContainerComponent";
 
@@ -19,7 +19,7 @@ const CartComponent = () => {
   
     tmpCart = await Promise.all(
       await tmpCart.map(async (a) => {
-        let res = await getPharmacy(a.id);
+          let res = await getPharmacyById(a.id);
   
         if (res.status !== Success) return {};
   
@@ -30,13 +30,13 @@ const CartComponent = () => {
             if (res.status !== Success) {
               return {};
             }
-            res = res.data;
+            res = res.data;            
             let item = {
               title: res.product.title,
               shortDescription: res.product.shortDescription,
               pathToPhoto: res.product.pathToPhoto,
               quantity: b.count,
-              maxQuantity: b.quantity,
+              maxQuantity: res.quantity,
               id: res.id,
               price: res.price,
               pharmacyId: a.id,
@@ -44,10 +44,16 @@ const CartComponent = () => {
             return item;
           })
         );
-  
+
         items = items.filter((a) => a != {});
-  
-        return { id: res.id, title: res.pharmaCompany.title, address: res.address, items: items };
+        return { 
+          id: res.id, 
+          title: res.pharmaCompany.title, 
+          address: res.address, 
+          timeOpen: res.openTime, 
+          timeClosed: res.closeTime, 
+          items: items 
+        };
       })
     );
   

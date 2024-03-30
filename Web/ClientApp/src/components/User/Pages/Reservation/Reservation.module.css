@@ -1,0 +1,123 @@
+
+.global-text{
+    font-family: var(--standart-font);
+color: rgba(28, 28, 28, 0.8);
+
+}
+.head-text{
+    color: rgba(14, 62, 117, 1) ;
+font-size: 34px;
+font-weight: 700;
+line-height: 30px;
+margin-top: 24px;
+margin-bottom: 44px;
+}
+
+.div-form{
+background-color: rgba(0, 122, 255, 0.15);
+margin-bottom: 44px;
+}
+
+
+.div-block{
+border-radius: 24px;
+padding: 24px;
+
+}
+
+.my-input-text-form{
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    /* letter-spacing: 0em; */
+    /* text-align: left; */
+    color: rgba(122, 122, 122, 0.5);    
+    border-radius: 12px;
+    padding: 16px 20px;  
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.placholder-style::placeholder{
+    color: rgba(122, 122, 122, 0.5);    
+
+}
+
+.head-text-form{
+font-size: 20px;
+font-weight: 600;
+line-height: 25px;
+color: rgba(13, 30, 49, 1);
+}
+
+.p-text-form{
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+color: rgba(13, 30, 49, 1);
+}
+
+.div-info-pharmacy{
+border: 1.5px solid rgba(240, 240, 240, 1);
+margin-bottom: 44px;
+}
+
+
+.head-text-info{
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 30px;
+    /* color:  rgba(28, 28, 28, 0.8); */
+}
+.p-text-info{
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    /* color:  rgba(28, 28, 28, 0.8); */
+}
+
+
+
+.div-text-instruction{
+    background-color: rgba(255, 149, 0, 0.2);
+margin-bottom: 84px ;
+
+}
+
+
+.p-instruction{
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 15px;
+    /* color:  rgba(28, 28, 28, 0.8); */
+}
+.p-instruction span{
+    font-weight: 700;
+}
+
+
+.div-pidsum{
+    border: 1.5px solid rgba(255, 149, 0, 1);
+}
+
+.text-pidsum{
+font-size: 24px;
+font-weight: 700;
+line-height: 30px;
+color: rgba(13, 30, 49, 1);
+}
+
+.text-zag-sum{
+font-size: 20px;
+font-weight: 500;
+line-height: 25px;
+/* color: rgba(28, 28, 28, 0.8); */
+}
+.number-text{
+
+font-size: 24px;
+font-weight: 700;
+line-height: 30px;
+/* color: rgba(28, 28, 28, 0.8); */
+
+
+}

@@ -19,7 +19,7 @@ namespace Web.Controllers
 			this._service = service;
 		}
 
-		[HttpGet("")]
+		[HttpGet("GetAllPermissions")]
 		public IActionResult GetAllPermissions()
 		{
 			var result = _service.GetAllPermissions();

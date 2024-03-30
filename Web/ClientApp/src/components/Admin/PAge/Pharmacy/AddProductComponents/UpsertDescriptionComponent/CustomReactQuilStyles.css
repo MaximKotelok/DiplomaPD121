@@ -1,0 +1,21 @@
+.ql-toolbar{
+    padding: 30px!important;
+    margin-bottom: 25px!important;
+    background-color: white!important;
+    border-radius: 12px!important;
+    border: none!important;
+}
+
+.ql-container{
+    padding: 30px!important;
+    background-color: white!important;
+    height: 100%;
+    max-width: 850px!important;
+    border-radius: 12px!important;
+    border: none!important;
+}
+
+.ql-editor{
+    max-width: 850px!important;
+    min-height: 40vh;
+}

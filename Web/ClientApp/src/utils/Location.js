@@ -1,5 +1,7 @@
 ﻿import { getFromServer } from "./Queries"
 import { getCookie, setCookie } from "./Cookies"
+import { DefualtCity } from "./Constants"
+
 
 export function getCity(position) {
     return new Promise((resolve, reject) => {
@@ -12,8 +14,24 @@ export function getCity(position) {
         fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
-                const city = data.results[0].components.city;
-                resolve(city);
+                const city = data.results[0].components._normalized_city;
+
+                // Make a request to your backend to check if the city exists
+                fetch(`https://localhost:7133/api/City/Name/${city}`)
+                    .then(response => {
+                        if (response.ok) {
+                            // City exists in the database, resolve with it
+                            resolve(city);
+                        } else {
+                            // City doesn't exist in the database, set default city
+                            resolve(DefualtCity);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error checking city:', error);
+                        // In case of error, resolve with default city
+                        resolve(DefualtCity);
+                    });
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -22,25 +40,36 @@ export function getCity(position) {
     });
 }
 
-export function setupLocation() {
+
+export function setupLocation(callback) {
     return new Promise(async (resolve, reject) => {
         try {
-            let cCity = getCookie("city");
-            if (cCity === "") {
+           let cCity = await getCookie("city");
+            if (!cCity) {
                 if (navigator.geolocation) {
-                    const position = await new Promise((innerResolve, innerReject) => {
-                        navigator.geolocation.getCurrentPosition(innerResolve, innerReject);
-                    });
+                    try {
+                        const position = await new Promise((resolve, reject) => {
+                            navigator.geolocation.getCurrentPosition(resolve, reject);
+                        });
 
-                    const city = await getCity(position);
+                        const city = await getCity(position);
 
-                    console.log("City:", city);
+                        console.log("City:", city);
 
-                    setCookie("city", city);
+                        setCookie("city", city);
+                    } catch (error) {
+                        // Error handling in case user denies geolocation permission
+                        console.error("Error getting location:", error);
+                        setCookie("city", DefualtCity);
+                        console.log("Default city set:", DefualtCity);
+                    }
                 } else {
-                    console.log("Geolocation is not supported by this browser.");
+                    setCookie("city", DefualtCity);
+                    console.log("Default city set:", DefualtCity);
                 }
             }
+            if (callback)
+                callback();
             resolve(); 
         } catch (error) {
             console.error("Error getting location:", error);

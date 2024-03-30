@@ -2,8 +2,8 @@ import { ClassHeader, GetCategoriesForProductAdd, GetMainCategories, GetRecomend
 import { getFromServer} from "../utils/Queries";
 import { getSupInfo } from "./product";
 
-export async function getFirstNCategoryByTitle(title, n) {
-    return await getFromServer(GetCategoriesForProductAdd, {title: title, count: n})
+export async function getAllCategories() {
+    return await getFromServer(GetCategoriesForProductAdd)
 } 
 
 export async function GetCategoryById(id) {

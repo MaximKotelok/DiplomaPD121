@@ -13,11 +13,12 @@ export async function postLoggedReserve(concreteProducts, pharmacyId) {
 
 export async function postReservation(concreteProducts, phone, email, pharmacyId) {
     let res = await postToServer("Reservation/Reserve", 
-    {ConcreteProducts:concreteProducts, 
+    {concreteProducts:concreteProducts, 
         Phone:phone, 
         Email:email}, ClassHeader);
+        console.log(res)
     if(res.status === Success){
-        removePharmacyFromCart(pharmacyId);
+        removePharmacyFromCart(pharmacyId);    
         return true;
     }
     return false;

@@ -4,7 +4,7 @@ import './MiniProductCardComponent.css';
 import { Link } from 'react-router-dom';
 
 import React, {useEffect,useState} from 'react';
-import FavoriteButton from '../../Common/FavoriteButtonComponent/FavoriteButton.js'
+import FavoriteButton from '../FavoriteProductButtonComponent/FavoriteProductButton.js'
 import { ApiPath } from '../../../utils/Constants.js';
 import CustomImgComponent from '../CustomImgComponent/CustomImgComponent.js';
 
@@ -41,14 +41,15 @@ const MiniProductCardComponent =
             
 
         return (
-            <div className="m-1 product-card">
+            <div className="p-1 pb-5 d-inline-block">
+            <div className="mt-2 product-card d-inline-block">
                 <div className='position-relative'>
-                    <FavoriteButton id={id} isFavorite={isFavoriteState} setIsFavorite={changeFavoriteState}></FavoriteButton>
-                    <Link to={`/product-details/${id}`} className='text-decoration-none'>
+                    <FavoriteButton id={id} isFavorite={isFavoriteState} setIsFavorite={changeFavoriteState}/>
+                    <Link to={`/product-details/${id}`} className='text-decoration-none d-flex justify-content-center'>
                         <CustomImgComponent 
                         src={`${ApiPath}${imageUrl}`} 
                         defaultSrc="https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png"
-                        style={{width:"183px", height:"170px"}}
+                        style={{ width: "156px", height: "142px" }}
                         className='product-image'
                         alt={title}
                         key={title}
@@ -57,12 +58,13 @@ const MiniProductCardComponent =
                 </div>
                 <div className='product-info'>
                     <Link to={`/product-details/${id}`} className='text-decoration-none'>
-                        <p className='product-title'>{title&&minimizeText(title, 20)}</p>
-                        <p className='product-description'>{description&&minimizeText(description, 57)}</p>
+                        <p className='product-title'>{title&&minimizeText(title, 19)}</p>
+                        <p className='product-description'>{description&&minimizeText(description, 30)}</p>
                     </Link>
                 </div>
                 <p className='product-price'>від <span className='product-price-bold'>{minPrice&&minPrice}</span> грн</p>
                 
+            </div>
             </div>
         );
     };

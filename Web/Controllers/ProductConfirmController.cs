@@ -26,12 +26,12 @@ namespace Web.Controllers
 		}
 
 		[HttpGet("")]
-		public IActionResult GetAllConcreteProducts()
+		public IActionResult GetAllRequests()
 		{
 			var rawResult = _productConfirmService.GetAllProductConfirm(includeProperties: "ProductStatus,Product,Product.Manufacturer,Product.Category");
 			if (rawResult is not null)
 			{
-				var result = rawResult
+				var result = rawResult.Where(a=>a.Product != null)
 				.Select(a=>
 				new {
 					Id=a.Product!.Id,

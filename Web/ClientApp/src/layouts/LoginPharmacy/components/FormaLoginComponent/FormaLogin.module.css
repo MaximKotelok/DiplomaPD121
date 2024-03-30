@@ -1,0 +1,40 @@
+
+
+
+.my-input-text-form{
+    font-family: var(--standart-font);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0em;
+    text-align: left;
+color: rgba(122, 122, 122, 1);    
+border-radius: 12px;
+padding: 16px 20px; 
+}  
+
+.div-osnova{
+        border-radius: 32px;
+        border: 1px solid rgba(255, 149, 0, 1);
+        height: 100%;
+        padding: 39px;
+    }
+
+    .head-text{
+        font-family: var(--standart-font);
+font-size: 24px;
+font-weight: 700;
+line-height: 30.12px;
+text-align: left;
+
+        color: rgba(255, 149, 0, 1);
+    }
+
+    .link-password{
+        font-family: var(--standart-font);
+font-size: 14px;
+font-weight: 400;
+line-height: 17.57px;
+text-align: left;
+color:rgba(0, 122, 255, 1);
+    }

@@ -2,9 +2,9 @@
     border-radius: 16px;
     display: inline-block;
     font-family: var(--standart-font);
-    padding: 10px;
-    width: 203px;
-    
+    padding: 15px;
+    border: 1px solid #F0F0F0;   
+    width: 190px; 
 }
 
 .product-info{
@@ -20,18 +20,24 @@
 
 .product-title {
     color: #0E3E75;
+    font-family: var(--standart-font);
+    font-size: 16px;
     font-weight: 700;
-    font-size: 15px;
-    margin-bottom: 4px;
-    height: 24px;    
+    line-height: 20px;
+    letter-spacing: 0em;
+    text-align: left;
+    
 }
 
 .product-description {
     color: #0E3E75;
-    font-size: 16px;
+    font-family: var(--standart-font);
+    font-size: 14px;
     font-weight: 500;
-    margin-bottom: 4px;
+    line-height: 18px;
     height: 60px;
+    margin-bottom: 4px;
+    
 }
 
 .count-of-pharmacies {
@@ -48,14 +54,19 @@
 }
 
 .product-price{
-    font-size: 14px;
-    font-weight: 500;
+    font-family: var(--standart-font);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 15px;
     color: #535353;
 }
 
 .product-price-bold{
-    font-size: 15px;
+
+    font-family: var(--standart-font);
+    font-size: 16px;
     font-weight: 700;
+    line-height: 20px;
     color: #535353;
 }
 

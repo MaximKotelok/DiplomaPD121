@@ -1,9 +1,11 @@
 ﻿using Domain.Models;
+using Domain.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Repository.Interfaces;
 using Services.ConcreteProductService;
+using Services.PharmacyCompanyService;
 using Services.PharmacyService;
 using Services.UserService;
 using System.Security.Claims;
@@ -16,29 +18,132 @@ namespace Web.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly IProductService _productService;
-        private readonly IPharmacyService _pharmacyService;
+        private readonly IPharmaCompanyService _pharmaCompanyService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IPharmaCompanyService pharmaCompanyService)
         {
             _userService = userService;
+            _pharmaCompanyService = pharmaCompanyService;
         }
 
 
         [HttpGet("getFavoriteProducts")]
-		[Authorize(AuthenticationSchemes = "Bearer")]
-		public async Task<IActionResult> GetFavouriteProducts()
-		{
-			var user = await _userService.GetUserByName(User.Identity.Name);
-            
-            
-			if (user == null)
-			{
-				return NoContent();
-			}
-			
-			return Ok(user!.FavProducts!.Select(a => a.Id).ToList());
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> GetFavouriteProducts()
+        {
+            var user = await _userService.GetUserByName(User.Identity.Name);
+
+
+            if (user == null)
+            {
+                return NoContent();
+            }
+
+            return Ok(user!.FavProducts!.Select(a => a.Id).ToList());
+        }
+
+        [HttpGet("getMyInfo")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> GetMyInfo()
+        {
+            var user = await _userService.GetUserByName(User.Identity.Name);
+
+
+            if (user == null)
+            {
+                return NoContent();
+            }
+
+
+            return Ok(new UserUpdateViewModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber
+            });
+
+        }
+
+        [HttpPost("updateUser")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> UpdateUser(UserUpdateViewModel model)
+        {
+            var user = await _userService.GetUserByName(User.Identity.Name!);
+
+
+            if (user == null)
+            {
+                return NoContent();
+            }
+            if (model.FirstName == "" ||
+				model.LastName == "" ||
+				model.PhoneNumber == "" ||
+                model.Email == "")
+            {
+                return BadRequest("Всі поля мають бути заповнені");
+            }
+
+            await _userService.UpdateUser(user.Id, model.FirstName!, model.LastName!, model.PhoneNumber!, model.Email!);
+			return Ok("Ваш профіль було успішно оновлено");
 		}
+
+		[HttpGet("getFavoritePharmacies")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> GetFavouritePharmacies()
+        {
+            var user = await _userService.GetUserByName(User.Identity.Name);
+
+
+            if (user == null)
+            {
+                return NoContent();
+            }
+
+            return Ok(user!.FavPharmacies!.Select(a => a.Id).ToList());
+        }
+
+        [HttpGet("getFavoritePharmaciesWithSupInfo")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> GetFavouritePharmaciesWithSupInfo()
+        {
+            var user = await _userService.GetUserByName(User.Identity.Name);
+
+
+            if (user == null)
+            {
+                return NoContent();
+            }
+
+            var pharmacies = user!.FavPharmacies;
+
+            if (pharmacies == null)
+            {
+                return NoContent();
+            }
+
+
+            for (int i = 0; i < pharmacies.Count(); i++)
+            {
+                var pharmaCompany = _pharmaCompanyService.GetPharmaCompany(x => x.Id == pharmacies.ElementAt(i).PharmaCompanyID);
+
+                pharmacies.ElementAt(i).PharmaCompany = pharmaCompany;
+            }
+
+            /*foreach (var pharmacy in pharmacies)
+            {
+                var pharmaCompany = _pharmaCompanyService.GetPharmaCompany(x => x.Id == pharmacy.PharmaCompanyID);
+
+                list.Add(new
+                {
+                    Pharmacy = pharmacy,
+                    PharmaCompany = pharmaCompany
+                });
+            }*/
+
+            return Ok(pharmacies);
+        }
+        /*includeProperties: "Manufacturer,ProductConfirm,ProductConfirm.ProductStatus"*/
 
         [HttpPost("addFavouriteProduct/{productId}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
@@ -76,7 +181,7 @@ namespace Web.Controllers
         {
             try
             {
-                await _userService.AddFavouritePharcmacy(pharmacyId, User.Identity.Name);
+                await _userService.AddFavouritePharmacy(pharmacyId, User.Identity.Name);
                 return Ok();
             }
             catch (Exception ex)
@@ -91,7 +196,7 @@ namespace Web.Controllers
         {
             try
             {
-                await _userService.RemoveFavouritePharcmacy(pharmacyId, User.Identity.Name);
+                await _userService.RemoveFavouritePharmacy(pharmacyId, User.Identity.Name);
                 return Ok();
             }
             catch (Exception ex)

@@ -124,6 +124,9 @@ namespace DataAccess.Migrations
                     b.Property<bool?>("CanHasProducts")
                         .HasColumnType("bit");
 
+                    b.Property<bool?>("IsDisplayOnBottom")
+                        .HasColumnType("bit");
+
                     b.Property<bool?>("IsRecomended")
                         .HasColumnType("bit");
 
@@ -133,8 +136,8 @@ namespace DataAccess.Migrations
                     b.Property<string>("PathToPhoto")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SubCategoriesTypeOfPhoto")
-                        .HasColumnType("int");
+                    b.Property<string>("PathToRecomendedPhoto")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -152,7 +155,6 @@ namespace DataAccess.Migrations
                             Id = 1,
                             CanHasProducts = false,
                             PathToPhoto = "",
-                            SubCategoriesTypeOfPhoto = 0,
                             Title = "Каталог Товарів"
                         },
                         new
@@ -161,16 +163,14 @@ namespace DataAccess.Migrations
                             CanHasProducts = false,
                             ParentCategoryID = 1,
                             PathToPhoto = "/images/category/icon/Medicines.png",
-                            SubCategoriesTypeOfPhoto = 3,
                             Title = "Ліки та профілактичні засоби"
                         },
                         new
                         {
                             Id = 3,
                             CanHasProducts = false,
-                            IsRecomended = true,
+                            IsDisplayOnBottom = true,
                             ParentCategoryID = 2,
-                            SubCategoriesTypeOfPhoto = 1,
                             Title = "Вітаміни"
                         },
                         new
@@ -338,6 +338,34 @@ namespace DataAccess.Migrations
                             Latitude = "49.842957",
                             Longitude = "24.031111",
                             NameCity = "Львів"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Latitude = "48.621025",
+                            Longitude = "22.288229",
+                            NameCity = "Ужгород"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Latitude = "49.2333",
+                            Longitude = "28.4833",
+                            NameCity = "Вінниця"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Latitude = "50.4500",
+                            Longitude = "30.5233",
+                            NameCity = "Київ"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Latitude = "49.5667",
+                            Longitude = "25.6000",
+                            NameCity = "Тернопіль"
                         });
                 });
 
@@ -573,6 +601,9 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("PathToPhoto")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -585,21 +616,25 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1,
+                            PathToPhoto = "/images/permissionType/denied.png",
                             Title = "заборонено"
                         },
                         new
                         {
                             Id = 2,
+                            PathToPhoto = "/images/permissionType/allowed.png",
                             Title = "дозволено"
                         },
                         new
                         {
                             Id = 3,
+                            PathToPhoto = "/images/permissionType/warning.png",
                             Title = "за призначенням лікаря"
                         },
                         new
                         {
                             Id = 4,
+                            PathToPhoto = "/images/permissionType/warning.png",
                             Title = "з обережністю"
                         });
                 });
@@ -653,10 +688,6 @@ namespace DataAccess.Migrations
                     b.Property<int>("CityID")
                         .HasColumnType("int");
 
-                    b.Property<string>("CloseTime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Latitude")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -665,15 +696,27 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("OpenTime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("PharmaCompanyID")
                         .HasColumnType("int");
 
                     b.Property<string>("UserID")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("WeekendCloseTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WeekendOpenTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WorkingWeekCloseTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WorkingWeekOpenTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -693,44 +736,52 @@ namespace DataAccess.Migrations
                             Id = 1,
                             Address = "Temp Address",
                             CityID = 1,
-                            CloseTime = "20:00",
                             Latitude = "49.842957",
                             Longitude = "24.031511",
-                            OpenTime = "10:00",
-                            PharmaCompanyID = 1
+                            PharmaCompanyID = 1,
+                            WeekendCloseTime = "19:00",
+                            WeekendOpenTime = "11:00",
+                            WorkingWeekCloseTime = "20:00",
+                            WorkingWeekOpenTime = "10:00"
                         },
                         new
                         {
                             Id = 2,
                             Address = "Temp Address2",
                             CityID = 1,
-                            CloseTime = "21:00",
                             Latitude = "49.842757",
                             Longitude = "24.031211",
-                            OpenTime = "11:00",
-                            PharmaCompanyID = 1
+                            PharmaCompanyID = 1,
+                            WeekendCloseTime = "21:00",
+                            WeekendOpenTime = "11:00",
+                            WorkingWeekCloseTime = "21:00",
+                            WorkingWeekOpenTime = "11:00"
                         },
                         new
                         {
                             Id = 3,
                             Address = "Temp Address3",
                             CityID = 1,
-                            CloseTime = "23:59",
                             Latitude = "49.842157",
                             Longitude = "24.031611",
-                            OpenTime = "00:00",
-                            PharmaCompanyID = 1
+                            PharmaCompanyID = 1,
+                            WeekendCloseTime = "23:59",
+                            WeekendOpenTime = "00:00",
+                            WorkingWeekCloseTime = "23:59",
+                            WorkingWeekOpenTime = "00:00"
                         },
                         new
                         {
                             Id = 4,
                             Address = "Temp Address4",
                             CityID = 1,
-                            CloseTime = "18:00",
                             Latitude = "49.842557",
                             Longitude = "24.031411",
-                            OpenTime = "09:00",
-                            PharmaCompanyID = 1
+                            PharmaCompanyID = 1,
+                            WeekendCloseTime = "17:00",
+                            WeekendOpenTime = "11:00",
+                            WorkingWeekCloseTime = "18:00",
+                            WorkingWeekOpenTime = "09:00"
                         });
                 });
 
@@ -1371,7 +1422,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            ActionGetPath = "ActiveSubstance",
+                            ActionGetPath = "ActiveSubstance/GetAllActiveSubstances",
                             Description = "Діюча речовина",
                             GroupID = 2,
                             Name = "activeSubstanceID"
@@ -1379,7 +1430,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 2,
-                            ActionGetPath = "PermissionType",
+                            ActionGetPath = "PermissionType/GetAllPermissions",
                             Description = "Алергіки",
                             GroupID = 2,
                             Name = "allergiesId"
@@ -1387,7 +1438,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 3,
-                            ActionGetPath = "PermissionType",
+                            ActionGetPath = "PermissionType/GetAllPermissions",
                             Description = "Діабетики",
                             GroupID = 2,
                             Name = "diabeticsId"
@@ -1395,7 +1446,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 4,
-                            ActionGetPath = "PermissionType",
+                            ActionGetPath = "PermissionType/GetAllPermissions",
                             Description = "Годуючі мами",
                             GroupID = 2,
                             Name = "nursingMothersId"
@@ -1403,7 +1454,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 5,
-                            ActionGetPath = "PermissionType",
+                            ActionGetPath = "PermissionType/GetAllPermissions",
                             Description = "Дорослі",
                             GroupID = 2,
                             Name = "adultsId"
@@ -1411,7 +1462,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 6,
-                            ActionGetPath = "PermissionType",
+                            ActionGetPath = "PermissionType/GetAllPermissions",
                             Description = "Вагітні",
                             GroupID = 2,
                             Name = "pregnantId"
@@ -1419,7 +1470,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 7,
-                            ActionGetPath = "PermissionType",
+                            ActionGetPath = "PermissionType/GetAllPermissions",
                             Description = "Діти",
                             GroupID = 2,
                             Name = "childrenId"
@@ -1427,7 +1478,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 8,
-                            ActionGetPath = "PermissionType",
+                            ActionGetPath = "PermissionType/GetAllPermissions",
                             Description = "Водії",
                             GroupID = 2,
                             Name = "driversId"
@@ -2172,7 +2223,14 @@ namespace DataAccess.Migrations
                             SeriesID = 1,
                             ShortDescription = "таблетки зі смак. апельсину по 25 мг №10 в етикет.",
                             Title = "Аскорбінка-КВ",
-                            ActiveSubstanceID = 1
+                            ActiveSubstanceID = 1,
+                            AdultsID = 1,
+                            AllergiesID = 2,
+                            ChildrenID = 3,
+                            DiabeticsID = 4,
+                            DriversID = 3,
+                            NursingMothersID = 1,
+                            PregnantID = 2
                         },
                         new
                         {
@@ -2186,7 +2244,14 @@ namespace DataAccess.Migrations
                             SeriesID = 1,
                             ShortDescription = "таблетки зі смак. манго по 25 мг №10 в етикет.",
                             Title = "Аскорбінка-КВ",
-                            ActiveSubstanceID = 1
+                            ActiveSubstanceID = 1,
+                            AdultsID = 1,
+                            AllergiesID = 2,
+                            ChildrenID = 3,
+                            DiabeticsID = 2,
+                            DriversID = 3,
+                            NursingMothersID = 1,
+                            PregnantID = 3
                         },
                         new
                         {
@@ -2200,7 +2265,14 @@ namespace DataAccess.Migrations
                             SeriesID = 1,
                             ShortDescription = "таблетки зі смак. полуниці по 25 мг №10 в етикет.",
                             Title = "Аскорбінка-КВ",
-                            ActiveSubstanceID = 1
+                            ActiveSubstanceID = 1,
+                            AdultsID = 1,
+                            AllergiesID = 2,
+                            ChildrenID = 3,
+                            DiabeticsID = 4,
+                            DriversID = 1,
+                            NursingMothersID = 4,
+                            PregnantID = 4
                         },
                         new
                         {
@@ -2214,7 +2286,14 @@ namespace DataAccess.Migrations
                             SeriesID = 1,
                             ShortDescription = "таблетки зі смак. тутті-фруті по 25 мг №10 в етикет.",
                             Title = "Аскорбінка-КВ",
-                            ActiveSubstanceID = 1
+                            ActiveSubstanceID = 1,
+                            AdultsID = 1,
+                            AllergiesID = 2,
+                            ChildrenID = 3,
+                            DiabeticsID = 4,
+                            DriversID = 1,
+                            NursingMothersID = 1,
+                            PregnantID = 2
                         });
                 });
 

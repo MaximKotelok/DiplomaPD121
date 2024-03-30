@@ -1,5 +1,70 @@
 ﻿import { Element } from "react-scroll";
-import { getFavs } from "../services/favProducts";
+import { getFavsProducts } from "../services/favProducts";
+import { getFavsPharmacies } from "../services/favPharmacies";
+import { FavouriteProducts, FavouritePharmacies } from "./Constants";
+
+export function formatDate(str) {
+  const date = new Date(str);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  return `${day}.${month}.${year} в ${hours}:${minutes}`;
+}
+
+export function groupBy(xs, key) {
+  return xs.reduce(function(rv, x) {
+    (rv[x[key]] = rv[x[key]] || []).push(x);
+    return rv;
+  }, {});
+};
+
+export function toLocalString(str){
+
+    const date = new Date(str);
+    const options = { month: 'long', day: 'numeric', year: "numeric" };
+    return date.toLocaleDateString('uk-UA', options);
+
+}
+
+
+export function updateObj(obj, name, value) {
+  return {
+    ...obj,
+    [name]: value
+  }
+}
+
+export function getCurrentTimeInUkraine() {
+  let currentDate = new Date();
+
+
+
+  let options = { timeZone: 'Europe/Kiev', hour12: false, hour: '2-digit', minute: '2-digit' };
+  return currentDate.toLocaleTimeString('en-US', options);
+
+}
+export function addMinutes(timeString, addMinutes) {
+
+  var timeComponents = timeString.split(":");
+  var hours = parseInt(timeComponents[0]);
+  var minutes = parseInt(timeComponents[1]);
+
+  var currentTime = new Date();
+  currentTime.setHours(hours);
+  currentTime.setMinutes(minutes);
+
+
+  currentTime.setMinutes(currentTime.getMinutes() + addMinutes);
+
+  var updatedTimeString = ("0" + currentTime.getHours()).slice(-2) + ":" + ("0" + currentTime.getMinutes()).slice(-2);
+
+  return updatedTimeString;
+
+}
+
 
 export function wrapTagIntoDiv(text, tag, className) {
   const parser = new DOMParser();
@@ -8,19 +73,19 @@ export function wrapTagIntoDiv(text, tag, className) {
   const elements = doc.querySelectorAll(tag);
 
   elements.forEach((currentElement, index) => {
-      const nextElement = elements[index + 1];
+    const nextElement = elements[index + 1];
 
-      const newDiv = doc.createElement('div');
-      newDiv.className = className;
+    const newDiv = doc.createElement('div');
+    newDiv.className = className;
 
-      let currentSibling = currentElement.nextSibling;
-      while (currentSibling && currentSibling !== nextElement) {
-          const temp = currentSibling.nextSibling;
-          newDiv.appendChild(currentSibling);
-          currentSibling = temp;
-      }
+    let currentSibling = currentElement.nextSibling;
+    while (currentSibling && currentSibling !== nextElement) {
+      const temp = currentSibling.nextSibling;
+      newDiv.appendChild(currentSibling);
+      currentSibling = temp;
+    }
 
-      currentElement.parentNode.insertBefore(newDiv, currentElement.nextSibling);
+    currentElement.parentNode.insertBefore(newDiv, currentElement.nextSibling);
   });
 
   return doc;
@@ -28,57 +93,102 @@ export function wrapTagIntoDiv(text, tag, className) {
 
 
 
-export function splitByClass(doc,className) {
-    
-    const divs = doc.getElementsByClassName(className);
-    const res = Array.from(divs).map(tag => tag.outerHTML);
+export function splitByClass(doc, className) {
 
-    return res;
-    
-  }
+  const divs = doc.getElementsByClassName(className);
+  const res = Array.from(divs).map(tag => tag.outerHTML);
 
-export function getTagContentFromString(doc,tag) {
-    
-    const bTags = doc.getElementsByTagName(tag);
-    const bTagContent = Array.from(bTags).map(tag => tag.textContent);
-  
-    return bTagContent;
-  }
+  return res;
 
-export const breakpoints = {
-    xs: 0,
-    sm: 576,
-    md: 768,
-    lg: 992,
-    xl: 1200,
-};
-
-export const isFavorite = (productId, favs) => {
-  if(!favs)
-    return false;
-  const result = favs.findIndex(a=>a === productId) !== -1;    
-  return result;
-};
-
-export async function initFavs(setFavs) {
-  setFavs(await getFavs());
 }
 
+export function getTagContentFromString(doc, tag) {
 
-export function isWidthDown(breakpoint, width){
-    const breakpointWidth = breakpoints[breakpoint];
-    return width <= breakpointWidth;
-};
-export function redirect404(){
-    window.location.href = '/404';
+  const bTags = doc.getElementsByTagName(tag);
+  const bTagContent = Array.from(bTags).map(tag => tag.textContent);
+
+  return bTagContent;
+}
+
+export const breakpoints = {
+  xs: 0,
+  sm: 576,
+  md: 768,
+  lg: 992,
+  xl: 1200,
 };
 
-export function toTwoDigitsNumber(number){
+export const isFavoriteProduct = (productId) => {
+    let storageFavs = localStorage.getItem(FavouriteProducts);
+    if (storageFavs == null)
+        return false;
+    let favs = storageFavs.split(',');
+    const result = favs.findIndex(a => a == productId) !== -1;
+    return result;
+};
+
+export const isFavoritePharmacy = (pharmacyId) => {
+    let storageFavs = localStorage.getItem(FavouritePharmacies);
+    if (storageFavs == null)
+        return false;
+    let favs = storageFavs.split(',');
+    const result = favs.findIndex(a => a == pharmacyId) !== -1;
+    return result;
+};
+
+export async function initFavsProducts(setFavs) {
+    if (!localStorage.hasOwnProperty("authToken"))
+        setFavs([]);
+
+    let favs = localStorage.getItem(FavouriteProducts)
+    if (favs == null || favs == "undefined") {
+        let favs = await getFavsProducts();
+        localStorage.setItem(FavouriteProducts, favs);
+        setFavs(favs());
+     }
+    else {
+        setFavs(favs.split(','));
+    }
+}
+
+/*export async function initFavsPharmacies(setFavs) {
+    if (!localStorage.hasOwnProperty("authToken"))
+        setFavs([]);
+
+    let favs = localStorage.getItem(favouritePharmacies)
+    if (favs == null || favs == "undefined") {
+        let favs = await getFavsPharmacies();
+        localStorage.setItem(favouritePharmacies, favs);
+        setFavs(favs());
+    }
+    else {
+        setFavs(favs.split(','));
+    }
+}*/
+
+export async function initStorageFavs() {
+    let favsProducts = await getFavsProducts();
+    let favsPharmacies = await getFavsPharmacies();
+    localStorage.setItem(FavouriteProducts, favsProducts);
+    localStorage.setItem(FavouritePharmacies, favsPharmacies);
+}
+
+export function isWidthDown(breakpoint, width) {
+  const breakpointWidth = breakpoints[breakpoint];
+  return width <= breakpointWidth;
+};
+export function redirect404() {
+  window.location.href = '/404';
+};
+
+export function toTwoDigitsNumber(number) {
   return number.toLocaleString('en-US', {
     minimumIntegerDigits: 2,
     useGrouping: false
-    })
+  })
 }
+
+
 
 export function isPharmacyOpen(timeOpen, timeClosed) {
   const now = new Date();
@@ -97,6 +207,6 @@ export function isPharmacyOpen(timeOpen, timeClosed) {
   openingDate.setHours(openingHour, openingMinute, 0, 0);
   closingDate.setHours(closingHour, closingMinute, 0, 0);
 
-  
+
   return now >= openingDate && now < closingDate;
 }   

@@ -1,8 +1,9 @@
 import { removeToken } from "../utils/Login";
 import { getFromServer, postToServer } from "../utils/Queries";
+import { GetFavoriteProducts, AddFavouriteProduct, RemoveFavouriteProduct } from "../utils/Constants";
 
-export async function getFavs(){
-    let res = await getFromServer("User/getFavoriteProducts");
+export async function getFavsProducts(){
+    let res = await getFromServer(GetFavoriteProducts);
     if(res.status === "Error"){
         removeToken(); 
         console.log("Error on getFavs")   
@@ -11,7 +12,7 @@ export async function getFavs(){
 }
 
 export async function addFavouriteProduct(id){
-    let res = await postToServer("User/addFavouriteProduct/"+id);
+    let res = await postToServer(AddFavouriteProduct+id);
     
     if(res.status === "Error"){
         return res.error.response.status;
@@ -23,7 +24,7 @@ export async function addFavouriteProduct(id){
 
 
 export async function removeFavouriteProduct(id){
-    let res = await postToServer("User/removeFavouriteProduct/"+id);
+    let res = await postToServer(RemoveFavouriteProduct+id);
     if(res.status === "Error"){
         removeToken();
         return res.error.response.status;
