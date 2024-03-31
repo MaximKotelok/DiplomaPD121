@@ -1,6 +1,7 @@
 using AutoMapper;
 using DataAccess.Data;
 using Domain.Mappings;
+using Domain.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ using SendGrid.Extensions.DependencyInjection;
 using Services.ActiveSubstanceService;
 using Services.AttributeGroupService;
 using Services.AttributeService;
+using Services.BackgroundTaskService;
 using Services.BrandService;
 using Services.CategoryService;
 using Services.CityService;
@@ -165,6 +167,8 @@ builder.Services.AddScoped<IMedicineService, MedicineService>();
 builder.Services.AddScoped<IEmailSenderService, EmailSenderService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IProductPriceHistoryService, ProductPriceHistoryService>();
+
+builder.Services.AddHostedService<ProductPriceHistoryBackgroundService>();
 
 builder.Services.AddSendGrid(options =>
 {

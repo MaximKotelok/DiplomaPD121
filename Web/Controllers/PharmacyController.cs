@@ -23,11 +23,15 @@ namespace Web.Controllers
     {
         private readonly IPharmacyService _pharmacyService;
         private readonly ICityService _cityService;
+        private readonly IRepositoryManager _repository;
+        private readonly IUserService _userService;
 
-        public PharmacyController(IPharmacyService service, ICityService _cityService)
+        public PharmacyController(IPharmacyService service, ICityService _cityService, IRepositoryManager repository, IUserService userService)
         {
             this._pharmacyService = service;
             this._cityService = _cityService;
+            _repository = repository;
+            _userService = userService;
         }
 
         [HttpGet("")]
