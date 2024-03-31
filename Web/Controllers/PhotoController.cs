@@ -10,7 +10,6 @@ namespace Web.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-    [Authorize(AuthenticationSchemes = "Bearer")]
     public class PhotoController : ControllerBase
 	{
 		private readonly IWebHostEnvironment _hostingEnvironment;

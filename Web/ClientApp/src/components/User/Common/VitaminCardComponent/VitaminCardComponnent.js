@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./VitaminCard.css"; // Стилі можна налаштувати в окремому CSS файлі
 
 const VitaminCardComponnent = ({ id,imageUrl, text, color }) => {
+  console.log(imageUrl)
   const [isHovered, setIsHovered] = useState(false);
 
   return (
