@@ -84,3 +84,4 @@ export const LayoutProviderValues = {
     UPDATE: 'update',
     DISABLE_FOOTER: 'disable-footer'
 };
+

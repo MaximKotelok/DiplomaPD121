@@ -15,10 +15,10 @@ namespace Repository.Data.Configs
 		public void Configure(EntityTypeBuilder<ReservationStatus> builder)
 		{
 			builder.HasData(
-				new ReservationStatus { Id = 1, Status= SD.ReservationStatusWaiting },
-				new ReservationStatus { Id = 2, Status= SD.ProductStatusConfirmed },
-				new ReservationStatus { Id = 3, Status= SD.ReservationStatusCanceled },
-				new ReservationStatus { Id = 4, Status= SD.ReservationStatusFinished }
+				new ReservationStatus { Id = 1, Status= SD.ReservationStatusWaiting, Color= "#FF9500", Path= "/images/statuses/ReservationStatusWaiting.png" },
+				new ReservationStatus { Id = 2, Status= SD.ProductStatusConfirmed, Color= "#007AFF", Path = "/images/statuses/ProductStatusConfirmed.png" },
+				new ReservationStatus { Id = 3, Status= SD.ReservationStatusCanceled, Color = "#FF3B30", Path = "/images/statuses/ReservationStatusCanceled.png" },
+				new ReservationStatus { Id = 4, Status= SD.ReservationStatusFinished, Color= "#3BA42A", Path = "/images/statuses/ReservationStatusFinished.png" }
 				);
 
 		}

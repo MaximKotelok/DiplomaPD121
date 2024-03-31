@@ -5,13 +5,13 @@ const VitaminCardComponnent = ({ id,imageUrl, text, color }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div role="button" className="category-card" onClick={()=>{window.location.href = `/category/${id}`;}}>
+    <div role="button" className="category-card category-png-card" onClick={()=>{window.location.href = `/category/${id}`;}}>
       <div
         className={`image-container position-relative`}
         //   className="image-container"
       >
         <img className="image-vitamins" src={imageUrl} alt="Card Image" />
-        <div className={`position-absolute background-category-png  ${isHovered ? "hovered " : ""}`} style={{backgroundColor: color}}></div>
+        <div className={`position-absolute background-category-png  ${isHovered ? "hovered " : ""} category-png-backgroud`} style={{backgroundColor: color}}></div>
       </div>
         <p className="category-card-text">{text}</p>
 

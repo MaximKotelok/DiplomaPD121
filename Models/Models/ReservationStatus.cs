@@ -10,5 +10,7 @@ namespace Domain.Models
 	public class ReservationStatus:BaseEntity
 	{
 		public string? Status { get; set; }
+		public string? Color { get; set; }
+		public string? Path { get; set; }
 	}
 }

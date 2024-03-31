@@ -109,6 +109,7 @@ export const UpsertPharmacyComponent = () => {
       if (pharmacyId) {
         tmpObject = await getPharmacyById(pharmacyId);
         tmpPharmacistObject = await GetPharmacist(pharmacyId);
+        console.log(tmpPharmacistObject)
         if (
           tmpObject.status === Success &&
           tmpPharmacistObject.status === Success

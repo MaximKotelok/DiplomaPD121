@@ -44,12 +44,17 @@ export async function GetProductByTitle(title, count = 6) {
 } 
 
 export async function Search(title = null, categories = null, brands = null, properties = null) {
-    return await postToServer("Product/Search", {
+    let res = await postToServer("Product/Search", {
         title,
         categories,
         brands,
         properties
     }, ClassHeader)
+
+    if(res.status === Success){
+        return {status: Success, data: await getSupInfo(res.data)}
+    }
+    return "Error"
 } 
 export async function GetSearchInput(title = null, categories = null, brands = null, properties = null) {
     return await postToServer("Product/GetSearchInput", {

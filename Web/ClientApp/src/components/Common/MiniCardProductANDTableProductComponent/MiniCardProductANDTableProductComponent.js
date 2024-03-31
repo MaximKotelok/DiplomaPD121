@@ -16,6 +16,7 @@ const MiniCardProductANDTableProductComponent = ({
   title = "...",
   description = "...",
   minPrice = 0.0,
+  countOfPharmacies = 0
 }) => {
   
   
@@ -83,7 +84,7 @@ const MiniCardProductANDTableProductComponent = ({
           <span>
             <Galochka />
           </span>{" "}
-          1204 аптек
+          {countOfPharmacies} аптек
         </p>
         <p className={`${stylesMiniCard["product-price"]}`}>
           від{" "}

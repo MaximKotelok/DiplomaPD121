@@ -12,6 +12,7 @@ const MineBookeds = () => {
   useEffect(() => {
     init();
   }, [])
+
   async function init() {
     let res = await getReservations();
     if (res.status === Success) {
@@ -21,6 +22,7 @@ const MineBookeds = () => {
           name: a.name,
           pharmacy: a.pharmacy,
           status: a.status,
+          total: a.total,
           reservedTimeGroup: toLocalString(a.reservedTime),
           reservedTime: formatDate(a.reservedTime)
         }
@@ -51,8 +53,7 @@ const MineBookeds = () => {
       <div className=" ">
         {/* Якщо історія не пуста  */}
 
-        {Object.keys(reservs).length > 0 && Object.keys(reservs).map(date => {
-          console.log(date)
+        {Object.keys(reservs).length > 0 && Object.keys(reservs).map(date => {    
           return (
             <div>
               <h6
@@ -64,7 +65,16 @@ const MineBookeds = () => {
               {
                 reservs[date].map(a =>
                 (
-                  <CardHistory name={a.name} number={a.id} price={a.total} address={a.pharmacy.address} date={a.reservedTimeGroup} />
+                  <CardHistory 
+                    name={a.name} 
+                    number={a.id} 
+                    price={a.total} 
+                    address={a.pharmacy.address} 
+                    date={a.reservedTimeGroup} 
+                    statusText={a.status.status}
+                    statusColor={a.status.color} 
+                    statusPathToPhoto={a.status.path}
+                    />
                 )
                 )
               }

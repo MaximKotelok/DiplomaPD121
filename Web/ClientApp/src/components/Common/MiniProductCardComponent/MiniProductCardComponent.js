@@ -15,8 +15,8 @@ const MiniProductCardComponent =
         title = "...",
         description = "...",
         minPrice = 0.0,
-        isFavorite,
-        onChangeFavorite
+        onChangeFavorite,
+        isFavorite
     }) => {
         const [isFavoriteState, setIsFavoriteState] = useState(false);
         useEffect(()=>{

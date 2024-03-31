@@ -208,7 +208,7 @@ export const SearchProductPageComponent = () => {
                   <MiniCardProductANDTableProductComponent
                     key={a.id}
                     id={a.id}
-                      isFavorite={isFavoriteProduct}
+                    isFavorite={isFavoriteProduct}
                     title={a.title}
                     description={a.shortDescription}
                     minPrice={a.minPrice}
@@ -226,5 +226,6 @@ export const SearchProductPageComponent = () => {
         </div>
       </div>
     </>
+
   );
 };
