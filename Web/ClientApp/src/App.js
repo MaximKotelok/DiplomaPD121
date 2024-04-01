@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Routes, Route } from "react-router-dom";
+import axios from 'axios';
 // import { Layout } from './layouts/UserLayout/Layout';
 import "./custom.css";
 import { setupLocation } from "./utils/Location";
@@ -64,8 +65,23 @@ export default class App extends Component {
         } finally {
             this.setState({ isLoading: false });
         }
+
+        this.setupAxiosInterceptors();
     }
-    
+
+    setupAxiosInterceptors() {
+        axios.interceptors.response.use(
+            response => response,
+            error => {
+                if (error.response && error.response.status === 401) {
+                    // Redirect user to login page
+                    window.location.href = '/auth/login';
+                }
+                return Promise.reject(error);
+            }
+        );
+    }
+
     handleLocationSetup = () => {
         this.setState({ locationAllowed: true });
     }
