@@ -10,7 +10,7 @@ const StatusComponent = ({ color, pathToPhoto, text }) => {
       style={{
         border: `1px solid ${color}`,
         borderRadius: "56px",
-        width: "max-content",
+        width: "151px",
         padding: "6px 12px",
       }}
     >

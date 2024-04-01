@@ -11,6 +11,7 @@ namespace Domain.Models.ViewModels
 		public string? Title { get; set; } = null;
 		public int[]? Categories { get; set; } = null;
 		public int[]? Brands { get; set; } = null;
+		public int? ActiveSubstanceId { get; set; } = null;
 		public PropertySearchViewModel[]? Properties { get; set; } = null;
 	}
 

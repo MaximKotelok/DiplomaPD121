@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import styles from "./HeadOfDetailsComponent.module.css";
 import { NavigationDetailsComponent } from "../../../../Common/NavigationDetailsComponent/NavigationDetailsComponent";
 import CustomImgComponent from "../../../../../Common/CustomImgComponent/CustomImgComponent";
@@ -80,14 +81,17 @@ const HeadOfDetailsComponent = ({ product }) => {
                 Знайти в аптеках
               </a>
             </div>
-            <div className="col-6">
-              <a
+            {
+              product.activeSubstanceId &&
+              <div className="col-6">
+              <Link to={`/Search/ByActiveSubstance/${product.activeSubstanceId}`}
                 className={`btn ${styles["btn-details"]} ${styles["btn-analogues"]} w-100`}
                 href={`/map}`}
               >
                 Аналоги
-              </a>
+              </Link>
             </div>
+              }
           </div>
         </div>
       </div>

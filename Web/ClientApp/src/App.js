@@ -91,6 +91,7 @@ export default class App extends Component {
               <Route path="/Search/ByTitle/" element={<SearchProductPageComponent />} />
               <Route path="/Search/ByCategory/:categoryId" element={<SearchProductPageComponent />} />
               <Route path="/Search/ByBrand/:brandId" element={<SearchProductPageComponent />} />
+              <Route path="/Search/ByActiveSubstance/:activeSubstanceId" element={<SearchProductPageComponent />} />
               <Route path="res" element={<Reservation />} />
               <Route path="auth/*" element={<AuthPageComponent />}>
                 <Route path="registration" element={<RegistrationForm />} />

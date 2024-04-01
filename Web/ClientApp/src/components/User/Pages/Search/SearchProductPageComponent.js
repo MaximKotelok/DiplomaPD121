@@ -16,12 +16,11 @@ import MiniCardProductANDTableProductComponent from "../../../Common/MiniCardPro
 import styles from "./SearchProductPageComponent.module.css";
 import { Search } from "../../../../services/product";
 import { getBrandById } from "../../../../services/brand";
+import { getActiveSubstance } from "../../../../services/activeSubstance";
 
 export const SearchProductPageComponent = () => {
   const categoriesPerPage = 4; 
-  const { title, categoryId, brandId, extraParamId, extraParamValue } = useParams();  
-  const [category, setCategory] = useState(null);
-  const [favs, setFavs] = useState(null);
+  const { title, categoryId, brandId, extraParamId, extraParamValue, activeSubstanceId } = useParams();  
   const [isGridTalbeActive, setGridTalbeActive] = useState(true);
   //const [currentPage, setCurrentPage] = useState(0);
   //const [maxOfCategories, setMaxOfCategories] = useState(0);
@@ -33,18 +32,20 @@ export const SearchProductPageComponent = () => {
   const handleGridTableClick = (boolean) => {
     setGridTalbeActive(boolean);
   };
+
   useEffect(() => {
       init();
-      initFavsProducts(setFavs);
-  }, [title, categoryId, brandId, extraParamId, extraParamValue]);
+  }, [title, categoryId, brandId, extraParamId, extraParamValue,activeSubstanceId]);
  
   async function init() {
     let res = await Search(
       title, 
       categoryId?[categoryId]:null, 
       brandId?[brandId]:null, 
-      extraParamId&&extraParamValue?[{id:extraParamId, name:extraParamValue}]:null
+      activeSubstanceId?parseInt(activeSubstanceId):null, 
+      extraParamId&&extraParamValue?[{id:extraParamId, name:extraParamValue}]:null,
       );
+      console.log(res)
     if(res.status === Success){
       setProducts(res.data);
       setFilteredProducts(res.data);
@@ -63,6 +64,12 @@ export const SearchProductPageComponent = () => {
         let brandResult = await getBrandById(brandId);
         if(brandResult.status === Success){
           setPageName(`Бренд: ${brandResult.data.name}`)
+        }
+      }else if(activeSubstanceId){
+        let activeSubstanceResult = await getActiveSubstance(activeSubstanceId);
+        console.log(activeSubstanceResult)
+        if(activeSubstanceResult.status === Success){
+          setPageName(`Діюча речовина: ${activeSubstanceResult.data.title}`)
         }
       }
       setLoader(StateInfos.LOADED);

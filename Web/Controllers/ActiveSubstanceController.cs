@@ -32,7 +32,7 @@ namespace Web.Controllers
             return BadRequest("No records found");
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetActiveSubstance/{id}")]
         public IActionResult GetActiveSubstance(int id)
         {
             var result = _service.GetActiveSubstance(x => x.Id == id);

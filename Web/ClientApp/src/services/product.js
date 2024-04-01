@@ -43,11 +43,12 @@ export async function GetProductByTitle(title, count = 6) {
     }, ClassHeader)
 } 
 
-export async function Search(title = null, categories = null, brands = null, properties = null) {
+export async function Search(title = null, categories = null, brands = null, activeSubstanceId, properties = null) {
     let res = await postToServer("Product/Search", {
         title,
         categories,
         brands,
+        activeSubstanceId,
         properties
     }, ClassHeader)
 
@@ -56,12 +57,13 @@ export async function Search(title = null, categories = null, brands = null, pro
     }
     return "Error"
 } 
-export async function GetSearchInput(title = null, categories = null, brands = null, properties = null) {
+export async function GetSearchInput(title = null, categories = null, brands = null, activeSubstanceId = null, properties = null) {
     return await postToServer("Product/GetSearchInput", {
         title,
         categories,
         brands,
-        properties
+        properties, 
+        activeSubstanceId
     }, ClassHeader)
 } 
 

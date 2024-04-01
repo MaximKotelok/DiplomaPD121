@@ -7,7 +7,7 @@ import styles from "./Content.module.css"
 import { useDispatch, useSelector } from "react-redux";
 import { addCategory } from "../../../../../reducers/reducers";
 import { Success } from "../../../../../utils/Constants";
-const Content = ({ selectedMenu }) => {
+const Content = ({ selectedMenu, closeMenu }) => {
   const COUNT_OF_SUBCATEGORIES = 4;
 
   const [generatedData, setGeneratedData] = useState([]);
@@ -43,20 +43,20 @@ if(generatedData && generatedData.subCategories)
       generatedData.subCategories.map(a=>{
         
         return <div className="col-4">
-                   <Link className={`${styles["head-category-text"]}`} to={`category/${a.id}`}>{a.title}</Link>
+                   <Link className={`${styles["head-category-text"]}`} onClick={closeMenu} to={`category/${a.id}`}>{a.title}</Link>
                    <div>
                     {
                       a.subCategories && a.subCategories.slice(0,COUNT_OF_SUBCATEGORIES).map(b=>
                         {
                           return <div className="my-2">
-                            <Link className={`${styles["body-category-text"]}`} to={`category/${b.id}`}>{b.title}</Link>
+                            <Link className={`${styles["body-category-text"]}`} onClick={closeMenu} to={`category/${b.id}`}>{b.title}</Link>
                           </div>
                         }
                         )
                     }
                     {a.subCategories.length>COUNT_OF_SUBCATEGORIES&&(
                       <div className="my-2">
-                            <Link className={`${styles["body-category-text"]}`} to={`category/${a.id}`}>Показати більше</Link>
+                            <Link className={`${styles["body-category-text"]}`} onClick={closeMenu} to={`category/${a.id}`}>Показати більше</Link>
                           </div>
                     )}
                    </div>

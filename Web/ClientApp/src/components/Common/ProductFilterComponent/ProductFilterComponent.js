@@ -9,7 +9,7 @@ import SearchComponent from '../SearchComponent/SearchComponent';
 import { GetSearchInput, Search } from '../../../services/product';
 import { Success } from '../../../utils/Constants';
 const ProductFilterComponent = ({ products, setProducts }) => {
-    const { title, categoryId, brandId, extraParamId, extraParamValue } = useParams();
+    const { title, categoryId, brandId, extraParamId, extraParamValue, activeSubstanceId } = useParams();
 
     const [filters, setFilters] = useState({});
     const [availableAttributes, setAvailableAttributes] = useState({});    
@@ -19,7 +19,10 @@ const ProductFilterComponent = ({ products, setProducts }) => {
     const [searchByTitle, setSearchByTitle] = useState("");
 
     useEffect(()=>{
-        init();        
+        init();   
+        if(title){
+            setSearchByTitle(title);
+        }
     },[title, categoryId, brandId, extraParamId, extraParamValue]);
 
     async function init(){
@@ -28,9 +31,10 @@ const ProductFilterComponent = ({ products, setProducts }) => {
                 title, 
                 categoryId?[categoryId]:null, 
                 brandId?[brandId]:null, 
-                extraParamId&&extraParamValue?[{id:extraParamId, name:extraParamValue}]:null);
-
-
+                activeSubstanceId?parseInt(activeSubstanceId):null, 
+                extraParamId&&extraParamValue?[{id:extraParamId, name:extraParamValue}]:null,                
+                );
+            
         if(res.status === Success){
             if(!categoryId){
                 setCategories(res.data.categories);                
@@ -41,7 +45,7 @@ const ProductFilterComponent = ({ products, setProducts }) => {
                 setBrands(res.data.brands);
             }else{
                 setFilters({...filters, brands:[{value:brandId, isHidden:true}]})
-            }
+            }    
             
             setAvailableAttributes(res.data.attributes);
             setFilteredAttributes(res.data.attributes);
@@ -57,12 +61,13 @@ const ProductFilterComponent = ({ products, setProducts }) => {
     
         return outputArray;
     }
-console.log(filters)
+
     async function submit(){
         let clone = {...filters};    
         let categories = clone.categories?Object.keys(clone.categories).map(a=>parseInt(clone.categories[a].value)):[];
         let brands = clone.brands?Object.keys(clone.brands).map(a=>parseInt(clone.brands[a].value)):[];
         delete clone.categories;
+        
         delete clone.brands;
         // let model = {
         //     title: searchByTitle,
@@ -75,12 +80,11 @@ console.log(filters)
         //     ,
         // }
 
-        console.log(categories)
-        console.log(brands)
         let searchResult = await Search(
             searchByTitle, 
             categories, 
             brands, 
+            activeSubstanceId?activeSubstanceId:null, 
             [].concat(...Object.keys(clone)
                 .map(a=>convertToServerModel(a,clone[a]))
             )
@@ -90,7 +94,7 @@ console.log(filters)
 
     }
     
-    const handleFilterChange = (attributeName, selectedValue, isDelete = false, displayedName = "") => {
+    const handleFilterChange = (attributeName, selectedValue, isDelete = false, displayedName = "") => {    
         if (Object.keys(filters).indexOf(attributeName) === -1) {                        
             setFilters(prevFilters => ({
                 ...prevFilters,
@@ -124,7 +128,7 @@ console.log(filters)
                 
             })}
 
-            <SearchComponent onClick={submit} callback={setSearchByTitle} className={styles["search"]}/>
+            <SearchComponent value={searchByTitle} onClick={submit} callback={setSearchByTitle} className={styles["search"]}/>
             
             {(Object.keys(categories).length>0 && <ProductFilterItemGroupComponent title="Категорія">                    
                     {Object.keys(categories).map(key => {

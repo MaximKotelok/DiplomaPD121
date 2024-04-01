@@ -77,6 +77,7 @@ export const Details = () => {
         product.pathToPhoto = `${ApiPath}${product.pathToPhoto}`;
         product.from = minAndMaxPrice.data.minPrice;
         product.to = minAndMaxPrice.data.maxPrice;
+        product.activeSubstanceId = res.data.activeSubstanceID;
         product.pathToCategory = path.data;
         product.properties.unshift({
           name: "Категорія",
