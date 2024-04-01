@@ -19,13 +19,15 @@ import AccordionComponent from "../../../Common/AccordionQuestionComponent/accor
 import HeadOfDetailsComponent from "./Component/HeadOfDetailsComponent/HeadOfDetailsComponent";
 import { getCookie } from "../../../../utils/Cookies";
 import { getPathToCategory } from "../../../../services/category";
-import { getMinAndMaxPrice, getProductById } from "../../../../services/product";
+import { GetPriceHistory, getMinAndMaxPrice, getProductById } from "../../../../services/product";
 import MedicineTableComponent from "./Component/MedicineTableComponent/MedicineTableComponent";
+import PriceHistoryComponent from "./Component/PriceHistoryComponent/PriceHistoryComponent";
 
 export const Details = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loader, setLoader] = useState(StateInfos.LOADING);
+  const [priceHistory, setPriceHistory] = useState([]);
 
   addToRecentlyViewedProduct(id);
   useEffect(() => {
@@ -84,6 +86,11 @@ export const Details = () => {
           value: path.data.slice(-1)[0].title,
         });
         setProduct(product);
+
+        let priceHistoryResult = await GetPriceHistory(id);
+        if (priceHistoryResult.status === Success) {
+          setPriceHistory(priceHistoryResult.data);
+        }
         setLoader(StateInfos.LOADED);
       } else {
         setLoader(StateInfos.ERROR);
@@ -91,7 +98,9 @@ export const Details = () => {
     } else {
       setLoader(StateInfos.ERROR);
     }
+
   }
+
   useEffect(() => {
     if (loader === StateInfos.ERROR) {
       window.location.href = "/404";
@@ -101,7 +110,6 @@ export const Details = () => {
   if (loader != StateInfos.LOADED) {
     return <div>Loading...</div>;
   }
-
   return (
     <div>
       <DescriptionCategoryPathComponent data={product.pathToCategory} />
@@ -145,6 +153,18 @@ export const Details = () => {
         <div className="col-12 col-md-6">
           <AccordionComponent />
         </div>
+        {
+          priceHistory && priceHistory.length > 0 &&
+          <div className="row">
+
+            <p className={`${styles["section-title"]}`} id="characteristic">
+              Середня ціна по Україні
+            </p>
+            <div className="col-12">
+              <PriceHistoryComponent history={priceHistory} />
+            </div>
+          </div>
+        }
 
         <div className="col-12 col-md-6"></div>
       </div>

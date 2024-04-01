@@ -86,6 +86,10 @@ export async function getProductById(productId) {
     return await getFromServer(GetProduct, { id: productId })
 }
 
+export async function GetPriceHistory(productId) {
+    return await getFromServer("Product/GetPriceHistory", { id: productId })
+}
+
 export async function getExistAttributeVariantsList(existAttributes){
     return await Promise.all(existAttributes.map(async (b) => {
         return {

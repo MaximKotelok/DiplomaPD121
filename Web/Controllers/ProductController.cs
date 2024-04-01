@@ -82,6 +82,17 @@ namespace Web.Controllers
 
 
 		}
+		[HttpGet("GetPriceHistory")]
+		public IActionResult GetPriceHistory(int id)
+		{
+			Product product = _productService!.GetProduct(a => a.Id == id, includeProperties: "PriceHistory,PriceHistory.HistoryDate")!;
+
+			return Ok(product.PriceHistory.Select((a) => new
+			{
+				date = a.HistoryDate.Date.ToString("MM.yy"),
+				price = a.Price
+			}).GroupBy(a=>a.date).Select(a=> new { name = a.Key, value = a.Average(b => b.price) }).Take(12));
+		}
 
 		[HttpGet("GetById")]
 		public IActionResult GetProduct(int id)
