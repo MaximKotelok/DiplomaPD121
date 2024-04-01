@@ -28,11 +28,13 @@ namespace Web.Controllers
 
 
         [HttpGet("getFavoriteProducts")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        //[Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetFavouriteProducts()
         {
-            var user = await _userService.GetUserByName(User.Identity.Name);
+            if (String.IsNullOrEmpty(User.Identity.Name))
+                return Ok(null);
 
+            var user = await _userService.GetUserByName(User.Identity.Name);
 
             if (user == null)
             {
@@ -89,9 +91,12 @@ namespace Web.Controllers
 		}
 
 		[HttpGet("getFavoritePharmacies")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        //[Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetFavouritePharmacies()
         {
+            if (String.IsNullOrEmpty(User.Identity.Name))
+                return Ok(null);
+
             var user = await _userService.GetUserByName(User.Identity.Name);
 
 
@@ -104,9 +109,12 @@ namespace Web.Controllers
         }
 
         [HttpGet("getFavoritePharmaciesWithSupInfo")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        //[Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetFavouritePharmaciesWithSupInfo()
         {
+            if (String.IsNullOrEmpty(User.Identity.Name))
+                return Ok(null);
+
             var user = await _userService.GetUserByName(User.Identity.Name);
 
 
