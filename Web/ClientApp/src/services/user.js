@@ -13,3 +13,7 @@ export async function updateUser(data) {
     return await postToServer("User/updateUser", data);
 } 
 
+export async function changePassword(data) {
+    return await postToServer("User/changePassword", data);
+} 
+

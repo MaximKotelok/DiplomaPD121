@@ -12,6 +12,14 @@ div[disabled] {
     background-color: #FF950033 !important;
 }
 
+.category-png-card:nth-child(odd):hover .category-png-backgroud {
+    background-color: #007AFF80 !important;
+}
+
+.category-png-card:nth-child(even):hover .category-png-backgroud {
+    background-color: #FF950080 !important;
+}
+
 .react-international-phone-input-container {
     background-color: rgba(239, 239, 239, 1) !important;
     color: rgba(122, 122, 122, 1) !important;

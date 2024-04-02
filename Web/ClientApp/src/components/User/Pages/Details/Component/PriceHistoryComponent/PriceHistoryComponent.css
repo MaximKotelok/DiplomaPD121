@@ -10,22 +10,8 @@
     padding: 10px;
 }
 
-.price-history .recharts-bar-rectangle.clicked::before {
-    content: attr(data-name);
-    position: absolute;
-    top: -20px;
-    left: 0;
-    transform: translateX(-50%);
-    color: #000;
-    font-size: 14px;
-  }
-  
-
 .recharts-layer tspan{
     font-weight: bold !important;
     font-family: var(--standart-font);
 }
 
-.red{
-    background-color: bisque!important;
-}

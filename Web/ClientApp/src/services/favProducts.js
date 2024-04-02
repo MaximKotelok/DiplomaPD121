@@ -4,6 +4,7 @@ import { GetFavoriteProducts, AddFavouriteProduct, RemoveFavouriteProduct } from
 
 export async function getFavsProducts(){
     let res = await getFromServer(GetFavoriteProducts);
+    console.log(res)
     if(res.status === "Error"){
         removeToken(); 
         console.log("Error on getFavs")   

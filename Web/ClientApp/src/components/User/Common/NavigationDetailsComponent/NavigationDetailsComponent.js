@@ -11,7 +11,6 @@ export const NavigationDetailsComponent = ({ id }) => {
         (<NavLink to={`/map/${id}`} className={({ isActive }) => (isActive ? styles["active"] : "")}>Ціни в аптеках</NavLink>),
         (<Link to={`/product-details/${id}#instruction`}>Інструкція</Link>),
         (<Link to={`/product-details/${id}#characteristic`}>Характеристики</Link>),
-        (<Link to={`/analugues/${id}`}>Аналоги</Link>),
         (<Link to={`/product-details/${id}#questions`}>Часті питання</Link>)
     ]
 

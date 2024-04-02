@@ -4,7 +4,6 @@ import google from "../../../../../../assets/images/google.svg";
 import faceboo from "../../../../../../assets/images/Facebook.svg";
 import BtnSocialComponenent from "../../../../../Auth/components/BtnSocialComponenent/BtnSocialComponenent";
 import stylesAuth from "../../../../../Auth/AuthPage.module.css";
-import { ReactComponent as BtnClose } from "./BtnClose.svg";
 import styles from "./EditProfile.module.css";
 import "./EditPro.css";
 import { PhoneInput } from "react-international-phone";
@@ -12,6 +11,7 @@ import { getMyInfo, updateUser } from "../../../../../../services/user";
 import { Success } from "../../../../../../utils/Constants";
 import { toast } from "react-toastify";
 import Swal from 'sweetalert2';
+import ChangePasswordComponent from "../ChangePasswordComponent/ChangePasswordComponent";
 // import stylesAuth from "../AuthPage.module.css";
 const EditProfile = () => {
   const [show, setShow] = useState(false);
@@ -28,7 +28,6 @@ const EditProfile = () => {
 
   },[]);
 
-  console.log(formData)
 
 
   async function init(){
@@ -162,36 +161,10 @@ const EditProfile = () => {
           <BtnSocialComponenent icon={google} text={"Вхід через Google"} />
           <BtnSocialComponenent icon={faceboo} text={"Вхід через Facebook"} />
         </div>
+
       </div>
-
-
-      {/* <Modal show={showEmail} onHide={() => setShowEmail(false)} centered>
-        <Modal.Body className="test">
-          <div className={`d-flex justify-content-end mb-3`}>
-            <div
-              style={{ cursor: "pointer" }}
-              onClick={() => setShowEmail(false)}
-            >
-              <BtnClose />
-            </div>
-          </div>
-          <form>
-            <div className="mb-2">
-              <input
-                className={`input-text-form input-text-secondary-form mb-2 ${stylesAuth["my-input-text-form"]}`}
-                placeholder="Змініть Email"
-                type="email"
-                name="email"
-                required
-              />
-            </div>
-
-            <button className="brn-form brn-primary-form mb-3 " type="submit">
-              Зберегти
-            </button>
-          </form>
-        </Modal.Body>
-      </Modal> */}
+      <ChangePasswordComponent show={show} setShow={setShow}/>
+      
     </>
   );
 };

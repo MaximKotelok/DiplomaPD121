@@ -28,7 +28,7 @@ namespace Web.Controllers
 
 
         [HttpGet("getFavoriteProducts")]
-        //[Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetFavouriteProducts()
         {
             if (String.IsNullOrEmpty(User.Identity.Name))
@@ -89,10 +89,35 @@ namespace Web.Controllers
             await _userService.UpdateUser(user.Id, model.FirstName!, model.LastName!, model.PhoneNumber!, model.Email!);
 			return Ok("Ваш профіль було успішно оновлено");
 		}
+        [HttpPost("changePassword")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> СhangePassword(ChangePasswordViewModel model)
+        {
+            var user = await _userService.GetUserByName(User.Identity.Name!);
+
+
+            if (user == null)
+            {
+                return NoContent();
+            }
+            if (model.CurrentPassword == "" ||
+				model.NewPassword == "")
+            {
+                return BadRequest("Всі поля мають бути заповнені");
+            }
+            try
+            {
+                await _userService.ChangePassword(user.Id, model.CurrentPassword, model.NewPassword);
+            }catch (OperationCanceledException)
+            {
+				return BadRequest("Помилка");
+			}
+			return Ok("Ваш пароль було успішно оновлено");
+		}
 
 		[HttpGet("getFavoritePharmacies")]
-        //[Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> GetFavouritePharmacies()
+		[Authorize(AuthenticationSchemes = "Bearer")]
+		public async Task<IActionResult> GetFavouritePharmacies()
         {
             if (String.IsNullOrEmpty(User.Identity.Name))
                 return Ok(null);
@@ -109,7 +134,7 @@ namespace Web.Controllers
         }
 
         [HttpGet("getFavoritePharmaciesWithSupInfo")]
-        //[Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetFavouritePharmaciesWithSupInfo()
         {
             if (String.IsNullOrEmpty(User.Identity.Name))

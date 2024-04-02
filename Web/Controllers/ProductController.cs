@@ -87,11 +87,11 @@ namespace Web.Controllers
 		{
 			Product product = _productService!.GetProduct(a => a.Id == id, includeProperties: "PriceHistory,PriceHistory.HistoryDate")!;
 
-			return Ok(product.PriceHistory.Select((a) => new
+			return Ok(product.PriceHistory.OrderBy(a=>a.HistoryDate.Date).Select((a) => new
 			{
 				date = a.HistoryDate.Date.ToString("MM.yy"),
 				price = a.Price
-			}).GroupBy(a=>a.date).Select(a=> new { name = a.Key, value = a.Average(b => b.price) }).Take(12));
+			}).GroupBy(a=>a.date).Select(a=> new { name = a.Key, value = a.Average(b => b.price) }).TakeLast(12));
 		}
 
 		[HttpGet("GetById")]

@@ -11,9 +11,9 @@ const ListPharmacies = (props) => {
 
                 <p className={styles["product-title"]}>{props.product.title} {props.product.shortDescription} ціна у {props.city}</p>
                 <NavigationDetailsComponent id={props.product.id} />
-                <div className="my-3">
+                {/* <div className="my-3">
                     <ChangeCityComponent city={props.city}/>
-                </div>
+                </div> */}
             <p className={`${styles["found-in"]}`}>Знайдено у {props.townProducts.length} аптеках</p>
             {props.townProducts.map((product,index) => 
             <ListProductItemComponent             

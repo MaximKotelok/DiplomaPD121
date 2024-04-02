@@ -90,7 +90,7 @@ const MapPharmacies = (props) => {
             if (prevMarker) {
                 prevMarker.setIcon(defaultIcon);
             }
-            map.panTo(new L.LatLng(clickedMarker._latlng.lat, clickedMarker._latlng.lng));
+            map.setView(new L.LatLng(clickedMarker._latlng.lat, clickedMarker._latlng.lng),100);
             clickedMarker.setIcon(clickedIcon);
             return clickedMarker;
         });
@@ -104,7 +104,7 @@ const MapPharmacies = (props) => {
         }
         setTimeout(() => {
             const newMarker = mapMarkers[pharmacy.id];
-            map.setView(new L.LatLng(newMarker._latlng.lat, newMarker._latlng.lng));
+            map.setView(new L.LatLng(newMarker._latlng.lat, newMarker._latlng.lng),100);
             newMarker.setIcon(clickedIcon);
             setSelectedMarker(newMarker);
         }, 0);
