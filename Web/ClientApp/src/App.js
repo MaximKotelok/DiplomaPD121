@@ -43,7 +43,7 @@ import UpsertPharmacyComponent from "./components/Admin/PAge/Pharmacy/AddPharmac
 import { SupportChat } from "./components/Admin/PAge/SupportChat/SupportChat";
 import SearchComponent from "./components/Common/SearchComponent/SearchComponent";
 import { SearchProductPageComponent } from "./components/User/Pages/Search/SearchProductPageComponent";
-
+import { removeToken } from "./utils/Login";
 // export default class App extends Component {
 // static displayName = App.name;
 
@@ -74,7 +74,7 @@ export default class App extends Component {
             response => response,
             error => {
                 if (error.response && error.response.status === 401) {
-                    // Redirect user to login page
+                    removeToken();
                     window.location.href = '/auth/login';
                 }
                 return Promise.reject(error);

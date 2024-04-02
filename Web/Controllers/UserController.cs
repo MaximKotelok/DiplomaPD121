@@ -28,20 +28,23 @@ namespace Web.Controllers
 
 
         [HttpGet("getFavoriteProducts")]
-        //[Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetFavouriteProducts()
         {
-            if (String.IsNullOrEmpty(User.Identity.Name))
-                return Ok(null);
+            var favProducts = new List<int>(); // Create an empty list to store favorite product IDs
 
-            var user = await _userService.GetUserByName(User.Identity.Name);
-
-            if (user == null)
+            // Check if user is authenticated
+            if (!String.IsNullOrEmpty(User.Identity.Name))
             {
-                return NoContent();
+                var user = await _userService.GetUserByName(User.Identity.Name);
+
+                if (user != null && user.FavProducts != null)
+                {
+                    favProducts = user.FavProducts.Select(a => a.Id).ToList();
+                }
             }
 
-            return Ok(user!.FavProducts!.Select(a => a.Id).ToList());
+            return Ok(favProducts);
         }
 
         [HttpGet("getMyInfo")]
@@ -91,7 +94,7 @@ namespace Web.Controllers
 		}
 
 		[HttpGet("getFavoritePharmacies")]
-        //[Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetFavouritePharmacies()
         {
             if (String.IsNullOrEmpty(User.Identity.Name))
@@ -109,7 +112,7 @@ namespace Web.Controllers
         }
 
         [HttpGet("getFavoritePharmaciesWithSupInfo")]
-        //[Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetFavouritePharmaciesWithSupInfo()
         {
             if (String.IsNullOrEmpty(User.Identity.Name))
