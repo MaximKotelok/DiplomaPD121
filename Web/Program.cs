@@ -76,6 +76,7 @@ builder.Services.AddAuthentication(opt =>
 });
 
 builder.Services.AddAuthorization();
+builder.Services.AddAuthentication();
 
 builder.Services.AddSwaggerGen(
     c =>
