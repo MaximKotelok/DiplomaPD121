@@ -43,17 +43,20 @@ export async function GetProductByTitle(title, count = 6) {
     }, ClassHeader)
 } 
 
-export async function Search(title = null, categories = null, brands = null, activeSubstanceId, properties = null) {
+export async function Search(title = null, categories = null, brands = null, activeSubstanceId, properties = null,page=1) {
     let res = await postToServer("Product/Search", {
         title,
         categories,
         brands,
         activeSubstanceId,
-        properties
+        properties,
+        page,
+        productPerPage:4,
+
     }, ClassHeader)
 
     if(res.status === Success){
-        return {status: Success, data: await getSupInfo(res.data)}
+        return {...res, products: await getSupInfo(res.data.products)}
     }
     return "Error"
 } 

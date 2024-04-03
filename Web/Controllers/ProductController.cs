@@ -300,7 +300,10 @@ namespace Web.Controllers
 
 			if (result is not null)
 			{
-				return Ok(result);
+				int countOfPages = (int)Math.Round(Convert.ToDouble(result.Count()) / Convert.ToDouble(model.ProductPerPage));
+				int page = model.Page != null ? model.Page.Value-1 : 0;
+				var products = result.Skip(model.ProductPerPage * page).Take(model.ProductPerPage);
+				return Ok(new { products, countOfPages});
 			}
 			return BadRequest("No records found");
 		}

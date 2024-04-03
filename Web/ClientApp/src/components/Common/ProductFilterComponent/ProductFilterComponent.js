@@ -8,103 +8,81 @@ import ProductFilterChoosenComponent from '../ProductFilterChoosenComponent/Prod
 import SearchComponent from '../SearchComponent/SearchComponent';
 import { GetSearchInput, Search } from '../../../services/product';
 import { Success } from '../../../utils/Constants';
-const ProductFilterComponent = ({ products, setProducts }) => {
+const ProductFilterComponent = ({ 
+    setProducts, 
+    setPage, 
+    setCountOfPages,
+    filters,
+    setFilters,
+    setSearchByTitle,
+    searchByTitle,
+    search
+}) => {
     const { title, categoryId, brandId, extraParamId, extraParamValue, activeSubstanceId } = useParams();
 
-    const [filters, setFilters] = useState({});
-    const [availableAttributes, setAvailableAttributes] = useState({});    
-    const [filteredAttributes, setFilteredAttributes] = useState({});    
-    const [categories, setCategories] = useState([]);    
-    const [brands, setBrands] = useState([]);    
-    const [searchByTitle, setSearchByTitle] = useState("");
+    const [availableAttributes, setAvailableAttributes] = useState({});
+    const [filteredAttributes, setFilteredAttributes] = useState({});
+    const [categories, setCategories] = useState([]);
+    const [brands, setBrands] = useState([]);
 
-    useEffect(()=>{
-        init();   
-        if(title){
+    useEffect(() => {
+        init();
+        if (title) {
             setSearchByTitle(title);
         }
-    },[title, categoryId, brandId, extraParamId, extraParamValue]);
+    }, [title, categoryId, brandId, extraParamId, extraParamValue]);
 
-    async function init(){
-        
+
+
+    async function init() {
+
         let res = await GetSearchInput(
-                title, 
-                categoryId?[categoryId]:null, 
-                brandId?[brandId]:null, 
-                activeSubstanceId?parseInt(activeSubstanceId):null, 
-                extraParamId&&extraParamValue?[{id:extraParamId, name:extraParamValue}]:null,                
-                );
-            
-        if(res.status === Success){
-            if(!categoryId){
-                setCategories(res.data.categories);                
-            }else{
-                setFilters({...filters, categories:[{value:categoryId, isHidden:true}]})
+            title,
+            categoryId ? [categoryId] : null,
+            brandId ? [brandId] : null,
+            activeSubstanceId ? parseInt(activeSubstanceId) : null,
+            extraParamId && extraParamValue ? [{ id: extraParamId, name: extraParamValue }] : null,
+        );
+
+        if (res.status === Success) {
+            if (!categoryId) {
+                setCategories(res.data.categories);
+            } else {
+                setFilters({ ...filters, categories: [{ value: categoryId, isHidden: true }] })
             }
-            if(!brandId){
+            if (!brandId) {
                 setBrands(res.data.brands);
-            }else{
-                setFilters({...filters, brands:[{value:brandId, isHidden:true}]})
-            }    
-            
+            } else {
+                setFilters({ ...filters, brands: [{ value: brandId, isHidden: true }] })
+            }
+
             setAvailableAttributes(res.data.attributes);
             setFilteredAttributes(res.data.attributes);
         }
     }
 
-    function convertToServerModel(key, array) {
-        const outputArray = [];
-        
-        for (let item in array) {
-            outputArray.push({name:key, value:array[item].value});
+
+    async function submit() {
+        let result = await search();
+        if (result) {
+            setPage(1);
+            setCountOfPages(result.countOfPages);
+            setProducts(result.products);
         }
-    
-        return outputArray;
     }
 
-    async function submit(){
-        let clone = {...filters};    
-        let categories = clone.categories?Object.keys(clone.categories).map(a=>parseInt(clone.categories[a].value)):[];
-        let brands = clone.brands?Object.keys(clone.brands).map(a=>parseInt(clone.brands[a].value)):[];
-        delete clone.categories;
-        
-        delete clone.brands;
-        // let model = {
-        //     title: searchByTitle,
-        //     categories: categories,
-        //     brands: brands,
-        //     properties:             
-        //     [].concat(...Object.keys(clone)
-        //         .map(a=>convertToServerModel(a,clone[a]))
-        //     )
-        //     ,
-        // }
 
-        let searchResult = await Search(
-            searchByTitle, 
-            categories, 
-            brands, 
-            activeSubstanceId?activeSubstanceId:null, 
-            [].concat(...Object.keys(clone)
-                .map(a=>convertToServerModel(a,clone[a]))
-            )
-        );
-        if(searchResult.status === Success)
-            setProducts(searchResult.data);
-
-    }
-    
-    const handleFilterChange = (attributeName, selectedValue, isDelete = false, displayedName = "") => {    
-        if (Object.keys(filters).indexOf(attributeName) === -1) {                        
+    const handleFilterChange = (attributeName, selectedValue, isDelete = false, displayedName = "") => {
+        if (Object.keys(filters).indexOf(attributeName) === -1) {
             setFilters(prevFilters => ({
                 ...prevFilters,
-                [attributeName]: [{value: selectedValue, displayedName: displayedName?displayedName:selectedValue}],
+                [attributeName]: [{ value: selectedValue, displayedName: displayedName ? displayedName : selectedValue }],
             }));
-        } else {                        
-            if (filters[attributeName].findIndex(a=>a.value === selectedValue) === -1) {   
+        } else {
+            if (filters[attributeName].findIndex(a => a.value === selectedValue) === -1) {
                 setFilters(prevFilters => ({
                     ...prevFilters,
-                    [attributeName]: [...filters[attributeName], {value: selectedValue, displayedName: displayedName?displayedName:selectedValue}],
+                    [attributeName]: [...filters[attributeName], { value: selectedValue, displayedName: displayedName ? displayedName : selectedValue }],
                 }));
             } else if (!isDelete) {
                 setFilters(prevFilters => ({
@@ -119,71 +97,71 @@ const ProductFilterComponent = ({ products, setProducts }) => {
 
 
     return (
-        <div className={styles["card"]}>
-            {Object.keys(filters).map(attributeName =>{
-                return filters[attributeName].filter(a=>!a.isHidden).map(a=>{
-                    return <ProductFilterChoosenComponent name={a.displayedName} 
-                    remove={()=>handleFilterChange(attributeName,a.value,false)}/>
+        <div className={`${styles["card"]}`}>
+            {Object.keys(filters).map(attributeName => {
+                return filters[attributeName].filter(a => !a.isHidden).map(a => {
+                    return <ProductFilterChoosenComponent name={a.displayedName}
+                        remove={() => handleFilterChange(attributeName, a.value, false)} />
                 });
-                
+
             })}
 
-            <SearchComponent value={searchByTitle} onClick={submit} callback={setSearchByTitle} className={styles["search"]}/>
-            
-            {(Object.keys(categories).length>0 && <ProductFilterItemGroupComponent title="Категорія">                    
-                    {Object.keys(categories).map(key => {
-                        let state = (filters["categories"] && filters["categories"].
-                            findIndex(a=>a.value===key) !== -1);
-                        
-                        return (
+            <SearchComponent value={searchByTitle} onClick={submit} callback={setSearchByTitle} className={styles["search"]} />
+
+            {(Object.keys(categories).length > 0 && <ProductFilterItemGroupComponent title="Категорія">
+                {Object.keys(categories).map(key => {
+                    let state = (filters["categories"] && filters["categories"].
+                        findIndex(a => a.value === key) !== -1);
+
+                    return (
                         <ProductFilterItemComponent
                             key={key}
                             name={categories[key]}
                             state={state}
-                            setState={(state)=>{handleFilterChange("categories",key,!state, categories[key])}}
+                            setState={(state) => { handleFilterChange("categories", key, !state, categories[key]) }}
                         />
                     )
-                    })
-                    }
-                    </ProductFilterItemGroupComponent>
+                })
+                }
+            </ProductFilterItemGroupComponent>
             )}
-            {(Object.keys(brands).length>0 && <ProductFilterItemGroupComponent title="Бренд">                    
-                    {Object.keys(brands).map(key => {
-                        let state = (filters["brands"] && filters["brands"].
-                            findIndex(a=>a.value===key) !== -1);
-                        
-                        return (
+            {(Object.keys(brands).length > 0 && <ProductFilterItemGroupComponent title="Бренд">
+                {Object.keys(brands).map(key => {
+                    let state = (filters["brands"] && filters["brands"].
+                        findIndex(a => a.value === key) !== -1);
+
+                    return (
                         <ProductFilterItemComponent
                             key={key}
                             name={brands[key]}
                             state={state}
-                            setState={(state)=>{handleFilterChange("brands",key,!state, brands[key])}}
+                            setState={(state) => { handleFilterChange("brands", key, !state, brands[key]) }}
                         />
                     )
-                    })
-                    }
-                    </ProductFilterItemGroupComponent>
-                    )}
+                })
+                }
+            </ProductFilterItemGroupComponent>
+            )}
 
             {Object.keys(filteredAttributes).map(attributeName => (
-                <div key={attributeName}>                    
-                    <ProductFilterItemGroupComponent title={attributeName}>                    
-                    {availableAttributes[attributeName]?.map(value => {
-                        let state = (filters[attributeName] && filters[attributeName].
-                        findIndex(a=>a.value===value) !== -1);
-                        
-                        return (
-                        <ProductFilterItemComponent
-                            key={value}
-                            name={value}
-                            state={state}
-                            setState={(state)=>{handleFilterChange(attributeName,value,!state)}}
-                        />
-                    )
-                    })
-                    }
+                <div key={attributeName}>
+                    <ProductFilterItemGroupComponent title={attributeName}>
+                        {availableAttributes[attributeName]?.map(value => {
+                            let state = (filters[attributeName] && filters[attributeName].
+                                findIndex(a => a.value === value) !== -1);
+
+                            return (
+                                <ProductFilterItemComponent
+                                    key={value}
+                                    name={value}
+                                    state={state}
+                                    setState={(state) => { handleFilterChange(attributeName, value, !state) }}
+                                />
+                            )
+                        })
+                        }
                     </ProductFilterItemGroupComponent>
-                    
+
                     {/* <span>{attributeName}:</span>
                     <select
                         value={filters[attributeName] || ''}
