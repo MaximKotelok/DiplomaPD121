@@ -8,9 +8,8 @@ import { setupLocation } from "./utils/Location";
 // import LayoutAdmin from "./components/pages/Admin/LayoutAdmin";
 import "./styles/variables.css";
 import "./styles/global.css";
-import 'react-international-phone/style.css';
-import { 
-    Container } from "react-toastify";
+// import 'react-international-phone/style.css';
+import { ToastContainer } from "react-toastify";
 import { Home } from "./components/User/Pages/Home/Home";
 import { Layout } from "./layouts/UserLayout/Layout";
 import AuthPageComponent from "./components/Auth/AuthPageComponent";
@@ -34,7 +33,6 @@ import EditProfile from "./components/User/Pages/Profile/Components/EditProfileC
 import PharmacyInfo from "./components/User/Pages/PharmacyInfo/PharmacyInfo";
 import { LoginLayuotPharmacy } from "./layouts/LoginPharmacy/LoginLayuotPharmacy";
 import LayoutAdmin from "./layouts/AdminLayout/LayoutAdmin";
-import TableComponent from "./components/Admin/PAge/TableComponent/TableComponent";
 import { UserPharmacy } from "./components/Admin/PAge/UsersPharmacy/UserPharmacy";
 import UpsertProductComponent from "./components/Admin/PAge/Pharmacy/AddProductComponents/UpsertProductComponent/UpsertProductComponent";
 import UpsertBrandComponent from "./components/Admin/PAge/Brand/AddBrandComponents/UpsertBrandComponent/UpsertBrandComponent";
@@ -44,6 +42,8 @@ import { SupportChat } from "./components/Admin/PAge/SupportChat/SupportChat";
 import SearchComponent from "./components/Common/SearchComponent/SearchComponent";
 import { SearchProductPageComponent } from "./components/User/Pages/Search/SearchProductPageComponent";
 import { removeToken } from "./utils/Login";
+import { ZayavkaComponents } from "./components/Admin/PAge/Admin/ZayavkaComponents/ZayavkaComponents";
+
 // export default class App extends Component {
 // static displayName = App.name;
 
@@ -136,34 +136,45 @@ export default class App extends Component {
             <Route path="loginPharmacy" element={<LoginLayuotPharmacy />}>
             </Route>
 
-            <Route path="admin" element={<LayoutAdmin />}>
-              <Route path="zayavka" element={<TableComponent />} />
-              <Route path="pharmacyUser" element={<UserPharmacy />} />
-              <Route path="updateProduct/:productId" element={<UpsertProductComponent />} />
-              <Route path="addProduct" element={<UpsertProductComponent />} />
-              <Route path="addBrand" element={<UpsertBrandComponent />} />
-              <Route path="supportChat" element={<SupportChat />} />
-              <Route
-                path="updateBrand/:brandId"
-                element={<UpsertBrandComponent />}
-              />
-              <Route
-                path="addPharmaCompany"
-                element={<UpsertBrandComponent />}
-              />
-              <Route
-                path="updatePharmaCompany/:companyId"
-                element={<UpsertPharmaCompanyComponent />}
-              />
-              <Route path="updateBrand/:brandId" element={<UpsertBrandComponent />} />
-              <Route path="addPharmaCompany" element={<UpsertPharmaCompanyComponent />} />
-              <Route path="updatePharmaCompany/:companyId" element={<UpsertPharmaCompanyComponent />} />    
-              <Route path="addPharmacy" element={<UpsertPharmacyComponent />} />
-              <Route path="updatePharmacy/:pharmacyId" element={<UpsertPharmacyComponent />} /> 
-            </Route>
-          </Routes>
-        </LayoutProvider>
-
+          <Route path="admin" element={<LayoutAdmin />}>
+            <Route path="zayavka" element={<ZayavkaComponents />} />
+            <Route path="pharmacyUser" element={<UserPharmacy />} />
+            <Route
+              path="updateProduct/:productId"
+              element={<UpsertProductComponent />}
+            />
+            <Route path="addProduct" element={<UpsertProductComponent />} />
+            <Route path="addBrand" element={<UpsertBrandComponent />} />
+            <Route path="supportChat" element={<SupportChat />} />
+            <Route
+              path="updateBrand/:brandId"
+              element={<UpsertBrandComponent />}
+            />
+            <Route path="addPharmaCompany" element={<UpsertBrandComponent />} />
+            <Route
+              path="updatePharmaCompany/:companyId"
+              element={<UpsertPharmaCompanyComponent />}
+            />
+            <Route
+              path="updateBrand/:brandId"
+              element={<UpsertBrandComponent />}
+            />
+            <Route
+              path="addPharmaCompany"
+              element={<UpsertPharmaCompanyComponent />}
+            />
+            <Route
+              path="updatePharmaCompany/:companyId"
+              element={<UpsertPharmaCompanyComponent />}
+            />
+            <Route path="addPharmacy" element={<UpsertPharmacyComponent />} />
+            <Route
+              path="updatePharmacy/:pharmacyId"
+              element={<UpsertPharmacyComponent />}
+            />
+          </Route>
+        </Routes>
+      </LayoutProvider>
     );
   }
 }

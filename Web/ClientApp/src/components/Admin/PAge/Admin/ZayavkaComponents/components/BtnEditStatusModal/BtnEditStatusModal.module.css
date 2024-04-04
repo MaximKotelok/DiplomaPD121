@@ -1,0 +1,125 @@
+
+.btn-hover{
+    cursor: pointer;
+}
+
+
+.text-data{
+    font-family: var(--standart-font);
+    font-size: 10px;
+    font-weight: 400;
+    text-align: right;
+    
+    color: rgba(14, 62, 117, 1);
+}
+
+.text-email-dashed{
+    text-decoration: underline;
+}
+
+
+.text-area-zayavka{
+    padding: 12px ;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 122, 255, 1);
+    width: 100%;
+    resize: none;
+
+    color:  rgba(14, 62, 117, 1);
+    font-family: var(--standart-font);
+font-size: 14px;
+font-weight: 400;
+outline: none;
+
+}
+
+.text-area-zayavka::placeholder {
+    color: rgba(14, 62, 117, 1); }
+
+
+
+    .status-text{
+        font-family: var(--standart-font);
+font-size: 13px;
+font-weight: 700;
+line-height: 18px;
+color: rgba(0, 0, 0, 1);
+
+    }
+
+
+
+      /* input[type="radio"]:checked + .parent-radio-div { */
+
+        .labale-radio{
+        border: 2px solid transparent;
+        padding: 4px;
+        border-radius: 100px;
+        }
+
+      input[type="radio"]:checked + .labale-radio-color1 {
+        border: 2px solid rgba(52, 199, 89, 1);
+      }
+
+      input[type="radio"]:checked + .labale-radio-color2 {
+        border: 2px solid rgba(255, 149, 0, 1);
+    }
+
+     
+      input[type="radio"]:checked + .labale-radio-color3 {
+        border: 2px solid rgba(255, 59, 48, 1);
+      }
+
+      .div-text-radio{
+        width: 104px;
+        padding: 4px ;
+        border-radius: 100px;
+        font-family: var(--standart-font);
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 18px;
+        color: rgba(255, 255, 255, 1);
+        text-align: center;
+    }
+
+    .bg-color1{
+        background-color: rgba(52, 199, 89, 1);
+
+    }
+
+    .bg-color2{
+        background-color: rgba(255, 149, 0, 1);
+
+    }
+
+    .bg-color3{
+        background-color: rgba(255, 59, 48, 1);
+
+    }
+
+
+
+
+    .card-btn-primary {
+        background-color: rgba(0, 122, 255, 1);
+        color: rgba(242, 242, 247, 1);
+        transition: background-color 0.3s, color 0.3s; /* Додайте перехід для кольору та фону */
+    }
+    
+    .card-btn-primary:hover {
+        background-color: #0e3e75;
+        color: rgba(242, 242, 247, 1);
+    }
+    
+    .card-btn-primary-500{
+        background-color: rgba(0, 122, 255, 0.15);
+        color: rgba(0, 122, 255, 1);
+        transition: background-color 0.3s, color 0.3s; /* Додайте перехід для кольору та фону */
+    
+    }
+    .card-btn-primary-500:hover{
+        background-color: rgba(0, 122, 255, 0.5);
+        color: rgba(0, 122, 255, 1);
+        transition: background-color 0.3s, color 0.3s; /* Додайте перехід для кольору та фону */
+    
+    }

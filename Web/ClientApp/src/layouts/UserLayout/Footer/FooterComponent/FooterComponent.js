@@ -2,58 +2,60 @@
 import "./FooterComponent.css";
 import ios from "../../../../assets/images/footer-icons/ios.svg";
 import playmarket from "../../../../assets/images/footer-icons/playmarket.svg";
+
 import "./FooterMapComponent.css";
 import { NavLink } from "react-router-dom";
-
-const FooterLink = ({ href, text, target = "" }) => (
-  <li className="nav-item mb-2">
-    <NavLink target={target} to={href} className="nav-link p-0 text-dark">
-      {text}
-    </NavLink>
-  </li>
-);
+import AccordionQuestionAdaptationComponent from "../../../../components/Common/AccordionFooterAdaptationComponent/AccordionQuestionAdaptationComponent";
+import { FooterLink } from "../FooterLinkComponentn/FooterLink";
 
 const FooterComponent = () => (
   <div className="">
     <footer>
       <div className="row top-div">
         {/* Section 1 */}
-        <div className="col-12 col-md-4 col-lg-2 mb-3 section-1">
-          <h5>Користувачам</h5>
-          <ul className="nav flex-column">
-            <FooterLink href="#" text="Аптеки поблизу" />
-            <FooterLink href="#" text="Розширений пошук" />
-            <FooterLink href="#" text="Браковані серії" />
-            <FooterLink href="#" text="Доставка і оплата" />
-            <FooterLink href="#" text="Умови повернення" />
-          </ul>
+        <div className="col-12 col-md-4 col-lg-2 mb-3 div-acordeon section-1">
+
+          <AccordionQuestionAdaptationComponent
+            header="Користувачам"
+            ulList={[
+              { text: "Аптеки поблизу", href: "/", target: "" },
+              { text: "Розширений пошук", href: "/", target: "" },
+              { text: "Браковані серії", href: "/", target: "" },
+              { text: "Доставка і оплата", href: "/", target: "" },
+              { text: "Умови повернення", href: "/", target: "" },
+            ]}
+          />
         </div>
 
         {/* Section 2 */}
-        <div className="col-12 col-md-4 col-lg-2 mb-3 section-2">
-          <h5>Інформація</h5>
-          <ul className="nav flex-column">
-            <FooterLink href="#" text="Про нас" />
-            <FooterLink href="#" text="Зворотній зв'язок" />
-            <FooterLink href="#" text="Контакти" />
-            <FooterLink href="#" text="Блог" />
-            <FooterLink href="#" text="Правила кібербезпеки" />
-          </ul>
+        <div className="col-12 col-md-4 col-lg-2 mb-3 div-acordeon section-2">
+          <AccordionQuestionAdaptationComponent
+            header="Інформація"
+            ulList={[
+              { text: "Про нас", href: "/", target: "" },
+              { text: "Зворотній зв'язок", href: "/", target: "" },
+              { text: "Контакти", href: "/", target: "" },
+              { text: "Блог", href: "/", target: "" },
+              { text: "Правила кібербезпеки", href: "/", target: "" },
+            ]}
+          />
         </div>
 
         {/* Section 3 */}
-        <div className="col-12 col-md-4 col-lg-3 mb-3 section-3">
-          <h5>Партнерам</h5>
-          <ul className="nav flex-column">
-            <FooterLink href="#" text="Розмістити аптеку" />
-            <FooterLink
-              target="_blank"
-              href="/loginPharmacy"
-              text="Особистий кабінет аптеки"
-            />
-            <FooterLink href="#" text="Технічна документація" />
-            <FooterLink href="#" text="Наші партнери" />
-          </ul>
+        <div className="col-12 col-md-4 col-lg-3 mb-3 div-acordeon section-3">
+          <AccordionQuestionAdaptationComponent
+            header="Партнерам"
+            ulList={[
+              { text: "Розмістити аптеку", href: "/", target: "" },
+              {
+                text: "Особистий кабінет аптеки",
+                href: "/loginPharmacy",
+                target: "_blank",
+              },
+              { text: "Технічна документація", href: "/", target: "" },
+              { text: "Наші партнери", href: "/", target: "" },
+            ]}
+          />
         </div>
 
         {/* Section 4 */}
@@ -83,7 +85,7 @@ const FooterComponent = () => (
       {/* Bottom Section */}
 
       <div
-        style={{ margin: "10px 0" }}
+        style={{ margin: "20px 0" }}
         className="row  py-4  bottom-div section-4 "
       >
         <div className="col-md-4 col-6 ">
