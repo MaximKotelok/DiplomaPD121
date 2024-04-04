@@ -3,14 +3,25 @@ import Modal from "react-bootstrap/Modal";
 import { ReactComponent as ImgBtn } from "./btnZayavkModal.svg";
 import styles from "./BtnEditStatusModal.module.css";
 import { CheckedBox } from "../../../../../Common/CheckedBoxComponent/CheckedBox";
+import { changeStatus } from "../../../../../../../services/product";
+import { Success } from "../../../../../../../utils/Constants";
 
-function BtnEditStatusModal({ text }) {
+function BtnEditStatusModal({id,statusId, statuses, changeStatusProduct }) {
   const [show, setShow] = useState(false);
   const [isActive, setIsActive] = useState(false);
-
+  const [changeStatusId, setChangeStatusId] = useState(statusId);  
   const handleRadioChange = () => {
     setIsActive(!isActive);
   };
+
+  const updateStatus = async ()=>{
+    let res = await changeStatus(id, changeStatusId);
+    if(res.status === Success){
+      let index = statuses.findIndex(a=>a.id===changeStatusId);
+      changeStatusProduct(statuses[index]);
+      setShow(false);
+    }
+  }
   return (
     <>
       <ImgBtn
@@ -54,27 +65,41 @@ function BtnEditStatusModal({ text }) {
           <div className="mt-3">
             <h6 className={`${styles["status-text"]}`}>Статус</h6>
 
+        
             <div className={`d-flex flex-wrap`}>
+            {statuses && statuses.map &&
+          statuses.map(a=>{
+            return (
               <div className={`${styles["parent-radio-div"]}`}>
-                <input
-                  type="radio"
-                  className={`btn-check ${styles["btn-check"]}`}
-                  name="options-base"
-                  id="option1"
-                  autoComplete="off"
-                />
-                <label
-                  className={`  ${styles["labale-radio"]}  ${styles["labale-radio-color1"]}`}
-                  htmlFor="option1"
+              <input
+                type="radio"
+                className={`btn-check ${styles["btn-check"]}`}
+                name="options-base"
+                id={`option${a.id}`}
+                defaultChecked={changeStatusId === a.id}
+                onChange={()=>{
+                  setChangeStatusId(a.id);
+                }}
+              />
+              <label
+                className={`${styles["labale-radio"]}`}
+                style={{border: `2px solid ${a.color}`}}
+                htmlFor={`option${a.id}`}
+              >
+                <div
+                  className={`${styles["div-text-radio"]}`}
+                  style={{backgroundColor: a.color}}
                 >
-                  <div
-                    className={`${styles["div-text-radio"]} ${styles["bg-color1"]}`}
-                  >
-                    Radio
-                  </div>
-                </label>
-              </div>
+                  {a.status}
+                </div>
+              </label>
+            </div>
 
+            )
+
+          })
+        }
+{/*          
               <div className={`${styles["parent-radio-div"]}`}>
                 <input
                   type="radio"
@@ -113,15 +138,16 @@ function BtnEditStatusModal({ text }) {
                     Radio
                   </div>
                 </label>
-              </div>
+              </div> */}
             </div>
 
             <div className="row mt-3">
               <div className="col-6 ps-2 pe-2">
                 <button
                   className={`brn-form ${styles["card-btn-primary"]} btn w-100`}
+                  onClick={updateStatus}
                 >
-                  Оформити бронювання
+                  Оновити Статус
                 </button>
               </div>
               <div className="col-6 ps-2 pe-2">

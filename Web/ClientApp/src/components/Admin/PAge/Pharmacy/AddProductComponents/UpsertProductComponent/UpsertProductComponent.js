@@ -49,6 +49,7 @@ const UpsertProductComponent = () => {
   const [stateInfo, setStateInfo] = useState(StateInfos.LOADING);
 
   const { productId } = useParams();
+  
 
   const [data, setData] = useState({
     descriptionName: "Опис",
@@ -88,10 +89,13 @@ const UpsertProductComponent = () => {
     });
     if (productId) {
       initAfterConfirm();
+      
     }
   }
 
   async function initAfterConfirm() {
+    console.log(productId
+      )
     setCustomState(setData, "isHeaderDisabled", true);
     setCustomState(setData, "formData", {
       ...data.formData,
@@ -238,12 +242,12 @@ const UpsertProductComponent = () => {
           data.image
         );
       else a = await postPhotoToServer("Photo/Add", "product", data.image);
-      a = `/images/product/${a}`;
+      a = `/images/product/${a.data}`;
     } else if (data.formData.pathToPhoto) {
       a = data.formData.pathToPhoto;
     }
     data.formData["pathToPhoto"] = a;
-    console.log(data.formData);
+    console.log(a);
     let res = await upsertProduct(data.formData, { additionalAttribute });
     setDisableButtonState(false);
     if (res.status === Success) {

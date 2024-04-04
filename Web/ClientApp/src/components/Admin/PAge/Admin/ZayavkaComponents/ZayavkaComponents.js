@@ -12,6 +12,12 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import BtnEditStatusModal from "./components/BtnEditStatusModal/BtnEditStatusModal";
 import SearchComponent from "../../../../Common/SearchComponent/SearchComponent";
+import { useEffect } from "react";
+import { getAllProductConfirm } from "../../../../../services/productConfirm";
+import { ApiPath, STANDART_IMG, Success } from "../../../../../utils/Constants";
+import CustomImgComponent from "../../../../Common/CustomImgComponent/CustomImgComponent";
+import { getAllStatuses } from "../../../../../services/productStatus";
+import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 
 const columns = [
   { id: "position", label: "Позиція", minWidth: 170 },
@@ -24,8 +30,8 @@ const columns = [
     // format: (value) => value.toLocaleString("en-US"),
   },
   {
-    id: "price",
-    label: "Ціна",
+    id: "date",
+    label: "Дата заявки",
     minWidth: 120,
     editable: true,
     // format: (value) => value.toLocaleString("en-US"),
@@ -116,13 +122,32 @@ const useStyles = makeStyles({
 
 export const ZayavkaComponents = () => {
   const classes = useStyles();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = React.useState(1);
+  const [countOfPages, setCountOfPages] = React.useState(1);
+  //const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rows, setRows] = React.useState([]);
+  const [statuses, setStatuses] = React.useState([]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
+  useEffect(()=>{
+    init();
+  },[]);
+
+  async function init(){
+    const res = await getAllProductConfirm(page);
+    const statusesRes = await getAllStatuses();
+    if(res.status === Success && statusesRes.status === Success){
+      //console.log(res);
+      setStatuses(statusesRes.data);
+      setRows(res.data.data);
+      setCountOfPages(res.data.countOfPages)
+      console.log(res)
+    }
+  }
+  console.log(statuses);
  
 
   return (
@@ -165,58 +190,83 @@ export const ZayavkaComponents = () => {
                       </TableCell>
                     </TableRow>
 
-                    {pharmacy.data.map((item, itemIndex) => (
+                    {pharmacy.data.map((item, itemIndex) => {
+                      return (
                       <TableRow
                         className={`${styles["tb-pharmacy"]}`}
                         key={itemIndex}
                       >
                         <TableCell>
-                          <img
-                            className={`${styles["img-product"]}`}
-                            src="https://root.tblcdn.com/img/goods/8d1aab55-2c38-11ec-bacc-0050569aacb6/1/img_0.jpg?v=AAAAAAmKo34"
-                          />{" "}
-                          {item.position}
+                          <CustomImgComponent
+                          className={`${styles["img-product"]}`}
+                          src={`${ApiPath}${item.pathToPhoto}`}/>
+                          {" "}
+                          {item.title}
                         </TableCell>
                         <TableCell>{item.category}</TableCell>
-                        <TableCell>{item.manufacture}</TableCell>
-                        <TableCell>{item.price}</TableCell>
+                        <TableCell>{item.manufacturer}</TableCell>
+                        <TableCell>{item.date}</TableCell>
                         <TableCell>
                           <div
                             className={`d-flex justify-content-between align-items-center`}
                           >
                             <div
-                              className={`${
-                                styles["span-status-color" + item.idstatus]
-                              }
+                              className={`
                             ${styles["span-status-rozmir"]}
                             `}
+                            style={{backgroundColor: item.statusColor}}                            
                             >
                               {item.status}
                             </div>
-                            <BtnEditStatusModal text="hello" />
+                            <BtnEditStatusModal id={item.id} statusId={item.statusId} statuses={statuses} changeStatusProduct={(c)=>{
+                              setRows((prevRows) => {
+                                const updatedRows = prevRows.map((row, rowIndex) => {
+                                  if (rowIndex === index) {
+                                    const updatedData = row.data.map((rowData) => {
+                                      if (rowData.id === item.id) {
+                                        return {
+                                          ...rowData,
+                                          statusId: c.id,
+                                          status: c.status,
+                                          statusColor: c.color
+                                        };
+                                      }
+                                      return rowData;
+                                    });
+                                    return {
+                                      ...row,
+                                      data: updatedData
+                                    };
+                                  }
+                                  return row;
+                                });
+                                return updatedRows;
+                              });
+                              
+                            }}/>
                           </div>
                         </TableCell>
                       </TableRow>
-                    ))}
+                    )})}
                   </React.Fragment>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
-          <div className={`d-flex justify-content-end align-items-center`}>
-            <span className={`${styles["text-pagination"]}`}>{`${
-              page + 1
-            } з ${Math.ceil(rows.length / rowsPerPage)}`}</span>
-            <TablePagination
-              className=""
-              component="div"
-              count={-1}
-              rowsPerPage={rowsPerPage}
+          <div className={`d-flex justify-content-end align-items-center`}>            
+            <PaginationComponent 
+              setContent={(a)=>setRows(a)}
+              getContent={async (page)=>{
+                let res = await getAllProductConfirm(page);
+                if(res.status === Success){
+                  return res.data.data;
+                }
+              }}
+              allowAppend={false}
               page={page}
-              onPageChange={handleChangePage}
-              rowsPerPageOptions={[]}
-              labelDisplayedRows={({ from, to }) => ""}
-            />
+              setPage={setPage}
+              countOfPages={countOfPages}
+              />
           </div>
         </Paper>
       </div>

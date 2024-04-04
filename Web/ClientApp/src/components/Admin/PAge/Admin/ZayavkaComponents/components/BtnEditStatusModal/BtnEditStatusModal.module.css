@@ -63,11 +63,11 @@ color: rgba(0, 0, 0, 1);
 
       input[type="radio"]:checked + .labale-radio-color2 {
         border: 2px solid rgba(255, 149, 0, 1);
-    }
+        }
 
-     
-      input[type="radio"]:checked + .labale-radio-color3 {
-        border: 2px solid rgba(255, 59, 48, 1);
+        
+      input[type="radio"]:not(:checked) + .labale-radio{
+        border: none !important;
       }
 
       .div-text-radio{
