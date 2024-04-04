@@ -7,6 +7,7 @@
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@fontsource/mulish": "^5.0.16",
+    "@material-ui/core": "^4.12.4",
     "@reduxjs/toolkit": "^2.2.1",
     "@tanstack/react-table": "^8.11.7",
     "axios": "^1.6.2",

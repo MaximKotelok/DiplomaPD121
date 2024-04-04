@@ -32,13 +32,13 @@ import EditProfile from "./components/User/Pages/Profile/Components/EditProfileC
 import PharmacyInfo from "./components/User/Pages/PharmacyInfo/PharmacyInfo";
 import { LoginLayuotPharmacy } from "./layouts/LoginPharmacy/LoginLayuotPharmacy";
 import LayoutAdmin from "./layouts/AdminLayout/LayoutAdmin";
-import TableComponent from "./components/Admin/PAge/TableComponent/TableComponent";
 import { UserPharmacy } from "./components/Admin/PAge/UsersPharmacy/UserPharmacy";
 import UpsertProductComponent from "./components/Admin/PAge/Pharmacy/AddProductComponents/UpsertProductComponent/UpsertProductComponent";
 import UpsertBrandComponent from "./components/Admin/PAge/Brand/AddBrandComponents/UpsertBrandComponent/UpsertBrandComponent";
 import UpsertPharmaCompanyComponent from "./components/Admin/PAge/PharmaCompany/AddPharmaCompanyComponents/UpsertPharmaCompanyComponent/UpsertPharmaCompanyComponent";
 import UpsertPharmacyComponent from "./components/Admin/PAge/Pharmacy/AddPharmacyComponents/UpsertPharmacyComponent/UpsertPharmacyComponent";
 import { SupportChat } from "./components/Admin/PAge/SupportChat/SupportChat";
+import { ZayavkaComponents } from "./components/Admin/PAge/Admin/ZayavkaComponents/ZayavkaComponents";
 
 // export default class App extends Component {
 // static displayName = App.name;
@@ -98,7 +98,7 @@ export default class App extends Component {
           <Route path="loginPharmacy" element={<LoginLayuotPharmacy />}></Route>
 
           <Route path="admin" element={<LayoutAdmin />}>
-            <Route path="zayavka" element={<TableComponent />} />
+            <Route path="zayavka" element={<ZayavkaComponents />} />
             <Route path="pharmacyUser" element={<UserPharmacy />} />
             <Route
               path="updateProduct/:productId"

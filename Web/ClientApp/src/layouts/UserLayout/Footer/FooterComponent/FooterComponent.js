@@ -2,6 +2,7 @@
 import "./FooterComponent.css";
 import ios from "../../../../assets/images/footer-icons/ios.svg";
 import playmarket from "../../../../assets/images/footer-icons/playmarket.svg";
+
 import "./FooterMapComponent.css";
 import { NavLink } from "react-router-dom";
 import AccordionQuestionAdaptationComponent from "../../../../components/Common/AccordionFooterAdaptationComponent/AccordionQuestionAdaptationComponent";
@@ -13,6 +14,7 @@ const FooterComponent = () => (
       <div className="row top-div">
         {/* Section 1 */}
         <div className="col-12 col-md-4 col-lg-2 mb-3 div-acordeon section-1">
+
           <AccordionQuestionAdaptationComponent
             header="Користувачам"
             ulList={[
@@ -37,12 +39,10 @@ const FooterComponent = () => (
               { text: "Правила кібербезпеки", href: "/", target: "" },
             ]}
           />
-      
         </div>
 
         {/* Section 3 */}
         <div className="col-12 col-md-4 col-lg-3 mb-3 div-acordeon section-3">
-       
           <AccordionQuestionAdaptationComponent
             header="Партнерам"
             ulList={[
