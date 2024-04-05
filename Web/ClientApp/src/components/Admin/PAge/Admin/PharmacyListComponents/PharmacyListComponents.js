@@ -1,6 +1,5 @@
 import React from "react";
-import styles from "./ZayavkaComponents.module.css";
-import "./ZayavkaComponents.css";
+import styles from "./PharmacyListComponents.module.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
@@ -18,31 +17,24 @@ import { ApiPath, STANDART_IMG, Success } from "../../../../../utils/Constants";
 import CustomImgComponent from "../../../../Common/CustomImgComponent/CustomImgComponent";
 import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
+import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
 
 const columns = [
-  { id: "position", label: "Позиція", minWidth: 170 },
-  { id: "category", label: "Категорія", minWidth: 170 },
+  { id: "pharmacy", label: "Аптека", minWidth: 170 },
+  { id: "address", label: "Адреса", minWidth: 170 },
   {
-    id: "manufacture",
-    label: "Виробник",
+    id: "timeWorking",
+    label: "Графік роботи",
     minWidth: 170,
     editable: true,
     // format: (value) => value.toLocaleString("en-US"),
   },
   {
-    id: "date",
-    label: "Дата заявки",
+    id: "userEmail",
+    label: "Користувач",
     minWidth: 120,
     editable: true,
     // format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "status",
-    label: "Статус",
-    minWidth: 120,
-    editable: true,
-    // align: "right",
-    format: (value) => value.toFixed(2),
   },
 ];
 
@@ -56,12 +48,10 @@ const rows = [
     name: "Аптека 1",
     data: [
       {
-        position: "Полиця 1",
-        category: "Вітаміни",
-        manufacture: "Manufacturer 1",
-        price: 200.5,
-        status: "Не коректне",
-        idstatus: "1",
+        pharmacyName: "№ 376",
+        timeWorking: "09:00 - 21:00",
+        addressPharmacy: "Львів. Вул . Городоцька 75",
+        userEmail: "podoroznik376@gmail.com",
       },
     ],
   },
@@ -69,28 +59,22 @@ const rows = [
     name: "Аптека 2",
     data: [
       {
-        position: "Полиця 3",
-        category: "Вітаміни",
-        manufacture: "Manufacturer 2",
-        price: 150.75,
-        status: "Не коректне",
-        idstatus: "1",
+        pharmacyName: "№ 376",
+        timeWorking: "09:00 - 21:00",
+        addressPharmacy: "Львів. Вул . Городоцька 75",
+        userEmail: "podoroznik376@gmail.com",
       },
       {
-        position: "Полиця 5",
-        category: "Аналгетики",
-        manufacture: "Manufacturer 3",
-        price: 300.25,
-        status: "На перевірці",
-        idstatus: "2",
+        pharmacyName: "№ 376",
+        timeWorking: "09:00 - 21:00",
+        addressPharmacy: "Львів. Вул . Городоцька 75",
+        userEmail: "podoroznik376@gmail.com",
       },
       {
-        position: "Полиця 7",
-        category: "Пробіотики",
-        manufacture: "Manufacturer 4",
-        price: 120.9,
-        status: "Коректне",
-        idstatus: "3",
+        pharmacyName: "№ 376",
+        timeWorking: "09:00 - 21:00",
+        addressPharmacy: "Львів. Вул . Городоцька 75",
+        userEmail: "podoroznik376@gmail.com",
       },
     ],
   },
@@ -98,12 +82,10 @@ const rows = [
     name: "Аптека 3",
     data: [
       {
-        position: "Полиця 2",
-        category: "Аналгетики",
-        manufacture: "Manufacturer 5",
-        price: 220.35,
-        status: "На перевірці",
-        idstatus: "2",
+        pharmacyName: "№ 376",
+        timeWorking: "09:00 - 21:00",
+        addressPharmacy: "Львів. Вул . Городоцька 75",
+        userEmail: "podoroznik376@gmail.com",
       },
     ],
   },
@@ -120,41 +102,44 @@ const useStyles = makeStyles({
   },
 });
 
-export const ZayavkaComponents = () => {
+export const PharmacyListComponents = () => {
   const classes = useStyles();
   const [page, setPage] = React.useState(1);
   const [countOfPages, setCountOfPages] = React.useState(1);
   //const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [rows, setRows] = React.useState([]);
+  // const [rows, setRows] = React.useState([]);
   const [statuses, setStatuses] = React.useState([]);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  // };
 
-  useEffect(()=>{
-    init();
-  },[]);
+  // useEffect(()=>{
+  //   init();
+  // },[]);
 
-  async function init(){
-    const res = await getAllProductConfirm(page);
-    const statusesRes = await getAllStatuses();
-    if(res.status === Success && statusesRes.status === Success){
-      //console.log(res);
-      setStatuses(statusesRes.data);
-      setRows(res.data.data);
-      setCountOfPages(res.data.countOfPages)
-      console.log(res)
-    }
-  }
-  console.log(statuses);
- 
+  // async function init(){
+  //   const res = await getAllProductConfirm(page);
+  //   const statusesRes = await getAllStatuses();
+  //   if(res.status === Success && statusesRes.status === Success){
+  //     //console.log(res);
+  //     setStatuses(statusesRes.data);
+  //     setRows(res.data.data);
+  //     setCountOfPages(res.data.countOfPages)
+  //     console.log(res)
+  //   }
+  // }
+  // console.log(statuses);
 
   return (
     <div className={`${styles["row-parent"]}`}>
       <div className={`${styles["box-container"]} row`}>
         <div className="col-6">
           <SearchComponent />
+        </div>
+
+        <div className="col-6">
+          <CheckedBox text="Показувати лише фарма-компанії?" />
         </div>
 
         <Paper className={classes.root}>
@@ -180,6 +165,37 @@ export const ZayavkaComponents = () => {
               </TableHead>
               <TableBody>
                 {rows.map((pharmacy, index) => (
+                  <React.Fragment key={index}>
+                    <TableRow>
+                      <TableCell
+                        colSpan={12}
+                        className={`${styles["header-body-pharmacy"]}`}
+                      >
+                        <CustomImgComponent
+                          className={`${styles["img-product"]}`}
+                          // src={`${ApiPath}${item.pathToPhoto}`}
+                        />{" "}
+                        {pharmacy.name}
+                      </TableCell>
+                    </TableRow>
+
+                    {pharmacy.data.map((item, itemIndex) => {
+                      return (
+                        <TableRow
+                          className={`${styles["tb-pharmacy"]}`}
+                          key={itemIndex}
+                        >
+                          <TableCell>{item.pharmacyName}</TableCell>
+                          <TableCell>{item.addressPharmacy}</TableCell>
+                          <TableCell>{item.timeWorking}</TableCell>
+                          <TableCell>{item.userEmail}</TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </React.Fragment>
+                ))}
+
+                {/* {rows.map((pharmacy, index) => (
                   <React.Fragment key={index}>
                     <TableRow>
                       <TableCell
@@ -249,12 +265,12 @@ export const ZayavkaComponents = () => {
                       </TableRow>
                     )})}
                   </React.Fragment>
-                ))}
+                ))} */}
               </TableBody>
             </Table>
           </TableContainer>
-          <div className={`d-flex justify-content-end align-items-center`}>            
-            <PaginationComponent 
+          <div className={`d-flex justify-content-end align-items-center`}>
+            {/* <PaginationComponent 
               setContent={(a)=>setRows(a)}
               getContent={async (page)=>{
                 let res = await getAllProductConfirm(page);
@@ -266,7 +282,7 @@ export const ZayavkaComponents = () => {
               page={page}
               setPage={setPage}
               countOfPages={countOfPages}
-              />
+              /> */}
           </div>
         </Paper>
       </div>

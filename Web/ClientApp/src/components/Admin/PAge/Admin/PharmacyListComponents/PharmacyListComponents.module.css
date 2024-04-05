@@ -18,7 +18,7 @@ height: 100%;
 
 .head-table{
     border-bottom: 1px solid rgba(13, 30, 49, 1);
-    margin: 0 20px 0 0px;
+    margin: 0 50px 0 0px;
     padding-bottom: 6px;
     color: rgba(13, 30, 49, 1);
     font-family: var(--standart-font);
@@ -54,11 +54,11 @@ color: rgba(17, 24, 39, 1);
 }
 
 .img-product{
+    /* margin-left: 8px; */
     margin-right: 8px;
-    margin-left: 8px;
-    width: 32px;
-height: 32px;
-border-radius: 5px;
+    width: 40px;
+height: 40px;
+border-radius: 100px;
 border: 1px solid rgba(229, 229, 234, 1);
 }
 

@@ -1,6 +1,5 @@
 import React from "react";
-import styles from "./ZayavkaComponents.module.css";
-import "./ZayavkaComponents.css";
+import styles from "./ProductListComponents.module.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
@@ -10,7 +9,6 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
-import BtnEditStatusModal from "./components/BtnEditStatusModal/BtnEditStatusModal";
 import SearchComponent from "../../../../Common/SearchComponent/SearchComponent";
 import { useEffect } from "react";
 import { getAllProductConfirm } from "../../../../../services/productConfirm";
@@ -18,31 +16,31 @@ import { ApiPath, STANDART_IMG, Success } from "../../../../../utils/Constants";
 import CustomImgComponent from "../../../../Common/CustomImgComponent/CustomImgComponent";
 import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
+import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
+import BtnEditSeriaModal from "./components/BtnEditSeriaModal/BtnEditSeriaModal";
 
 const columns = [
-  { id: "position", label: "Позиція", minWidth: 170 },
-  { id: "category", label: "Категорія", minWidth: 170 },
+  { id: "position", label: "Позиція", minWidth: 240 },
+  { id: "brend", label: "Бренд", minWidth: 240 },
   {
-    id: "manufacture",
-    label: "Виробник",
-    minWidth: 170,
+    id: "seria",
+    label: "Серія",
+    minWidth: 240,
     editable: true,
     // format: (value) => value.toLocaleString("en-US"),
   },
   {
-    id: "date",
-    label: "Дата заявки",
-    minWidth: 120,
+    id: "artukul",
+    label: "Артикул",
+    minWidth: 230,
     editable: true,
     // format: (value) => value.toLocaleString("en-US"),
   },
   {
-    id: "status",
-    label: "Статус",
-    minWidth: 120,
+    id: "editSeria",
+    label: "Керувати серія",
+    minWidth: 200,
     editable: true,
-    // align: "right",
-    format: (value) => value.toFixed(2),
   },
 ];
 
@@ -53,57 +51,49 @@ const columns = [
 
 const rows = [
   {
-    name: "Аптека 1",
+    nameCategory: "Для тварин: Собаки",
     data: [
       {
-        position: "Полиця 1",
-        category: "Вітаміни",
-        manufacture: "Manufacturer 1",
-        price: 200.5,
-        status: "Не коректне",
-        idstatus: "1",
+        position: "тарілка",
+        brend: "крутий бренд",
+        seria: "SD354GR",
+        artukul: "0239532",
       },
     ],
   },
   {
-    name: "Аптека 2",
+    nameCategory: "Вітаміни: вітамін B",
+
     data: [
       {
-        position: "Полиця 3",
-        category: "Вітаміни",
-        manufacture: "Manufacturer 2",
-        price: 150.75,
-        status: "Не коректне",
-        idstatus: "1",
+        position: "тарілка",
+        brend: "крутий бренд",
+        seria: "SD354GR",
+        artukul: "0239532",
       },
       {
-        position: "Полиця 5",
-        category: "Аналгетики",
-        manufacture: "Manufacturer 3",
-        price: 300.25,
-        status: "На перевірці",
-        idstatus: "2",
+        position: "тарілка",
+        brend: "крутий бренд",
+        seria: "SD354GR",
+        artukul: "0239532",
       },
       {
-        position: "Полиця 7",
-        category: "Пробіотики",
-        manufacture: "Manufacturer 4",
-        price: 120.9,
-        status: "Коректне",
-        idstatus: "3",
+        position: "тарілка",
+        brend: "крутий бренд",
+        seria: "SD354GR",
+        artukul: "0239532",
       },
     ],
   },
   {
-    name: "Аптека 3",
+    nameCategory: "Для тварин: Коти",
+
     data: [
       {
-        position: "Полиця 2",
-        category: "Аналгетики",
-        manufacture: "Manufacturer 5",
-        price: 220.35,
-        status: "На перевірці",
-        idstatus: "2",
+        position: "тарілка",
+        brend: "крутий бренд",
+        seria: "SD354GR",
+        artukul: "0239532",
       },
     ],
   },
@@ -120,41 +110,44 @@ const useStyles = makeStyles({
   },
 });
 
-export const ZayavkaComponents = () => {
+export const ProductListComponents = () => {
   const classes = useStyles();
   const [page, setPage] = React.useState(1);
   const [countOfPages, setCountOfPages] = React.useState(1);
   //const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [rows, setRows] = React.useState([]);
+  // const [rows, setRows] = React.useState([]);
   const [statuses, setStatuses] = React.useState([]);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  // };
 
-  useEffect(()=>{
-    init();
-  },[]);
+  // useEffect(()=>{
+  //   init();
+  // },[]);
 
-  async function init(){
-    const res = await getAllProductConfirm(page);
-    const statusesRes = await getAllStatuses();
-    if(res.status === Success && statusesRes.status === Success){
-      //console.log(res);
-      setStatuses(statusesRes.data);
-      setRows(res.data.data);
-      setCountOfPages(res.data.countOfPages)
-      console.log(res)
-    }
-  }
-  console.log(statuses);
- 
+  // async function init(){
+  //   const res = await getAllProductConfirm(page);
+  //   const statusesRes = await getAllStatuses();
+  //   if(res.status === Success && statusesRes.status === Success){
+  //     //console.log(res);
+  //     setStatuses(statusesRes.data);
+  //     setRows(res.data.data);
+  //     setCountOfPages(res.data.countOfPages)
+  //     console.log(res)
+  //   }
+  // }
+  // console.log(statuses);
 
   return (
     <div className={`${styles["row-parent"]}`}>
       <div className={`${styles["box-container"]} row`}>
         <div className="col-6">
           <SearchComponent />
+        </div>
+
+        <div className="col-6">
+          <CheckedBox text="Показувати лише фарма-компанії?" />
         </div>
 
         <Paper className={classes.root}>
@@ -180,6 +173,42 @@ export const ZayavkaComponents = () => {
               </TableHead>
               <TableBody>
                 {rows.map((pharmacy, index) => (
+                  <React.Fragment key={index}>
+                    <TableRow>
+                      <TableCell
+                        colSpan={12}
+                        className={`${styles["header-body-pharmacy"]}`}
+                      >
+                        <CustomImgComponent
+                          className={`${styles["img-product"]}`}
+                          // src={`${ApiPath}${item.pathToPhoto}`}
+                        />{" "}
+                        {pharmacy.nameCategory}
+                      </TableCell>
+                    </TableRow>
+
+                    {pharmacy.data.map((item, itemIndex) => {
+                      return (
+                        <TableRow
+                          className={`${styles["tb-pharmacy"]}`}
+                          key={itemIndex}
+                        >
+                          <TableCell>{item.position}</TableCell>
+                          <TableCell>{item.brend}</TableCell>
+                          <TableCell>{item.seria}</TableCell>
+                          <TableCell>{item.artukul}</TableCell>
+                          <TableCell>
+                            {/* <div className="d-flex align-items-center"> */}
+                              <BtnEditSeriaModal />
+                            {/* </div> */}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </React.Fragment>
+                ))}
+
+                {/* {rows.map((pharmacy, index) => (
                   <React.Fragment key={index}>
                     <TableRow>
                       <TableCell
@@ -249,12 +278,12 @@ export const ZayavkaComponents = () => {
                       </TableRow>
                     )})}
                   </React.Fragment>
-                ))}
+                ))} */}
               </TableBody>
             </Table>
           </TableContainer>
-          <div className={`d-flex justify-content-end align-items-center`}>            
-            <PaginationComponent 
+          <div className={`d-flex justify-content-end align-items-center`}>
+            {/* <PaginationComponent 
               setContent={(a)=>setRows(a)}
               getContent={async (page)=>{
                 let res = await getAllProductConfirm(page);
@@ -266,7 +295,7 @@ export const ZayavkaComponents = () => {
               page={page}
               setPage={setPage}
               countOfPages={countOfPages}
-              />
+              /> */}
           </div>
         </Paper>
       </div>

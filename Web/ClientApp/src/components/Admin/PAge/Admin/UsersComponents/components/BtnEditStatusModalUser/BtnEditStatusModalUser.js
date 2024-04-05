@@ -1,27 +1,32 @@
 import { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { ReactComponent as ImgBtn } from "../../../../../../../assets/images/btnZayavkModal.svg";
-import styles from "./BtnEditStatusModal.module.css";
+import styles from "./BtnEditStatusModalUser.module.css";
 import { CheckedBox } from "../../../../../Common/CheckedBoxComponent/CheckedBox";
 import { changeStatus } from "../../../../../../../services/product";
 import { Success } from "../../../../../../../utils/Constants";
 
-function BtnEditStatusModal({id,statusId, statuses, changeStatusProduct }) {
+function BtnEditStatusModalUser({
+  id,
+  statusId,
+  statuses,
+  changeStatusProduct,
+}) {
   const [show, setShow] = useState(false);
   const [isActive, setIsActive] = useState(false);
-  const [changeStatusId, setChangeStatusId] = useState(statusId);  
+  const [changeStatusId, setChangeStatusId] = useState(statusId);
   const handleRadioChange = () => {
     setIsActive(!isActive);
   };
 
-  const updateStatus = async ()=>{
+  const updateStatus = async () => {
     let res = await changeStatus(id, changeStatusId);
-    if(res.status === Success){
-      let index = statuses.findIndex(a=>a.id===changeStatusId);
+    if (res.status === Success) {
+      let index = statuses.findIndex((a) => a.id === changeStatusId);
       changeStatusProduct(statuses[index]);
       setShow(false);
     }
-  }
+  };
   return (
     <>
       <ImgBtn
@@ -65,41 +70,38 @@ function BtnEditStatusModal({id,statusId, statuses, changeStatusProduct }) {
           <div className="mt-3">
             <h6 className={`${styles["status-text"]}`}>Статус</h6>
 
-        
             <div className={`d-flex flex-wrap`}>
-            {statuses && statuses.map &&
-          statuses.map(a=>{
-            return (
-              <div className={`${styles["parent-radio-div"]}`}>
-              <input
-                type="radio"
-                className={`btn-check ${styles["btn-check"]}`}
-                name="options-base"
-                id={`option${a.id}`}
-                defaultChecked={changeStatusId === a.id}
-                onChange={()=>{
-                  setChangeStatusId(a.id);
-                }}
-              />
-              <label
-                className={`${styles["labale-radio"]}`}
-                style={{border: `2px solid ${a.color}`}}
-                htmlFor={`option${a.id}`}
-              >
-                <div
-                  className={`${styles["div-text-radio"]}`}
-                  style={{backgroundColor: a.color}}
-                >
-                  {a.status}
-                </div>
-              </label>
-            </div>
-
-            )
-
-          })
-        }
-{/*          
+              {statuses &&
+                statuses.map &&
+                statuses.map((a) => {
+                  return (
+                    <div className={`${styles["parent-radio-div"]}`}>
+                      <input
+                        type="radio"
+                        className={`btn-check ${styles["btn-check"]}`}
+                        name="options-base"
+                        id={`option${a.id}`}
+                        defaultChecked={changeStatusId === a.id}
+                        onChange={() => {
+                          setChangeStatusId(a.id);
+                        }}
+                      />
+                      <label
+                        className={`${styles["labale-radio"]}`}
+                        style={{ border: `2px solid ${a.color}` }}
+                        htmlFor={`option${a.id}`}
+                      >
+                        <div
+                          className={`${styles["div-text-radio"]}`}
+                          style={{ backgroundColor: a.color }}
+                        >
+                          {a.status}
+                        </div>
+                      </label>
+                    </div>
+                  );
+                })}
+              {/*          
               <div className={`${styles["parent-radio-div"]}`}>
                 <input
                   type="radio"
@@ -141,6 +143,11 @@ function BtnEditStatusModal({id,statusId, statuses, changeStatusProduct }) {
               </div> */}
             </div>
 
+            <p className={`${styles["text-block-user"]} mt-3`}>
+              {/* Виводимо лише коли статус заблокований і час блокування статичний там на місяць блокуєм чи скліьки */}
+              Заблоковано 05.04.2024 до 01.06.2024
+            </p>
+
             <div className="row mt-3">
               <div className="col-6 ps-2 pe-2">
                 <button
@@ -165,4 +172,4 @@ function BtnEditStatusModal({id,statusId, statuses, changeStatusProduct }) {
   );
 }
 
-export default BtnEditStatusModal;
+export default BtnEditStatusModalUser;

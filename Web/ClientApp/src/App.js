@@ -43,6 +43,9 @@ import SearchComponent from "./components/Common/SearchComponent/SearchComponent
 import { SearchProductPageComponent } from "./components/User/Pages/Search/SearchProductPageComponent";
 import { removeToken } from "./utils/Login";
 import { ZayavkaComponents } from "./components/Admin/PAge/Admin/ZayavkaComponents/ZayavkaComponents";
+import { UsersComponents } from "./components/Admin/PAge/Admin/UsersComponents/UsersComponents";
+import { PharmacyListComponents } from "./components/Admin/PAge/Admin/PharmacyListComponents/PharmacyListComponents";
+import { ProductListComponents } from "./components/Admin/PAge/Admin/ProductListComponents/ProductListComponents";
 
 // export default class App extends Component {
 // static displayName = App.name;
@@ -137,7 +140,10 @@ export default class App extends Component {
             </Route>
 
           <Route path="admin" element={<LayoutAdmin />}>
-            <Route path="zayavka" element={<ZayavkaComponents />} />
+            <Route path="zayavkaList" element={<ZayavkaComponents />} />
+            <Route path="userList" element={<UsersComponents />} />
+            <Route path="productList" element={<ProductListComponents />} />
+            <Route path="pharmacyList" element={<PharmacyListComponents />} />
             <Route path="pharmacyUser" element={<UserPharmacy />} />
             <Route
               path="updateProduct/:productId"
