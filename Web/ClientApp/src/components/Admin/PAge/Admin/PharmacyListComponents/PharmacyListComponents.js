@@ -18,6 +18,9 @@ import CustomImgComponent from "../../../../Common/CustomImgComponent/CustomImgC
 import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
+import BtnEditPharmacyModal from "./components/BtnEditStatusModal/BtnEditStatusModal/BtnEditPharmacyModal";
+import { getAllPharmaciesForAdmin } from "../../../../../services/pharmacy";
+import { BrowserRouter as Router, Route, Link, useParams } from 'react-router-dom';
 
 const columns = [
   { id: "pharmacy", label: "Аптека", minWidth: 170 },
@@ -43,55 +46,6 @@ const columns = [
 //   return { name, code, population, size, density };
 // }
 
-const rows = [
-  {
-    name: "Аптека 1",
-    data: [
-      {
-        pharmacyName: "№ 376",
-        timeWorking: "09:00 - 21:00",
-        addressPharmacy: "Львів. Вул . Городоцька 75",
-        userEmail: "podoroznik376@gmail.com",
-      },
-    ],
-  },
-  {
-    name: "Аптека 2",
-    data: [
-      {
-        pharmacyName: "№ 376",
-        timeWorking: "09:00 - 21:00",
-        addressPharmacy: "Львів. Вул . Городоцька 75",
-        userEmail: "podoroznik376@gmail.com",
-      },
-      {
-        pharmacyName: "№ 376",
-        timeWorking: "09:00 - 21:00",
-        addressPharmacy: "Львів. Вул . Городоцька 75",
-        userEmail: "podoroznik376@gmail.com",
-      },
-      {
-        pharmacyName: "№ 376",
-        timeWorking: "09:00 - 21:00",
-        addressPharmacy: "Львів. Вул . Городоцька 75",
-        userEmail: "podoroznik376@gmail.com",
-      },
-    ],
-  },
-  {
-    name: "Аптека 3",
-    data: [
-      {
-        pharmacyName: "№ 376",
-        timeWorking: "09:00 - 21:00",
-        addressPharmacy: "Львів. Вул . Городоцька 75",
-        userEmail: "podoroznik376@gmail.com",
-      },
-    ],
-  },
-
-  // Додайте інші записи за потреби
-];
 
 const useStyles = makeStyles({
   root: {
@@ -104,11 +58,32 @@ const useStyles = makeStyles({
 
 export const PharmacyListComponents = () => {
   const classes = useStyles();
+  const {paramPage}=useParams();
   const [page, setPage] = React.useState(1);
   const [countOfPages, setCountOfPages] = React.useState(1);
-  //const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  // const [rows, setRows] = React.useState([]);
-  const [statuses, setStatuses] = React.useState([]);
+  const [rows, setRows] = React.useState([]);
+
+  useEffect(()=>{
+    init();
+  },[]);
+
+  async function init(){
+    let res = await getAllPharmaciesForAdmin(page)
+    if(res.status === Success){    
+      let page = paramPage?paramPage:1;
+      if(page > res.data.countOfPages){
+        res = await getAllPharmaciesForAdmin(res.data.countOfPages);
+        page = res.data.countOfPages;
+      }else if(page < 1){
+        res = await getAllPharmaciesForAdmin(1);
+        page = 1;
+      }
+        setPage(parseInt(page));
+        setRows(res.data.data);
+        setCountOfPages(res.data.countOfPages)
+      
+    }
+  }
 
   // const handleChangePage = (event, newPage) => {
   //   setPage(newPage);
@@ -185,10 +160,16 @@ export const PharmacyListComponents = () => {
                           className={`${styles["tb-pharmacy"]}`}
                           key={itemIndex}
                         >
-                          <TableCell>{item.pharmacyName}</TableCell>
-                          <TableCell>{item.addressPharmacy}</TableCell>
-                          <TableCell>{item.timeWorking}</TableCell>
-                          <TableCell>{item.userEmail}</TableCell>
+                          <TableCell>№ {item.pharmacy.id}</TableCell>
+                          <TableCell>{item.pharmacy.address}</TableCell>
+                          <TableCell>{`${item.pharmacy.openTime} - ${item.pharmacy.closeTime}`}</TableCell>
+                          <TableCell>
+                            <div className="d-flex justify-content-between">
+                              {item.pharmacist?item.pharmacist:"НЕМАЄ"}
+                              <BtnEditPharmacyModal id={item.pharmacy.id}/>
+                            </div>
+                          </TableCell>
+                          
                         </TableRow>
                       );
                     })}
@@ -270,10 +251,12 @@ export const PharmacyListComponents = () => {
             </Table>
           </TableContainer>
           <div className={`d-flex justify-content-end align-items-center`}>
-            {/* <PaginationComponent 
+            <PaginationComponent 
               setContent={(a)=>setRows(a)}
               getContent={async (page)=>{
-                let res = await getAllProductConfirm(page);
+                const newUrl = `/admin/pharmacyList/${page}`;
+                window.history.pushState({}, '', newUrl);
+                let res = await getAllPharmaciesForAdmin(page);
                 if(res.status === Success){
                   return res.data.data;
                 }
@@ -282,7 +265,7 @@ export const PharmacyListComponents = () => {
               page={page}
               setPage={setPage}
               countOfPages={countOfPages}
-              /> */}
+              />
           </div>
         </Paper>
       </div>

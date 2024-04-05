@@ -55,3 +55,23 @@ export async function getFromServer(url, params = {}) {
         return { status: "Error", error };
     }
 }    
+
+export async function deleteFromServer(url, params = {}) {
+
+    try {
+        
+        const response = await axios.delete(`${ApiPath}/${url}`, {
+            params: params,
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                Authorization: 'Bearer ' +getToken()
+            },
+        });        
+        
+        return { status: Success, data: response.data };
+    } catch (error) {
+        console.log(error);
+        return { status: "Error", error };
+    }
+}    

@@ -27,15 +27,15 @@ namespace Web.Controllers
 		}
 
 		[HttpPost("")]
-		public IActionResult GetAllRequests(ConfirmProductPageViewModel model)
+		public IActionResult GetAllRequests(PageViewModel model)
 		{
 			var rawResult = _productConfirmService.GetAllProductConfirm(includeProperties: "PharmaCompany,ProductStatus,Product,Product.Manufacturer,Product.Category");
 			if (rawResult is not null)
 			{
 				rawResult = rawResult.Where(a => a.Product != null);
-				int countOfPages = (int)Math.Round(Convert.ToDouble(rawResult.Count()) / Convert.ToDouble(model.ProductPerPage));
+				int countOfPages = (int)Math.Round(Convert.ToDouble(rawResult.Count()) / Convert.ToDouble(model.ItemsPerPage));
 				int page = model.Page != null ? model.Page.Value - 1 : 0;
-				var result = rawResult.Skip(model.ProductPerPage * page).Take(model.ProductPerPage).Select(a =>
+				var result = rawResult.Skip(model.ItemsPerPage * page).Take(model.ItemsPerPage).Select(a =>
 				new {
 					Id = a.Product!.Id,
 					Title = a.Product.Title,

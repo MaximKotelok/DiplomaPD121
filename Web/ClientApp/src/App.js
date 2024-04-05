@@ -144,6 +144,7 @@ export default class App extends Component {
             <Route path="userList" element={<UsersComponents />} />
             <Route path="productList" element={<ProductListComponents />} />
             <Route path="pharmacyList" element={<PharmacyListComponents />} />
+            <Route path="pharmacyList/:paramPage" element={<PharmacyListComponents />} />
             <Route path="pharmacyUser" element={<UserPharmacy />} />
             <Route
               path="updateProduct/:productId"

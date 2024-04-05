@@ -51,7 +51,7 @@ export async function Search(title = null, categories = null, brands = null, act
         activeSubstanceId,
         properties,
         page,
-        productPerPage:4,
+        itemsPerPage:4,
 
     }, ClassHeader)
 

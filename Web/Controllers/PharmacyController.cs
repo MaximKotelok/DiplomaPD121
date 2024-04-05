@@ -25,11 +25,13 @@ namespace Web.Controllers
         private readonly ICityService _cityService;
         private readonly IRepositoryManager _repository;
         private readonly IUserService _userService;
+        private readonly IConcreteProductService _concreteProductService;
 
-        public PharmacyController(IPharmacyService service, ICityService _cityService, IRepositoryManager repository, IUserService userService)
+        public PharmacyController(IPharmacyService service, ICityService _cityService, IRepositoryManager repository, IUserService userService, IConcreteProductService concreteProductService)
         {
             this._pharmacyService = service;
             this._cityService = _cityService;
+			this._concreteProductService = concreteProductService;
             _repository = repository;
             _userService = userService;
         }
@@ -44,8 +46,27 @@ namespace Web.Controllers
             }
             return BadRequest("No records found");
         }
+		[HttpPost("GetAllPharmaciesForAdmin")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		public IActionResult GetAllPharmaciesForAdmin(PageViewModel model)
+		{
+			var rawResult = _pharmacyService.GetAllPharmacies(includeProperties: "PharmaCompany,User");
+			if (rawResult is not null)
+			{
+				int page = model.Page != null ? model.Page.Value - 1 : 0;
+				var result = rawResult.Skip(model.ItemsPerPage * page).Take(model.ItemsPerPage)
+					.Select(a => new {pharmacy=a, pharmacist=a.User!=null?a.User.Email:null})
+					.GroupBy(a=>a.pharmacy.PharmaCompany.Title).Select(a=>new {
+						name=a.Key,
+						data=a
+					});
+				int countOfPages = model.GetCountOfPages(rawResult.Count());
+				return Ok(new {data = result, countOfPages });
+			}
+			return BadRequest("No records found");
+		}
 
-        [HttpGet("/GetAllConcreteProductsFromPharmacy/{id}")]
+		[HttpGet("/GetAllConcreteProductsFromPharmacy/{id}")]
         public IActionResult GetAllConcreteProductsFromPharmacy(int id)
         {
             var result = _pharmacyService.GetPharmacy(a => a.Id == id, "ConcreteProducts");
@@ -202,11 +223,19 @@ namespace Web.Controllers
 		}
 
 
-		[HttpDelete("{id}")]
+		[HttpDelete("DeletePharmacy/{id}")]
                 [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult DeletePharmacy(int id)
 		{
-			_pharmacyService.DeletePharmacy(id);
+			var pharmacy = _pharmacyService.GetPharmacy(a => a.Id == id, "ConcreteProducts");
+			if(pharmacy != null)
+			{
+				foreach(var item in pharmacy.ConcreteProducts)
+				{
+					_concreteProductService.DeleteConcreteProduct(item.Id);
+				}
+				_pharmacyService.DeletePharmacy(id);
+			}
 			return Ok("Data Deleted");
 		}
 

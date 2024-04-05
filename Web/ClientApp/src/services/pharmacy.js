@@ -1,5 +1,5 @@
 ﻿import { GetPharmacyProduct, GetPharmacyById, UpsertPharmcy, ClassHeader } from "../utils/Constants";
-import { postToServer, getFromServer } from "../utils/Queries";
+import { postToServer, getFromServer, deleteFromServer } from "../utils/Queries";
 
 export async function getPharmacyById(id){
     return await getFromServer(GetPharmacyById + `${id}`)
@@ -15,6 +15,17 @@ export async function GetProductByTitleFromPharmacy(title, pharmacyId, count = 6
 
 export async function GetPharmacist(id){
     return await getFromServer("Pharmacy/GetPharmacist/" + `${id}`)
+}
+
+export async function getAllPharmaciesForAdmin(page){
+    return await postToServer("Pharmacy/GetAllPharmaciesForAdmin",  {
+        itemsPerPage: 1,
+        page: page
+    })
+}
+
+export async function deletePharmacy(id){
+    return await deleteFromServer(`Pharmacy/DeletePharmacy/${id}`,  {})
 }
 
 export async function getPharmacyProduct(id, productId) {
