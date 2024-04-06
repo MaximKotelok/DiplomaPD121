@@ -1,6 +1,7 @@
 ﻿using DataAccess.Data;
 using Lab.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Repository.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -100,6 +101,9 @@ namespace Repository.Repository.Services
             entities.Update(entity);
             _applicationDbContext.SaveChanges();
         }
-
+        public IDbContextTransaction BeginTransaction()
+        {
+            return _applicationDbContext.Database.BeginTransaction();
+        }
     }
 }

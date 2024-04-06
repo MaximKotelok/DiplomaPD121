@@ -1,4 +1,5 @@
 ﻿using Lab.Domain.Models;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,6 @@ namespace Repository.Repository.Interfaces
         void Delete(T entity);
         void Remove(T entity);
         void SaveChanges();
+        IDbContextTransaction BeginTransaction();
     }
 }

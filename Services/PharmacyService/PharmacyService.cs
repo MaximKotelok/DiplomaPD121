@@ -19,15 +19,30 @@ namespace Services.PharmacyService
 			_repository = repository;
 		}
 
-		public void DeletePharmacy(int id)
-		{
-			Pharmacy? pharmacy = _repository.Get(x => x.Id == id);
-			_repository.Remove(pharmacy);
-			_repository.SaveChanges();
+        public void DeletePharmacy(int id)
+        {
+            using (var transaction = _repository.BeginTransaction())
+            {
+                try
+                {
+                    Pharmacy? pharmacy = _repository.Get(x => x.Id == id);
+                    _repository.Remove(pharmacy);
+                    _repository.SaveChanges();
 
-		}
+                    // Если все операции завершены успешно, фиксируем транзакцию
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    // В случае ошибки откатываем транзакцию
+                    transaction.Rollback();
+                    throw new Exception("Failed to delete pharmacy. Transaction rolled back.", ex);
+                }
+            }
+        }
 
-		public IEnumerable<Pharmacy> GetAllPharmacies(Expression<Func<Pharmacy, bool>>? filter = null, string? includeProperties = null)
+
+        public IEnumerable<Pharmacy> GetAllPharmacies(Expression<Func<Pharmacy, bool>>? filter = null, string? includeProperties = null)
 		{
 			return _repository.GetAll(filter, includeProperties);
 		}
