@@ -40,18 +40,28 @@ namespace Services.BackgroundTaskService
                     if (historyDate == null)
                     {
                         var allConcreteProducts = concreteProductService.GetAllConcreteProducts();
+
+                        // Group products by ProductID and calculate average price for each group
+                        var uniqueProductPrices = allConcreteProducts
+                            .GroupBy(p => p.ProductID)
+                            .Select(group => new
+                            {
+                                ProductId = group.Key,
+                                AveragePrice = group.Average(p => p.Price)
+                            });
+
                         int historyDateId = GetHistoryDateIdForCurrentMonth(repository);
 
-                        foreach (var concreteProduct in allConcreteProducts)
+                        foreach (var productPrice in uniqueProductPrices)
                         {
                             var priceHistory = new ProductPriceHistory
                             {
-                                ProductId = concreteProduct.ProductID,
+                                ProductId = productPrice.ProductId,
                                 HistoryDateId = historyDateId,
-                                Price = concreteProduct.Price
+                                Price = productPrice.AveragePrice
                             };
                             productPriceHistoryService.InsertProductPriceHistory(priceHistory);
-                        }                       
+                        }
                     }
                     DateTime nextMonth = currentDate.AddMonths(1);
                     DateTime firstDayOfNextMonth = new DateTime(nextMonth.Year, nextMonth.Month, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -61,6 +71,7 @@ namespace Services.BackgroundTaskService
                 }
             }
         }
+
 
         private int GetHistoryDateIdForCurrentMonth(IRepository<HistoryDate> repository)
         {
