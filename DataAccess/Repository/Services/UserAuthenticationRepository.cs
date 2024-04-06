@@ -97,6 +97,21 @@ namespace Repository.Repository.Services
 
             return result;
         }
+        public async Task<IdentityResult> ChangePasswordAsync(string email, string newPassword)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                return IdentityResult.Failed(new IdentityError { Description = "User not found." });
+            }
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+
+            return result;
+        }
 
         private SigningCredentials GetSigningCredentials()
         {
