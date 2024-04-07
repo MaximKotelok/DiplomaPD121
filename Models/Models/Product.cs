@@ -48,5 +48,7 @@ namespace Domain.Models
 		public ICollection<User>? FavUsers { get; set; }
         [JsonIgnore]
         public ICollection<ProductPriceHistory>? PriceHistory { get; set; }
+		[JsonIgnore]
+		public ICollection<DefectiveSeries>? DefectiveSeries { get; set; }
     }
 }

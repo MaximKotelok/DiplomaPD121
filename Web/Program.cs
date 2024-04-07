@@ -20,6 +20,7 @@ using Services.CategoryService;
 using Services.CityService;
 using Services.ConcreteProductService;
 using Services.CountryService;
+using Services.DefectiveSeriesService;
 using Services.EmailService;
 using Services.MailService;
 using Services.ManufacturerService;
@@ -167,6 +168,7 @@ builder.Services.AddScoped<IMedicineService, MedicineService>();
 builder.Services.AddScoped<IEmailSenderService, EmailSenderService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IProductPriceHistoryService, ProductPriceHistoryService>();
+builder.Services.AddScoped<IDefectiveSeriesService, DefectiveSeriesService>();
 
 builder.Services.AddHostedService<ProductPriceHistoryBackgroundService>();
 

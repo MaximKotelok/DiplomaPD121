@@ -44,6 +44,7 @@ namespace DataAccess.Data
         public DbSet<PermissionType>? PermissionTypes { get; set; }
         public DbSet<ProductPriceHistory>? ProductPriceHistories { get; set; }
 		public DbSet<HistoryDate>? HistoryDates { get; set; }
+        public DbSet<DefectiveSeries>? DefectiveSeries { get; set; }
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);			
