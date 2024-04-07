@@ -1,0 +1,13 @@
+.pages {
+    font-family: var(--standart-font);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 23.24px;
+    letter-spacing: 0.4000000059604645px;
+    text-align: left;
+    color: #1C1C1CCC;
+}
+
+.disabled{
+    cursor: not-allowed;
+}

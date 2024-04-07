@@ -15,8 +15,8 @@ const MiniProductCardComponent =
         title = "...",
         description = "...",
         minPrice = 0.0,
-        isFavorite,
-        onChangeFavorite
+        onChangeFavorite,
+        isFavorite
     }) => {
         const [isFavoriteState, setIsFavoriteState] = useState(false);
         useEffect(()=>{
@@ -48,7 +48,6 @@ const MiniProductCardComponent =
                     <Link to={`/product-details/${id}`} className='text-decoration-none d-flex justify-content-center'>
                         <CustomImgComponent 
                         src={`${ApiPath}${imageUrl}`} 
-                        defaultSrc="https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png"
                         style={{ width: "156px", height: "142px" }}
                         className='product-image'
                         alt={title}

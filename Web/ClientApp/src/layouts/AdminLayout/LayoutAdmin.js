@@ -48,14 +48,14 @@ const LayoutAdmin = ({ children }) => {
             <ButtonSideMenuComponents
               text="Заявки на підтвердження"
               icon={Mail}
-              link="/admin/zayavka"
+              link="/admin/zayavkaList"
             />
           </li>
           <li className="sidebar-list-item">
             <ButtonSideMenuComponents
               text="Аптеки"
               icon={Filter}
-              link="https://www.example.com"
+              link="/admin/pharmacyList"
             />
           </li>
           <li className="sidebar-list-item">

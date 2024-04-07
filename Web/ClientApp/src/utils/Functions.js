@@ -2,6 +2,7 @@
 import { getFavsProducts } from "../services/favProducts";
 import { getFavsPharmacies } from "../services/favPharmacies";
 import { FavouriteProducts, FavouritePharmacies } from "./Constants";
+import { getToken } from "./Login";
 
 export function formatDate(str) {
   const date = new Date(str);
@@ -116,6 +117,7 @@ export const breakpoints = {
   md: 768,
   lg: 992,
   xl: 1200,
+  xxl: 1400,
 };
 
 export const isFavoriteProduct = (productId) => {

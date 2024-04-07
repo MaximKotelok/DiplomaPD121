@@ -119,9 +119,9 @@ namespace Web.Controllers
 			var reservations = _reservationService.GetAllReservations(a => a.UserID == user.Id, "ReservationItems,ReservationItems.ConcreteProduct,Status,Pharmacy,Pharmacy.PharmaCompany");
             var data = reservations.Select(reservation =>
             {
-                var total = reservation.ReservationItems.Sum(a => a.ConcreteProduct.Price * a.Quantity);
+                var total = reservation.ReservationItems!.Sum(a => a.ConcreteProduct!.Price * a.Quantity);
                 var pharmacy = reservation.Pharmacy;
-                return new { Id = reservation.Id,Name=reservation.Pharmacy.PharmaCompany.Title, ReservedTime = reservation.ReservedTime, Pharmacy = pharmacy, Total = total, Status = reservation.Status };
+                return new { Id = reservation.Id,Name=reservation.Pharmacy.PharmaCompany!.Title, ReservedTime = reservation.ReservedTime, Pharmacy = pharmacy, Total = total, Status = reservation.Status };
             }).OrderByDescending(a=>a.ReservedTime);
 
             return Ok(data);

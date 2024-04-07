@@ -1,36 +1,37 @@
 import React, { useEffect, useContext } from "react";
 import styles from "./Status.module.css";
-import { ReactComponent as Palka } from "../../../../../../../../assets/images/palka.svg";
+import { ApiPath, PhotoPath } from "../../../../../../../../utils/Constants";
 
-const StatusComponent = ({ color = "rgba(59, 164, 42, 1)" }) => {
+const StatusComponent = ({ color, pathToPhoto, text }) => {
+  console.log(ApiPath+"/"+pathToPhoto)
   return (
     <div
       className="d-flex align-items-center "
       style={{
         border: `1px solid ${color}`,
         borderRadius: "56px",
-        width: "max-content",
+        width: "151px",
         padding: "6px 12px",
       }}
     >
       <div
         style={{
-          borderRadius: "100px",
-          //   backgroundColor: "Red",
-          backgroundColor: `${color}`,
-          width: "20px",
-          height: "20px",
+          // borderRadius: "100px",
+          // //   backgroundColor: "Red",
+          // backgroundColor: `${color}`,
+          // width: "20px",
+          // height: "20px",
         }}
         className=" d-flex justify-content-center  align-items-center"
       >
-        <Palka />
+       <img src={`${ApiPath}${pathToPhoto}`}/>
       </div>
 
       <p
         className={`ms-2 ${styles["text-status"]}`}
         style={{ color: `${color}` }}
       >
-        Викуплено
+        {text}
       </p>
     </div>
   );

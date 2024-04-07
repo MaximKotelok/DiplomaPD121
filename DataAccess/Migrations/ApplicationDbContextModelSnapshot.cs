@@ -1809,6 +1809,12 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Color")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
@@ -1820,21 +1826,29 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1,
+                            Color = "#FF9500",
+                            Path = "/images/statuses/ReservationStatusWaiting.png",
                             Status = "В очікуванні"
                         },
                         new
                         {
                             Id = 2,
+                            Color = "#007AFF",
+                            Path = "/images/statuses/ProductStatusConfirmed.png",
                             Status = "Підтверджено"
                         },
                         new
                         {
                             Id = 3,
+                            Color = "#FF3B30",
+                            Path = "/images/statuses/ReservationStatusCanceled.png",
                             Status = "Скасовано"
                         },
                         new
                         {
                             Id = 4,
+                            Color = "#3BA42A",
+                            Path = "/images/statuses/ReservationStatusFinished.png",
                             Status = "Завершено"
                         });
                 });

@@ -5,17 +5,20 @@ import StatusComponent from "./StatusComponent/StatusComponent";
 import { ReactComponent as Znakokloko } from "../../../../../../../assets/images/znakokl.svg";
 
 const CardHistory = ({
-  name = "Аптека зі",
-  number = "32421421",
-  price = "232",
-  date = "23.12.2022 в 00:21",
-  address
+  name,
+  number,
+  price,
+  date,
+  address,
+  statusText,
+  statusPathToPhoto,
+  statusColor
 }) => {
   return (
     <div className={`row ${styles["peren-card-history"]} mb-3 `}>
       <div className="col-6">
         <p>
-          <StatusComponent color="rgba(59, 164, 42, 1)" />
+          <StatusComponent color={statusColor} text={statusText} pathToPhoto={statusPathToPhoto} />
         </p>
 
         <p

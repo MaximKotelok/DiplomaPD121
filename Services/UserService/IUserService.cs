@@ -16,6 +16,7 @@ namespace Services.UserService
     public interface IUserService
     {
         public Task<User> GetUserByName(string name);
+        public Task ChangePassword(string id, string currentPassword, string newPassword);
         public Task AddFavouriteProduct(int productId, string userName);
         public Task UpdateUser(string id, string firstName = "", string lastName = "", string phoneNumber = "", string email = "", string userName = "");
         public Task RemoveFavouriteProduct(int productId, string userName);

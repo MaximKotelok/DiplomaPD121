@@ -24,7 +24,7 @@ namespace Web.Controllers
 
 		[HttpGet("GetGroupsForProductAdd")]
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_PharmaCompany)]
-		public IActionResult GetGroupsForProductAdd(string title, int count)
+		public IActionResult GetGroupsForProductAdd()
 		{
 			var result = _service.GetAllProductAttributeGroups(a=> 
 			(a.IsDisableShow == null || !a.IsDisableShow.Value));

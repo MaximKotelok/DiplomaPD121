@@ -11,43 +11,84 @@ import ProductFilterComponent from "../../../Common/ProductFilterComponent/Produ
 import MiniProductCardComponent from "../../../Common/MiniProductCardComponent/MiniProductCardComponent";
 import { ReactComponent as CardBtn } from "../../../../assets/images/category/Card.svg";
 import { ReactComponent as TableBtn } from "../../../../assets/images/category/Table.svg";
+import banner  from "../../../../assets/images/search/banner.svg";
 import MiniCardProductANDTableProductComponent from "../../../Common/MiniCardProductANDTableProductComponent/MiniCardProductANDTableProductComponent";
 
 import styles from "./SearchProductPageComponent.module.css";
 import { Search } from "../../../../services/product";
 import { getBrandById } from "../../../../services/brand";
+import { getActiveSubstance } from "../../../../services/activeSubstance";
+import PaginationComponent from "../../../Common/PaginationComponent/PaginationComponent";
 
 export const SearchProductPageComponent = () => {
-  const categoriesPerPage = 4; 
-  const { title, categoryId, brandId, extraParamId, extraParamValue } = useParams();  
-  const [category, setCategory] = useState(null);
-  const [favs, setFavs] = useState(null);
-  const [isGridTalbeActive, setGridTalbeActive] = useState(true);
-  //const [currentPage, setCurrentPage] = useState(0);
-  //const [maxOfCategories, setMaxOfCategories] = useState(0);
+  const [filters, setFilters] = useState({});
+  const [searchByTitle, setSearchByTitle] = useState("");
+  const [page, setPage] = useState(1);
+  const [countOfPages, setCountOfPages] = useState(1);
+
+  async function search(page = 1){
+    let clone = {...filters};    
+    let categories = clone.categories?Object.keys(clone.categories).map(a=>parseInt(clone.categories[a].value)):[];
+    let brands = clone.brands?Object.keys(clone.brands).map(a=>parseInt(clone.brands[a].value)):[];
+    delete clone.categories;
+    
+    delete clone.brands;        
+
+    function convertToServerModel(key, array) {
+      const outputArray = [];
+
+      for (let item in array) {
+          outputArray.push({ name: key, value: array[item].value });
+      }
+
+      return outputArray;
+  }
+
+    let searchResult = await Search(
+        searchByTitle, 
+        categories, 
+        brands, 
+        activeSubstanceId?activeSubstanceId:null, 
+        [].concat(...Object.keys(clone)
+            .map(a=>convertToServerModel(a,clone[a]))
+        ),
+        page
+    );
+    if(searchResult.status === Success)
+        return searchResult.data;
+    return null;
+
+}
+
+
+
+  const { title, categoryId, brandId, extraParamId, extraParamValue, activeSubstanceId } = useParams();  
+  const [isGridTalbeActive, setGridTalbeActive] = useState(true);  
   const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
   const [loader, setLoader] = useState(StateInfos.LOADING);
   const [pageName, setPageName] = useState("Пошук");
+
+  const SEPARATED_COUNT = 8;
 
   const handleGridTableClick = (boolean) => {
     setGridTalbeActive(boolean);
   };
+
   useEffect(() => {
       init();
-      initFavsProducts(setFavs);
-  }, [title, categoryId, brandId, extraParamId, extraParamValue]);
+  }, [title, categoryId, brandId, extraParamId, extraParamValue,activeSubstanceId]);
  
   async function init() {
     let res = await Search(
       title, 
       categoryId?[categoryId]:null, 
       brandId?[brandId]:null, 
-      extraParamId&&extraParamValue?[{id:extraParamId, name:extraParamValue}]:null
+      activeSubstanceId?parseInt(activeSubstanceId):null, 
+      extraParamId&&extraParamValue?[{id:extraParamId, name:extraParamValue}]:null,
       );
     if(res.status === Success){
-      setProducts(res.data);
-      setFilteredProducts(res.data);
+      setProducts(res.data.products);
+      setCountOfPages(res.data.countOfPages)
       if(title){
         setPageName("Пошук")        
       }
@@ -64,36 +105,17 @@ export const SearchProductPageComponent = () => {
         if(brandResult.status === Success){
           setPageName(`Бренд: ${brandResult.data.name}`)
         }
+      }else if(activeSubstanceId){
+        let activeSubstanceResult = await getActiveSubstance(activeSubstanceId);
+        console.log(activeSubstanceResult)
+        if(activeSubstanceResult.status === Success){
+          setPageName(`Діюча речовина: ${activeSubstanceResult.data.title}`)
+        }
       }
       setLoader(StateInfos.LOADED);
       return;
     }
     setLoader(StateInfos.ERROR);
-    // let category = await GetCategoryById(id);
-    // if (currentPageParam) setCurrentPage(currentPageParam);
-    // if (category.status == Success) {
-    //   setCategory(category.data);
-    //   setMaxOfCategories(category.data.count);
-    //   setLoader(StateInfos.LOADED);
-
-    //   let res = (await GetCategoryProductsForFilter(id, 0, 999)).data;
-    //   setProducts(res);
-    //   setFilteredProducts(res);
-    //   return;
-    // }
-    // setLoader(StateInfos.ERROR);
-  }
-
-  function calculateRange(pageNumber, itemsPerPage) {
-    var n = 0;
-
-    var startNumber = (pageNumber - 1) * categoriesPerPage + n;
-    var endNumber = pageNumber * itemsPerPage;
-
-    return {
-      startNumber: startNumber,
-      endNumber: endNumber,
-    };
   }
 
   if (loader == StateInfos.LOADING) {
@@ -107,16 +129,22 @@ export const SearchProductPageComponent = () => {
        <p className={`${styles["category-header"]}`}>{pageName}</p> 
       <hr />
       <div className="row">
-        <div className="col-3">
+        <div className="col-4">
           {
             <ProductFilterComponent
-              products={products}
-              setProducts={setFilteredProducts}
+              filters={filters}
+              setFilters={setFilters}
+              setSearchByTitle={setSearchByTitle}
+              setCountOfPages={setCountOfPages}
+              setPage={setPage}
+              searchByTitle={searchByTitle}
+              setProducts={setProducts}
+              search={search}
             />
           }
         </div>
 
-        <div className="col-9">
+        <div className="col-8">
           <div className="d-flex">
             <div className={` ${styles["btn-nav-menu-active"]}`}>
               Список товарі
@@ -203,12 +231,13 @@ export const SearchProductPageComponent = () => {
           >
             {/* <MiniCardProductANDTableProductComponent id="1" /> */}
 
-            {filteredProducts && filteredProducts.map
-              ? filteredProducts.map((a) => (
+            {products && products.map
+              &&
+                products.slice(0, SEPARATED_COUNT).map((a) => (
                   <MiniCardProductANDTableProductComponent
                     key={a.id}
                     id={a.id}
-                      isFavorite={isFavoriteProduct}
+                    isFavorite={isFavoriteProduct}
                     title={a.title}
                     description={a.shortDescription}
                     minPrice={a.minPrice}
@@ -217,14 +246,44 @@ export const SearchProductPageComponent = () => {
                     imageUrl={a.pathToPhoto}
                   />
                 ))
-              : new Array(15)
-                  .fill(null)
-                  .map((_, index) => (
-                    <MiniCardProductANDTableProductComponent key={index} />
-                  ))}
+          }
+          </div>
+          <div className="col-12">
+            <img src={banner} style={{width: "100%"}}/>
           </div>
         </div>
+        {products && products.map && products.length > SEPARATED_COUNT
+              && 
+                products.slice(SEPARATED_COUNT, products.length).map((a) => (
+                  <MiniCardProductANDTableProductComponent
+                    key={a.id}
+                    id={a.id}
+                    isFavorite={isFavoriteProduct}
+                    title={a.title}
+                    description={a.shortDescription}
+                    minPrice={a.minPrice}
+                    countOfPharmacies={a.count}
+                    manufacturer={a.manufacturer}
+                    imageUrl={a.pathToPhoto}
+                  />
+                ))
+              }
       </div>
+      <PaginationComponent 
+      setContent={setProducts} 
+      allowAppend={true} 
+      getContent={async (page)=>{
+        let res = await search(page);
+        if(res)
+          return res.products;
+        return null;
+      }} 
+      currentPage={page}
+      countOfPages={countOfPages}
+      page={page}
+      setPage={setPage}
+      />
     </>
+
   );
 };

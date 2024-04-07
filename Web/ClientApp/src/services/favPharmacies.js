@@ -1,9 +1,9 @@
-import { removeToken } from "../utils/Login";
+import { removeToken, isLogged } from "../utils/Login";
 import { getFromServer, postToServer } from "../utils/Queries";
 import { GetFavoritePharmacies, GetFavoritePharmaciesWithSupInfo, AddFavouritePharmacy, RemoveFavouritePharmacy} from "../utils/Constants";
-
-
-export async function getFavsPharmacies(){
+export async function getFavsPharmacies() {
+    if (!isLogged())
+        return;
     let res = await getFromServer(GetFavoritePharmacies);
     if(res.status === "Error"){
         removeToken(); 
@@ -13,6 +13,8 @@ export async function getFavsPharmacies(){
 }
 
 export async function getFavsPharmaciesWithSupInfo() {
+    if (!isLogged())
+        return;
     let res = await getFromServer(GetFavoritePharmaciesWithSupInfo);
     if (res.status === "Error") {
         removeToken();

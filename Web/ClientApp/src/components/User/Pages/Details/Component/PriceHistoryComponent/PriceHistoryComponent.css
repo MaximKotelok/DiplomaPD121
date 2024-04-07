@@ -1,0 +1,17 @@
+
+.recharts-legend-wrapper{
+    display: none;
+}
+
+.price-history{
+    background: #007AFF26;
+    border-radius: 30px;
+    margin: 10px 0;
+    padding: 10px;
+}
+
+.recharts-layer tspan{
+    font-weight: bold !important;
+    font-family: var(--standart-font);
+}
+

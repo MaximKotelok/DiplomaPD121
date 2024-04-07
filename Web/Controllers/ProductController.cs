@@ -82,6 +82,17 @@ namespace Web.Controllers
 
 
 		}
+		[HttpGet("GetPriceHistory")]
+		public IActionResult GetPriceHistory(int id)
+		{
+			Product product = _productService!.GetProduct(a => a.Id == id, includeProperties: "PriceHistory,PriceHistory.HistoryDate")!;
+
+			return Ok(product.PriceHistory.OrderBy(a=>a.HistoryDate.Date).Select((a) => new
+			{
+				date = a.HistoryDate.Date.ToString("MM.yy"),
+				price = a.Price
+			}).GroupBy(a=>a.date).Select(a=> new { name = a.Key, value = a.Average(b => b.price) }).TakeLast(12));
+		}
 
 		[HttpGet("GetById")]
 		public IActionResult GetProduct(int id)
@@ -149,23 +160,12 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-		[HttpPost("GetSearchInput")]
-		public IActionResult GetSearchInput([FromBody] SearchViewModel model)
+		private IEnumerable<Product> filter(IEnumerable<Product> products, SearchViewModel model)
 		{
-			var result = _productService
-				.GetAllProducts(includeProperties: "Manufacturer,Properties,Properties.Attribute,Category,Brand,Category")
+			return products				
 				.Where(a =>
 				{
-					if (model.Title != null)
-					{
-						return a.Title!.StartsWith(model.Title);
-					}
-					return true;
-				}
-				)
-				.Where(a =>
-				{
-					if (model.Brands != null)
+					if (model.Brands != null && model.Brands.Length>0)
 					{
 						return model.Brands.Contains(a.BrandID!.Value);
 					}
@@ -174,7 +174,7 @@ namespace Web.Controllers
 				)
 				.Where(a =>
 				{
-					if (model.Categories != null)
+					if (model.Categories != null && model.Categories.Length > 0)
 					{
 						return model.Categories.Contains(a.CategoryID!.Value);
 					}
@@ -183,7 +183,7 @@ namespace Web.Controllers
 				)
 				.Where(a =>
 				{
-					if (model.Properties != null)
+					if (model.Properties != null && model.Properties.Length > 0)
 					{
 						return a.Properties!.Any(b =>
 						model.Properties.Any(c => (c.Name == b.Attribute.Name && b.Value == c.Value))
@@ -193,6 +193,27 @@ namespace Web.Controllers
 					return true;
 				}
 				);
+		}
+
+		[HttpPost("GetSearchInput")]
+		public IActionResult GetSearchInput([FromBody] SearchViewModel model)
+		{
+			IEnumerable<Product> result;
+			if(model.ActiveSubstanceId == null)
+			{
+
+				result = filter(_productService
+					.GetAllProducts(includeProperties: "Manufacturer,Properties,Properties.Attribute,Category,Brand,Category")
+
+					, model);
+			}
+			else
+			{
+				result = filter(_medicineService.GetAllMedicines(includeProperties: "Manufacturer,Properties,Properties.Attribute,Category,Brand,Category").Where(a=>a.ActiveSubstanceID==model.ActiveSubstanceId)
+					, model);
+			}
+			
+
 			if (result is not null)
 			{
 				Dictionary<string, List<string>> attributes = new Dictionary<string, List<string>>();
@@ -245,51 +266,44 @@ namespace Web.Controllers
 		[HttpPost("Search")]
 		public IActionResult Search([FromBody] SearchViewModel model)
 		{
-			var result = _productService
-				.GetAllProducts(includeProperties: "Manufacturer,Properties,Properties.Attribute,Category,Brand,Category")
-				.Where(a =>
-				{
-					if (model.Title != null && model.Title.Length>0)
-					{
-						return a.Title!.StartsWith(model.Title);
-					}
-					return true;
-				}
-				)
-				.Where(a =>
-				{
-					if (model.Brands != null && model.Brands.Length>0)
-					{
-						return model.Brands.Contains(a.BrandID!.Value);
-					}
-					return true;
-				}
-				)
-				.Where(a =>
-				{
-					if (model.Categories != null && model.Categories.Length > 0)
-					{
-						return model.Categories.Contains(a.CategoryID!.Value);
-					}
-					return true;
-				}
-				)
-				.Where(a =>
-				{
-					if (model.Properties != null && model.Properties.Length > 0)
-					{
-						return a.Properties!.Any(b =>
-						model.Properties.Any(c => (c.Name == b.Attribute.Name && b.Value == c.Value))
 
-						);
+			IEnumerable<Product> result;
+			if (model.ActiveSubstanceId == null)
+			{
+
+				result = filter(_productService.GetAllProducts(includeProperties: "Manufacturer,Properties,Properties.Attribute,Category,Brand,Category")
+					, model).Where(a =>
+					{
+						if (model.Title != null)
+						{
+							return a.Title!.StartsWith(model.Title);
+						}
+						return true;
 					}
-					return true;
-				}
+				);
+			}
+			else
+			{
+				result = filter(_medicineService.GetAllMedicines(includeProperties: "Manufacturer,Properties,Properties.Attribute,Category,Brand,Category")
+					.Where(a => a.ActiveSubstanceID == model.ActiveSubstanceId)
+					.Where(a =>
+					{
+						if (model.Title != null)
+						{
+							return a.Title!.StartsWith(model.Title);
+						}
+						return true;
+					}
 				)
-				;
+					, model);
+			}
+
 			if (result is not null)
 			{
-				return Ok(result);
+				int countOfPages = (int)Math.Round(Convert.ToDouble(result.Count()) / Convert.ToDouble(model.ProductPerPage));
+				int page = model.Page != null ? model.Page.Value-1 : 0;
+				var products = result.Skip(model.ProductPerPage * page).Take(model.ProductPerPage);
+				return Ok(new { products, countOfPages});
 			}
 			return BadRequest("No records found");
 		}

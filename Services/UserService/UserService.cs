@@ -46,6 +46,15 @@ namespace Services.UserService
 				user.UserName = userName;
 			await _userManager.UpdateAsync(user);
 		}
+        
+        public async Task ChangePassword(string id, string currentPassword, string newPassword)
+		{
+			var user = await _userManager.FindByIdAsync(id);
+			if(!(await _userManager.ChangePasswordAsync(user, currentPassword, newPassword)).Succeeded)
+            {
+                throw new OperationCanceledException();
+            }
+		}
 
 		public async Task AddFavouritePharmacy(int pharmacyId, string userName)
         {

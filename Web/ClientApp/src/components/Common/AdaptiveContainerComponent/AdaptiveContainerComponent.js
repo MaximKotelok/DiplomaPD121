@@ -8,7 +8,8 @@ import './AdaptiveContainerComponent.css';
 import { isWidthDown } from '../../../utils/Functions';
 
 const AdaptiveContainerComponent =
-    ({      
+    ({
+        className="",      
         children,        
         mdDisplayCount = 1,
         lgDisplayCount = 3,
@@ -37,7 +38,7 @@ const AdaptiveContainerComponent =
 
 
         return (
-            <div className={`d-flex ${firstNChildren.count != xlDisplayCount&&"justify-content-evenly"}`}>    
+            <div className={`d-flex ${firstNChildren.count != xlDisplayCount&&"justify-content-evenly"} ${className}`}>    
                 {firstNChildren} 
             </div>
         );

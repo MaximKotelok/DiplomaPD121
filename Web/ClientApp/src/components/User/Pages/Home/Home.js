@@ -114,7 +114,11 @@ export const Home = () => {
     <>
       <div className="row">
         <img src={homePageImg} />
-
+        <div>
+          <div className="div-under-home-img">
+            <div className="div-under-home-img-child"></div>
+          </div>
+        </div>
         <div className="row">
           <div className="col-4">
             <CustomList data={categories.data} />
@@ -206,7 +210,7 @@ export const Home = () => {
             }
             
           </div>
-          <CarouselListComponent xlDisplayCount={6}>
+          <CarouselListComponent xlDisplayCount={5} xxlDisplayCount={6}>
             {topOffers[selectedTopOfferIndex].data.map((a,index)=>(<MiniProductCardComponent
                 key={index}
                 isFavorite={isCustomFavorite}

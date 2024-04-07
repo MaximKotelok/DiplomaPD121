@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import styles from "./HeadOfDetailsComponent.module.css";
 import { NavigationDetailsComponent } from "../../../../Common/NavigationDetailsComponent/NavigationDetailsComponent";
 import CustomImgComponent from "../../../../../Common/CustomImgComponent/CustomImgComponent";
@@ -29,7 +30,6 @@ const HeadOfDetailsComponent = ({ product }) => {
         <CustomImgComponent
           className="me-2"
           style={{ width: "568px", height: "400px", objectFit: "cover" }}
-          defaultSrc="https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png"
           src={`${product.pathToPhoto}`}
         />
       </div>
@@ -80,14 +80,17 @@ const HeadOfDetailsComponent = ({ product }) => {
                 Знайти в аптеках
               </a>
             </div>
-            <div className="col-6">
-              <a
+            {
+              product.activeSubstanceId &&
+              <div className="col-6">
+              <Link to={`/Search/ByActiveSubstance/${product.activeSubstanceId}`}
                 className={`btn ${styles["btn-details"]} ${styles["btn-analogues"]} w-100`}
                 href={`/map}`}
               >
                 Аналоги
-              </a>
+              </Link>
             </div>
+              }
           </div>
         </div>
       </div>

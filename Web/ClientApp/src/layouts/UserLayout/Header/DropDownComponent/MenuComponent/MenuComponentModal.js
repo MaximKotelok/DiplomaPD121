@@ -15,7 +15,7 @@ import { ApiPath } from "../../../../../utils/Constants";
 
 var active = ` d-flex align-items-center ${styles["my-list-group-item"]} `;
 
-const MenuComponentModal = ({ onSelect, categories }) => {
+const MenuComponentModal = ({ onSelect, categories, closeMenu }) => {
   const handleMenuSelect = (menuId) => {
     onSelect(menuId);
   };

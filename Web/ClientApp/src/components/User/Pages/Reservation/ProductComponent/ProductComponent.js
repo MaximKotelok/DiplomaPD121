@@ -6,7 +6,6 @@ const ProductComponent = ({title, shortDescription, image, quantity, price = 0})
   return (
     <div className={`d-flex mb-4 `} style={{ height: "92px" }}>
       <CustomImgComponent 
-        defaultSrc="https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png" 
         src={image} 
         style={{ width: "92px", height: "92px", objectFit: "cover" }}
         alt="product"

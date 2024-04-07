@@ -1,7 +1,11 @@
-import { getFromServer } from "../utils/Queries";
+import { getFromServer, postToServer } from "../utils/Queries";
 
-export async function getAllProductConfirm(){
-    return await getFromServer(
-        `ProductConfirm`
+export async function getAllProductConfirm(page = 1){
+    return await postToServer(
+        `ProductConfirm`,
+        {
+            itemsPerPage: 1,
+            page: page
+        }
         )
 }

@@ -11,7 +11,8 @@ const CarouselListComponent = ({
   children,
   mdDisplayCount = 1,
   lgDisplayCount = 2,
-  xlDisplayCount = 4,
+  xlDisplayCount = 3,
+  xxlDisplayCount = 4,
   title,
 }) => {
   const [count, setCount] = useState(1);
@@ -23,8 +24,10 @@ const CarouselListComponent = ({
         setCount(mdDisplayCount);
       } else if (isWidthDown("lg", width)) {
         setCount(lgDisplayCount);
-      } else {
+      } else if (isWidthDown("xl", width)) {
         setCount(xlDisplayCount);
+      } else {
+        setCount(xxlDisplayCount);
       }
     }
 

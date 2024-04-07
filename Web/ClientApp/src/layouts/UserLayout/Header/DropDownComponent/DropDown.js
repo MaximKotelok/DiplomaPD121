@@ -60,11 +60,12 @@ function DropDown({ iconPath }) {
               <MenuComponentModal
                 categories={categories}
                 onSelect={handleMenuSelect}
+                closeMenu={()=>{setSelectedMenu(null); setShow(false);}}
               />
             </div>
             <div className="col-8 ps-5 pe-5">
               <Provider store={catalogueStore}>
-                <Content selectedMenu={selectedMenu} />
+                <Content selectedMenu={selectedMenu} closeMenu={()=>{setSelectedMenu(null); setShow(false);}}/>
               </Provider>
             </div>
           </div>

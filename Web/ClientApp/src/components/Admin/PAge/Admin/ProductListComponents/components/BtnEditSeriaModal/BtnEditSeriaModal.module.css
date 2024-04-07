@@ -1,0 +1,115 @@
+
+.btn-ceru-seria{
+padding: 4px;
+width: 141px;
+border-radius: 100px;
+outline: none;
+border:none;
+background-color: rgba(14, 62, 117, 1);
+    cursor: pointer;
+    font-family: var(--standart-font);
+font-size: 13px;
+font-weight: 800;
+line-height: 18px;
+    color: rgba(240, 240, 240, 1);
+}
+
+
+.div-top-product{
+    background-color: rgba(0, 122, 255, 0.15);
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.img-product{
+    width: 46px;
+height: 46px;
+border-radius: 5px ;
+    border: 1px solid rgba(229, 229, 234, 1);
+}
+
+.text-head{
+color: rgba(28, 28, 28, 0.8);
+font-family: var(--standart-font);
+font-size: 14px;
+font-weight: 700;
+line-height: 20.02px;
+/* margin: 0; */
+
+}
+.text-pid-head{
+    color: rgba(122, 122, 122, 1);
+    font-family: var(--standart-font);
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0;
+}
+
+.my-input-text-form::placeholder{
+    color: rgba(13, 30, 49, 1);
+
+}
+.my-input-text-form{
+    border: 2px solid  rgba(172, 172, 172, 1);
+    color: rgba(13, 30, 49, 1);
+    padding: 10px;
+font-family: var(--standart-font);
+font-size: 14px;
+font-weight: 400;
+    }
+
+    .input-text-form::placeholder {
+    color: rgba(13, 30, 49, 1);
+
+    }
+    
+    .input-text-form {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid  rgba(172, 172, 172, 1);
+    color: rgba(13, 30, 49, 1);
+    border-radius: 12px;
+font-family: var(--standart-font);
+font-size: 14px;
+        font-weight: 500;
+        text-align: left;
+        outline: none;
+        resize: none;
+    }
+
+    .label-head{
+        color: rgba(13, 30, 49, 1);
+        font-family: var(--standart-font);
+font-size: 14px;
+font-weight: 700;
+line-height: 20.02px;
+text-align: left;
+
+    }
+
+
+    
+    .card-btn-primary {
+        
+        background-color: rgba(0, 122, 255, 1);
+        color: rgba(242, 242, 247, 1);
+        transition: background-color 0.3s, color 0.3s; /* Додайте перехід для кольору та фону */
+    }
+    
+    .card-btn-primary:hover {
+        background-color: #0e3e75;
+        color: rgba(242, 242, 247, 1);
+    }
+    
+    .card-btn-primary-500{
+        background-color: rgba(0, 122, 255, 0.15);
+        color: rgba(0, 122, 255, 1);
+        transition: background-color 0.3s, color 0.3s; /* Додайте перехід для кольору та фону */
+    
+    }
+    .card-btn-primary-500:hover{
+        background-color: rgba(0, 122, 255, 0.5);
+        color: rgba(0, 122, 255, 1);
+        transition: background-color 0.3s, color 0.3s; /* Додайте перехід для кольору та фону */
+    
+    }
