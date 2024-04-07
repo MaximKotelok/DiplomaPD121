@@ -6,7 +6,7 @@ import searchIcon from "../../../assets/images/header-icons/search-icon.svg"; //
 import styles from "./AutoCompleteInput.module.css";
 import { ApiPath, Success } from "../../../utils/Constants";
 
-const AutoCompleteInput = ({ className, getData }) => {
+const AutoCompleteInput = ({ className, getData, onResultClick }) => {
   const [dataFromServer, setDataFromServer] = useState([]);
   const [searchTerm, setSearchTerm] = useState([]);
   const [isFocused, setIsFocused] = useState(false);
@@ -65,8 +65,9 @@ const AutoCompleteInput = ({ className, getData }) => {
                   key={index}
                   style={{}}
                   className={`${styles["li-class"]} d-flex justify-content-between  align-items-center`}
-                  onClick={() => {
-                    window.location.href = `/product-details/${option.id}`
+                      onClick={() => {
+                          onResultClick(option.id);
+                    
                     setSearchTerm("");
                   }}
                 >

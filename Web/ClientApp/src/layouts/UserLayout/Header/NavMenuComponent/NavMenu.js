@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import {
-  Collapse,
-  Navbar,
-  NavbarBrand,
-  NavbarToggler,
-  NavItem,
-  NavLink,
+    Collapse,
+    Navbar,
+    NavbarBrand,
+    NavbarToggler,
+    NavItem,
+    NavLink,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import "./NavMenu.css";
@@ -27,66 +27,70 @@ import { GetProductByTitle } from "../../../../services/product";
 
 //import CatalogIcon from './catalog_icon_215654.svg';
 export class NavMenu extends Component {
-  static displayName = NavMenu.name;
+    static displayName = NavMenu.name;
 
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this.toggleNavbar = this.toggleNavbar.bind(this);
-    this.state = {
-      collapsed: true,
-    };
-  }
+        this.toggleNavbar = this.toggleNavbar.bind(this);
+        this.state = {
+            collapsed: true,
+        };
+    }
 
-  toggleNavbar() {
-    this.setState({
-      collapsed: !this.state.collapsed,
-    });
-  }
+    toggleNavbar() {
+        this.setState({
+            collapsed: !this.state.collapsed,
+        });
+    }
 
-  render() {
-    return (
-      <header>
-        <Navbar
-          className="custom-navbar border-bottom box-shadow mb-3"
-          container
-          light
-        >
-          <div className="inner-custom-navbar navbar-nav flex-grow">
-            <NavbarBrand className="logo" tag={Link} to="/">
-              <Logo height={40} fill="black" className="logo-pharma" />
-            </NavbarBrand>
+    render() {
+        return (
+            <header>
+                <Navbar
+                    className="custom-navbar border-bottom box-shadow mb-3"
+                    container
+                    light
+                >
+                    <div className="inner-custom-navbar navbar-nav flex-grow">
+                        <NavbarBrand className="logo" tag={Link} to="/">
+                            <Logo height={40} fill="black" className="logo-pharma" />
+                        </NavbarBrand>
 
-            <div className="catalogue">
-              <DropDown iconPath={CatalogIcon} />
-            </div>
-            <NavLink className="services" tag={Link} to="/counter">
-              <IconButton iconPath={ServiceIcon} text="Сервіси" />
-            </NavLink>
+                        <div className="catalogue">
+                            <DropDown iconPath={CatalogIcon} />
+                        </div>
+                        <NavLink className="services" tag={Link} to="/counter">
+                            <IconButton iconPath={ServiceIcon} text="Сервіси" />
+                        </NavLink>
 
-            <div className="geo">
-              <DropDownLocation iconPath={GeoIcon} text="Геолокація" />
-            </div>
+                        <div className="geo">
+                            <DropDownLocation iconPath={GeoIcon} text="Геолокація" />
+                        </div>
 
-            {/* <SearchElement className="searchbar" /> */}
-            <AutoCompleteInput className="searchbar" getData={(title)=>GetProductByTitle(title)}/>
+                        {/* <SearchElement className="searchbar" /> */}
+                        <AutoCompleteInput
+                            className="searchbar"
+                            getData={(title) => GetProductByTitle(title)}
+                            onResultClick={(id) => { window.location.href = `/product-details/${id}` }}
+                        />
 
-            <NavLink tag={Link} className="cart nav-link-my" to="/cart">
-              <IconButtonNoText iconPath={CartIcon} />
-            </NavLink>
+                        <NavLink tag={Link} className="cart nav-link-my" to="/cart">
+                            <IconButtonNoText iconPath={CartIcon} />
+                        </NavLink>
 
-            <NavLink
-              tag={Link}
-              className="profile nav-link-my"
-              to={checkIsAuth() ? "/profile" : "/auth"}
-            >
-              <IconButtonNoText iconPath={ProfileIcon} />
-            </NavLink>
-          </div>
-        </Navbar>
-      </header>
-    );
-  }
+                        <NavLink
+                            tag={Link}
+                            className="profile nav-link-my"
+                            to={checkIsAuth() ? "/profile" : "/auth"}
+                        >
+                            <IconButtonNoText iconPath={ProfileIcon} />
+                        </NavLink>
+                    </div>
+                </Navbar>
+            </header>
+        );
+    }
 }
 
 //import React, { Component } from 'react';

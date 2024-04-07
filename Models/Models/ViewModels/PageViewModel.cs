@@ -13,7 +13,8 @@ namespace Domain.Models.ViewModels
 	
 		public int GetCountOfPages(int count)
 		{
-			return (int)Math.Round(Convert.ToDouble(count) / Convert.ToDouble(this.ItemsPerPage));			
+			return (int)Math.Ceiling(Convert.ToDouble(count) / Convert.ToDouble(this.ItemsPerPage));
+			
 		}
 	}
 }
