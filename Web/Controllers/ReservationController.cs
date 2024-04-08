@@ -154,10 +154,10 @@ namespace Web.Controllers
                     Id = reservation.Id,
                     ReservedTime = reservation.ReservedTime.ToString("dd/MM/yyyy HH:mm"),
                     FullName =
-                        ((reservation.User.FirstName != null && reservation.User.LastName != null) ?
+                        ((reservation.User != null && reservation.User.FirstName != null && reservation.User.LastName != null) ?
                             $"{reservation.User.FirstName} {reservation.User.LastName}" :
-                            reservation.User.UserName),
-                    PhoneNumber = reservation.User.UserName,
+                            reservation.User != null? reservation.User.UserName : reservation.Email),
+                    PhoneNumber = reservation.Phone,
                     PriceAndCount = $"{reservation.ReservationItems.Sum(a => a.ConcreteProduct.Price * a.Quantity)}({reservation.ReservationItems.Sum(a => a.Quantity)}шт)",
                     Status = reservation.StatusID
                 };

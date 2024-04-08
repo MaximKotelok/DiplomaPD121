@@ -221,7 +221,7 @@ export const Home = () => {
                 countOfPharmacies={a.count}
                 manufacturer={a.manufacturer}
                 imageUrl={a.pathToPhoto}
-
+                
                 />))}
           </CarouselListComponent>
         </div>)

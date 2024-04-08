@@ -66,7 +66,7 @@ function BtnEditStatusModalOrderList({
         <Modal.Body>
           <h6 className={`${styles["text-pidsumok"]}`}>Підсумок</h6>
           <p className={`${styles["text-data"]}`}>{data?data.reservedTime:""}</p>
-          <div className="p-3">
+          <div className={`p-3 ${styles["div-with-scroll"]}`}>
             {data && data.reservationItems && data.reservationItems.map(
               a => {
 

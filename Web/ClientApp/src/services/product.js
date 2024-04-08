@@ -24,9 +24,15 @@ export async function upsertProduct(product, options) {
 } 
 
 export async function getTopOffer() {
-    return await getFromServer(GetTopOffers, {
+    let res = await getFromServer(GetTopOffers, {
         count: 6
-    }, ClassHeader)
+    }, ClassHeader);
+    return res;
+    if(res.status === Success){
+        
+    }
+    return "error";
+    
 } 
 
 export async function getMinAndMaxPrice(id) {
