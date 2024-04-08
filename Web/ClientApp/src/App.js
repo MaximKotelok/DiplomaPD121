@@ -46,6 +46,8 @@ import { ZayavkaComponents } from "./components/Admin/PAge/Admin/ZayavkaComponen
 import { UsersComponents } from "./components/Admin/PAge/Admin/UsersComponents/UsersComponents";
 import { PharmacyListComponents } from "./components/Admin/PAge/Admin/PharmacyListComponents/PharmacyListComponents";
 import { ProductListComponents } from "./components/Admin/PAge/Admin/ProductListComponents/ProductListComponents";
+import { AddProductPharmacyComponent } from "./components/Admin/PAge/Pharmacy/AddProductComponents/AddProductPharmacyComponent/AddProductPharmacyComponent";
+import { OrderListProductComponents } from "./components/Admin/PAge/Pharmacy/OrderListProductComponents/OrderListProductComponents";
 
 // export default class App extends Component {
 // static displayName = App.name;
@@ -145,6 +147,8 @@ export default class App extends Component {
             <Route path="productList" element={<ProductListComponents />} />
             <Route path="pharmacyList" element={<PharmacyListComponents />} />
             <Route path="pharmacyUser" element={<UserPharmacy />} />
+            <Route path="addProductPharmacy" element={<AddProductPharmacyComponent />} />
+            <Route path="orderList" element={<OrderListProductComponents />} />
             <Route
               path="updateProduct/:productId"
               element={<UpsertProductComponent />}

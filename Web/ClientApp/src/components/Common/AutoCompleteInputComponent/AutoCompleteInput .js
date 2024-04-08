@@ -11,32 +11,32 @@ const AutoCompleteInput = ({ className, getData }) => {
   const [searchTerm, setSearchTerm] = useState([]);
   const [isFocused, setIsFocused] = useState(false);
 
-
-
   const handleChange = async (event) => {
-
     setSearchTerm(event.target.value);
     if (event.target.value !== "") {
       let res = await getData(event.target.value);
-      if (res.status === Success)
-        setDataFromServer(res.data);
+      if (res.status === Success) setDataFromServer(res.data);
     } else {
       setDataFromServer([]);
     }
   };
 
   return (
-    <div className={className} 
-      onMouseEnter={() => setIsFocused(true)} 
+    <div
+      className={className}
+      onMouseEnter={() => setIsFocused(true)}
       onMouseLeave={() => setIsFocused(false)}
     >
       <div
-        className={`input-group ${(searchTerm === "" || !isFocused)
-          ? styles["border-bottom-none"]
-          : styles["border-bottom"]
-          } ${styles["input-style-search"]} center ${styles["product-back-serach-bar"]} back-serach-bar `}
+        className={`input-group ${
+          searchTerm === "" || !isFocused
+            ? styles["border-bottom-none"]
+            : styles["border-bottom"]
+        } ${styles["input-style-search"]} center ${
+          styles["product-back-serach-bar"]
+        } back-serach-bar `}
       >
-        <Link to={`/Search/ByTitle/${searchTerm}`} className="btn social-btn" >            
+        <Link to={`/Search/ByTitle/${searchTerm}`} className="btn social-btn">
           <img
             src={searchIcon}
             width="28px"
@@ -50,11 +50,11 @@ const AutoCompleteInput = ({ className, getData }) => {
           className="my-search-bar"
           placeholder="Type to search..."
           value={searchTerm}
-          onInput={handleChange}          
+          onInput={handleChange}
         />
       </div>
 
-      <div style={{ position: "relative", width: "100%" }}>
+      <div style={{ position: "relative", maxWidth: "621px" }}>
         {searchTerm && isFocused && (
           <ul className={`${styles["ul-class"]}`}>
             <hr style={{ margin: "0px" }} />
@@ -66,7 +66,7 @@ const AutoCompleteInput = ({ className, getData }) => {
                   style={{}}
                   className={`${styles["li-class"]} d-flex justify-content-between  align-items-center`}
                   onClick={() => {
-                    window.location.href = `/product-details/${option.id}`
+                    window.location.href = `/product-details/${option.id}`;
                     setSearchTerm("");
                   }}
                 >
@@ -76,8 +76,12 @@ const AutoCompleteInput = ({ className, getData }) => {
                       src={`${ApiPath}${option.pathToPhoto}`}
                     />
                     <div className="ms-3">
-                      <h4 className={`${styles["text-head"]}`}>{option.title}</h4>
-                      <p className={`${styles["text-opus"]}`}>{option.shortDescription}</p>
+                      <h4 className={`${styles["text-head"]}`}>
+                        {option.title}
+                      </h4>
+                      <p className={`${styles["text-opus"]}`}>
+                        {option.shortDescription}
+                      </p>
                     </div>
                   </div>
                   <ArrowRight />
@@ -89,6 +93,7 @@ const AutoCompleteInput = ({ className, getData }) => {
                   listStyleType: "none",
                   padding: "10px",
                 }}
+                className={`${styles["sory-text"]}`}
               >
                 Вибачте, результатів немає
               </li>
