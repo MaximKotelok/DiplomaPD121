@@ -151,7 +151,7 @@ function BtnEditStatusModalUser({
             <div className="row mt-3">
               <div className="col-6 ps-2 pe-2">
                 <button
-                  className={`brn-form ${styles["card-btn-primary"]} btn w-100`}
+                  className={`brn-form ${styles["card-btn-primary"]}  w-100`}
                   onClick={updateStatus}
                 >
                   Оновити Статус
@@ -159,7 +159,7 @@ function BtnEditStatusModalUser({
               </div>
               <div className="col-6 ps-2 pe-2">
                 <button
-                  className={`btn brn-form ${styles["card-btn-primary-500"]} w-100  `}
+                  className={` brn-form ${styles["card-btn-primary-500"]} w-100  `}
                 >
                   Продовжити підбір в цій аптеці
                 </button>
@@ -168,6 +168,12 @@ function BtnEditStatusModalUser({
           </div>
         </Modal.Body>
       </Modal>
+      {show && (
+        <div
+          className={styles["modal-backdrop"]}
+          onClick={() => setShow(false)}
+        />
+      )}
     </>
   );
 }

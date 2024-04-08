@@ -6,22 +6,22 @@ import { CheckedBox } from "../../../../../Common/CheckedBoxComponent/CheckedBox
 import { changeStatus } from "../../../../../../../services/product";
 import { Success } from "../../../../../../../utils/Constants";
 
-function BtnEditStatusModal({id,statusId, statuses, changeStatusProduct }) {
+function BtnEditStatusModal({ id, statusId, statuses, changeStatusProduct }) {
   const [show, setShow] = useState(false);
   const [isActive, setIsActive] = useState(false);
-  const [changeStatusId, setChangeStatusId] = useState(statusId);  
+  const [changeStatusId, setChangeStatusId] = useState(statusId);
   const handleRadioChange = () => {
     setIsActive(!isActive);
   };
 
-  const updateStatus = async ()=>{
+  const updateStatus = async () => {
     let res = await changeStatus(id, changeStatusId);
-    if(res.status === Success){
-      let index = statuses.findIndex(a=>a.id===changeStatusId);
+    if (res.status === Success) {
+      let index = statuses.findIndex((a) => a.id === changeStatusId);
       changeStatusProduct(statuses[index]);
       setShow(false);
     }
-  }
+  };
   return (
     <>
       <ImgBtn
@@ -65,41 +65,38 @@ function BtnEditStatusModal({id,statusId, statuses, changeStatusProduct }) {
           <div className="mt-3">
             <h6 className={`${styles["status-text"]}`}>Статус</h6>
 
-        
             <div className={`d-flex flex-wrap`}>
-            {statuses && statuses.map &&
-          statuses.map(a=>{
-            return (
-              <div className={`${styles["parent-radio-div"]}`}>
-              <input
-                type="radio"
-                className={`btn-check ${styles["btn-check"]}`}
-                name="options-base"
-                id={`option${a.id}`}
-                defaultChecked={changeStatusId === a.id}
-                onChange={()=>{
-                  setChangeStatusId(a.id);
-                }}
-              />
-              <label
-                className={`${styles["labale-radio"]}`}
-                style={{border: `2px solid ${a.color}`}}
-                htmlFor={`option${a.id}`}
-              >
-                <div
-                  className={`${styles["div-text-radio"]}`}
-                  style={{backgroundColor: a.color}}
-                >
-                  {a.status}
-                </div>
-              </label>
-            </div>
-
-            )
-
-          })
-        }
-{/*          
+              {statuses &&
+                statuses.map &&
+                statuses.map((a) => {
+                  return (
+                    <div className={`${styles["parent-radio-div"]}`}>
+                      <input
+                        type="radio"
+                        className={`btn-check ${styles["btn-check"]}`}
+                        name="options-base"
+                        id={`option${a.id}`}
+                        defaultChecked={changeStatusId === a.id}
+                        onChange={() => {
+                          setChangeStatusId(a.id);
+                        }}
+                      />
+                      <label
+                        className={`${styles["labale-radio"]}`}
+                        style={{ border: `2px solid ${a.color}` }}
+                        htmlFor={`option${a.id}`}
+                      >
+                        <div
+                          className={`${styles["div-text-radio"]}`}
+                          style={{ backgroundColor: a.color }}
+                        >
+                          {a.status}
+                        </div>
+                      </label>
+                    </div>
+                  );
+                })}
+              {/*          
               <div className={`${styles["parent-radio-div"]}`}>
                 <input
                   type="radio"
@@ -140,27 +137,33 @@ function BtnEditStatusModal({id,statusId, statuses, changeStatusProduct }) {
                 </label>
               </div> */}
             </div>
+          </div>
 
-            <div className="row mt-3">
-              <div className="col-6 ps-2 pe-2">
-                <button
-                  className={`brn-form ${styles["card-btn-primary"]} btn w-100`}
-                  onClick={updateStatus}
-                >
-                  Оновити Статус
-                </button>
-              </div>
-              <div className="col-6 ps-2 pe-2">
-                <button
-                  className={`btn brn-form ${styles["card-btn-primary-500"]} w-100  `}
-                >
-                  Продовжити підбір в цій аптеці
-                </button>
-              </div>
+          <div className="row mt-3">
+            <div className="col-6 ps-2 pe-2">
+              <button
+                className={`brn-form ${styles["card-btn-primary"]} btn w-100`}
+                onClick={updateStatus}
+              >
+                Оновити Статус
+              </button>
+            </div>
+            <div className="col-6 ps-2 pe-2">
+              <button
+                className={`btn brn-form ${styles["card-btn-primary-500"]} w-100  `}
+              >
+                Продовжити підбір в цій аптеці
+              </button>
             </div>
           </div>
         </Modal.Body>
       </Modal>
+      {show && (
+        <div
+          className={styles["modal-backdrop"]}
+          onClick={() => setShow(false)}
+        />
+      )}
     </>
   );
 }

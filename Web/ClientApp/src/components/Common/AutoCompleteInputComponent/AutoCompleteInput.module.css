@@ -37,7 +37,7 @@ padding: 6px 18px;
 
  .product-back-serach-bar {
    max-width: 621px!important;
-   width: 40vw!important;
+   width: 41vw!important;
    padding: 4px 6px!important;
    
 }
@@ -67,4 +67,15 @@ text-align: left;
     line-height: 5.57px;
     text-align: left;
     
+}
+
+
+.sory-text{
+   color: rgba(122, 122, 122, 1);
+   font-family: var(--standart-font);
+   font-size: 14px;
+   font-weight: 500;
+   line-height: 17.57px;
+   text-align: left;
+   
 }

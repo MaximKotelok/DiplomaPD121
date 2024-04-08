@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
-import { ReactComponent as ImgBtn } from "../../../../../../../assets/images/btnZayavkModal.svg";
+// import { ReactComponent as ImgBtn } from "./BtnPickerData.svg";
 import styles from "./BtnEditSeriaModal.module.css";
+import "./BtnEditSeriaModal.css";
 import { CheckedBox } from "../../../../../Common/CheckedBoxComponent/CheckedBox";
 import { changeStatus } from "../../../../../../../services/product";
 import { Success } from "../../../../../../../utils/Constants";
@@ -10,25 +11,13 @@ import CustomImgComponent from "../../../../../../Common/CustomImgComponent/Cust
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { TextField } from "@mui/material";
+import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
+import dayjs from "dayjs";
+import BtnModalDataPicker from "./BtnModalDataPicker";
 
 function BtnEditSeriaModal({ id, statusId, statuses, changeStatusProduct }) {
   const [show, setShow] = useState(false);
-  const [isActive, setIsActive] = useState(false);
-  const [changeStatusId, setChangeStatusId] = useState(statusId);
-  const handleRadioChange = () => {
-    setIsActive(!isActive);
-  };
-  const [selectedDate, handleDateChange] = useState(new Date());
 
-  const updateStatus = async () => {
-    let res = await changeStatus(id, changeStatusId);
-    if (res.status === Success) {
-      let index = statuses.findIndex((a) => a.id === changeStatusId);
-      changeStatusProduct(statuses[index]);
-      setShow(false);
-    }
-  };
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <>
@@ -83,7 +72,7 @@ function BtnEditSeriaModal({ id, statusId, statuses, changeStatusProduct }) {
                 />
               </div>
               <div className="mb-3">
-                <label className={`${styles["label-head"]}`}>Вирішення</label>
+                <label className={`${styles["label-head"]}`}>Причина</label>
                 <textarea
                   className={` ${styles["input-text-form"]}  `}
                   placeholder="Офіційно не ввозились на територію України, з
@@ -92,34 +81,53 @@ function BtnEditSeriaModal({ id, statusId, statuses, changeStatusProduct }) {
                   name=""
                 />
               </div>
+
               <div className="mb-3">
-                <label className={`${styles["label-head"]}`}>Вирішення</label>
+                <label className={`${styles["label-head"]}`}>
+                  Дата заборони
+                </label>
+                {/* <div>
+                  <MobileDatePicker
+                    defaultValue={dayjs()}
+                    className={`${styles["customMobileDatePicker"]}`}
+                  />
+                </div> */}
+                {/* <div
+                  className={`input-group  center ${styles["back-serach-bar"]}  ${styles["my-input-text-form"]} `}
+                >
+                  <input
+                    type="text"
+                    className={`${styles["my-search-bar"]}`}
+                    placeholder="Пошук..."
+                    aria-label="Example text with button addon"
+                    aria-describedby="button-addon1"
+                  />
+                  <button
+                    className="social-btn"
+                    type="button"
+                    onClick={handleButtonClick}
+                  >
+                  </button>
+               
+              </div> */}
+
+                <BtnModalDataPicker />
+              </div>
+
+              <div className="mb-5">
+                <label className={`${styles["label-head"]}`}>Серія</label>
                 <input
                   className={`input-text-form  mb-2 ${styles["my-input-text-form"]}`}
                   placeholder="Вилучення з обігу шляхом знищення"
                   type="text"
                   name=""
                 />
-              </div>
-              <div className="mb-5">
-                <label className={`${styles["label-head"]}`}>Вирішення</label>
-                <input
-                  className={`input-text-form  mb-2 ${styles["my-input-text-form"]}`}
-                  placeholder="Вилучення з обігу шляхом знищення"
-                  type="text"
-                  name=""
-                />
-              </div>
-              <div className="mb-5">
-                <label className={`${styles["label-head"]}`}>Вирішення</label>
-                <StaticDatePicker />
               </div>
 
               <div className="row mt-5 pt-1">
                 <div className="col-6 ps-2 pe-2">
                   <button
                     className={`brn-form ${styles["card-btn-primary"]}  w-100`}
-                    onClick={updateStatus}
                   >
                     Надіслати
                   </button>
@@ -133,49 +141,15 @@ function BtnEditSeriaModal({ id, statusId, statuses, changeStatusProduct }) {
                 </div>
               </div>
             </div>
-
-            {/* <textarea
-            className={`${styles["text-area-zayavka"]}`}
-            rows={8}
-            placeholder="Напишіть тут свій коментар..."
-          />
-
-
-          <p className={`${styles["text-data"]}`}>12/04/2024</p>
-          <div className={`d-flex`}>
-            <CheckedBox
-              className={`${styles["text-email"]}`}
-              text="Надіслати лист на"
-            />
-            <span className={` ps-1 pt-2 ${styles["text-email-dashed"]}`}>
-              gmail@gmail.com
-            </span>
-          </div>
-          <div className="mt-3">
-            <h6 className={`${styles["status-text"]}`}>Статус</h6>
-
-            <div className={`d-flex flex-wrap`}></div>
-
-            <div className="row mt-3">
-              <div className="col-6 ps-2 pe-2">
-                <button
-                  className={`brn-form ${styles["card-btn-primary"]} btn w-100`}
-                  onClick={updateStatus}
-                >
-                  Надіслати
-                </button>
-              </div>
-              <div className="col-6 ps-2 pe-2">
-                <button
-                  className={`btn brn-form ${styles["card-btn-primary-500"]} w-100  `}
-                >
-                  Відмінити
-                </button>
-              </div>
-            </div>
-          </div> */}
           </Modal.Body>
         </Modal>
+
+        {show && (
+          <div
+            className={styles["modal-backdrop"]}
+            onClick={() => setShow(false)}
+          ></div>
+        )}
       </>
     </LocalizationProvider>
   );

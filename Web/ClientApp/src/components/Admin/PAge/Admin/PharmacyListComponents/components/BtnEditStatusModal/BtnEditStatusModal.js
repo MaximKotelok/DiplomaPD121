@@ -161,6 +161,12 @@ function BtnEditStatusModal({id,statusId, statuses, changeStatusProduct }) {
           </div>
         </Modal.Body>
       </Modal>
+      {show && (
+        <div
+          className={styles["modal-backdrop"]}
+          onClick={() => setShow(false)}
+        />
+      )}
     </>
   );
 }

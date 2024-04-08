@@ -113,3 +113,130 @@ text-align: left;
         transition: background-color 0.3s, color 0.3s; /* Додайте перехід для кольору та фону */
     
     }
+
+
+
+    .btn-form-control{
+        margin-bottom: 8px;
+        border: none;
+        padding-right: 15px;
+        border-radius: 0 12px 12px 0px;
+        color: rgba(0, 122, 255, 1);
+        font-family: var(--standart-font);
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 15px;
+        
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+.my-search-bar {
+    font-family: var(--standart-font);
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(13, 30, 49, 1);
+    background: none;
+    width: 100%;
+    flex: 1; 
+border: none;
+}
+
+.back-serach-bar {
+    border-radius: 12px;
+    border: 2px solid  rgba(172, 172, 172, 1);
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+.my-search-bar:focus {
+    border-color: initial;
+    outline: none;
+    box-shadow: none;
+    
+}
+
+
+.my-search-bar::placeholder{
+    color: rgba(13, 30, 49, 1);
+
+}
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(13, 30, 49, 0.5);
+    backdrop-filter: blur(6px);
+    z-index: 1050; 
+  }
+
+
+
+
+  /* __________________________ */
+  /* .customMobileDatePicker {
+    border: none;
+
+    border: 2px solid  rgba(172, 172, 172, 1);
+    color: rgba(13, 30, 49, 1);
+    padding: 10px;
+    font-family: var(--standart-font);
+font-size: 14px;
+font-weight: 400;
+border-radius: 12px;
+width: 100%;
+outline: none;
+line-height: 20px;
+
+  } */
+
+  .customMobileDatePicker{
+    width: 100%;
+  }
+  .customMobileDatePicker > div  {
+    padding-right: 0 !important;
+    border: none  !important;
+
+  }
+
+  .customMobileDatePicker > div > fieldset {
+    border: none  !important;
+  }
+
+  .customMobileDatePicker > div > input {
+    border: 2px solid rgba(172, 172, 172, 1)  !important;
+    color: rgba(13, 30, 49, 1);
+    padding: 14px 10px!important;
+    font-family: var(--standart-font)  !important;
+    font-size: 14px  !important;
+    font-weight: 400  !important;
+    border-radius: 12px  !important;
+    width: 100%;
+    outline: none  !important;
+    line-height: 20px;
+}
+
+  
+.poiner-picker{
+    cursor: pointer;
+}
+
+  .customMobileDatePicker > div > input ::placeholder{
+    color: rgba(13, 30, 49, 1) !important; 
+  } 
