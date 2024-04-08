@@ -4,15 +4,40 @@ import { ReactComponent as ImgBtn } from "../../../../../../../assets/images/btn
 import styles from "./BtnEditStatusModalOrderList.module.css";
 import { CheckedBox } from "../../../../../Common/CheckedBoxComponent/CheckedBox";
 import { changeStatus } from "../../../../../../../services/product";
-import { Success } from "../../../../../../../utils/Constants";
+import { ApiPath, Success } from "../../../../../../../utils/Constants";
+import { getReservation, setOrderStatus } from "../../../../../../../services/reservation";
 
 function BtnEditStatusModalOrderList({
   id,
-  statusId,
   statuses,
-  changeStatusProduct,
+  changeStatus,
 }) {
+
   const [show, setShow] = useState(false);
+  const [data, setData] = useState(null);
+  const [changeStatusId, setChangeStatusId] = useState(null);
+  useEffect(() => {
+    if (show) {
+      init();
+    }
+  }, [show]);
+
+  async function init() {
+    let res = await getReservation(id);
+    if (res.status === Success) {
+      setData(res.data);
+      console.log(res.data.status)
+      setChangeStatusId(res.data.status);
+    }
+  }
+
+  async function updateStatus(){
+    let res = await setOrderStatus(id, changeStatusId);
+    if (res.status === Success) {      
+      changeStatus(changeStatusId);
+      setShow(false);
+    }
+  }
   return (
     <>
       <ImgBtn
@@ -37,77 +62,61 @@ function BtnEditStatusModalOrderList({
         show={show}
         onHide={() => setShow(false)}
       >
+
         <Modal.Body>
           <h6 className={`${styles["text-pidsumok"]}`}>Підсумок</h6>
-          <p className={`${styles["text-data"]}`}>12/04/2024</p>
+          <p className={`${styles["text-data"]}`}>{data?data.reservedTime:""}</p>
           <div className="p-3">
-            <div className={`d-flex mt-3`}>
-              <img
-                src="https://root.tblcdn.com/img/goods/8d1aab55-2c38-11ec-bacc-0050569aacb6/1/img_0.jpg?v=AAAAAAmKo34"
-                className={`${styles["img-product"]} me-3`}
-              />
-              <div>
-                <h4 className={`${styles["text-title-row"]}`}>
-                  Протеїн Optimum Nutrition Whey Gold Standard
-                </h4>
-                <h5 className={`${styles["text-description-row"]}`}>
-                  Optimum Nutrition
-                </h5>
+            {data && data.reservationItems && data.reservationItems.map(
+              a => {
 
-                <div className={`d-flex justify-content-between`}>
-                  <p className={`${styles["text-counter"]}`}>2 упаковки </p>
-                  <p
-                    className={`${styles["text-counter"]}`}
-                    style={{ textAlign: "end" }}
-                  >
-                    80.30 грн{" "}
-                  </p>
+                return (<div className={`d-flex mt-3`}>
+                  <img
+                    src={`${ApiPath}${a.concreteProduct.product.pathToPhoto}`}
+                    className={`${styles["img-product"]} me-3`}
+                  />
+                  <div>
+                    <h4 className={`${styles["text-title-row"]}`}>
+                      {a.concreteProduct.product.title}
+                    </h4>
+                    <h5 className={`${styles["text-description-row"]}`}>
+                      {a.concreteProduct.product.shortDescription}
+                    </h5>
+
+                    <div className={`d-flex justify-content-between`}>
+                      <p className={`${styles["text-counter"]}`}>{a.quantity} упаковки </p>
+                      <p
+                        className={`${styles["text-counter"]}`}
+                        style={{ textAlign: "end" }}
+                      >
+                        {a.concreteProduct.price.toFixed(2)} грн{" "}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
 
-            <div className={`d-flex mt-3`}>
-              <img
-                src="https://root.tblcdn.com/img/goods/8d1aab55-2c38-11ec-bacc-0050569aacb6/1/img_0.jpg?v=AAAAAAmKo34"
-                className={`${styles["img-product"]} me-3`}
-              />
-              <div>
-                <h4 className={`${styles["text-title-row"]}`}>
-                  Протеїн Optimum Nutrition Whey Gold Standard
-                </h4>
-                <h5 className={`${styles["text-description-row"]}`}>
-                  Optimum Nutrition
-                </h5>
+                );
+              }
+            )}
 
-                <div className={`d-flex justify-content-between`}>
-                  <p className={`${styles["text-counter"]}`}>2 упаковки </p>
-                  <p
-                    className={`${styles["text-counter"]}`}
-                    style={{ textAlign: "end" }}
-                  >
-                    80.30 грн{" "}
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
           <div className="d-flex justify-content-between">
             <h5 className={`${styles["tect-count-price"]}`}>Загальна сума</h5>
-            <h5 className={`${styles["text-number-count"]}`}>534.30 грн</h5>
+            <h5 className={`${styles["text-number-count"]}`}>{(data?data.reservationItems.reduce((acc,a)=>acc+=a.quantity*a.concreteProduct.price,0):0).toFixed(2)} грн</h5>
           </div>
           <div className="d-flex justify-content-between">
             <h5 className={`${styles["tect-count-price"]}`}>
               Загальна кількість
             </h5>
-            <h5 className={`${styles["text-number-count"]}`}>3 упаковки</h5>
+            <h5 className={`${styles["text-number-count"]}`}>{data?data.reservationItems.reduce((acc,a)=>acc+=a.quantity,0):0} упаковки</h5>
           </div>
           <div className="mt-3">
             <h6 className={`${styles["status-text"]}`}>Статус</h6>
 
             <div className={`d-flex flex-wrap justify-content-evenly`}>
-              {/* {statuses &&
-                statuses.map &&
-                statuses.map((a) => {
+              
+              {
+                statuses.map(a => {
                   return (
                     <div className={`${styles["parent-radio-div"]}`}>
                       <input
@@ -115,138 +124,45 @@ function BtnEditStatusModalOrderList({
                         className={`btn-check ${styles["btn-check"]}`}
                         name="options-base"
                         id={`option${a.id}`}
-                        defaultChecked={changeStatusId === a.id}
                         onChange={() => {
-                          setChangeStatusId(a.id);
+                          setChangeStatusId(a.id);                          
                         }}
+                        autoComplete="off"                        
+                        defaultChecked={data && a.id == data.status}
                       />
                       <label
-                        className={`${styles["labale-radio"]}`}
                         style={{ border: `2px solid ${a.color}` }}
+                        className={`  ${styles["labale-radio"]}`}
                         htmlFor={`option${a.id}`}
                       >
                         <div
+                          style={{ background: `${a.color}` }}
                           className={`${styles["div-text-radio"]}`}
-                          style={{ backgroundColor: a.color }}
                         >
                           {a.status}
                         </div>
                       </label>
                     </div>
-                  );
-                })} */}
+                  )
+                })
+              }
 
-              <div className={`${styles["parent-radio-div"]}`}>
-                <input
-                  type="radio"
-                  className={`btn-check ${styles["btn-check"]}`}
-                  name="options-base"
-                  id="option2"
-                  autoComplete="off"
-                />
-                <label
-                  className={`  ${styles["labale-radio"]}  ${styles["labale-radio-color1"]}`}
-                  htmlFor="option2"
-                >
-                  <div
-                    className={`${styles["div-text-radio"]} ${styles["bg-color1"]}`}
-                  >
-                    Radio
-                  </div>
-                </label>
-              </div>
-
-              <div className={`${styles["parent-radio-div"]}`}>
-                <input
-                  type="radio"
-                  className={`btn-check ${styles["btn-check"]}`}
-                  name="options-base"
-                  id="option4"
-                  autoComplete="off"
-                />
-                <label
-                  className={`  ${styles["labale-radio"]}  ${styles["labale-radio-color2"]}`}
-                  htmlFor="option4"
-                >
-                  <div
-                    className={`${styles["div-text-radio"]} ${styles["bg-color2"]}`}
-                  >
-                    Radio
-                  </div>
-                </label>
-              </div>
-
-              <div className={`${styles["parent-radio-div"]}`}>
-                <input
-                  type="radio"
-                  className={`btn-check ${styles["btn-check"]}`}
-                  name="options-base"
-                  id="option5"
-                  autoComplete="off"
-                />
-                <label
-                  className={`  ${styles["labale-radio"]}  ${styles["labale-radio-color3"]}`}
-                  htmlFor="option5"
-                >
-                  <div
-                    className={`${styles["div-text-radio"]} ${styles["bg-color3"]}`}
-                  >
-                    Radio
-                  </div>
-                </label>
-              </div>
-              <div className={`${styles["parent-radio-div"]}`}>
-                <input
-                  type="radio"
-                  className={`btn-check ${styles["btn-check"]}`}
-                  name="options-base"
-                  id="option6"
-                  autoComplete="off"
-                />
-                <label
-                  className={`  ${styles["labale-radio"]}  ${styles["labale-radio-color4"]}`}
-                  htmlFor="option6"
-                >
-                  <div
-                    className={`${styles["div-text-radio"]} ${styles["bg-color4"]}`}
-                  >
-                    Radio
-                  </div>
-                </label>
-              </div>
-              <div className={`${styles["parent-radio-div"]}`}>
-                <input
-                  type="radio"
-                  className={`btn-check ${styles["btn-check"]}`}
-                  name="options-base"
-                  id="option7"
-                  autoComplete="off"
-                />
-                <label
-                  className={`  ${styles["labale-radio"]}  ${styles["labale-radio-color5"]}`}
-                  htmlFor="option7"
-                >
-                  <div
-                    className={`${styles["div-text-radio"]} ${styles["bg-color5"]}`}
-                  >
-                    Radio
-                  </div>
-                </label>
-              </div>
             </div>
           </div>
 
           <div className="row mt-3">
             <div className="col-6 ps-2 pe-2">
               <button
+                disabled={!data}
                 className={`brn-form ${styles["card-btn-primary"]}  w-100`}
-                // onClick={updateStatus}
+                onClick={updateStatus}
               >
                 Надіслати
               </button>
             </div>
             <div className="col-6 ps-2 pe-2">
               <button
+                onClick={() => setShow(false)}
                 className={` brn-form ${styles["card-btn-primary-500"]} w-100  `}
               >
                 Відміна

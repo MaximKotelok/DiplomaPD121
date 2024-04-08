@@ -17,7 +17,6 @@ namespace Domain.Models
 		
 		[Required]
         public string? Email { get; set; }
-        [Required]
         public string? Phone { get; set; }	
 		
 		public string? UserID { get; set; }

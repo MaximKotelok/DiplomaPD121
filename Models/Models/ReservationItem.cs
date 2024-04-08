@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Domain.Models
@@ -15,6 +16,7 @@ namespace Domain.Models
 		public ConcreteProduct? ConcreteProduct { get; set; }
 		public int ReservationID { get; set; }
 		[ForeignKey(nameof(ReservationID))]
+		[JsonIgnore]
 		public Reservation? Reservation { get; set; }
 		public int Quantity { get; set; }
 	}

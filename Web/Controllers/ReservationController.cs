@@ -128,6 +128,67 @@ namespace Web.Controllers
 
 		}
 
+		[HttpGet("GetAllReservationsStatuses")]		
+		public async Task<IActionResult> GetAllReservationsStatuses()
+        { 
+			return Ok(_reservationStatusService.GetAllReservationStatuses());
+
+		}
+
+		[HttpPost("GetPharmacyReservations")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Pharmacist)]
+		public async Task<IActionResult> GetPharmacyReservations(PageViewModel model)
+		{            
+			User user = await _userService.GetUserByName(User.Identity.Name);
+            
+			var reservations = _reservationService.GetAllReservations(a => 
+                a.Pharmacy.UserID == user.Id, "Pharmacy,User,ReservationItems,ReservationItems.ConcreteProduct"
+			).OrderByDescending(a => a.ReservedTime); 
+
+            int countOfPages = model.GetCountOfPages(reservations.Count());
+            int page = model.Page != null?model.Page.Value -1: 0;
+            var data = reservations.Skip(model.ItemsPerPage * page).Take(model.ItemsPerPage).Select(reservation =>
+            {
+                return new
+                {
+                    Id = reservation.Id,
+                    ReservedTime = reservation.ReservedTime.ToString("dd/MM/yyyy HH:mm"),
+                    FullName =
+                        ((reservation.User.FirstName != null && reservation.User.LastName != null) ?
+                            $"{reservation.User.FirstName} {reservation.User.LastName}" :
+                            reservation.User.UserName),
+                    PhoneNumber = reservation.User.UserName,
+                    PriceAndCount = $"{reservation.ReservationItems.Sum(a => a.ConcreteProduct.Price * a.Quantity)}({reservation.ReservationItems.Sum(a => a.Quantity)}шт)",
+                    Status = reservation.StatusID
+                };
+            });
+
+			return Ok(new { data, countOfPages });
+
+		}
+
+		[HttpGet("GetReservation")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Pharmacist)]
+		public async Task<IActionResult> GetReservation(int? id)
+		{
+			User user = await _userService.GetUserByName(User.Identity.Name);
+
+			var reservation = _reservationService.GetReservation(a =>
+				a.Pharmacy.UserID == user.Id && a.Id == id, "Pharmacy,User,ReservationItems,ReservationItems.ConcreteProduct,ReservationItems.ConcreteProduct.Product"
+			);
+			return Ok(
+                new
+                {
+                    Status = reservation.StatusID,
+					ReservationItems = reservation.ReservationItems,
+					ReservedTime = reservation.ReservedTime.ToString("dd/MM/yyyy HH:mm"),
+
+				}
+                
+                );
+
+		}
+
 		[HttpPost("Cancel")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public IActionResult Сancel(int id)
@@ -145,15 +206,16 @@ namespace Web.Controllers
             return Ok();
         }
 
-        [HttpPost("SetStatus")]
+        [HttpPost("SetOrderStatus")]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Pharmacist)]
-        public IActionResult SetStatus(ReservationStatusViewModel statusViewModel)
+        public async Task<IActionResult> SetOrderStatus(ReservationStatusViewModel statusViewModel)
         {
-            ReservationStatus reservationStatus = _reservationStatusService.GetReservationStatus(x => x.Id == statusViewModel.StatusId);
+			User user = await _userService.GetUserByName(User.Identity.Name);
+			ReservationStatus reservationStatus = _reservationStatusService.GetReservationStatus(x => x.Id == statusViewModel.StatusId);
             if (reservationStatus == null)
                 return NoContent();
 
-            Reservation reservation = _reservationService.GetReservation(x => x.Id == statusViewModel.ReservationId);
+            Reservation reservation = _reservationService.GetReservation(x => x.Id == statusViewModel.ReservationId && x.Pharmacy.UserID == user.Id, "Pharmacy");
             if (reservationStatus == null)
                 return NoContent();
 

@@ -31,7 +31,7 @@ namespace Services.UserService
             _pharmacyService = pharmacyService;
         }
 
-		public async Task UpdateUser(string id, string firstName = "", string lastName = "", string phoneNumber = "", string email="", string userName="")
+		public async Task UpdateUser(string id, string? firstName = "", string? lastName = "", string? phoneNumber = "", string? email="", string? userName="")
 		{
 			var user = await _userManager.FindByIdAsync(id);
             if(firstName != "")
@@ -46,8 +46,25 @@ namespace Services.UserService
 				user.UserName = userName;
 			await _userManager.UpdateAsync(user);
 		}
-        
-        public async Task ChangePassword(string id, string currentPassword, string newPassword)
+
+
+		public async Task<bool> ChangePasswordWithoutConfirmAsync(string id, string newPassword)
+		{
+			var user = await _userManager.FindByIdAsync(id);
+
+			if (user == null)
+			{
+                return false;
+			}
+
+			var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+			var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+            
+			return result.Succeeded;
+		}
+
+		public async Task ChangePassword(string id, string currentPassword, string newPassword)
 		{
 			var user = await _userManager.FindByIdAsync(id);
 			if(!(await _userManager.ChangePasswordAsync(user, currentPassword, newPassword)).Succeeded)
@@ -141,6 +158,10 @@ namespace Services.UserService
         public async Task<User> GetUserByName(string name)
         {
             return await _userManager.FindByNameAsync(name);
+        }
+        public async Task<User> GetUserById(string id)
+        {
+            return await _userManager.FindByIdAsync(id);
         }
 
         public async Task RemoveFavouritePharmacy(int pharmacyId, string userName)

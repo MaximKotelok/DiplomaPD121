@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import styles from "./OrderListProductComponents.module.css";
 import "./OrderListProductComponents.css";
 import { makeStyles } from "@material-ui/core/styles";
@@ -14,10 +14,13 @@ import SearchComponent from "../../../../Common/SearchComponent/SearchComponent"
 import CustomImgComponent from "../../../../Common/CustomImgComponent/CustomImgComponent";
 import BtnEditStatusModalOrderList from "./components/BtnEditStatusModalOrderList/BtnEditStatusModalOrderList";
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
+import { getAllReservationsStatuses, getPharmacyReservations } from "../../../../../services/reservation";
+import { Success } from "../../../../../utils/Constants";
+import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 
 const columns = [
-  { id: "position", label: "Позиція", minWidth: 220 },
-  { id: "dataOrder", label: "Дата", minWidth: 200 },
+  { id: "fullName", label: "Ідентифікатор/Ім'я", minWidth: 220 },
+  { id: "reservedTime", label: "Дата", minWidth: 200 },
   {
     id: "phoneNumber",
     label: "Мобільний номер",
@@ -25,7 +28,7 @@ const columns = [
     editable: true,
     // format: (value) => value.toLocaleString("en-US"),
   },
-  { id: "priceCount", label: "Ціна (шт)", minWidth: 200 },
+  { id: "priceAndCount", label: "Ціна (шт)", minWidth: 200 },
   {
     id: "status",
     label: "Статус",
@@ -41,30 +44,6 @@ const columns = [
 //   return { name, code, population, size, density };
 // }
 
-const rows = [
-  {
-    position: "Артем Пивоваров",
-    dataOrder: "05/02/2024",
-    phoneNumber: "+38 (067) 837 9412",
-    priceCount: "53(1шт)",
-    status: "1",
-  },
-  {
-    position: "Артем Пивоваров",
-    dataOrder: "05/02/2024",
-    phoneNumber: "+38 (067) 837 9412",
-    priceCount: "1500(3шт)",
-    status: "2",
-  },
-  {
-    position: "Артем Пивоваров",
-    dataOrder: "05/02/2024",
-    phoneNumber: "+38 (067) 837 9412",
-    priceCount: "500(2шт)",
-    status: "3",
-  },
-  // Додайте інші записи за потреби
-];
 
 const useStyles = makeStyles({
   root: {
@@ -78,6 +57,7 @@ const useStyles = makeStyles({
 export const OrderListProductComponents = () => {
   const classes = useStyles();
   const [page, setPage] = React.useState(1);
+  const [rows, setRows] = React.useState([]);
   const [countOfPages, setCountOfPages] = React.useState(1);
   //const [rowsPerPage, setRowsPerPage] = React.useState(10);
   // const [rows, setRows] = React.useState([]);
@@ -86,6 +66,22 @@ export const OrderListProductComponents = () => {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
+
+  useEffect(()=>{
+    init();
+  },[]);
+
+  async function init(){
+    let res = await getPharmacyReservations(page);
+    let resReservationStatuses = await getAllReservationsStatuses();
+
+    if(res.status === Success && resReservationStatuses.status === Success) {
+      setRows(res.data.data);
+      setCountOfPages(res.data.countOfPages);
+      setStatuses(resReservationStatuses.data);
+    }
+  }
+  console.log(rows)
 
   return (
     <div className={`${styles["row-parent"]}`}>
@@ -121,27 +117,40 @@ export const OrderListProductComponents = () => {
                 <React.Fragment>
                   {rows.map((row, index) => (
                     <TableRow className={`${styles["tb-user"]}`} key={index}>
-                      <TableCell>{row.position}</TableCell>
-                      <TableCell>{row.dataOrder}</TableCell>
+                      <TableCell>{row.fullName}</TableCell>
+                      <TableCell>{row.reservedTime}</TableCell>
                       <TableCell>{row.phoneNumber}</TableCell>
-                      <TableCell>{row.priceCount}</TableCell>
+                      <TableCell>{row.priceAndCount}</TableCell>
 
                       <TableCell>
                         <div
                           className={`d-flex justify-content-between align-items-center`}
                         >
                           <div
-                            className={`${styles["span-status-rozmir"]} ${styles["span-status-color1"]}`}
+                            className={`${styles["span-status-rozmir"]}`}
                             style={
                               {
-                                // backgroundColor: getStatusColor(row.status),
+                                backgroundColor: statuses.find(status => status.id == row.status).color,
                               }
                             }
                           >
-                            hello
+                            {statuses.find(status => status.id == row.status).status}
                             {/* {getStatusText(row.status)} */}
                           </div>
-                          <BtnEditStatusModalOrderList />
+                          <BtnEditStatusModalOrderList id={row.id} statuses={statuses} changeStatus={(id)=>{
+                            
+                              setRows((prevRows) => {
+                                const updatedRows = prevRows.map((row, rowIndex) => {
+                                  if (rowIndex === index) {
+                                    return {...row, status: id}                                    
+                                  }
+                                  return row;
+                                });
+                                
+                                return updatedRows;
+                              });
+                              
+                            }}/>
                         </div>
                       </TableCell>
                     </TableRow>
@@ -151,10 +160,10 @@ export const OrderListProductComponents = () => {
             </Table>
           </TableContainer>
           <div className={`d-flex justify-content-end align-items-center`}>
-            {/* <PaginationComponent 
+            <PaginationComponent
               setContent={(a)=>setRows(a)}
               getContent={async (page)=>{
-                let res = await getAllProductConfirm(page);
+                let res = await getPharmacyReservations(page);
                 if(res.status === Success){
                   return res.data.data;
                 }
@@ -163,7 +172,7 @@ export const OrderListProductComponents = () => {
               page={page}
               setPage={setPage}
               countOfPages={countOfPages}
-              /> */}
+              />
           </div>
         </Paper>
       </div>

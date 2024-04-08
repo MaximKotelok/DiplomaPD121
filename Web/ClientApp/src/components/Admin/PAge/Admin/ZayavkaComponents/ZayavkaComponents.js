@@ -145,8 +145,7 @@ export const ZayavkaComponents = () => {
       setRows(res.data.data);
       setCountOfPages(res.data.countOfPages)   
     }
-  }
-  console.log(statuses);
+  }  
  
 
   return (
