@@ -1,4 +1,4 @@
-import { UpsertProduct, GetProduct,  ClassHeader, GetAllProductsFromIdArray, Success, GetSupInfoForProductInYourCity, GetTopOffers } from "../utils/Constants";
+import { UpsertProduct, GetProduct, ClassHeader, GetAllProductsFromIdArray, Success, GetSupInfoForProductInYourCity, GetTopOffers, GetProductForPharmacy } from "../utils/Constants";
 import { getCookie } from "../utils/Cookies";
 import { postToServer, getFromServer, putToServer} from "../utils/Queries";
 import { postPhotoToServer } from "./photo";
@@ -94,6 +94,10 @@ export async function getCountProducts(count) {
 export async function getProductById(productId) {
     return await getFromServer(GetProduct, { id: productId })
 }
+export async function getProductForPharmacyById(productId) {
+    return await getFromServer(GetProductForPharmacy, { id: productId })
+}
+
 
 export async function GetPriceHistory(productId) {
     return await getFromServer("Product/GetPriceHistory", { id: productId })
