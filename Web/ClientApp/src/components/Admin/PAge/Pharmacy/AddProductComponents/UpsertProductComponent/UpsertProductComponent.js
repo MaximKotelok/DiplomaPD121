@@ -93,9 +93,7 @@ const UpsertProductComponent = () => {
     }
   }
 
-  async function initAfterConfirm() {
-    console.log(productId
-      )
+  async function initAfterConfirm() {  
     setCustomState(setData, "isHeaderDisabled", true);
     setCustomState(setData, "formData", {
       ...data.formData,
@@ -247,7 +245,6 @@ const UpsertProductComponent = () => {
       a = data.formData.pathToPhoto;
     }
     data.formData["pathToPhoto"] = a;
-    console.log(a);
     let res = await upsertProduct(data.formData, { additionalAttribute });
     setDisableButtonState(false);
     if (res.status === Success) {
@@ -327,7 +324,7 @@ const UpsertProductComponent = () => {
   // }></LayoutAdmin>
   return (
     <div className="row upsert-product-main-container m-2">
-      <div className="row scroll d-flex">
+      <div className="row d-flex">
         <div className="col-8">
           <div className="add-product-left-container">
             <div className="inner-add-product-left-container">

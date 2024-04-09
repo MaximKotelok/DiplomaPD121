@@ -91,15 +91,28 @@ namespace Web.Controllers
             {
                 return NoContent();
             }
+            var roles = await _userService.GetRolesAsync(user.Id);
+            string role = "";
+
+            if (roles.Any(a => a == SD.Role_Admin))
+                role = "адміністратор";
+            else if (roles.Any(a => a == SD.Role_PharmaCompany))
+                role = "представник компанії";
+			else if (roles.Any(a => a == SD.Role_Pharmacist))
+				role = "фармацевт";
 
 
-            return Ok(new UserUpdateViewModel
+
+			return Ok(new MyInfoViewModel
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                PhoneNumber = user.PhoneNumber
-            });
+                PhoneNumber = user.PhoneNumber,
+                Role = role,
+				PathToPhoto = user.PathToPhoto
+
+			});
 
         }
 

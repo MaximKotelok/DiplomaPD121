@@ -19,6 +19,7 @@ namespace Domain.Models
 
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
+        public string? PathToPhoto { get; set; }
         public Pharmacy? Pharmacy { get; set; }
         public PharmaCompany? PharmaCompany { get; set; }
         [JsonIgnore]	

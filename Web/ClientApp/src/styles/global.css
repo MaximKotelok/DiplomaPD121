@@ -4,6 +4,7 @@ div[disabled] {
 
 }
 
+
 .category-png-card:nth-child(odd) .category-png-backgroud {
     background-color: #007AFF26 !important;
 }

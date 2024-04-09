@@ -15,7 +15,9 @@ namespace Services.UserService
 {
     public interface IUserService
     {
-        public Task<User> GetUserByName(string name);
+        public Task<IList<string>> GetRolesAsync(string id);
+
+		public Task<User> GetUserByName(string name);
         public Task<IEnumerable<User>> GetAllUsers();
 		public Task<User> GetUserById(string id);
         public Task ChangePassword(string id, string currentPassword, string newPassword);

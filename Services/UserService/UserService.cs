@@ -73,6 +73,11 @@ namespace Services.UserService
                 throw new OperationCanceledException();
             }
 		}
+        public async Task<IList<string>> GetRolesAsync(string id)
+		{
+			var user = await _userManager.FindByIdAsync(id);
+			return await _userManager.GetRolesAsync(user);
+		}
 
 		public async Task AddFavouritePharmacy(int pharmacyId, string userName)
         {

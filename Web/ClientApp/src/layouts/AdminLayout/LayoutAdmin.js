@@ -27,7 +27,7 @@ const LayoutAdmin = ({ children }) => {
   console.log(layoutContext.additonalComponent);
   return (
     <div className={`app-container`}>
-      <div className="sidebar ">
+      <div className="sidebar">
         <div className="sidebar-header">
           <div className="app-icon">
             <Logo />
@@ -62,7 +62,7 @@ const LayoutAdmin = ({ children }) => {
             <ButtonSideMenuComponents
               text="Користувачі"
               icon={UsersSvg}
-              link="https://www.example.com"
+              link="/admin/userList"
             />
           </li>
           <li className="sidebar-list-item">
@@ -93,7 +93,7 @@ const LayoutAdmin = ({ children }) => {
         </div>
       </div>
 
-      <div className="app-content">
+      <div className="app-content admin-layout-padding-left">
         <div className="app-content-header app-content-container  d-flex">
           {/* <SearchComponent /> */}
           {layoutContext.additonalComponent}

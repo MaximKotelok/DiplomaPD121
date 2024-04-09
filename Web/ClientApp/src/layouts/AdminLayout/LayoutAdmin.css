@@ -25,6 +25,9 @@
   background-color: #FFFFFF;
 padding: 18px;
 }
+.admin-layout-padding-left{
+  padding-left: 220px!important;
+}
 
   .app-container {
     background-color: #e5e7eb;
@@ -35,7 +38,7 @@ padding: 18px;
     max-height: 100%;
     /* max-width: 1280px; */
     display: flex;
-    overflow: hidden; /*-------------------ТРЕБА БУДЕ ВИДАЛИТИ-------------------------- */
+    overflow-x: hidden; /*-------------------ТРЕБА БУДЕ ВИДАЛИТИ-------------------------- */
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     /* max-width: 2000px; */
     margin: 0 auto;
@@ -43,9 +46,12 @@ padding: 18px;
   }
   
   .sidebar {
+    position: fixed;
     overflow: initial;
     flex-basis: 200px;
     max-width: 220px;
+    width: 220px;
+    height: 100%!important;
     flex-shrink: 0;
     background-color: #0D1E31;
     display: flex;
