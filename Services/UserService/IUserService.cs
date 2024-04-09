@@ -16,7 +16,8 @@ namespace Services.UserService
     public interface IUserService
     {
         public Task<User> GetUserByName(string name);
-        public Task<User> GetUserById(string id);
+        public Task<IEnumerable<User>> GetAllUsers();
+		public Task<User> GetUserById(string id);
         public Task ChangePassword(string id, string currentPassword, string newPassword);
         public Task<bool> ChangePasswordWithoutConfirmAsync(string id, string newPassword);
 		public Task AddFavouriteProduct(int productId, string userName);

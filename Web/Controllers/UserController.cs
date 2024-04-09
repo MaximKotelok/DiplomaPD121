@@ -1,8 +1,10 @@
 ﻿using Domain.Models;
 using Domain.Models.ViewModels;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Repository.Repository.Interfaces;
 using Services.ConcreteProductService;
 using Services.PharmacyCompanyService;
@@ -46,8 +48,39 @@ namespace Web.Controllers
 
             return Ok(favProducts);
         }
+		
+        [HttpPost("getAllUsers")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		public async Task<IActionResult> GetMyInfo(PageViewModel model)
+		{
+			var users = await _userService.GetAllUsers();
 
-        [HttpGet("getMyInfo")]
+            int countOfPages = model.GetCountOfPages(users.Count());
+
+			if (users == null)
+			{
+				return NoContent();
+			}
+
+            int page = model.Page != null?model.Page.Value - 1 : 0;
+			return Ok(new 
+            {
+                data = users.Skip(page*model.ItemsPerPage).Take(model.ItemsPerPage)
+                .Select(a => new {
+                    id=a.Id,
+                    user=((!a.FirstName.IsNullOrEmpty() && !a.LastName.IsNullOrEmpty())?
+                    $"{a.FirstName} {a.LastName}":
+                    a.UserName),
+                    email=a.Email,
+					phoneNumber=a.PhoneNumber,
+					isBanned = a.LockoutEnd.HasValue && a.LockoutEnd > DateTimeOffset.UtcNow
+				}),
+				countOfPages
+			}
+			);
+		}
+
+		[HttpGet("getMyInfo")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetMyInfo()
         {

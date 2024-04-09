@@ -5,12 +5,13 @@ import styles from "./BtnEditStatusModalUser.module.css";
 import { CheckedBox } from "../../../../../Common/CheckedBoxComponent/CheckedBox";
 import { changeStatus } from "../../../../../../../services/product";
 import { Success } from "../../../../../../../utils/Constants";
+import { banOrUnban } from "../../../../../../../services/user";
 
 function BtnEditStatusModalUser({
   id,
   statusId,
   statuses,
-  changeStatusProduct,
+  changeStatus,
 }) {
   const [show, setShow] = useState(false);
   const [isActive, setIsActive] = useState(false);
@@ -20,10 +21,10 @@ function BtnEditStatusModalUser({
   };
 
   const updateStatus = async () => {
-    let res = await changeStatus(id, changeStatusId);
+    let res = await banOrUnban(id, changeStatusId);
+    console.log(res)
     if (res.status === Success) {
-      let index = statuses.findIndex((a) => a.id === changeStatusId);
-      changeStatusProduct(statuses[index]);
+      changeStatus(changeStatusId);
       setShow(false);
     }
   };
@@ -141,12 +142,15 @@ function BtnEditStatusModalUser({
                   </div>
                 </label>
               </div> */}
-            </div>
+        
+</div>
 
-            <p className={`${styles["text-block-user"]} mt-3`}>
+
+            {/* <p className={`${styles["text-block-user"]} mt-3`}> */}
               {/* Виводимо лише коли статус заблокований і час блокування статичний там на місяць блокуєм чи скліьки */}
-              Заблоковано 05.04.2024 до 01.06.2024
-            </p>
+              {/* Заблоковано 05.04.2024 до 01.06.2024 */}
+            {/* </p> */}
+            {/* ------------------------ На даний момент в нас бан працює по іншому, але можна переробити */}
 
             <div className="row mt-3">
               <div className="col-6 ps-2 pe-2">
@@ -160,8 +164,9 @@ function BtnEditStatusModalUser({
               <div className="col-6 ps-2 pe-2">
                 <button
                   className={` brn-form ${styles["card-btn-primary-500"]} w-100  `}
+                  onClick={()=>setShow(false)}
                 >
-                  Продовжити підбір в цій аптеці
+                  Відмінити
                 </button>
               </div>
             </div>

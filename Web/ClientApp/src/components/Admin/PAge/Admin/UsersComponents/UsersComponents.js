@@ -19,6 +19,7 @@ import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 import BtnEditStatusModalUser from "./components/BtnEditStatusModalUser/BtnEditStatusModalUser";
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
+import { getAllUsers } from "../../../../../services/user";
 
 const columns = [
   { id: "user", label: "Користувач", minWidth: 270 },
@@ -39,6 +40,19 @@ const columns = [
     format: (value) => value.toFixed(2),
   },
 ];
+
+const statuses = [
+  {
+    id: true,
+    status: "Заблокований",
+    color: "#FF3B30",
+  },
+  {
+    id: false,
+    status: "Активний",
+    color: "#3BA42A",
+  }
+]
 
 // function createData(name, code, population, size) {
 //   const density = population / size;
@@ -106,8 +120,19 @@ export const UsersComponents = () => {
   const [page, setPage] = React.useState(1);
   const [countOfPages, setCountOfPages] = React.useState(1);
   //const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  // const [rows, setRows] = React.useState([]);
-  const [statuses, setStatuses] = React.useState([]);
+  const [rows, setRows] = React.useState([]);  
+  console.log(rows)
+  useEffect(()=>{
+    init();
+  },[])
+
+  async function init(){
+    let res = await getAllUsers(page);
+    if(res.status === Success){
+      setCountOfPages(res.data.countOfPages);
+      setRows(res.data.data);
+    }
+  }
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -137,10 +162,6 @@ export const UsersComponents = () => {
           <SearchComponent />
         </div>
 
-        <div className="col-6">
-          <CheckedBox text="Показувати лише фарма-компанії?" />
-        </div>
-
         <Paper className={classes.root}>
           <TableContainer className={classes.container}>
             <Table stickyHeader aria-label="sticky table">
@@ -163,8 +184,8 @@ export const UsersComponents = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((pharmacy, index) => (
-                  <React.Fragment key={index}>
+                
+                  <React.Fragment>
                     {rows.map((row, index) => (
                       <TableRow className={`${styles["tb-user"]}`} key={index}>
                         <TableCell>
@@ -177,7 +198,7 @@ export const UsersComponents = () => {
                         </TableCell>
 
                         <TableCell>{row.email}</TableCell>
-                        <TableCell>{row.phoneNumber}</TableCell>
+                        <TableCell>{row.phoneNumber?row.phoneNumber:"НЕМАЄ"}</TableCell>
                         <TableCell>
                           <div
                             className={`d-flex justify-content-between align-items-center`}
@@ -186,29 +207,47 @@ export const UsersComponents = () => {
                               className={`${styles["span-status-rozmir"]}`}
                               style={
                                 {
-                                  // backgroundColor: getStatusColor(row.status),
+                                  backgroundColor: statuses.find(a=>a.id===row.isBanned).color ,
                                 }
                               }
                             >
-                              {/* {getStatusText(row.status)} */}
+                              {statuses.find(a=>a.id===row.isBanned).status} 
                             </div>
                           </div>
                         </TableCell>
                         <TableCell>
-                          <BtnEditStatusModalUser />
+                          <BtnEditStatusModalUser 
+                            statuses={statuses} 
+                            id={row.id}
+                            statusId={row.isBanned}
+                            changeStatus={(id)=>{
+                            
+                              setRows((prevRows) => {
+
+                                const updatedRows = prevRows.map((row, rowIndex) => {
+                                  if (rowIndex === index) {
+                                    return {...row, isBanned: id}                                    
+                                  }
+                                  return row;
+                                });
+                                
+                                return updatedRows;
+                              });
+                              
+                            }}
+                          />
                         </TableCell>
                       </TableRow>
                     ))}
-                  </React.Fragment>
-                ))}
+                  </React.Fragment>                
               </TableBody>
             </Table>
           </TableContainer>
           <div className={`d-flex justify-content-end align-items-center`}>
-            {/* <PaginationComponent 
+            <PaginationComponent 
               setContent={(a)=>setRows(a)}
               getContent={async (page)=>{
-                let res = await getAllProductConfirm(page);
+                let res = await getAllUsers(page);
                 if(res.status === Success){
                   return res.data.data;
                 }
@@ -217,7 +256,7 @@ export const UsersComponents = () => {
               page={page}
               setPage={setPage}
               countOfPages={countOfPages}
-              /> */}
+              />
           </div>
         </Paper>
       </div>

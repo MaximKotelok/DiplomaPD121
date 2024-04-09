@@ -10,6 +10,7 @@ using Services.PharmacyService;
 using Services.SimilarProductGroupService;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -159,7 +160,17 @@ namespace Services.UserService
         {
             return await _userManager.FindByNameAsync(name);
         }
-        public async Task<User> GetUserById(string id)
+
+		public async Task<IEnumerable<User>> GetAllUsers()
+		{
+            return await Task.Run(() =>
+            {
+                return _userManager.Users;
+            });
+
+		}
+
+		public async Task<User> GetUserById(string id)
         {
             return await _userManager.FindByIdAsync(id);
         }

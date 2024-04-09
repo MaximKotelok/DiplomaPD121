@@ -26,7 +26,7 @@ export async function postReservation(concreteProducts, phone, email, pharmacyId
 export async function getPharmacyReservations(page) {
     let res = await postToServer("Reservation/GetPharmacyReservations", 
     {
-        itemsPerPage: 1,
+        itemsPerPage: 6,
         page:page
     }, ClassHeader);
     return res;

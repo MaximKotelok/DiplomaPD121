@@ -117,9 +117,9 @@ namespace Web.Controllers
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Pharmacist)]
-        public IActionResult AddConcreteProduct(ConcreteProduct concreteProduct)
+        public async Task<IActionResult> AddConcreteProduct(ConcreteProduct concreteProduct)
         {
-            _concreteProductService.InsertConcreteProduct(concreteProduct);
+			_concreteProductService.InsertConcreteProduct(concreteProduct);
             return Ok("Data inserted");
         }
 

@@ -9,6 +9,18 @@ export function checkIsAuth() {
 export async function getMyInfo() {
     return await getFromServer("User/getMyInfo");
 } 
+
+export async function getAllUsers(page) {
+    return await postToServer("User/getAllUsers", {itemsPerPage: 2, page: page});
+} 
+
+export async function banOrUnban(userId, status) {
+    if(status)
+    return await postToServer(`User/ban/${userId}`);
+    else
+    return await postToServer(`User/unban/${userId}`);
+} 
+
 export async function updateUser(data) {
     return await postToServer("User/updateUser", data);
 } 
