@@ -275,11 +275,11 @@ width: 100%;
   position: relative;
 }
 .gridView .products-row:hover {
-  /* transform: scale(1.01); */
-  /* box-shadow: var(--filter-shadow); */
+  transform: scale(1.01);
+  box-shadow: var(--filter-shadow);
 }
 .gridView .products-row:hover .cell-more-button {
-  /* display: flex; */
+  display: flex;
 }
 
 .gridView .products-row .cell-more-button {

@@ -16,31 +16,28 @@ const MiniCardProductANDTableProductComponent = ({
   title = "...",
   description = "...",
   minPrice = 0.0,
-  countOfPharmacies = 0
+  countOfPharmacies = 0,
 }) => {
-  
-  
   const [isFavoriteState, setIsFavoriteState] = useState(false);
-  useEffect(()=>{
-      if(id)
-          setIsFavoriteState(isFavoriteProduct(id));
-  },[id])
+  useEffect(() => {
+    if (id) setIsFavoriteState(isFavoriteProduct(id));
+  }, [id]);
   function minimizeText(text, maxSymbols) {
-      if (text) {
-          if (text.length <= maxSymbols) {
-              return text;
-          }
-          return text.slice(0, maxSymbols) + '...';
+    if (text) {
+      if (text.length <= maxSymbols) {
+        return text;
       }
-      return "";
+      return text.slice(0, maxSymbols) + "...";
+    }
+    return "";
   }
 
-  function changeFavoriteState(state){
-      setIsFavoriteState(state)
+  function changeFavoriteState(state) {
+    setIsFavoriteState(state);
   }
-      
+
   useEffect(() => {
-      if (id) setIsFavoriteState(isFavoriteProduct(id));
+    if (id) setIsFavoriteState(isFavoriteProduct(id));
   }, [id]);
   function minimizeText(text, maxSymbols) {
     if (text) {
@@ -54,11 +51,12 @@ const MiniCardProductANDTableProductComponent = ({
 
   return (
     <div
-      className={`${styles["products-row"]} m-1 ${stylesMiniCard["product-card"]} position-relative`}
+      className={`${styles["products-row"]} m-1 ${stylesMiniCard["product-card"]}  `}
+      // className={`${styles["products-row"]} m-1 ${stylesMiniCard["product-card"]} position-relative`}
     >
       <Link to={`/product-details/${id}`} className={`text-decoration-none  `}>
         <CustomImgComponent
-          src={`${ApiPath}${imageUrl}`}          
+          src={`${ApiPath}${imageUrl}`}
           style={{ width: "100%", height: "170px" }}
           className={`${stylesMiniCard["product-image"]}`}
           alt={title}
@@ -92,20 +90,23 @@ const MiniCardProductANDTableProductComponent = ({
           </span>
           грн
         </p>
-        <Link to={`/map/${id}`}
+        <Link
+          to={`/map/${id}`}
           className={`btn brn-form_2 btn-primary mb-2 ${styles["btn-pr"]}`}
         >
           Ціни в аптеках
         </Link>
       </div>
       <FavoriteProductButton
-        style={{  
+        style={{
           top: "14px",
-          right: "14px"
+          right: "14px",
         }}
-        id={id} isFavorite={isFavoriteState} setIsFavorite={changeFavoriteState}
+        id={id}
+        isFavorite={isFavoriteState}
+        setIsFavorite={changeFavoriteState}
         // isFavorite={isFavoriteState}
-        />
+      />
       {/* <p className={`${stylesMiniCard["product-price"]}`}>від <span className={`${stylesMiniCard["product-price-bold"]}`}>{minPrice&&minPrice}</span> грн</p> */}
       {/* <div className={`${styles["product-cell"]} ${styles["price"]}`}>$560</div> */}
     </div>
