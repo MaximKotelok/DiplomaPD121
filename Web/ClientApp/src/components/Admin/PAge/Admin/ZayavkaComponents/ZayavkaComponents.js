@@ -51,66 +51,6 @@ const columns = [
 //   return { name, code, population, size, density };
 // }
 
-const rows = [
-  {
-    name: "Аптека 1",
-    data: [
-      {
-        position: "Полиця 1",
-        category: "Вітаміни",
-        manufacture: "Manufacturer 1",
-        price: 200.5,
-        status: "Не коректне",
-        idstatus: "1",
-      },
-    ],
-  },
-  {
-    name: "Аптека 2",
-    data: [
-      {
-        position: "Полиця 3",
-        category: "Вітаміни",
-        manufacture: "Manufacturer 2",
-        price: 150.75,
-        status: "Не коректне",
-        idstatus: "1",
-      },
-      {
-        position: "Полиця 5",
-        category: "Аналгетики",
-        manufacture: "Manufacturer 3",
-        price: 300.25,
-        status: "На перевірці",
-        idstatus: "2",
-      },
-      {
-        position: "Полиця 7",
-        category: "Пробіотики",
-        manufacture: "Manufacturer 4",
-        price: 120.9,
-        status: "Коректне",
-        idstatus: "3",
-      },
-    ],
-  },
-  {
-    name: "Аптека 3",
-    data: [
-      {
-        position: "Полиця 2",
-        category: "Аналгетики",
-        manufacture: "Manufacturer 5",
-        price: 220.35,
-        status: "На перевірці",
-        idstatus: "2",
-      },
-    ],
-  },
-
-  // Додайте інші записи за потреби
-];
-
 const useStyles = makeStyles({
   root: {
     width: "100%",
@@ -152,7 +92,16 @@ export const ZayavkaComponents = () => {
     <div className={`${styles["row-parent"]}`}>
       <div className={`${styles["box-container"]} row`}>
         <div className="col-6">
-          <SearchComponent />
+          <SearchComponent callback={async (text)=>{
+            let page = 1;
+            setPage(1);
+            const res = await getAllProductConfirm(page,text);
+            if(res.status === Success){
+              //console.log(res);
+              setRows(res.data.data);
+              setCountOfPages(res.data.countOfPages)   
+            }
+          }}/>
         </div>
 
         <Paper className={classes.root}>

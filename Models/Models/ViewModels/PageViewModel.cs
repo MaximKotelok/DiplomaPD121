@@ -8,6 +8,7 @@ namespace Domain.Models.ViewModels
 {
 	public class PageViewModel
 	{
+		public string? Search { get; set; }
 		public int ItemsPerPage { get; set; } = 1;
 		public int? Page { get; set; } = null;
 	

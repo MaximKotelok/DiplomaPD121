@@ -59,52 +59,6 @@ const statuses = [
 //   return { name, code, population, size, density };
 // }
 
-const rows = [
-  {
-    user: "Артем Пивоваров",
-    email: "artme@gmailc.com",
-    phoneNumber: "+38 (067) 837 9412",
-    status: "1",
-  },
-  {
-    user: "Артем Пивоваров",
-    email: "artme@gmailc.com",
-    phoneNumber: "+38 (067) 837 9412",
-    status: "3",
-  },
-  {
-    user: "Артем Пивоваров",
-    email: "artme@gmailc.com",
-    phoneNumber: "+38 (067) 837 9412",
-    status: "2",
-  },
-  {
-    user: "Артем Пивоваров",
-    email: "artme@gmailc.com",
-    phoneNumber: "+38 (067) 837 9412",
-    status: "4",
-  },
-  {
-    user: "Артем Пивоваров",
-    email: "artme@gmailc.com",
-    phoneNumber: "+38 (067) 837 9412",
-    status: "4",
-  },
-  {
-    user: "Артем Пивоваров",
-    email: "artme@gmailc.com",
-    phoneNumber: "+38 (067) 837 9412",
-    status: "5",
-  },
-  {
-    user: "Артем Пивоваров",
-    email: "artme@gmailc.com",
-    phoneNumber: "+38 (067) 837 9412",
-    status: "3",
-  },
-
-  // Додайте інші записи за потреби
-];
 
 const useStyles = makeStyles({
   root: {
@@ -121,7 +75,6 @@ export const UsersComponents = () => {
   const [countOfPages, setCountOfPages] = React.useState(1);
   //const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [rows, setRows] = React.useState([]);  
-  console.log(rows)
   useEffect(()=>{
     init();
   },[])
@@ -159,7 +112,16 @@ export const UsersComponents = () => {
     <div className={`${styles["row-parent"]}`}>
       <div className={`${styles["box-container"]} row`}>
         <div className="col-6">
-          <SearchComponent />
+          <SearchComponent  callback={async (text)=>{
+            let page = 1;
+            setPage(1);
+            const res = await getAllUsers(page,text);
+            if(res.status === Success){
+              //console.log(res);
+              setRows(res.data.data);
+              setCountOfPages(res.data.countOfPages)   
+            }
+          }}/>
         </div>
 
         <Paper className={classes.root}>

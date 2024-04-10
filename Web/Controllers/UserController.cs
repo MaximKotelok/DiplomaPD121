@@ -54,13 +54,26 @@ namespace Web.Controllers
 		public async Task<IActionResult> GetMyInfo(PageViewModel model)
 		{
 			var users = await _userService.GetAllUsers();
-
-            int countOfPages = model.GetCountOfPages(users.Count());
-
+           
 			if (users == null)
 			{
 				return NoContent();
 			}
+
+			if (!model.Search.IsNullOrEmpty())
+			{
+                users = users.Where(a =>
+                {
+                    return ((!a.FirstName.IsNullOrEmpty() && !a.LastName.IsNullOrEmpty()) ?
+                    $"{a.FirstName} {a.LastName}" :
+                    a.UserName).StartsWith(model.Search) ||
+                    a.Email.StartsWith(model.Search) ||
+                    (a.PhoneNumber != null && a.PhoneNumber.StartsWith(model.Search));
+                });
+			}
+
+
+			int countOfPages = model.GetCountOfPages(users.Count());
 
             int page = model.Page != null?model.Page.Value - 1 : 0;
 			return Ok(new 

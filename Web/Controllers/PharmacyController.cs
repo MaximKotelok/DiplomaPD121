@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Repository.Repository.Interfaces;
 using Services.CategoryService;
 using Services.CityService;
@@ -51,6 +52,18 @@ namespace Web.Controllers
 		public IActionResult GetAllPharmaciesForAdmin(PageViewModel model)
 		{
 			var rawResult = _pharmacyService.GetAllPharmacies(includeProperties: "PharmaCompany,User");
+			if (!model.Search.IsNullOrEmpty())
+			{
+				rawResult = rawResult.Where(a =>
+				{
+					return
+					a.Id.ToString().StartsWith(model.Search) ||
+					a.Address.StartsWith(model.Search) ||
+					(a.User != null && a.User.Email.StartsWith(model.Search)) ||
+					a.PharmaCompany.Title.StartsWith(model.Search);
+
+				});
+			}
 			if (rawResult is not null)
 			{
 				int page = model.Page != null ? model.Page.Value - 1 : 0;

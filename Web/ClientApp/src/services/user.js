@@ -10,8 +10,8 @@ export async function getMyInfo() {
     return await getFromServer("User/getMyInfo");
 } 
 
-export async function getAllUsers(page) {
-    return await postToServer("User/getAllUsers", {itemsPerPage: 2, page: page});
+export async function getAllUsers(page, search = "") {
+    return await postToServer("User/getAllUsers", {itemsPerPage: 6, page: page, search: search});
 } 
 
 export async function banOrUnban(userId, status) {

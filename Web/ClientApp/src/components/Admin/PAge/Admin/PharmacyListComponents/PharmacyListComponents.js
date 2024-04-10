@@ -110,7 +110,16 @@ export const PharmacyListComponents = () => {
     <div className={`${styles["row-parent"]}`}>
       <div className={`${styles["box-container"]} row`}>
         <div className="col-6">
-          <SearchComponent />
+          <SearchComponent callback={async (text)=>{
+            let page = 1;
+            setPage(1);
+            const res = await getAllPharmaciesForAdmin(page,text);
+            if(res.status === Success){
+              //console.log(res);
+              setRows(res.data.data);
+              setCountOfPages(res.data.countOfPages)   
+            }
+          }}/>
         </div>
 
         <div className="col-6">
@@ -176,77 +185,6 @@ export const PharmacyListComponents = () => {
                   </React.Fragment>
                 ))}
 
-                {/* {rows.map((pharmacy, index) => (
-                  <React.Fragment key={index}>
-                    <TableRow>
-                      <TableCell
-                        colSpan={12}
-                        className={`${styles["header-body-pharmacy"]}`}
-                      >
-                        {pharmacy.name}
-                      </TableCell>
-                    </TableRow>
-
-                    {pharmacy.data.map((item, itemIndex) => {
-                      return (
-                      <TableRow
-                        className={`${styles["tb-pharmacy"]}`}
-                        key={itemIndex}
-                      >
-                        <TableCell>
-                          <CustomImgComponent
-                          className={`${styles["img-product"]}`}
-                          src={`${ApiPath}${item.pathToPhoto}`}/>
-                          {" "}
-                          {item.title}
-                        </TableCell>
-                        <TableCell>{item.category}</TableCell>
-                        <TableCell>{item.manufacturer}</TableCell>
-                        <TableCell>{item.date}</TableCell>
-                        <TableCell>
-                          <div
-                            className={`d-flex justify-content-between align-items-center`}
-                          >
-                            <div
-                              className={`
-                            ${styles["span-status-rozmir"]}
-                            `}
-                            style={{backgroundColor: item.statusColor}}                            
-                            >
-                              {item.status}
-                            </div>
-                            <BtnEditStatusModal id={item.id} statusId={item.statusId} statuses={statuses} changeStatusProduct={(c)=>{
-                              setRows((prevRows) => {
-                                const updatedRows = prevRows.map((row, rowIndex) => {
-                                  if (rowIndex === index) {
-                                    const updatedData = row.data.map((rowData) => {
-                                      if (rowData.id === item.id) {
-                                        return {
-                                          ...rowData,
-                                          statusId: c.id,
-                                          status: c.status,
-                                          statusColor: c.color
-                                        };
-                                      }
-                                      return rowData;
-                                    });
-                                    return {
-                                      ...row,
-                                      data: updatedData
-                                    };
-                                  }
-                                  return row;
-                                });
-                                return updatedRows;
-                              });
-                              
-                            }}/>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    )})}
-                  </React.Fragment>
-                ))} */}
               </TableBody>
             </Table>
           </TableContainer>

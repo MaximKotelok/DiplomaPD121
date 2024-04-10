@@ -17,10 +17,11 @@ export async function GetPharmacist(id){
     return await getFromServer("Pharmacy/GetPharmacist/" + `${id}`)
 }
 
-export async function getAllPharmaciesForAdmin(page){
+export async function getAllPharmaciesForAdmin(page, search){
     return await postToServer("Pharmacy/GetAllPharmaciesForAdmin",  {
-        itemsPerPage: 1,
-        page: page
+        itemsPerPage: 6,
+        page: page,
+        search
     })
 }
 

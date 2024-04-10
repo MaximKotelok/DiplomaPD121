@@ -27,13 +27,27 @@ namespace Web.Controllers
 		}
 
 		[HttpPost("")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_PharmaCompany)]
 		public IActionResult GetAllRequests(PageViewModel model)
 		{
-			var rawResult = _productConfirmService.GetAllProductConfirm(includeProperties: "PharmaCompany,ProductStatus,Product,Product.Manufacturer,Product.Category");
+			var rawResult =
+				_productConfirmService.GetAllProductConfirm(includeProperties: "PharmaCompany,ProductStatus,Product,Product.Manufacturer,Product.Category");
+
+
+			if (!model.Search.IsNullOrEmpty())
+				rawResult =
+				rawResult.Where(a =>
+				{
+					return a.Product.Title.StartsWith(model.Search) ||
+					a.CreationDate.ToString("yyyy/MM/dd").StartsWith(model.Search) ||
+					a.Product.Category.Title.StartsWith(model.Search) ||
+					a.Product.Manufacturer.Name.StartsWith(model.Search) ||
+					a.ProductStatus.Status.StartsWith(model.Search);
+				});
 			if (rawResult is not null)
 			{
 				rawResult = rawResult.Where(a => a.Product != null);
-				int countOfPages = (int)Math.Round(Convert.ToDouble(rawResult.Count()) / Convert.ToDouble(model.ItemsPerPage));
+				int countOfPages = model.GetCountOfPages(rawResult.Count());
 				int page = model.Page != null ? model.Page.Value - 1 : 0;
 				var result = rawResult.Skip(model.ItemsPerPage * page).Take(model.ItemsPerPage).Select(a =>
 				new {
@@ -41,7 +55,7 @@ namespace Web.Controllers
 					Title = a.Product.Title,
 					PathToPhoto = a.Product.PathToPhoto,
 					Date = a.CreationDate.ToString("yyyy/MM/dd"),
-					Manufacturer = a.Product!.Manufacturer!.Address,
+					Manufacturer = a.Product!.Manufacturer!.Name,
 					Category = a.Product.Category!.Title,
 					Status = a.ProductStatus.Status!.ToString(),
 					StatusColor = a.ProductStatus.Color,
