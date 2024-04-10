@@ -94,6 +94,11 @@ export async function getCountProducts(count) {
 export async function getProductById(productId) {
     return await getFromServer(GetProduct, { id: productId })
 }
+
+export async function getProductByIdForAdmins(productId) {
+    return await getFromServer("Product/GetProductByIdForAdmins", { id: productId })
+}
+
 export async function getProductForPharmacyById(productId) {
     return await getFromServer(GetProductForPharmacy, { id: productId })
 }

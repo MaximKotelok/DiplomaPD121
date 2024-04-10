@@ -108,7 +108,7 @@ namespace Web.Controllers
 					Title = product.Title,
 					ShortDescription = product.ShortDescription,
 					ProductAttributeGroupID = product.ProductAttributeGroupID,
-					ManufacturerID = product.ManufacturerID,
+					ManufacturerID = product.ManufacturerID,					
 					BrandID = product.BrandID,
 					Description = product.Description,
 					PathToPhoto = product.PathToPhoto,
@@ -146,7 +146,63 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-        [HttpGet("GetForPharmacyById")]
+		[HttpGet("GetProductByIdForAdmins")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		public IActionResult GetProductByIdForAdmins(int id)
+		{
+			Product product = _productService!.GetProduct(a => a.Id == id, includeProperties: "Properties,Properties,Properties.Attribute,ProductConfirm,ProductConfirm.ProductStatus,Manufacturer,Brand")!;
+
+			if (product is not null)
+			{
+				ProductViewModel productView = new ProductViewModel
+				{
+					Id = product.Id,
+
+					CategoryID = product.CategoryID,
+					Title = product.Title,
+					ShortDescription = product.ShortDescription,
+					ProductAttributeGroupID = product.ProductAttributeGroupID,
+					ManufacturerID = product.ManufacturerID,
+					Manufacturer = product.Manufacturer.Name,
+					BrandID = product.BrandID,
+					Brand = product.Brand.Name,
+					Description = product.Description,
+					PathToPhoto = product.PathToPhoto,
+					Properties = product.Properties!.Select(a => new PropertyViewModel { Value = a.Value, Id = a.Attribute!.Id, Name = a.Attribute.Name }).ToList()
+
+				};
+
+
+				product = _medicineService.GetMedicine(a => a.Id == id, includeProperties: "ActiveSubstance")!;
+				if (product is not null)
+				{
+					MedicineViewModel res = new MedicineViewModel { Product = productView };
+					res.ActiveSubstance = ((Medicine)product).ActiveSubstance!.Title;
+					res.ActiveSubstanceID = ((Medicine)product).ActiveSubstance!.Id;
+
+					PermissionIdWithDescription[] medicineTable = {
+						new PermissionIdWithDescription{ Id= ((Medicine)product).AdultsID, Description= "Дорослі" },
+						new PermissionIdWithDescription{ Id= ((Medicine)product).ChildrenID,Description="Діти" },
+						new PermissionIdWithDescription{ Id= ((Medicine)product).PregnantID,Description="Вагітні" },
+						new PermissionIdWithDescription{ Id= ((Medicine)product).NursingMothersID,Description="Годуючі мами" },
+						new PermissionIdWithDescription{ Id= ((Medicine)product).AllergiesID, Description="Алергіки" },
+						new PermissionIdWithDescription{ Id= ((Medicine)product).DiabeticsID, Description="Діабетики" },
+						new PermissionIdWithDescription{ Id= ((Medicine)product).DriversID, Description="Водії" },
+					};
+
+					res.MedicineTable = medicineTable;
+
+					return Ok(res);
+				}
+
+				return Ok(productView);
+			}
+
+
+			return BadRequest("No records found");
+		}
+
+		[HttpGet("GetForPharmacyById")]
         public IActionResult GetForPharmacyById(int id)
         {
             Product product = _productService!.GetProduct(a => a.Id == id, includeProperties: "Manufacturer")!;

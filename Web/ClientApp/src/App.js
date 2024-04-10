@@ -144,6 +144,7 @@ export default class App extends Component {
 
           <Route path="admin" element={<LayoutAdmin />}>
             <Route path="zayavkaList" element={<ZayavkaComponents />} />
+            <Route path="zayavkaList/:paramPage" element={<ZayavkaComponents />} />
             <Route path="userList" element={<UsersComponents />} />
             <Route path="productList" element={<ProductListComponents />} />
             <Route path="pharmacyList" element={<PharmacyListComponents />} />
@@ -152,7 +153,7 @@ export default class App extends Component {
             <Route path="addProductPharmacy" element={<AddProductPharmacyComponent />} />
             <Route path="orderList" element={<OrderListProductComponents />} />
 
-            <Route path="detailProduct" element={<ProductDetailsAdminComponents />} />
+            <Route path="detailProduct/:productId" element={<ProductDetailsAdminComponents />} />
             <Route
               path="updateProduct/:productId"
               element={<UpsertProductComponent />}

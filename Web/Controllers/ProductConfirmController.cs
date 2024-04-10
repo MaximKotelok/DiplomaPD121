@@ -49,7 +49,9 @@ namespace Web.Controllers
 				rawResult = rawResult.Where(a => a.Product != null);
 				int countOfPages = model.GetCountOfPages(rawResult.Count());
 				int page = model.Page != null ? model.Page.Value - 1 : 0;
-				var result = rawResult.Skip(model.ItemsPerPage * page).Take(model.ItemsPerPage).Select(a =>
+				var result = rawResult.Skip(model.ItemsPerPage * page).Take(model.ItemsPerPage)
+					.OrderByDescending(a=>a.CreationDate)
+					.Select(a =>
 				new {
 					Id = a.Product!.Id,
 					Title = a.Product.Title,

@@ -17,6 +17,7 @@ import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import styles from "./AcordeonDetailsHistory.module.css";
 import { ReactComponent as Ellipse } from "./Ellipse.svg";
+import { Description } from "../../../../../../User/Pages/Details/Component/DescriptionComponent/Description";
 
 const Accordion = withStyles({
   root: {
@@ -60,90 +61,111 @@ const AccordionDetails = withStyles((theme) => ({
   },
 }))(MuiAccordionDetails);
 
-export const AcordeonDetailsHistory = () => {
+export const AcordeonDetailsHistory = ({description}) => {
   const [expanded, setExpanded] = useState("panel1");
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
-  const items = [
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.",
-    "Елемент 2",
-    "Елемент 3",
-  ];
-  return (
-    <div className="mt-3">
-      <Accordion
-        square
-        expanded={expanded === "panel1"}
-        onChange={handleChange("panel1")}
-      >
-        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-          <h6 className={`${styles["text-acordeon-header"]}`}>
-            Collapsible Group Item #1
-          </h6>
-        </AccordionSummary>
-        <AccordionDetails>
-          <ul>
-            {items.map((item, index) => (
-              <li
-                key={index}
-                style={{
-                  listStyle: "none",
-                  marginBottom: "8px",
-                }}
-                className={`d-flex `}
-              >
-                <div
-                  style={{
-                    marginRight: "14px",
-                    // marginBottom: "9px",
-                  }}
-                >
-                  <Ellipse />
-                </div>{" "}
-                <p className={`${styles["text-acordeon-show"]}`}>{item}</p>
-              </li>
-            ))}
-          </ul>
-        </AccordionDetails>
-      </Accordion>
+  
+  if(description.length && !(description.length > 0))
+    return description;
 
-      <Accordion
-        square
-        expanded={expanded === "panel3"}
-        onChange={handleChange("panel3")}
-      >
-        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-          <h6 className={`${styles["text-acordeon-header"]}`}>
-            Collapsible Group Item #1
-          </h6>
-        </AccordionSummary>
-        <AccordionDetails>
-          <ul>
-            {items.map((item, index) => (
-              <li
-                key={index}
-                style={{
-                  listStyle: "none",
-                  marginBottom: "8px",
-                }}
-                className={`d-flex `}
-              >
-                <div
-                  style={{
-                    marginRight: "14px",
-                    // marginBottom: "9px",
-                  }}
-                >
-                  <Ellipse />
-                </div>{" "}
-                <p className={`${styles["text-acordeon-show"]}`}>{item}</p>
-              </li>
-            ))}
-          </ul>
-        </AccordionDetails>
-      </Accordion>
-    </div>
-  );
+  return <div className="mt-3">
+  {description.map((item, index)=>{
+
+    return  <Accordion
+      square
+      expanded={expanded === `panel${item.id}${index}`}
+      onChange={handleChange(`panel${item.id}${index}`)}
+    >
+      <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+        <h6 className={`${styles["text-acordeon-header"]}`}>
+          {item.name}
+        </h6>
+      </AccordionSummary>
+      <AccordionDetails>
+        <div dangerouslySetInnerHTML={{__html: item.content}}>
+          
+        </div>
+      </AccordionDetails>
+    </Accordion>
+  })}
+  </div>
+
+  // return (
+  //   <div className="mt-3">
+  //     <Accordion
+  //       square
+  //       expanded={expanded === "panel1"}
+  //       onChange={handleChange("panel1")}
+  //     >
+  //       <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+  //         <h6 className={`${styles["text-acordeon-header"]}`}>
+  //           Collapsible Group Item #1
+  //         </h6>
+  //       </AccordionSummary>
+  //       <AccordionDetails>
+  //         <ul>
+  //           {items.map((item, index) => (
+  //             <li
+  //               key={index}
+  //               style={{
+  //                 listStyle: "none",
+  //                 marginBottom: "8px",
+  //               }}
+  //               className={`d-flex `}
+  //             >
+  //               <div
+  //                 style={{
+  //                   marginRight: "14px",
+  //                   // marginBottom: "9px",
+  //                 }}
+  //               >
+  //                 <Ellipse />
+  //               </div>{" "}
+  //               <p className={`${styles["text-acordeon-show"]}`}>{item}</p>
+  //             </li>
+  //           ))}
+  //         </ul>
+  //       </AccordionDetails>
+  //     </Accordion>
+
+  //     <Accordion
+  //       square
+  //       expanded={expanded === "panel3"}
+  //       onChange={handleChange("panel3")}
+  //     >
+  //       <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+  //         <h6 className={`${styles["text-acordeon-header"]}`}>
+  //           Collapsible Group Item #1
+  //         </h6>
+  //       </AccordionSummary>
+  //       <AccordionDetails>
+  //         <ul>
+  //           {items.map((item, index) => (
+  //             <li
+  //               key={index}
+  //               style={{
+  //                 listStyle: "none",
+  //                 marginBottom: "8px",
+  //               }}
+  //               className={`d-flex `}
+  //             >
+  //               <div
+  //                 style={{
+  //                   marginRight: "14px",
+  //                   // marginBottom: "9px",
+  //                 }}
+  //               >
+  //                 <Ellipse />
+  //               </div>{" "}
+  //               <p className={`${styles["text-acordeon-show"]}`}>{item}</p>
+  //             </li>
+  //           ))}
+  //         </ul>
+  //       </AccordionDetails>
+  //     </Accordion>
+  //   </div>
+  // );
 };

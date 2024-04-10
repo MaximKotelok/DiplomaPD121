@@ -29,8 +29,8 @@ export const Details = () => {
   const [loader, setLoader] = useState(StateInfos.LOADING);
   const [priceHistory, setPriceHistory] = useState([]);
 
-  addToRecentlyViewedProduct(id);
   useEffect(() => {
+    addToRecentlyViewedProduct(id);
     init();
   }, []);
   const location = useLocation();
@@ -40,7 +40,8 @@ export const Details = () => {
       let elem = document.getElementById(location.hash.slice(1));
       if (elem) {
         elem.scrollIntoView({ behavior: "smooth" });
-      }
+      } 
+
     } else {
       window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     }
@@ -60,7 +61,7 @@ export const Details = () => {
 
   async function init() {
     const res = await getProductById(id);
-    if (res.status === Success) {
+    if (res.status === Success) {                                       
       let product;
       if (res.data.product) {
         product = res.data.product;

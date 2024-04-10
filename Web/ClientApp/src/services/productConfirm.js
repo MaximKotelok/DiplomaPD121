@@ -4,7 +4,7 @@ export async function getAllProductConfirm(page = 1, search = ""){
     return await postToServer(
         `ProductConfirm`,
         {
-            itemsPerPage: 6,
+            itemsPerPage: 1,
             page: page,
             search: search
         }

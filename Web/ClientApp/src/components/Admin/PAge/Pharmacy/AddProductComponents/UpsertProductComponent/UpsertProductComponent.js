@@ -209,6 +209,10 @@ const UpsertProductComponent = () => {
         isDisabled={data.isHeaderDisabled}
       />
     );
+
+    return ()=>{
+      setAdditionalComponent(null);
+    }
   }, [dataFromServer]);
 
   useEffect(() => {
