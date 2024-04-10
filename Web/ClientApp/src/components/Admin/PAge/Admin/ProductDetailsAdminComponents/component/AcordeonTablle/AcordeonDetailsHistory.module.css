@@ -1,0 +1,19 @@
+.text-acordeon-header{
+color: rgba(14, 62, 117, 1);
+font-family: var(--standart-font);
+font-size: 14px;
+font-weight: 400;
+line-height: 20.02px;
+letter-spacing: 0.17000000178813934px;
+text-align: left;
+}
+
+.text-acordeon-show{
+    color: rgba(28, 28, 28, 0.8);
+    font-family: var(--standart-font);
+font-size: 16px;
+font-weight: 400;
+line-height: 20.08px;
+text-align: left;
+
+}
