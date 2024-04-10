@@ -146,8 +146,28 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
+        [HttpGet("GetForPharmacyById")]
+        public IActionResult GetForPharmacyById(int id)
+        {
+            Product product = _productService!.GetProduct(a => a.Id == id, includeProperties: "Manufacturer")!;
 
-		[HttpGet("GetAll")]
+            if (product == null)
+                return BadRequest("No records found");
+
+            ProductToPharmacyViewModel viewModel = new()
+			{
+				Id = product.Id,
+				Title = product.Title,
+				ShortDescription = product.ShortDescription,
+                Manufacturer = product.Manufacturer.Name,
+                PathToPhoto = product.PathToPhoto,
+			};
+
+			return Ok(viewModel);
+        }
+        
+
+        [HttpGet("GetAll")]
 		public IActionResult GetAll()
 		{
 			var result = _productService

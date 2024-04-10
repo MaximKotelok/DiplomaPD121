@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Domain.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -8,6 +9,8 @@ using Services.CategoryService;
 using Services.CityService;
 using Services.ConcreteProductService;
 using Services.PharmacyCompanyService;
+using Services.PharmacyService;
+using Services.UserService;
 using Utility;
 
 namespace Web.Controllers
@@ -17,13 +20,17 @@ namespace Web.Controllers
     public class ConcreteProductController : ControllerBase
     {
         private readonly IConcreteProductService _concreteProductService;
+        private readonly IUserService _userService;
+        private readonly IPharmacyService _pharmacyService;
         private readonly ICityService _cityService;
 
 
-        public ConcreteProductController(IConcreteProductService concreteProductService, ICityService cityService)
+        public ConcreteProductController(IConcreteProductService concreteProductService, ICityService cityService, IUserService userService, IPharmacyService pharmacyService)
         {
             this._concreteProductService = concreteProductService;
             this._cityService = cityService;
+            this._userService = userService;
+            this._pharmacyService = pharmacyService;
         }
 
         [HttpGet("")]
@@ -113,15 +120,32 @@ namespace Web.Controllers
                 return Ok(result);
             }
             return BadRequest("No records found");
-        }
+        } 
 
-        [HttpPost]
+        [HttpPost("AddConcreteProductAsync")]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Pharmacist)]
-        public async Task<IActionResult> AddConcreteProduct(ConcreteProduct concreteProduct)
+        public async Task<IActionResult> AddConcreteProductAsync([FromBody]PostProductToPharmacyViewModel viewModel)
         {
-			_concreteProductService.InsertConcreteProduct(concreteProduct);
+            User user = await _userService.GetUserByName(User.Identity.Name);
+            if (user == null)
+                return BadRequest("No records found");
+
+            Pharmacy pharmacy = _pharmacyService.GetPharmacy(x => x.UserID == user.Id);
+            if (pharmacy == null)
+                return BadRequest("No records found");
+
+            ConcreteProduct concreteProduct = new ConcreteProduct()
+            {
+                ProductID = viewModel.ProductId.Value,
+                Price = viewModel.Price.Value,
+                Quantity = viewModel.Quantity.Value,
+                PharmacyID = pharmacy.Id,
+            };
+
+            _concreteProductService.InsertConcreteProduct(concreteProduct);
             return Ok("Data inserted");
         }
+
 
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Pharmacist)]
