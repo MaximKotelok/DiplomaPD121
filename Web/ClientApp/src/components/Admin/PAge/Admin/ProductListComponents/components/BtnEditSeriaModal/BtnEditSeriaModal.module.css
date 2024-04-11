@@ -88,7 +88,7 @@ text-align: left;
     }
 
 
-    
+
     .card-btn-primary {
         
         background-color: rgba(0, 122, 255, 1);
@@ -97,7 +97,7 @@ text-align: left;
     }
     
     .card-btn-primary:hover {
-        background-color: #0e3e75;
+        background-color: rgb(0, 151, 255);
         color: rgba(242, 242, 247, 1);
     }
     
@@ -108,8 +108,7 @@ text-align: left;
     
     }
     .card-btn-primary-500:hover{
-        background-color: rgba(0, 122, 255, 0.5);
-        color: rgba(0, 122, 255, 1);
+        background-color: #e6f4fe;
         transition: background-color 0.3s, color 0.3s; /* Додайте перехід для кольору та фону */
     
     }

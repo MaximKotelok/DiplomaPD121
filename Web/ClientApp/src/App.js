@@ -49,6 +49,8 @@ import { ProductListComponents } from "./components/Admin/PAge/Admin/ProductList
 import { AddProductPharmacyComponent } from "./components/Admin/PAge/Pharmacy/AddProductComponents/AddProductPharmacyComponent/AddProductPharmacyComponent";
 import { OrderListProductComponents } from "./components/Admin/PAge/Pharmacy/OrderListProductComponents/OrderListProductComponents";
 import { ProductDetailsAdminComponents } from "./components/Admin/PAge/Admin/ProductDetailsAdminComponents/ProductDetailsAdminComponents";
+import { PharmaceuticalCompany } from "./components/Admin/PAge/PharmaceuticalCompany/PharmaceuticalCompany";
+import { UpsertBrendComponent } from "./components/Admin/PAge/Pharmacy/UpsertBrendComponent/UpsertBrendComponent";
 
 // export default class App extends Component {
 // static displayName = App.name;
@@ -150,8 +152,20 @@ export default class App extends Component {
             <Route path="pharmacyList" element={<PharmacyListComponents />} />
             <Route path="pharmacyList/:paramPage" element={<PharmacyListComponents />} />
             <Route path="pharmacyUser" element={<UserPharmacy />} />
-            <Route path="addProductPharmacy" element={<AddProductPharmacyComponent />} />
+            <Route path="pharmaceuticalCompany" element={<PharmaceuticalCompany />} />
             <Route path="orderList" element={<OrderListProductComponents />} />
+            <Route path="addProductPharmacy" element={<AddProductPharmacyComponent />} />
+
+            <Route path="upsertBrend" element={<UpsertBrendComponent />} />
+            
+            <Route path="addBrand" element={<UpsertBrandComponent />} />
+            <Route
+              path="updateBrand/:brandId"
+              element={<UpsertBrandComponent />}
+            />
+            <Route path="addPharmaCompany" element={<UpsertBrandComponent />} />
+
+
 
             <Route path="detailProduct/:productId" element={<ProductDetailsAdminComponents />} />
             <Route
@@ -159,13 +173,8 @@ export default class App extends Component {
               element={<UpsertProductComponent />}
             />
             <Route path="addProduct" element={<UpsertProductComponent />} />
-            <Route path="addBrand" element={<UpsertBrandComponent />} />
+
             <Route path="supportChat" element={<SupportChat />} />
-            <Route
-              path="updateBrand/:brandId"
-              element={<UpsertBrandComponent />}
-            />
-            <Route path="addPharmaCompany" element={<UpsertBrandComponent />} />
             <Route
               path="updatePharmaCompany/:companyId"
               element={<UpsertPharmaCompanyComponent />}

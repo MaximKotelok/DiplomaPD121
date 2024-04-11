@@ -63,8 +63,16 @@ export const AddProductPharmacyComponent = () => {
                 onResultClick={(id) => { setId(id);  }}
             />
         </divv>
-        <div className="row" style={{ height: "203px" }}>
-          <div className={`col-4 d-flex   `}>
+        <div
+          className="row"
+          style={{
+            height: "max-content",
+            border: "2px solid rgba(240, 240, 240, 1)",
+            padding: "20px 16px",
+            borderRadius: "16px",
+          }}
+        >
+          <div className={`col-4 d-flex flex-column  `}>
             <label className={`${styles["label-head"]}`}>Товар</label>
             <img
               src={`${ApiPath}${product.pathToPhoto}`}
