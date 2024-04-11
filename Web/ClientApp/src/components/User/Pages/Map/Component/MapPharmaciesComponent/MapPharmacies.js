@@ -19,12 +19,12 @@ const MapPharmacies = (props) => {
 
     let defaultIcon = L.icon({
         iconUrl: '/images/icons/marker-icon.png',
-        iconSize: [28, 40],
+        iconSize: [35, 40],
         iconAnchor: [14, 40]
     });
     let clickedIcon = L.icon({
         iconUrl: '/images/icons/marker-icon-selected.png',
-        iconSize: [34, 45],
+        iconSize: [45, 50],
         iconAnchor: [17, 45]
     });
 
