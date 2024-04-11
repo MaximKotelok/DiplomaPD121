@@ -14,6 +14,7 @@ using Services.ConcreteProductService;
 using Services.PharmacyCompanyService;
 using Services.PharmacyService;
 using Services.UserService;
+using System.Transactions;
 using Utility;
 
 namespace Web.Controllers
@@ -166,14 +167,10 @@ namespace Web.Controllers
 
 		[HttpPost("UpsertPharmacy")]
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
-		public async Task<IActionResult> UpsertBrand(PostPharmacyViewModel postModel)
+		public async Task<IActionResult> UpsertPharmact(PostPharmacyViewModel postModel)
 		{
-			/*using var transaction = new TransactionScope();*/
 			try
 			{
-
-
-
 				return Ok(await UpsertPharmacyEntity(postModel));
 			}
 			catch (Exception ex)
@@ -256,7 +253,9 @@ namespace Web.Controllers
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
 		public IActionResult DeletePharmacy(int id)
 		{
-			var pharmacy = _pharmacyService.GetPharmacy(a => a.Id == id, "ConcreteProducts");
+            /*using var transaction = new TransactionScope();*/
+
+            var pharmacy = _pharmacyService.GetPharmacy(a => a.Id == id, "ConcreteProducts");
 			if (pharmacy != null)
 			{
 				foreach (var item in pharmacy.ConcreteProducts)
@@ -265,7 +264,9 @@ namespace Web.Controllers
 				}
 				_pharmacyService.DeletePharmacy(id);
 			}
-			return Ok("Data Deleted");
+
+            /*transaction.Complete();*/
+            return Ok("Data Deleted");
 		}
 
 

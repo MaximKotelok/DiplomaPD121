@@ -8,7 +8,15 @@ export async function getPharmaCompanyById(companyId) {
     return await getFromServer(GetPharmaCompanyById, { companyId: companyId })
 }
 export async function upsertPharmaCompany(company) {
-    await postToServer(UpsertPharmaCompany, {
+    return await postToServer(UpsertPharmaCompany, {
         ...company,
+    }, ClassHeader);
+}
+export async function upsertPharmaCompanyAdmin(user) {
+    return await postToServer("PharmaCompany/UpsertPharmaCompanyAdmin", {
+        ...user,
     }, ClassHeader)
-} 
+}
+export async function getPharmaComapnyAdmin(companyId) {
+    return await getFromServer("getPharmaComapnyAdmin", { companyId: companyId })
+}
