@@ -37,11 +37,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="ClientApp\public\images\icons\marker-icon.png" />
+    <None Remove="ClientApp\public\images\icons\marker-icon-old.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="ClientApp\public\images\icons\marker-icon.png">
+    <Content Include="ClientApp\public\images\icons\marker-icon-old.png">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
