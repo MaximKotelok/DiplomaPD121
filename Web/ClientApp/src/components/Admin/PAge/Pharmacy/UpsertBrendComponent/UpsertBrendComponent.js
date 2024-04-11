@@ -1,8 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./UpsertBrendComponent.module.css";
 import BtnWarningModal from "./components/BtnWarningModal/BtnWarningModal";
 import { styled } from "@mui/material/styles";
+import { useParams } from "react-router-dom";
+
 import Button from "@mui/material/Button";
+import CustomSelectComponent from "../../../../Common/CustomSelectComponent/CustomSelectComponent";
+import CustomImgComponent from "../../../../Common/CustomImgComponent/CustomImgComponent";
+import { ApiPath, StateInfos, Success } from "../../../../../utils/Constants";
+import { getBrandById, upsertBrand } from "../../../../../services/brand";
+import { getAllCountries } from "../../../../../services/country";
+import { postPhotoToServer } from "../../../../../services/photo";
+import { toast } from "react-toastify";
 const VisuallyHiddenInput = styled("input")({
   clip: "rgba(229, 229, 234, 1)",
   clipPath: "inset(50%)",
@@ -33,37 +42,154 @@ const StyledButton = styled(Button)({
   },
 });
 export const UpsertBrendComponent = () => {
-  const [imageSrc, setImageSrc] = useState(null);
+  const [image, setImage] = useState(null);
+  const { brandId } = useParams();
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
+  const [stateInfo, setStateInfo] = useState(StateInfos.LOADING);
+  const [preview, setPreview] = useState(null);
+  const [formData, setFormData] = useState({
+    id: undefined,
+    name: undefined,
+    description: undefined,
+    countryID: undefined,
+    pathToPhoto: undefined,
+  });
 
-    reader.onloadend = () => {
-      setImageSrc(reader.result);
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "PageDown" || e.key === "PageUp") {
+        e.preventDefault();
+      }
     };
+    document.addEventListener("keydown", handleKeyDown);
 
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+
+  const [dataFromServer, setDataFromServer] = useState({
+    countries: [],
+  });
+
+
+  async function init() {
+    let tmpObject, tmpCountries;
+
+    try {
+      if (brandId) {
+        tmpObject = await getBrandById(brandId);
+
+
+        if (tmpObject.status === Success){
+          tmpObject = {
+            id: brandId, 
+            name: tmpObject.data.name,
+            description: tmpObject.data.description,
+            countryID: tmpObject.data.countryBrandID,
+            pathToPhoto: tmpObject.data.pathToPhoto,
+          }
+          setFormData(tmpObject);
+        }
+        setPreview(tmpObject.pathToPhoto?ApiPath+tmpObject.pathToPhoto:null);
+      }
+
+      tmpCountries = await getAllCountries();
+
+      if (tmpCountries.status === Success) {
+        setDataFromServer({
+          countries: tmpCountries.data,
+        });
+
+        setStateInfo(StateInfos.LOADED);
+      } else {
+        setStateInfo(StateInfos.ERROR);
+      }
+    } catch (error) {
+      console.error("Error in init function:", error);
+      setStateInfo(StateInfos.ERROR);
+    }
+  }
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  const setFormDataAttribute = (name, value) => {
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleInputChange = (e) => {
+    setFormDataAttribute(e.target.name, e.target.value);
+  };
+
+  const submit = async () => {
+    let path = "";
+    if (image) {
+      if (formData.pathToPhoto)
+        path = await postPhotoToServer(
+          "Photo/Update",
+          formData.pathToPhoto.replace(/[\/\\]images[\/\\]/g, ""),
+          image
+        );
+        
+      else path = await postPhotoToServer("Photo/Add", "brand", image);
+      if (path.status === Success) {
+        path = `/images/brand/${path.data}`;
+      }
+    } else if (formData.pathToPhoto) {
+      path = formData.pathToPhoto;
+    }
+
+    formData["pathToPhoto"] = path;
+
+    const res = await upsertBrand(formData);
+
+    if(res.status === Success){
+      toast.success("Успіх")
+    }else{
+      toast.error("Помилка")
+    }
+  };
+
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setImage(file);
     if (file) {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        setPreview(reader.result);
+      };
+
       reader.readAsDataURL(file);
     }
   };
+
+  if(stateInfo === StateInfos.LOADING)
+  return "Loading...";
+  if(stateInfo === StateInfos.ERROR)
+  return "Error...";
   return (
     <div className={`${styles["row-parent"]}`}>
       <div className={`${styles["box-container"]} row`}>
         <divv className="">
           <h6 className={`col-12 ${styles["header-text-add"]}`}>
-            Додавання бренду
+            { brandId  ?"Оновлення бренду":"Додавання бренду"}
           </h6>
         </divv>
         <div className={`row ${styles["card-border"]}`}>
           <div className={`col-4 d-flex  flex-column `}>
-            <label className={`${styles["label-head"]}`}>Товар</label>
+            <label className={`${styles["label-head"]}`}>Фото</label>
             <div className={`d-flex flex-column  justify-content-center `}>
-              <img
-                src={imageSrc}
-                alt="no photo"
-                className={`${styles["img-product"]} mb-2`}
-              />
+              <CustomImgComponent 
+              src={`${preview}`} alt="no photo" className={`${styles["img-product"]} mb-2`}/>
+              
               <StyledButton
                 component="label"
                 role={undefined}
@@ -74,7 +200,7 @@ export const UpsertBrendComponent = () => {
                 <VisuallyHiddenInput
                   type="file"
                   accept="image/*"
-                  onChange={handleFileChange}
+                  onChange={handleImageChange}
                 />
               </StyledButton>
             </div>
@@ -88,7 +214,9 @@ export const UpsertBrendComponent = () => {
                   className={`input-text-form  mb-2 ${styles["my-input-text-form"]}`}
                   placeholder="Введіть назву фарма-компанії"
                   type="text"
-                  name=""
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
                 />
               </div>
 
@@ -96,7 +224,29 @@ export const UpsertBrendComponent = () => {
                 <div>
                   <label>Країна</label>
                 </div>
-                <select
+
+                <CustomSelectComponent
+                  className={`my-form-select ${styles["my-input-text-form"]} ${styles["my-w-text-celect"]} ${styles["custom-country-select"]}`}
+                  selectedId={formData.countryID}
+                  name="countryID"
+                  placeholder="Країна"
+                  options={
+                    dataFromServer.countries &&
+                    dataFromServer.countries.map &&
+                    dataFromServer.countries.map((item) => ({
+                      value: item.id,
+                      label: item.name,
+                    }))
+                  }
+                  onChange={(selectedOption) => {
+                    setFormData({
+                      ...formData,
+                      countryID: selectedOption.value,
+                    });
+                  }}
+
+                />
+                {/* <select
                   className={`my-form-select ${styles["my-input-text-form"]} ${styles["my-w-text-celect"]}`}
                   // aria-label="Обери країну"
                 >
@@ -106,7 +256,7 @@ export const UpsertBrendComponent = () => {
                   <option value="3">Something else here</option>
                   <option disabled>---</option>
                   <option value="4">Separated link</option>
-                </select>
+                </select> */}
               </div>
             </div>
 
@@ -118,7 +268,9 @@ export const UpsertBrendComponent = () => {
                   placeholder="Ведіть опис фарма-компанії"
                   type="text"
                   rows={4}
-                  name=""
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
@@ -165,7 +317,7 @@ export const UpsertBrendComponent = () => {
 
         <div className="d-flex justify-content-center">
           <div>
-            <BtnWarningModal />
+            <BtnWarningModal onConfirm={submit}/>
           </div>
         </div>
       </div>

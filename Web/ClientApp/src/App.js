@@ -156,12 +156,11 @@ export default class App extends Component {
             <Route path="orderList" element={<OrderListProductComponents />} />
             <Route path="addProductPharmacy" element={<AddProductPharmacyComponent />} />
 
-            <Route path="upsertBrend" element={<UpsertBrendComponent />} />
-            
-            <Route path="addBrand" element={<UpsertBrandComponent />} />
+            <Route path="upsertBrand/:brandId" element={<UpsertBrendComponent />} />
+            <Route path="addBrand" element={<UpsertBrendComponent />} />
             <Route
               path="updateBrand/:brandId"
-              element={<UpsertBrandComponent />}
+              element={<UpsertBrendComponent />}
             />
             <Route path="addPharmaCompany" element={<UpsertBrandComponent />} />
 
@@ -179,10 +178,7 @@ export default class App extends Component {
               path="updatePharmaCompany/:companyId"
               element={<UpsertPharmaCompanyComponent />}
             />
-            <Route
-              path="updateBrand/:brandId"
-              element={<UpsertBrandComponent />}
-            />
+
             <Route
               path="addPharmaCompany"
               element={<UpsertPharmaCompanyComponent />}

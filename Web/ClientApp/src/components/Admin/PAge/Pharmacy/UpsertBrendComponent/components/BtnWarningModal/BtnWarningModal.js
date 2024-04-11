@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import styles from "./BtnWarningModal.module.css";
 
-function BtnWarningModal() {
+function BtnWarningModal({onConfirm}) {
   const [show, setShow] = useState(false);
 
   return (
@@ -55,6 +55,7 @@ function BtnWarningModal() {
             <div className="col-6 ps-2 pe-2">
               <button
                 className={`brn-form ${styles["card-btn-primary"]}  w-100`}
+                onClick={onConfirm}
               >
                 Так
               </button>

@@ -12,7 +12,7 @@ export async function getCountBrands(count) {
 } 
 
 export async function upsertBrand(brand) {
-    await postToServer(UpsertBrand, {
+    return await postToServer(UpsertBrand, {
         ...brand,
     }, ClassHeader)
 } 

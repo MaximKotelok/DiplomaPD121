@@ -20,6 +20,24 @@ line-height: 30.12px;
 color:rgba(28, 28, 28, 0.8);
 }
 
+.custom-country-select>*{
+    width: 100%!important;
+}
+
+
+
+
+.custom-country-select *{
+    border: 0!important;
+    
+}
+
+.custom-country-select{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 
 
 
