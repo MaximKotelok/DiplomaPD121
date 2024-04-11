@@ -40,16 +40,11 @@ line-height: 63px;
 
 
 .my-input-text-form{
-    border: 2px solid  rgba(172, 172, 172, 1);
-    color: rgba(167, 167, 167, 1);
-    padding: 12px ;
-    font-family: var(--standart-font);
-    font-size: 14px;
-    font-weight: 400;
-border-radius: 12px;
-height: 52px !important;
-    }
+border: 2px solid  rgba(172, 172, 172, 1);
+color: rgba(167, 167, 167, 1);
+padding: 10px;
 
+}
 
 
 .my-input-text-form-time{
@@ -74,6 +69,32 @@ margin-bottom: 8px;
     opacity: 0.6;
 }
 
+
+.text-area-zayavka{
+    padding: 12px ;
+    border-radius: 12px;
+    border: 2px solid rgba(172, 172, 172, 1);
+    width: 100%;
+    resize: none;
+
+    color:  rgba(167, 167, 167, 1);
+    font-family: var(--standart-font);
+font-size: 14px;
+font-weight: 400;
+outline: none;
+
+}
+
+.text-area-zayavka::placeholder {
+    color: rgba(167, 167, 167, 1); }
+
+
+    .img-brend{
+        border: 2px solid rgba(172, 172, 172, 1);
+        width: 140px;
+height: 140px;
+border-radius: 10px;
+    }
 
 .btn-abolition{
     background-color:  rgba(0, 122, 255, 0.15) !important;

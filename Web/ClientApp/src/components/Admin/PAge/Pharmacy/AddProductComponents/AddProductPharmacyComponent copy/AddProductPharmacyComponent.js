@@ -13,16 +13,8 @@ export const AddProductPharmacyComponent = () => {
           </h6>
           <AutoCompleteInput />
         </divv>
-        <div
-          className="row"
-          style={{
-            height: "max-content",
-            border: "2px solid rgba(240, 240, 240, 1)",
-            padding: "20px 16px",
-            borderRadius: "16px",
-          }}
-        >
-          <div className={`col-4 d-flex flex-column  `}>
+        <div className="row" style={{ height: "203px" }}>
+          <div className={`col-4 d-flex  flex-column `}>
             <label className={`${styles["label-head"]}`}>Товар</label>
             <img
               src="https://root.tblcdn.com/img/goods/8d1aab55-2c38-11ec-bacc-0050569aacb6/1/img_0.jpg?v=AAAAAAmKo34"
