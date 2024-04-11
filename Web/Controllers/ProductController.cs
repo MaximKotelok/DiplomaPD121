@@ -87,11 +87,11 @@ namespace Web.Controllers
 		{
 			Product product = _productService!.GetProduct(a => a.Id == id, includeProperties: "PriceHistory,PriceHistory.HistoryDate")!;
 
-			return Ok(product.PriceHistory.OrderBy(a=>a.HistoryDate.Date).Select((a) => new
+			return Ok(product.PriceHistory.OrderBy(a => a.HistoryDate.Date).Select((a) => new
 			{
 				date = a.HistoryDate.Date.ToString("MM.yy"),
 				price = a.Price
-			}).GroupBy(a=>a.date).Select(a=> new { name = a.Key, value = a.Average(b => b.price) }).TakeLast(12));
+			}).GroupBy(a => a.date).Select(a => new { name = a.Key, value = a.Average(b => b.price) }).TakeLast(12));
 		}
 
 		[HttpGet("GetById")]
@@ -108,7 +108,7 @@ namespace Web.Controllers
 					Title = product.Title,
 					ShortDescription = product.ShortDescription,
 					ProductAttributeGroupID = product.ProductAttributeGroupID,
-					ManufacturerID = product.ManufacturerID,					
+					ManufacturerID = product.ManufacturerID,
 					BrandID = product.BrandID,
 					Description = product.Description,
 					PathToPhoto = product.PathToPhoto,
@@ -203,27 +203,27 @@ namespace Web.Controllers
 		}
 
 		[HttpGet("GetForPharmacyById")]
-        public IActionResult GetForPharmacyById(int id)
-        {
-            Product product = _productService!.GetProduct(a => a.Id == id, includeProperties: "Manufacturer")!;
+		public IActionResult GetForPharmacyById(int id)
+		{
+			Product product = _productService!.GetProduct(a => a.Id == id, includeProperties: "Manufacturer")!;
 
-            if (product == null)
-                return BadRequest("No records found");
+			if (product == null)
+				return BadRequest("No records found");
 
-            ProductToPharmacyViewModel viewModel = new()
+			ProductToPharmacyViewModel viewModel = new()
 			{
 				Id = product.Id,
 				Title = product.Title,
 				ShortDescription = product.ShortDescription,
-                Manufacturer = product.Manufacturer.Name,
-                PathToPhoto = product.PathToPhoto,
+				Manufacturer = product.Manufacturer.Name,
+				PathToPhoto = product.PathToPhoto,
 			};
 
 			return Ok(viewModel);
-        }
-        
+		}
 
-        [HttpGet("GetAll")]
+
+		[HttpGet("GetAll")]
 		public IActionResult GetAll()
 		{
 			var result = _productService
@@ -238,10 +238,10 @@ namespace Web.Controllers
 
 		private IEnumerable<Product> filter(IEnumerable<Product> products, SearchViewModel model)
 		{
-			return products				
+			return products
 				.Where(a =>
 				{
-					if (model.Brands != null && model.Brands.Length>0)
+					if (model.Brands != null && model.Brands.Length > 0)
 					{
 						return model.Brands.Contains(a.BrandID!.Value);
 					}
@@ -269,6 +269,39 @@ namespace Web.Controllers
 					return true;
 				}
 				);
+		}
+
+		private IEnumerable<Product> orderBy(IEnumerable<Product> products, SearchViewModel model)
+		{
+			if (model.OrderBy == null || model.OrderBy == SD.ByName)
+				return products.OrderBy(a => a.Title);
+			else if (model.OrderBy == SD.ByNameDesc)
+				return products.OrderByDescending(a => a.Title);
+			else if (model.OrderBy == SD.ByPrice)
+				return products.OrderBy(a =>
+				{
+
+					if (a.PriceHistory.IsNullOrEmpty())
+						return 0;
+					else
+						return a.PriceHistory
+										.GroupBy(a => a.HistoryDate.Date)
+										.OrderByDescending(a => a.Key).First().Average(a => a.Price);
+				});
+			else if (model.OrderBy == SD.ByPriceDesc)
+				return products.OrderByDescending(a =>
+				{
+
+					if (a.PriceHistory.IsNullOrEmpty())
+						return 0;
+					else
+						return a.PriceHistory
+										.GroupBy(a => a.HistoryDate.Date)
+										.OrderByDescending(a => a.Key).First().Average(a => a.Price);
+				});
+			else
+				return products;
+
 		}
 
 		[HttpPost("GetSearchInput")]
@@ -334,7 +367,7 @@ namespace Web.Controllers
 				}
 
 
-				return Ok(new { attributes, categories, brands });
+				return Ok(new { attributes, categories, brands, OrderByNames=SD.OrderByNames });
 			}
 			return BadRequest("No records found");
 		}
@@ -347,8 +380,8 @@ namespace Web.Controllers
 			if (model.ActiveSubstanceId == null)
 			{
 
-				result = filter(_productService.GetAllProducts(includeProperties: "Manufacturer,Properties,Properties.Attribute,Category,Brand,Category")
-					, model).Where(a =>
+				result = filter(orderBy(_productService.GetAllProducts(includeProperties: "Manufacturer,Properties,Properties.Attribute,Category,Brand,Category,PriceHistory,PriceHistory.HistoryDate")
+					, model), model).Where(a =>
 					{
 						if (model.Title != null)
 						{
@@ -360,7 +393,7 @@ namespace Web.Controllers
 			}
 			else
 			{
-				result = filter(_medicineService.GetAllMedicines(includeProperties: "Manufacturer,Properties,Properties.Attribute,Category,Brand,Category")
+				result = filter(orderBy(_medicineService.GetAllMedicines(includeProperties: "Manufacturer,Properties,Properties.Attribute,Category,Brand,Category,PriceHistory,PriceHistory.HistoryDate")
 					.Where(a => a.ActiveSubstanceID == model.ActiveSubstanceId)
 					.Where(a =>
 					{
@@ -370,7 +403,7 @@ namespace Web.Controllers
 						}
 						return true;
 					}
-				)
+				), model)
 					, model);
 			}
 

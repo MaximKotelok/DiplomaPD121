@@ -16,6 +16,7 @@ const ProductFilterComponent = ({
     setFilters,
     setSearchByTitle,
     searchByTitle,
+    setOrderByNames,
     search
 }) => {
     const { title, categoryId, brandId, extraParamId, extraParamValue, activeSubstanceId } = useParams();
@@ -43,8 +44,9 @@ const ProductFilterComponent = ({
             activeSubstanceId ? parseInt(activeSubstanceId) : null,
             extraParamId && extraParamValue ? [{ id: extraParamId, name: extraParamValue }] : null,
         );
-
+        
         if (res.status === Success) {
+            setOrderByNames(res.data.orderByNames);
             if (!categoryId) {
                 setCategories(res.data.categories);
             } else {

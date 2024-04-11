@@ -35,7 +35,6 @@ import { LoginLayuotPharmacy } from "./layouts/LoginPharmacy/LoginLayuotPharmacy
 import LayoutAdmin from "./layouts/AdminLayout/LayoutAdmin";
 import { UserPharmacy } from "./components/Admin/PAge/UsersPharmacy/UserPharmacy";
 import UpsertProductComponent from "./components/Admin/PAge/Pharmacy/AddProductComponents/UpsertProductComponent/UpsertProductComponent";
-import UpsertBrandComponent from "./components/Admin/PAge/Brand/AddBrandComponents/UpsertBrandComponent/UpsertBrandComponent";
 import UpsertPharmaCompanyComponent from "./components/Admin/PAge/PharmaCompany/AddPharmaCompanyComponents/UpsertPharmaCompanyComponent/UpsertPharmaCompanyComponent";
 import UpsertPharmacyComponent from "./components/Admin/PAge/Pharmacy/AddPharmacyComponents/UpsertPharmacyComponent/UpsertPharmacyComponent";
 import { SupportChat } from "./components/Admin/PAge/SupportChat/SupportChat";
@@ -162,7 +161,6 @@ export default class App extends Component {
               path="updateBrand/:brandId"
               element={<UpsertBrendComponent />}
             />
-            <Route path="addPharmaCompany" element={<UpsertBrandComponent />} />
 
 
 

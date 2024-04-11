@@ -49,7 +49,7 @@ export async function GetProductByTitle(title, count = 6) {
     }, ClassHeader)
 } 
 
-export async function Search(title = null, categories = null, brands = null, activeSubstanceId, properties = null,page=1) {
+export async function Search(title = null, categories = null, brands = null, activeSubstanceId, properties = null,page=1, orderBy=null) {
     let res = await postToServer("Product/Search", {
         title,
         categories,
@@ -58,7 +58,7 @@ export async function Search(title = null, categories = null, brands = null, act
         properties,
         page,
         itemsPerPage:4,
-
+        orderBy
     }, ClassHeader)
 
     if(res.status === Success){

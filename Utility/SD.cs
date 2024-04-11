@@ -21,5 +21,15 @@ namespace Utility
 		public const string ReservationStatusWaiting = "В очікуванні";
 		public const string ReservationStatusCanceled = "Скасовано";
 		public const string ReservationStatusFinished = "Завершено";
+
+        public readonly static string[] OrderByNames = new string[]
+        { ByName, ByNameDesc, ByPrice, ByPriceDesc }; 
+
+        public const string ByDefault = ByName;
+        public const string ByName = "А-я";
+        public const string ByNameDesc = "Я-а";
+
+		public const string ByPrice = "Дешеві";
+		public const string ByPriceDesc = "Дорогі";
 	}
 }

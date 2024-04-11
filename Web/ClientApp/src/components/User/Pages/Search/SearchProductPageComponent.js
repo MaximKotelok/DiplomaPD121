@@ -13,7 +13,7 @@ import { ReactComponent as CardBtn } from "../../../../assets/images/category/Ca
 import { ReactComponent as TableBtn } from "../../../../assets/images/category/Table.svg";
 import banner  from "../../../../assets/images/search/banner.svg";
 import MiniCardProductANDTableProductComponent from "../../../Common/MiniCardProductANDTableProductComponent/MiniCardProductANDTableProductComponent";
-
+import Select from 'react-select';
 import styles from "./SearchProductPageComponent.module.css";
 import { Search } from "../../../../services/product";
 import { getBrandById } from "../../../../services/brand";
@@ -52,7 +52,8 @@ export const SearchProductPageComponent = () => {
         [].concat(...Object.keys(clone)
             .map(a=>convertToServerModel(a,clone[a]))
         ),
-        page
+        page,
+        orderBy
     );
     if(searchResult.status === Success)
         return searchResult.data;
@@ -67,12 +68,19 @@ export const SearchProductPageComponent = () => {
   const [products, setProducts] = useState([]);
   const [loader, setLoader] = useState(StateInfos.LOADING);
   const [pageName, setPageName] = useState("Пошук");
+  const [orderByNames, setOrderByNames] = useState([]);
+  const [orderBy, setOrderBy] = useState(null);
 
   const SEPARATED_COUNT = 8;
 
   const handleGridTableClick = (boolean) => {
     setGridTalbeActive(boolean);
   };
+
+  useEffect(()=>{
+    if(orderByNames)
+    setOrderBy(orderByNames[0]);
+  },[orderByNames])
 
   useEffect(() => {
       init();
@@ -139,6 +147,7 @@ export const SearchProductPageComponent = () => {
               setPage={setPage}
               searchByTitle={searchByTitle}
               setProducts={setProducts}
+              setOrderByNames={setOrderByNames}
               search={search}
             />
           }
@@ -190,14 +199,12 @@ export const SearchProductPageComponent = () => {
                   </option>
                 </select> */}
               {/* </div> */}
+              
               <div className="btn-group">
-                <select className="btn btn-danger" aria-label="Action dropdown">
-                  <option selected>Action</option>
-                  <option>Another action</option>
-                  <option>Something else here</option>
-                  <option disabled>---</option>
-                  <option>Separated link</option>
-                </select>
+              <Select
+                value={{label:orderBy, value:orderBy}}
+                options={[...orderByNames.map(a=>{return{label:a, value:a}})]}
+                onChange={(e)=>setOrderBy(e.value)}/>
               </div>
             </div>
             <div
