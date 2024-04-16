@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Services.AttributeService;
 using Services.CityService;
 using Services.ConcreteProductService;
+using Services.EmailService;
 using Services.MedicineService;
 using Services.PharmacyService;
 using Services.PropertyService;
@@ -24,17 +25,20 @@ namespace Web.Controllers
         private readonly IConcreteProductService _concreteProductService;
         private readonly IPharmacyService _pharmacyService;
         private readonly IUserService _userService;
+        private readonly IEmailService _emailService;
 
         public ReservationController(IReservationService reservationService, 
             IReservationStatusService reservationStatusService, IUserService userService,
 			IConcreteProductService concreteProductService,
-			IPharmacyService pharmacyService)
+			IPharmacyService pharmacyService,
+            IEmailService emailService)
         {
 			_pharmacyService = pharmacyService;
             _reservationService = reservationService;
             _userService = userService;
             _reservationStatusService = reservationStatusService;
 			_concreteProductService = concreteProductService;
+            _emailService = emailService;
         }
 
         [HttpPost("LoggedReserve")]
@@ -221,7 +225,7 @@ namespace Web.Controllers
 
             reservation.Status = reservationStatus;
             _reservationService.UpdateReservation(reservation);
-
+            await _emailService.SendBookingInfoForUser(reservation);
             return Ok();
         }
 

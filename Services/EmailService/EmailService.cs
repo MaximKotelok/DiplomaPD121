@@ -1,4 +1,5 @@
-﻿using Services.MailService;
+﻿using Domain.Models;
+using Services.MailService;
 using Services.SMTPService;
 using System;
 using System.Collections.Generic;
@@ -90,6 +91,31 @@ namespace Services.EmailService
 ";
 
             return _emailSenderService.SendEmailAsync(email, "Підтвердження реєстрації", message);
+        }
+        public Task SendBookingInfoForUser(Reservation reservation)
+        {
+            string currentDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+            string message = $@"
+<html>
+<head>
+    <title>Підтвердження бронювання</title>
+</head>
+<body>
+    <p>Шановний користувачу,</p>
+    
+    <p>Ви успішно забронювали товари.</p>
+    
+    <p>Дата бронювання: <strong>{currentDate}</strong></p>
+    
+    <p>Дякуємо, що обрали наші послуги.</p>
+
+    <p>З найкращими побажаннями,<br>Адміністрація</p>
+</body>
+</html>
+";
+
+            return _emailSenderService.SendEmailAsync(reservation.Email!, "Підтвердження бронювання", message);
         }
 
         private string GetConfirmationLink(string email)

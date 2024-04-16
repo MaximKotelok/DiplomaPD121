@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,7 @@ namespace Services.EmailService
         Task SendBookingInfo(string email, ProductDto productDto);
         Task SendChangeProductStatus(string email, ProductDto productDto, string newStatus);
         Task<bool> SendConfirmationMail(string email);
+        Task SendBookingInfoForUser(Reservation reservation);
+
     }
 }
