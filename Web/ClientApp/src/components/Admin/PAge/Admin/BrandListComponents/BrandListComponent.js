@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./PharmacyListComponents.module.css";
+import styles from "./BrandListComponents.module.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
@@ -18,34 +18,14 @@ import CustomImgComponent from "../../../../Common/CustomImgComponent/CustomImgC
 import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
-import BtnEditPharmacyModal from "./components/BtnEditStatusModal/BtnEditStatusModal/BtnEditPharmacyModal";
-import { getAllPharmaciesForAdmin } from "../../../../../services/pharmacy";
+import BtnEditBrandModal from "./components/BtnEditStatusModal/BtnEditStatusModal/BtnEditBrandModal";
+import { getAllBrandForAdmin } from "../../../../../services/brand";
 import { BrowserRouter as Router, Route, Link, useParams } from 'react-router-dom';
 
 const columns = [
-  { id: "pharmacy", label: "Аптека", minWidth: 170 },
-  { id: "address", label: "Адреса", minWidth: 170 },
-  {
-    id: "timeWorking",
-    label: "Графік роботи",
-    minWidth: 170,
-    editable: true,
-    // format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "userEmail",
-    label: "Користувач",
-    minWidth: 120,
-    editable: true,
-    // format: (value) => value.toLocaleString("en-US"),
-  },
+   { id: "name", label: "Бренд", minWidth: 170 },
+    { id: "country", label: "Країна", minWidth: 170 },
 ];
-
-// function createData(name, code, population, size) {
-//   const density = population / size;
-//   return { name, code, population, size, density };
-// }
-
 
 const useStyles = makeStyles({
   root: {
@@ -56,7 +36,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const PharmacyListComponents = () => {
+export const BrandListComponent = () => {
   const classes = useStyles();
   const {paramPage}=useParams();
   const [page, setPage] = React.useState(paramPage);
@@ -68,14 +48,14 @@ export const PharmacyListComponents = () => {
   },[]);
 
   async function init(){
-    let res = await getAllPharmaciesForAdmin(page)
+      let res = await getAllBrandForAdmin(page)
     if(res.status === Success){    
       let page = paramPage?paramPage:1;
       if(page > res.data.countOfPages){
-        res = await getAllPharmaciesForAdmin(res.data.countOfPages);
+          res = await getAllBrandForAdmin(res.data.countOfPages);
         page = res.data.countOfPages;
       }else if(page < 1){
-        res = await getAllPharmaciesForAdmin(1);
+          res = await getAllBrandForAdmin(1);
         page = 1;
       }
         setPage(parseInt(page));
@@ -113,17 +93,13 @@ export const PharmacyListComponents = () => {
           <SearchComponent callback={async (text)=>{
             let page = 1;
             setPage(1);
-            const res = await getAllPharmaciesForAdmin(page,text);
+            const res = await getAllBrandForAdmin(page,text);
             if(res.status === Success){
               //console.log(res);
               setRows(res.data.data);
               setCountOfPages(res.data.countOfPages)   
             }
           }}/>
-        </div>
-
-        <div className="col-6">
-          <CheckedBox text="Показувати лише фарма-компанії?" />
         </div>
 
         <Paper className={classes.root}>
@@ -148,40 +124,29 @@ export const PharmacyListComponents = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((pharmacy, index) => (
+                {rows.map((brand, index) => (
                   <React.Fragment key={index}>
                     <TableRow>
                       <TableCell
-                        colSpan={12}
                         className={`${styles["header-body-pharmacy"]}`}
                       >
                         <CustomImgComponent
                           className={`${styles["img-product"]}`}
-                          src={`${ApiPath}${pharmacy.pathToPhoto}`}
+                          src={`${ApiPath}${brand.pathToPhoto}`}
                         />{" "}
-                        {pharmacy.name}
+                        {brand.name}
+                      </TableCell>
+                      <TableCell
+                        className={`${styles["header-body-pharmacy"]}`}
+                      >
+                        {brand.countryBrand.name}
+                      </TableCell>
+                      <TableCell>
+                            <div className="d-flex justify-content-between">
+                                <BtnEditBrandModal id={brand.id} />
+                            </div>
                       </TableCell>
                     </TableRow>
-
-                    {pharmacy.data.map((item, itemIndex) => {
-                      return (
-                        <TableRow
-                          className={`${styles["tb-pharmacy"]}`}
-                          key={itemIndex}
-                        >
-                          <TableCell>№ {item.pharmacy.id}</TableCell>
-                          <TableCell>{item.pharmacy.address}</TableCell>
-                          <TableCell>{`${item.pharmacy.openTime} - ${item.pharmacy.closeTime}`}</TableCell>
-                          <TableCell>
-                            <div className="d-flex justify-content-between">
-                              {item.pharmacist?item.pharmacist:"НЕМАЄ"}
-                              <BtnEditPharmacyModal id={item.pharmacy.id}/>
-                            </div>
-                          </TableCell>
-                          
-                        </TableRow>
-                      );
-                    })}
                   </React.Fragment>
                 ))}
 
@@ -194,7 +159,7 @@ export const PharmacyListComponents = () => {
               getContent={async (page)=>{
                 const newUrl = `/admin/pharmacyList/${page}`;
                 window.history.pushState({}, '', newUrl);
-                let res = await getAllPharmaciesForAdmin(page);
+                let res = await getAllBrandForAdmin(page);
                 if(res.status === Success){
                   return res.data.data;
                 }

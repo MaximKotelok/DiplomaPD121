@@ -176,9 +176,9 @@ const UpsertPharmaCompanyComponent = () => {
                     image
                 );
 
-            else path = await postPhotoToServer("Photo/Add", "brand", image);
+            else path = await postPhotoToServer("Photo/Add", "pharmaCompany", image);
             if (path.status === Success) {
-                path = `/images/brand / ${path.data}`;
+                path = `/images/pharmaCompany/${path.data}`;
             }
         } else if (pharmaCompanyFormData.pathToPhoto) {
             path = pharmaCompanyFormData.pathToPhoto;

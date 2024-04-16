@@ -24,19 +24,21 @@ namespace Web.Controllers
 	public class PharmacyController : ControllerBase
 	{
 		private readonly IPharmacyService _pharmacyService;
-		private readonly ICityService _cityService;
+		private readonly IPharmaCompanyService _companyService;
+        private readonly ICityService _cityService;
 		private readonly IRepositoryManager _repository;
 		private readonly IUserService _userService;
 		private readonly IConcreteProductService _concreteProductService;
 
-		public PharmacyController(IPharmacyService service, ICityService _cityService, IRepositoryManager repository, IUserService userService, IConcreteProductService concreteProductService)
+		public PharmacyController(IPharmacyService service, IPharmaCompanyService companyService, ICityService _cityService, IRepositoryManager repository, IUserService userService, IConcreteProductService concreteProductService)
 		{
 			this._pharmacyService = service;
 			this._cityService = _cityService;
 			this._concreteProductService = concreteProductService;
 			_repository = repository;
 			_userService = userService;
-		}
+            _companyService = companyService;
+        }
 
 		[HttpGet("")]
 		public IActionResult GetAllPharmacies()
@@ -70,15 +72,18 @@ namespace Web.Controllers
 				int page = model.Page != null ? model.Page.Value - 1 : 0;
 				var result = rawResult.Skip(model.ItemsPerPage * page).Take(model.ItemsPerPage)
 					.Select(a => new { pharmacy = a, pharmacist = a.User != null ? a.User.Email : null })
-					.GroupBy(a => a.pharmacy.PharmaCompany.Title).Select(a => new
+					.GroupBy(a => new { a.pharmacy.PharmaCompany.Title, a.pharmacy.PharmaCompany.PathToPhoto }).Select(a => new
 					{
-						name = a.Key,
+						name = a.Key.Title,
+                        pathToPhoto = a.Key.PathToPhoto,
 						data = a
 					});
 				int countOfPages = model.GetCountOfPages(rawResult.Count());
 				return Ok(new { data = result, countOfPages });
-			}
-			return BadRequest("No records found");
+
+
+            }
+            return BadRequest("No records found");
 		}
 
 		[HttpGet("/GetAllConcreteProductsFromPharmacy/{id}")]

@@ -34,7 +34,7 @@ const ImageUploaderComponent = ({selectedImage, setSelectedImage, imageUrl}) => 
       <img    
         src={preview || (imageUrl && ApiPath + imageUrl) || placeholder}
         alt="Selected"
-        className={`${styles["image-upload"]}`}        
+        className={`${styles["image-upload"]}`}    
         onClick={() => fileInputRef.current.click()}
       />
     </div>

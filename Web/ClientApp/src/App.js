@@ -49,7 +49,8 @@ import { AddProductPharmacyComponent } from "./components/Admin/PAge/Pharmacy/Ad
 import { OrderListProductComponents } from "./components/Admin/PAge/Pharmacy/OrderListProductComponents/OrderListProductComponents";
 import { ProductDetailsAdminComponents } from "./components/Admin/PAge/Admin/ProductDetailsAdminComponents/ProductDetailsAdminComponents";
 import { UpsertBrendComponent } from "./components/Admin/PAge/Pharmacy/UpsertBrendComponent/UpsertBrendComponent";
-
+import { BrandListComponent } from "./components/Admin/PAge/Admin/BrandListComponents/BrandListComponent"
+ 
 // export default class App extends Component {
 // static displayName = App.name;
 
@@ -153,14 +154,13 @@ export default class App extends Component {
             <Route path="orderList" element={<OrderListProductComponents />} />
             <Route path="addProductPharmacy" element={<AddProductPharmacyComponent />} />
 
+            <Route path="brandList" element={<BrandListComponent />} />
             <Route path="upsertBrand/:brandId" element={<UpsertBrendComponent />} />
             <Route path="addBrand" element={<UpsertBrendComponent />} />
             <Route
               path="updateBrand/:brandId"
               element={<UpsertBrendComponent />}
             />
-
-
 
             <Route path="detailProduct/:productId" element={<ProductDetailsAdminComponents />} />
             <Route path="addProduct" element={<UpsertProductComponent />} />
@@ -174,6 +174,7 @@ export default class App extends Component {
               path="updatePharmaCompany/:companyId"
               element={<UpsertPharmaCompanyComponent />}
             />
+
             <Route path="addPharmacy" element={<UpsertPharmacyComponent />} />
             <Route
               path="updatePharmacy/:pharmacyId"
