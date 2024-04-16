@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import styles from "./CheckedBox.module.css";
 
-export const CheckedBox = ({ text = "" }) => {
-  const [checked, setChecked] = useState(false);
+export const CheckedBox = ({ text = "", checked, setChecked }) => {
 
   return (
-    <div className={`d-flex  pt-2 pb-0 `} style={{ cursor: "pointer" }}>
-      <div className={`${styles["orange-checkbox-container"]}`}>
-        <input style={{ display: "none" }} checked={checked} type="checkbox" />
+    <div className={`d-flex  pt-2 pb-0 `} >
+      <div className={`${styles["orange-checkbox-container"]}`} role="button">
+        <input style={{ display: "none" }} checked={checked} type="checkbox" onChange={()=>{}}/>
         <span
           onClick={() => setChecked(!checked)}
           className={`${styles["checkmark"]}`}

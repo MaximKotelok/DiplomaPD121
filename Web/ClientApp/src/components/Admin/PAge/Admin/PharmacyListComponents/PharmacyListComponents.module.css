@@ -14,6 +14,22 @@ height: 100%;
     height: 100%;
 }
 
+.add-button{
+
+
+
+background: #007AFF;
+border-radius: 8px;
+color: white;
+font-family: var(--standart-font);
+font-weight: 600;
+line-height: 15.06px;
+text-align: center;
+padding: 12px 10px 12px 10px;
+width: 100%;
+
+}
+
 
 
 .head-table{

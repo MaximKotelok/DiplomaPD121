@@ -31,7 +31,7 @@ export const UpsertPharmacyComponent = () => {
 
   const [IsActive, setIsActive] = useState(false);
   const { onComponentMount, onComponentUnmount } = useContext(LayoutContext);
-  const { pharmacyId } = useParams();
+  const { pharmacyId, companyId} = useParams();
   const [ pharmacyIdState, setPharmacyIdState] = useState(pharmacyId);
   useEffect(()=>{
     if(pharmacyIdState){
@@ -78,7 +78,7 @@ export const UpsertPharmacyComponent = () => {
     weekendCloseTime: undefined,
     longitude: undefined,
     latitude: undefined,
-    pharmaCompanyID: undefined,
+    pharmaCompanyID: companyId?parseInt(companyId):undefined,
     cityID: undefined,
   });
 
@@ -100,7 +100,7 @@ export const UpsertPharmacyComponent = () => {
 
     return result;
   }
-  console.log(pharmacyFormData)
+
 
   async function init() {
     let tmpObject,tmpPharmacistObject, tmpCities, tmpPharmaCompanies;
@@ -235,7 +235,7 @@ export const UpsertPharmacyComponent = () => {
 
               <CustomSelectComponent
                 selectedId={pharmacyFormData.cityID}
-                className={`w-50 ms-1 my-form-select ${styles["my-input-text-form"]} ${styles["custom-combobox"]}`}
+                className={`ms-1 my-form-select ${styles["my-input-text-form"]} ${styles["custom-combobox"]}`}
                 name="cityID"
                 placeholder="Місто"
                 options={
@@ -250,27 +250,6 @@ export const UpsertPharmacyComponent = () => {
                   setPharmacyFormData({
                     ...pharmacyFormData,
                     cityID: selectedOption.value,
-                  });
-                }}
-              />
-
-              <CustomSelectComponent
-                selectedId={pharmacyFormData.pharmaCompanyID}
-                className={`w-50 ms-1 my-form-select ${styles["my-input-text-form"]} ${styles["custom-combobox"]}`}
-                name="pharmaCompanyID"
-                placeholder="Фарма компанія"
-                options={
-                  dataFromServer.pharmaCompanies &&
-                  dataFromServer.pharmaCompanies.map &&
-                  dataFromServer.pharmaCompanies.map((item) => ({
-                    value: item.id,
-                    label: item.title,
-                  }))
-                }
-                onChange={(selectedOption) => {
-                  setPharmacyFormData({
-                    ...pharmacyFormData,
-                    pharmaCompanyID: selectedOption.value,
                   });
                 }}
               />

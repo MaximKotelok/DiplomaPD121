@@ -1,5 +1,5 @@
 import { GetAllPharmaCompanies, GetPharmaCompanyById, UpsertPharmaCompany, ClassHeader } from "../utils/Constants";
-import { postToServer, getFromServer} from "../utils/Queries";
+import { postToServer, getFromServer, deleteFromServer} from "../utils/Queries";
 
 export async function getAllPharmaCompanies() {
     return await getFromServer(GetAllPharmaCompanies)
@@ -19,4 +19,7 @@ export async function upsertPharmaCompanyAdmin(user) {
 }
 export async function getPharmaComapnyAdmin(companyId) {
     return await getFromServer("getPharmaComapnyAdmin", { companyId: companyId })
+}
+export async function deletePharmaCompany(id){
+    return await deleteFromServer(`PharmaCompany/DeletePharmaCompany/${id}`,  {})
 }

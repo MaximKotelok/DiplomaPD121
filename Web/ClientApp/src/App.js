@@ -174,7 +174,7 @@ export default class App extends Component {
               path="updatePharmaCompany/:companyId"
               element={<UpsertPharmaCompanyComponent />}
             />
-            <Route path="addPharmacy" element={<UpsertPharmacyComponent />} />
+            <Route path="addPharmacy/:companyId" element={<UpsertPharmacyComponent />} />
             <Route
               path="updatePharmacy/:pharmacyId"
               element={<UpsertPharmacyComponent />}

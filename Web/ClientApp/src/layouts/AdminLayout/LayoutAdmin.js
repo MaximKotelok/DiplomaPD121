@@ -15,16 +15,24 @@ import AvatarComponennt from "./AvatarComponent/AvatarComponennt";
 import BadgeComponennt from "./BadgesComponent/BadgeComponent";
 import SearchComponent from "../../components/Common/SearchComponent/SearchComponent";
 import LayoutContext from "../LayoutContext";
-import { LayoutProviderValues } from "../../utils/Constants";
+import { FavouritePharmacies, FavouriteProducts, LayoutProviderValues } from "../../utils/Constants";
 import { ToastContainer } from "react-toastify";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 //import TableComponent from "../../components/pages/Admin/components/TableComponents/TableComponent";
 // import { Container } from "reactstrap";
 
 import "react-toastify/dist/ReactToastify.css";
+import { removeToken } from "../../utils/Login";
 const LayoutAdmin = ({ children }) => {
   const layoutContext = useContext(LayoutContext);
-  console.log(layoutContext.additonalComponent);
+  const navigate = useNavigate();
+  function OnExit(){  
+    removeToken();
+      localStorage.removeItem(FavouriteProducts);
+      localStorage.removeItem(FavouritePharmacies);
+    navigate("/auth");  
+  }
+
   return (
     <div className={`app-container`}>
       <div className="sidebar">
@@ -87,8 +95,9 @@ const LayoutAdmin = ({ children }) => {
         <div className="account-info">
           <ButtonSideMenuComponents
             text="Вийти"
+            link="/exit"
             icon={Logout}
-            link="https://www.example.com"
+            onClick={OnExit}
           />
         </div>
       </div>

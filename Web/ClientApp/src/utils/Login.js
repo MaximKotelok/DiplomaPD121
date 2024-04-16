@@ -19,3 +19,4 @@ export function isLogged()
         return true;
     return false;
 }
+

@@ -51,20 +51,20 @@ const PaginationComponent = ({ setContent, getContent, allowAppend, page=1, setP
         <div className='container-fluid'>
             <div className='row  my-3'>
                 <div className='col-10 p-0'>
-                    {allowAppend&&(
+                    {(allowAppend&&(
                         <button                         
-                        className={`w-100 btn btn-outline-primary ${page === countOfPages && `opacity-50 ${styles["disabled"]}`}`}
+                        className={`w-100 btn btn-outline-primary ${(page === countOfPages ? `opacity-50 ${styles["disabled"]}`:"")}`}
                         onClick={showMoreClickHandle}
                         >Показати ще</button>
-                    )}
+                    ))}
                 </div>
                 <div className='col-2 d-flex justify-content-end align-items-center pe-0'>
                     <span className={`${styles["pages"]}`}>
                         {`${page} з ${countOfPages}`}
                     </span>
                     <div>
-                        <img onClick={prevPageClickHandle} src={prevImg} role="button" className={(page === 1 && `opacity-50 ${styles["disabled"]}`)}/>
-                        <img onClick={nextPageClickHandle} src={nextImg} role="button" className={(page === countOfPages && `opacity-50 ${styles["disabled"]}`)}/>
+                        <img onClick={prevPageClickHandle} src={prevImg} role="button" className={(page === 1 ? `opacity-50 ${styles["disabled"]}`:"")}/>
+                        <img onClick={nextPageClickHandle} src={nextImg} role="button" className={(page === countOfPages ? `opacity-50 ${styles["disabled"]}`:"")}/>
                     </div>
                     </div>
             </div>

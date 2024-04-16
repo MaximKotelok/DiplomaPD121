@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
-import { ReactComponent as ImgBtn } from "../../../../../../../../assets/images/btnZayavkModal.svg";
-import styles from "./BtnEditPharmacyModal.module.css";
-import { deletePharmacy, getPharmacyById } from "../../../../../../../../services/pharmacy";
-import { Success } from "../../../../../../../../utils/Constants";
+import { ReactComponent as ImgBtn } from "../../../../../../../assets/images/btnZayavkModal.svg";
+import styles from "./BtnPharmacyModal.module.css";
+import { deletePharmacy, getPharmacyById } from "../../../../../../../services/pharmacy";
+import { Success } from "../../../../../../../utils/Constants";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
-function BtnEditPharmacyModal({id}) {
+function BtnPharmacyModal({id}) {
   const [show, setShow] = useState(false);
   const [pharmacy, setPharmacy] = useState(null);
 
@@ -73,4 +73,4 @@ function BtnEditPharmacyModal({id}) {
   );
 }
 
-export default BtnEditPharmacyModal;
+export default BtnPharmacyModal;
