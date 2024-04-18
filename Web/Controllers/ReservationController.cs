@@ -31,7 +31,8 @@ namespace Web.Controllers
             IReservationStatusService reservationStatusService, IUserService userService,
 			IConcreteProductService concreteProductService,
 			IPharmacyService pharmacyService,
-            IEmailService emailService)
+            IEmailService emailService
+            )
         {
 			_pharmacyService = pharmacyService;
             _reservationService = reservationService;
@@ -172,8 +173,8 @@ namespace Web.Controllers
 		}
 
 		[HttpGet("GetReservation")]
-		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Pharmacist)]
-		public async Task<IActionResult> GetReservation(int? id)
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Pharmacist)]
+        public async Task<IActionResult> GetReservation(int? id)
 		{
 			User user = await _userService.GetUserByName(User.Identity.Name);
 
@@ -214,17 +215,17 @@ namespace Web.Controllers
         [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Pharmacist)]
         public async Task<IActionResult> SetOrderStatus(ReservationStatusViewModel statusViewModel)
         {
-			User user = await _userService.GetUserByName(User.Identity.Name);
-			ReservationStatus reservationStatus = _reservationStatusService.GetReservationStatus(x => x.Id == statusViewModel.StatusId);
+            User user = await _userService.GetUserByName(User.Identity.Name);
+            ReservationStatus reservationStatus = _reservationStatusService.GetReservationStatus(x => x.Id == statusViewModel.StatusId);
             if (reservationStatus == null)
                 return NoContent();
 
             Reservation reservation = _reservationService.GetReservation(x => x.Id == statusViewModel.ReservationId && x.Pharmacy.UserID == user.Id, "Pharmacy");
             if (reservationStatus == null)
                 return NoContent();
-
             reservation.Status = reservationStatus;
             _reservationService.UpdateReservation(reservation);
+
             await _emailService.SendBookingInfoForUser(reservation);
             return Ok();
         }
