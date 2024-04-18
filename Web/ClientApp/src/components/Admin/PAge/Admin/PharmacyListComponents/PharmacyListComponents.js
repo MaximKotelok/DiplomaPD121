@@ -9,7 +9,6 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
-import BtnEditStatusModal from "./components/BtnEditStatusModal/BtnEditStatusModal";
 import SearchComponent from "../../../../Common/SearchComponent/SearchComponent";
 import { useEffect } from "react";
 import { getAllProductConfirm } from "../../../../../services/productConfirm";
@@ -18,9 +17,10 @@ import CustomImgComponent from "../../../../Common/CustomImgComponent/CustomImgC
 import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
-import BtnEditPharmacyModal from "./components/BtnEditStatusModal/BtnEditStatusModal/BtnEditPharmacyModal";
+import BtnEditPharmacyModal from "./components/BtnEditStatusModal/BtnPharmacyModal";
 import { getAllPharmaciesForAdmin } from "../../../../../services/pharmacy";
 import { BrowserRouter as Router, Route, Link, useParams } from 'react-router-dom';
+import BtnModalPharmaCompanyModal from "./components/BtnModalPharmaCompanyModal/BtnModalPharmaCompanyModal";
 
 const columns = [
   { id: "pharmacy", label: "Аптека", minWidth: 170 },
@@ -57,31 +57,50 @@ const useStyles = makeStyles({
 });
 
 export const PharmacyListComponents = () => {
+  
   const classes = useStyles();
-  const {paramPage}=useParams();
+  const { paramPage } = useParams();
   const [page, setPage] = React.useState(paramPage);
   const [countOfPages, setCountOfPages] = React.useState(1);
   const [rows, setRows] = React.useState([]);
+  const [isDisplayOnlyCompanies, setIsDisplayOnlyCompanies] = React.useState(false);
+  const [search, setSearch] = React.useState("");
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  async function reloadData(){
+    let page = 1;
+            setPage(1);
+            const res = await getAllPharmaciesForAdmin(page, search, isDisplayOnlyCompanies);
+            if (res.status === Success) {
+              //console.log(res);
+              setRows(res.data.data);
+              setCountOfPages(res.data.countOfPages)
+            }
+  }
 
   useEffect(()=>{
-    init();
-  },[]);
+    
+    reloadData();
+  },[search,isDisplayOnlyCompanies]);
 
-  async function init(){
-    let res = await getAllPharmaciesForAdmin(page)
-    if(res.status === Success){    
-      let page = paramPage?paramPage:1;
-      if(page > res.data.countOfPages){
+  async function init() {
+    let res = await getAllPharmaciesForAdmin(page, "", isDisplayOnlyCompanies)
+    if (res.status === Success) {
+      let page = paramPage ? paramPage : 1;
+      if (page > res.data.countOfPages) {
         res = await getAllPharmaciesForAdmin(res.data.countOfPages);
         page = res.data.countOfPages;
-      }else if(page < 1){
+      } else if (page < 1) {
         res = await getAllPharmaciesForAdmin(1);
         page = 1;
       }
-        setPage(parseInt(page));
-        setRows(res.data.data);
-        setCountOfPages(res.data.countOfPages)
-      
+      setPage(parseInt(page));
+      setRows(res.data.data);
+      setCountOfPages(res.data.countOfPages)
+
     }
   }
 
@@ -109,24 +128,21 @@ export const PharmacyListComponents = () => {
   return (
     <div className={`${styles["row-parent"]}`}>
       <div className={`${styles["box-container"]} row`}>
-        <div className="col-6">
-          <SearchComponent callback={async (text)=>{
-            let page = 1;
-            setPage(1);
-            const res = await getAllPharmaciesForAdmin(page,text);
-            if(res.status === Success){
-              //console.log(res);
-              setRows(res.data.data);
-              setCountOfPages(res.data.countOfPages)   
-            }
-          }}/>
-        </div>
+
 
         <div className="col-6">
-          <CheckedBox text="Показувати лише фарма-компанії?" />
+          <SearchComponent callback={setSearch} />
         </div>
 
-        <Paper className={classes.root}>
+        <div className="col-4">
+          <CheckedBox text="Показувати лише фарма-компанії?" 
+          onChange={setIsDisplayOnlyCompanies}/>
+        </div>
+        <div className="col-2">
+          <Link to="/admin/AddPharmaCompany" className={`btn btn-primary ${styles["add-button"]}`}>Додати</Link>
+        </div>
+
+        <Paper className={`${classes.root}`}>
           <TableContainer className={classes.container}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
@@ -152,14 +168,21 @@ export const PharmacyListComponents = () => {
                   <React.Fragment key={index}>
                     <TableRow>
                       <TableCell
-                        colSpan={12}
+                        colSpan={3}
                         className={`${styles["header-body-pharmacy"]}`}
                       >
                         <CustomImgComponent
                           className={`${styles["img-product"]}`}
-                          // src={`${ApiPath}${item.pathToPhoto}`}
+                          src={`${ApiPath}${pharmacy.pathToPhoto}`}
                         />{" "}
                         {pharmacy.name}
+                      </TableCell>
+                      <TableCell
+                        colSpan={1}
+                      >
+                        <div className="d-flex justify-content-end">
+                          <BtnModalPharmaCompanyModal id={pharmacy.id} />
+                        </div>
                       </TableCell>
                     </TableRow>
 
@@ -174,11 +197,11 @@ export const PharmacyListComponents = () => {
                           <TableCell>{`${item.pharmacy.openTime} - ${item.pharmacy.closeTime}`}</TableCell>
                           <TableCell>
                             <div className="d-flex justify-content-between">
-                              {item.pharmacist?item.pharmacist:"НЕМАЄ"}
-                              <BtnEditPharmacyModal id={item.pharmacy.id}/>
+                              {item.pharmacist ? item.pharmacist : "НЕМАЄ"}
+                              <BtnEditPharmacyModal id={item.pharmacy.id} />
                             </div>
                           </TableCell>
-                          
+
                         </TableRow>
                       );
                     })}
@@ -189,13 +212,13 @@ export const PharmacyListComponents = () => {
             </Table>
           </TableContainer>
           <div className={`d-flex justify-content-end align-items-center`}>
-            <PaginationComponent 
-              setContent={(a)=>setRows(a)}
-              getContent={async (page)=>{
+            <PaginationComponent
+              setContent={(a) => setRows(a)}
+              getContent={async (page) => {
                 const newUrl = `/admin/pharmacyList/${page}`;
                 window.history.pushState({}, '', newUrl);
                 let res = await getAllPharmaciesForAdmin(page);
-                if(res.status === Success){
+                if (res.status === Success) {
                   return res.data.data;
                 }
               }}
@@ -203,7 +226,7 @@ export const PharmacyListComponents = () => {
               page={page}
               setPage={setPage}
               countOfPages={countOfPages}
-              />
+            />
           </div>
         </Paper>
       </div>

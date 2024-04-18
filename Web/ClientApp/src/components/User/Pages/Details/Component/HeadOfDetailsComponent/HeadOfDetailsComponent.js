@@ -14,27 +14,37 @@ import { isFavoriteProduct } from "../../../../../../utils/Functions";
 const HeadOfDetailsComponent = ({ product }) => {
   const [isFavoriteState, setIsFavoriteState] = useState(false);
   useEffect(() => {
-    if (product.id)
-      setIsFavoriteState(isFavoriteProduct(product.id));
-  }, [product])
+    if (product.id) setIsFavoriteState(isFavoriteProduct(product.id));
+  }, [product]);
   return (
-    <div className="d-flex w-100 mb-5">
-      <div style={{ position: "relative" }}>
+    <div className="row w-100 mb-5">
+      {/* <div className="d-flex w-100 mb-5"> */}
+
+      <div className={`${styles["panel-navigation-top"]} mb-4`}>
+        <NavigationDetailsComponent id={product.id} />
+      </div>
+
+      <div className={"col-12  col-md-5"} style={{ position: "relative" }}>
         <HeartComponent
           id={product.id}
           isFavorite={isFavoriteState}
           setIsFavorite={setIsFavoriteState}
-          className={`position-absolute top-0  ${styles["heart-styles"]} `}  
+          className={`position-absolute top-0  ${styles["heart-styles"]} `}
         />
         {/* <Heart className={`position-absolute top-0  ${styles["heart-styles"]} `}  /> */}
         <CustomImgComponent
           className="me-2"
-          style={{ width: "568px", height: "400px", objectFit: "cover" }}
+          // style={{ width: "568px", height: "400px", objectFit: "cover" }}
+          style={{ width: "100%", height: "100%", objectFit: "contain" }}
           src={`${product.pathToPhoto}`}
         />
       </div>
-      <div className="w-75">
-        <NavigationDetailsComponent id={product.id} />
+
+      {/* <div className="w-75"> */}
+      <div className="col-12   col-md-7">
+        <div className={`${styles["panel-navigation-bottom"]}`}>
+          <NavigationDetailsComponent id={product.id} />
+        </div>
 
         <div className={styles["product-details-info-container"]}>
           <div>
@@ -44,7 +54,7 @@ const HeadOfDetailsComponent = ({ product }) => {
             <p className={styles["product-details-in-pharmacies"]}>
               в 406 аптеках
             </p>
-            <hr />
+            <hr className={`${styles["panel-navigation-sm"]}`} />
           </div>
           <div>
             <p className={styles["price-in-your-city"]}>
@@ -69,29 +79,51 @@ const HeadOfDetailsComponent = ({ product }) => {
             <AdditionalDivRadio title="Смак" />
           </div>
 
-          <hr />
+          <hr className={`${styles["panel-navigation-sm"]}`} />
 
-          <div className="row d-flex justify-content-between">
+          <div className="row mt-4">
+            <div className="col-12 col-md-6 ps-2 pe-2 d-flex">
+              <Link
+                className={`brn-form ${styles["card-btn-primary"]}  ${styles["btn-styled-standart"]} `}
+                href={`/map/${product.id}`}
+              >
+                Знайти в аптеках
+              </Link>
+            </div>
+            {product.activeSubstanceId && (
+              <div className="col-12 col-md-6 ps-2 pe-2 d-flex">
+                <Link
+                  to={`/Search/ByActiveSubstance/${product.activeSubstanceId}`}
+                  className={` brn-form ${styles["card-btn-primary-500"]}  ${styles["btn-styled-standart"]}    `}
+                >
+                  Аналоги
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* <div className="row d-flex justify-content-between">
             <div className="col-6">
-              <a
+              <Link
                 className={`btn ${styles["btn-details"]} ${styles["btn-pharmacies"]} w-100`}
                 href={`/map/${product.id}`}
               >
                 Знайти в аптеках
-              </a>
-            </div>
-            {
-              product.activeSubstanceId &&
-              <div className="col-6">
-              <Link to={`/Search/ByActiveSubstance/${product.activeSubstanceId}`}
-                className={`btn ${styles["btn-details"]} ${styles["btn-analogues"]} w-100`}
-                href={`/map}`}
-              >
-                Аналоги
               </Link>
             </div>
-              }
-          </div>
+
+            {product.activeSubstanceId && (
+              <div className="col-6">
+                <Link
+                  to={`/Search/ByActiveSubstance/${product.activeSubstanceId}`}
+                  className={`btn ${styles["btn-details"]} ${styles["btn-analogues"]} w-100`}
+                  href={`/map}`}
+                >
+                  Аналоги
+                </Link>
+              </div>
+            )}
+          </div> */}
         </div>
       </div>
     </div>

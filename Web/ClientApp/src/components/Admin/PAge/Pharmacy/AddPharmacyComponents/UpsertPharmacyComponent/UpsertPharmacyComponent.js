@@ -17,8 +17,7 @@ import {
   LayoutProviderValues,
 } from "../../../../../../utils/Constants";
 
-import CustomSelectComponent from "../CustomSelectComponent/CustomSelectComponent";
-import InputForPharmacyComponent from "../InputForPharmacyComponent/InputForPharmacyComponent";
+import CustomSelectComponent from "../../../../../../components/Common/CustomSelectComponent/CustomSelectComponent";
 
 import { ReactComponent as Palka } from "./Palka.svg";
 import styles from "./UpsertPharmacyComponent.module.css";
@@ -28,18 +27,27 @@ import CustomTimeComponent from "../CustomTimeComponent/CustomTimeComponent";
 import { toast } from "react-toastify";
 
 export const UpsertPharmacyComponent = () => {
-
   const [IsActive, setIsActive] = useState(false);
   const { onComponentMount, onComponentUnmount } = useContext(LayoutContext);
-  const { pharmacyId } = useParams();
+  const { pharmacyId, companyId} = useParams();
   const [ pharmacyIdState, setPharmacyIdState] = useState(pharmacyId);
   useEffect(()=>{
     if(pharmacyIdState){
       setIsActive(true);
-      setFormDataAttribute("id", pharmacyIdState, setPharmacyFormData, pharmacyFormData);
-      setFormDataAttribute("pharmacyId", pharmacyIdState, setUserFormData, userFormData);
+      setFormDataAttribute(
+        "id",
+        pharmacyIdState,
+        setPharmacyFormData,
+        pharmacyFormData
+      );
+      setFormDataAttribute(
+        "pharmacyId",
+        pharmacyIdState,
+        setUserFormData,
+        userFormData
+      );
     }
-  },[pharmacyIdState])
+  }, [pharmacyIdState]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -54,8 +62,6 @@ export const UpsertPharmacyComponent = () => {
     };
   }, []);
 
-
-
   useEffect(() => {
     if (pharmacyId) onComponentMount(LayoutProviderValues.UPDATE);
     else onComponentMount(LayoutProviderValues.ADD);
@@ -67,7 +73,7 @@ export const UpsertPharmacyComponent = () => {
   });
 
   const [stateInfo, setStateInfo] = useState(StateInfos.LOADING);
-  
+
   const [pharmacyFormData, setPharmacyFormData] = useState({
     id: undefined,
     address: undefined,
@@ -78,18 +84,17 @@ export const UpsertPharmacyComponent = () => {
     weekendCloseTime: undefined,
     longitude: undefined,
     latitude: undefined,
-    pharmaCompanyID: undefined,
+    pharmaCompanyID: companyId?parseInt(companyId):undefined,
     cityID: undefined,
   });
 
-  const [userFormData, setUserFormData] = useState({    
+  const [userFormData, setUserFormData] = useState({
     pharmacyId: undefined,
     username: undefined,
     email: undefined,
     password: undefined,
   });
 
-  
   function fillNullValues(originalObject, fillObject) {
     const result = { ...originalObject };
     for (const key in originalObject) {
@@ -100,22 +105,24 @@ export const UpsertPharmacyComponent = () => {
 
     return result;
   }
-  console.log(pharmacyFormData)
+
 
   async function init() {
-    let tmpObject,tmpPharmacistObject, tmpCities, tmpPharmaCompanies;
+    let tmpObject, tmpPharmacistObject, tmpCities, tmpPharmaCompanies;
 
     try {
       if (pharmacyId) {
         tmpObject = await getPharmacyById(pharmacyId);
         tmpPharmacistObject = await GetPharmacist(pharmacyId);
-        console.log(tmpPharmacistObject)
+        console.log(tmpPharmacistObject);
         if (
           tmpObject.status === Success &&
           tmpPharmacistObject.status === Success
-          ) {            
-            setPharmacyFormData(fillNullValues(pharmacyFormData, tmpObject.data));
-            setUserFormData(fillNullValues(userFormData, tmpPharmacistObject.data));
+        ) {
+          setPharmacyFormData(fillNullValues(pharmacyFormData, tmpObject.data));
+          setUserFormData(
+            fillNullValues(userFormData, tmpPharmacistObject.data)
+          );
         } else {
           setStateInfo(StateInfos.ERROR);
         }
@@ -156,22 +163,22 @@ export const UpsertPharmacyComponent = () => {
   const handleInputChange = (e, setFormData, formData) => {
     setFormDataAttribute(e.target.name, e.target.value, setFormData, formData);
   };
-  
-  const submitPharmacy = async () => {    
+
+  const submitPharmacy = async () => {
     let res = await upsertPharmacy(pharmacyFormData);
-    if(res.status === Success){
-      setPharmacyIdState(res.data);      
+    if (res.status === Success) {
+      setPharmacyIdState(res.data);
       toast.success("Успіх!");
-    }else{      
+    } else {
       toast.error("Помилка");
     }
   };
-  const submitPharmacist = async () => {    
-    console.log(userFormData)
+  const submitPharmacist = async () => {
+    console.log(userFormData);
     let res = await upsertPharmacist(userFormData);
-    if(res.status === Success){  
+    if (res.status === Success) {
       toast.success("Успіх!");
-    }else{      
+    } else {
       toast.error("Помилка");
     }
   };
@@ -196,13 +203,14 @@ export const UpsertPharmacyComponent = () => {
               type="text"
               name="address"
               value={pharmacyFormData.address}
-              onChange={(e)=>{handleInputChange(e, setPharmacyFormData, pharmacyFormData)}}
-
+              onChange={(e) => {
+                handleInputChange(e, setPharmacyFormData, pharmacyFormData);
+              }}
             />
           </div>
 
           <div className="row md-1">
-          <div className="col-12 col-md-6">
+            <div className="col-12 col-md-6 p-0 pe-2">
               <label>Широта</label>
               <input
                 className={`input-text-form  mb-2 ${styles["my-input-text-form"]}`}
@@ -211,10 +219,12 @@ export const UpsertPharmacyComponent = () => {
                 type="text"
                 name="latitude"
                 value={pharmacyFormData.latitude}
-                onChange={(e)=>{handleInputChange(e, setPharmacyFormData, pharmacyFormData)}}
+                onChange={(e) => {
+                  handleInputChange(e, setPharmacyFormData, pharmacyFormData);
+                }}
               />
             </div>
-            <div className="col-12 col-md-6">
+            <div className="col-12 col-md-6 p-0 ps-2">
               <label>Довгота</label>
               <input
                 className={`input-text-form  mb-2 ${styles["my-input-text-form"]}`}
@@ -223,9 +233,11 @@ export const UpsertPharmacyComponent = () => {
                 type="text"
                 name="longitude"
                 value={pharmacyFormData.longitude}
-                onChange={(e)=>{handleInputChange(e, setPharmacyFormData, pharmacyFormData)}}
+                onChange={(e) => {
+                  handleInputChange(e, setPharmacyFormData, pharmacyFormData);
+                }}
               />
-            </div>            
+            </div>
           </div>
 
           <div className="dropdown">
@@ -235,7 +247,7 @@ export const UpsertPharmacyComponent = () => {
 
               <CustomSelectComponent
                 selectedId={pharmacyFormData.cityID}
-                className={`w-50 ms-1 my-form-select ${styles["my-input-text-form"]} ${styles["custom-combobox"]}`}
+                className={`ms-1 my-form-select ${styles["my-input-text-form"]} ${styles["custom-combobox"]}`}
                 name="cityID"
                 placeholder="Місто"
                 options={
@@ -253,27 +265,6 @@ export const UpsertPharmacyComponent = () => {
                   });
                 }}
               />
-
-              <CustomSelectComponent
-                selectedId={pharmacyFormData.pharmaCompanyID}
-                className={`w-50 ms-1 my-form-select ${styles["my-input-text-form"]} ${styles["custom-combobox"]}`}
-                name="pharmaCompanyID"
-                placeholder="Фарма компанія"
-                options={
-                  dataFromServer.pharmaCompanies &&
-                  dataFromServer.pharmaCompanies.map &&
-                  dataFromServer.pharmaCompanies.map((item) => ({
-                    value: item.id,
-                    label: item.title,
-                  }))
-                }
-                onChange={(selectedOption) => {
-                  setPharmacyFormData({
-                    ...pharmacyFormData,
-                    pharmaCompanyID: selectedOption.value,
-                  });
-                }}
-              />
             </div>
 
           </div>
@@ -285,13 +276,27 @@ export const UpsertPharmacyComponent = () => {
               <label className="me-3 mb-0">пн-пт</label>
               <CustomTimeComponent
                 time={pharmacyFormData.workingWeekOpenTime}
-                setTime={(time) => setFormDataAttribute("workingWeekOpenTime", time, setPharmacyFormData, pharmacyFormData)}
+                setTime={(time) =>
+                  setFormDataAttribute(
+                    "workingWeekOpenTime",
+                    time,
+                    setPharmacyFormData,
+                    pharmacyFormData
+                  )
+                }
                 className={`input-text-form  ${styles["my-input-text-form-time"]}`}
               />
               <Palka />
               <CustomTimeComponent
                 time={pharmacyFormData.workingWeekCloseTime}
-                setTime={(time) => setFormDataAttribute("workingWeekCloseTime", time, setPharmacyFormData, pharmacyFormData)}
+                setTime={(time) =>
+                  setFormDataAttribute(
+                    "workingWeekCloseTime",
+                    time,
+                    setPharmacyFormData,
+                    pharmacyFormData
+                  )
+                }
                 className={`input-text-form  ${styles["my-input-text-form-time"]}`}
               />
             </div>
@@ -300,28 +305,45 @@ export const UpsertPharmacyComponent = () => {
               <label className="me-3 mb-0">сб-нд</label>
               <CustomTimeComponent
                 time={pharmacyFormData.weekendOpenTime}
-                setTime={(time) => setFormDataAttribute("weekendOpenTime", time,setPharmacyFormData,pharmacyFormData)}
+                setTime={(time) =>
+                  setFormDataAttribute(
+                    "weekendOpenTime",
+                    time,
+                    setPharmacyFormData,
+                    pharmacyFormData
+                  )
+                }
                 className={`input-text-form  ${styles["my-input-text-form-time"]}`}
               />
               <Palka />
               <CustomTimeComponent
                 time={pharmacyFormData.weekendCloseTime}
-                setTime={(time) => setFormDataAttribute("weekendCloseTime", time,setPharmacyFormData,pharmacyFormData)}
+                setTime={(time) =>
+                  setFormDataAttribute(
+                    "weekendCloseTime",
+                    time,
+                    setPharmacyFormData,
+                    pharmacyFormData
+                  )
+                }
                 className={`input-text-form  ${styles["my-input-text-form-time"]}`}
               />
             </div>
           </div>
 
-          <button className="brn-form brn-primary-form mt-auto" type="submit" onClick={submitPharmacy}>
+          <button
+            className="brn-form brn-primary-form mt-auto"
+            type="submit"
+            onClick={submitPharmacy}
+          >
             Зберегти
           </button>
         </div>
       </div>
 
       <div
-        disabled={!IsActive}        
-        className={`    ${styles["col-parent-right"]
-          } col-md 6`}
+        disabled={!IsActive}
+        className={`    ${styles["col-parent-right"]} col-md 6`}
       >
         <div className={` d-flex flex-column ${styles["div-parent-block"]}`}>
           <div className="d-flex justify-content-between align-items-center">
@@ -338,8 +360,10 @@ export const UpsertPharmacyComponent = () => {
               type="text"
               name="email"
               value={userFormData.email}
-              onChange={(e)=>{handleInputChange(e, setUserFormData, userFormData)}} />
-
+              onChange={(e) => {
+                handleInputChange(e, setUserFormData, userFormData);
+              }}
+            />
           </div>
           <div className="mb-1">
             <label>Імʼя</label>
@@ -350,8 +374,10 @@ export const UpsertPharmacyComponent = () => {
               type="text"
               name="username"
               value={userFormData.username}
-              onChange={(e)=>{handleInputChange(e, setUserFormData, userFormData)}} />
-
+              onChange={(e) => {
+                handleInputChange(e, setUserFormData, userFormData);
+              }}
+            />
           </div>
 
           <div className="mb-1">
@@ -363,11 +389,16 @@ export const UpsertPharmacyComponent = () => {
               type="password"
               name="password"
               value={userFormData.password}
-              onChange={(e)=>{handleInputChange(e, setUserFormData, userFormData)}}
+              onChange={(e) => {
+                handleInputChange(e, setUserFormData, userFormData);
+              }}
             />
           </div>
 
-          <button className="brn-form brn-primary-form mt-auto" onClick={submitPharmacist}>
+          <button
+            className="brn-form brn-primary-form mt-auto"
+            onClick={submitPharmacist}
+          >
             Зберегти
           </button>
         </div>

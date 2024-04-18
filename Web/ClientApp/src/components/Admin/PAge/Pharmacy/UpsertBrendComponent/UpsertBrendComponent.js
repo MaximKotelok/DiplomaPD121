@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./UpsertBrendComponent.module.css";
-import BtnWarningModal from "./components/BtnWarningModal/BtnWarningModal";
+import BtnWarningModal from "../../../Common/BtnWarningModal/BtnWarningModal";
 import { styled } from "@mui/material/styles";
 import { useParams } from "react-router-dom";
 

@@ -7,6 +7,7 @@ import stylesAuth from "../../../../../Auth/AuthPage.module.css";
 import styles from "./EditProfile.module.css";
 import "./EditPro.css";
 import { PhoneInput } from "react-international-phone";
+import 'react-international-phone/style.css';
 import { getMyInfo, updateUser } from "../../../../../../services/user";
 import { Success } from "../../../../../../utils/Constants";
 import { toast } from "react-toastify";

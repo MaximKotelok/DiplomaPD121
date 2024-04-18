@@ -24,18 +24,22 @@ namespace Web.Controllers
 	public class PharmacyController : ControllerBase
 	{
 		private readonly IPharmacyService _pharmacyService;
+		private readonly IPharmaCompanyService _pharmaCompany;
 		private readonly ICityService _cityService;
 		private readonly IRepositoryManager _repository;
 		private readonly IUserService _userService;
 		private readonly IConcreteProductService _concreteProductService;
 
-		public PharmacyController(IPharmacyService service, ICityService _cityService, IRepositoryManager repository, IUserService userService, IConcreteProductService concreteProductService)
+		public PharmacyController(IPharmacyService service, ICityService _cityService,
+			IRepositoryManager repository, IUserService userService,
+			IConcreteProductService concreteProductService, IPharmaCompanyService pharmaCompany)
 		{
 			this._pharmacyService = service;
 			this._cityService = _cityService;
 			this._concreteProductService = concreteProductService;
-			_repository = repository;
-			_userService = userService;
+			this._repository = repository;
+			this._userService = userService;
+			this._pharmaCompany = pharmaCompany;
 		}
 
 		[HttpGet("")]
@@ -50,35 +54,79 @@ namespace Web.Controllers
 		}
 		[HttpPost("GetAllPharmaciesForAdmin")]
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
-		public IActionResult GetAllPharmaciesForAdmin(PageViewModel model)
+		public IActionResult GetAllPharmaciesForAdmin(PagePharmacyViewModel model)
 		{
-			var rawResult = _pharmacyService.GetAllPharmacies(includeProperties: "PharmaCompany,User");
+			var pharmacies = _pharmaCompany.GetAllPharmaCompanies(includeProperties: "Pharmacies,Pharmacies.User");
+
+			if (model.IsDisplayOnlyCompanies != null && model.IsDisplayOnlyCompanies.Value)
+				pharmacies = pharmacies.Select(a =>
+				{
+					a.Pharmacies = new List<Pharmacy>();
+					return a;
+				});
+
+			var rawResult = pharmacies
+				.SelectMany(a => a.Pharmacies.Count() > 0 ?
+				a.Pharmacies.Select(pharmacy =>
+				new PairPharmaViewModel { Item = a, Pharmacy = pharmacy }) :
+				new List<PairPharmaViewModel>{
+					new() { Item = a, Pharmacy = null }
+				}
+				);
+
+
 			if (!model.Search.IsNullOrEmpty())
 			{
 				rawResult = rawResult.Where(a =>
 				{
-					return
-					a.Id.ToString().StartsWith(model.Search) ||
-					a.Address.StartsWith(model.Search) ||
-					(a.User != null && a.User.Email.StartsWith(model.Search)) ||
-					a.PharmaCompany.Title.StartsWith(model.Search);
-
+					if (a.Pharmacy == null)
+						return a.Item.Title.Contains(model.Search);
+					else
+						return a.Item.Title.Contains(model.Search) ||
+							a.Pharmacy.Id.ToString().Contains(model.Search) ||
+							a.Pharmacy.Address.Contains(model.Search) ||
+							(a.Pharmacy.User != null && a.Pharmacy.User.Email.Contains(model.Search)
+						);
 				});
+
+
 			}
+
+
 			if (rawResult is not null)
 			{
 				int page = model.Page != null ? model.Page.Value - 1 : 0;
-				var result = rawResult.Skip(model.ItemsPerPage * page).Take(model.ItemsPerPage)
-					.Select(a => new { pharmacy = a, pharmacist = a.User != null ? a.User.Email : null })
-					.GroupBy(a => a.pharmacy.PharmaCompany.Title).Select(a => new
+				int skipNumber = model.ItemsPerPage * page;
+				int takeNumber = model.ItemsPerPage;
+
+				var result = rawResult
+					.Skip(skipNumber)
+					.Take(takeNumber)
+					.GroupBy(a => new
 					{
-						name = a.Key,
-						data = a
+						id = a.Item.Id,
+						name = a.Item.Title,
+						pathToPhoto = a.Item.PathToPhoto
+					}).Select(a => new
+					{
+						a.Key.id,
+						a.Key.name,
+						a.Key.pathToPhoto,
+						data = a.Where(a => a.Pharmacy != null).Select(a => new
+						{
+							pharmacy = a.Pharmacy
+						,
+							pharmacist = a.Pharmacy.User != null
+						? a.Pharmacy.User.Email : null
+						})
 					});
+
 				int countOfPages = model.GetCountOfPages(rawResult.Count());
 				return Ok(new { data = result, countOfPages });
-			}
-			return BadRequest("No records found");
+
+
+            }
+            return BadRequest("No records found");
 		}
 
 		[HttpGet("/GetAllConcreteProductsFromPharmacy/{id}")]
@@ -222,10 +270,10 @@ namespace Web.Controllers
 							User user = await _userService.GetUserById(pharmacy.UserID);
 							if (user != null)
 							{
-								
+
 								await _userService.ChangePasswordWithoutConfirmAsync(user.Id, postModel.Password);
 								await _userService.UpdateUser(user.Id, email: postModel.Email, userName: postModel.Username);
-								
+
 								return Ok("Data updated");
 							}
 						}
@@ -253,9 +301,9 @@ namespace Web.Controllers
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
 		public IActionResult DeletePharmacy(int id)
 		{
-            /*using var transaction = new TransactionScope();*/
+			/*using var transaction = new TransactionScope();*/
 
-            var pharmacy = _pharmacyService.GetPharmacy(a => a.Id == id, "ConcreteProducts");
+			var pharmacy = _pharmacyService.GetPharmacy(a => a.Id == id, "ConcreteProducts");
 			if (pharmacy != null)
 			{
 				foreach (var item in pharmacy.ConcreteProducts)
@@ -265,8 +313,8 @@ namespace Web.Controllers
 				_pharmacyService.DeletePharmacy(id);
 			}
 
-            /*transaction.Complete();*/
-            return Ok("Data Deleted");
+			/*transaction.Complete();*/
+			return Ok("Data Deleted");
 		}
 
 

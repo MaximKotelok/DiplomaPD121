@@ -1,0 +1,17 @@
+
+.head-text{
+    color: rgba(14, 62, 117, 1);
+    font-family: var(--standart-fon);
+font-size: 24px;
+font-weight: 700;
+text-align: left;
+margin-top: 12px;
+margin-bottom: 44px;}
+
+@media (max-width: 768px) {
+.head-text{
+    
+    font-size: 20px;
+    margin-top: 0px;
+    margin-bottom: 30px;}
+}

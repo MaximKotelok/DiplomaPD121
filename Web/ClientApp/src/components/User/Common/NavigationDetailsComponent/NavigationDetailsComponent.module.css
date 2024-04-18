@@ -18,3 +18,7 @@
 .product-nav a.active {
     border-bottom: 1px solid #FF9500 ;
 }
+.btn-thro{
+    border: none;
+    padding: 0;
+}

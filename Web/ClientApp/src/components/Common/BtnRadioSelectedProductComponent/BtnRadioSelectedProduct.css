@@ -1,12 +1,14 @@
 
   .btn-check:checked + .btn {
-    background-color: rgba(0, 122, 255, 0.15);
+    background-color:rgba(0, 122, 255, 0.15);
     border-color: rgba(0, 122, 255, 1); 
-    color: rgba(0, 122, 255, 1); 
+    color: rgba(0, 122, 255, 1) !important; 
   }
 
 
   .btn-check:not(:checked) + .btn:hover {
-    background-color: #007bff; 
-    border-color: #007bff;
+    background-color: rgba(0, 122, 255, 0.15); 
+    border-color: rgb(0, 123, 255);
+    color: rgba(0, 122, 255, 1) !important; 
+
   }

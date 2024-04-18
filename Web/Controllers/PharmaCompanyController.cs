@@ -145,7 +145,7 @@ namespace Web.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeletePharmaCompany/{id}")]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult DeletePharmaCompany(int id)
         {

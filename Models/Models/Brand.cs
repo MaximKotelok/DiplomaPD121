@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Domain.Models
@@ -18,5 +19,8 @@ namespace Domain.Models
 		public int? CountryBrandID { get; set; }
 		[ForeignKey("CountryBrandID")]
 		public Country? CountryBrand { get; set; }
-	}
+
+        [JsonIgnore]
+        public IEnumerable<Product>? Products { get; set; }
+    }
 }

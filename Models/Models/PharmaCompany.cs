@@ -21,5 +21,7 @@ namespace Domain.Models
         [ForeignKey(nameof(UserID))]
         [JsonIgnore]
         public User? User { get; set; }
+        [JsonIgnore]
+        public IEnumerable<Pharmacy>? Pharmacies { get; set; }
     }
 }

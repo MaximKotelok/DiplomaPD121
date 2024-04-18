@@ -25,6 +25,7 @@ font-weight: 700;
   line-height: 20px;
 
 
+
 }
 
 .product-details-price {
@@ -56,7 +57,7 @@ font-weight: 700;
   cursor: pointer;
 }
 
-.btn-details {
+/* .btn-details {
   font-family: var(--standart-font);
   font-size: 18px;
   font-weight: 700;
@@ -65,9 +66,9 @@ font-weight: 700;
   padding: 15px 0;
   border-radius: 12px;
 
-}
+} */
 
-.btn-pharmacies:hover {
+/* .btn-pharmacies:hover {
   background: #007AFF;
 }
 
@@ -83,4 +84,75 @@ font-weight: 700;
 .btn-analogues {
   color: #007AFF;
   background: #007AFF26;
+} */
+
+.panel-navigation-top{
+  display: none;
 }
+.panel-navigation-bottom{
+  display: block;
+}
+
+
+
+
+
+.card-btn-primary{
+  background-color: rgba(0, 122, 255, 1);
+  color: rgba(242, 242, 247, 1);
+
+}
+
+.card-btn-primary-500{
+  background-color: rgba(0, 122, 255, 0.15);
+  color: rgba(0, 122, 255, 1);
+
+}
+.card-btn-primary-500:hover{
+  background-color:  #e6f4fe !important;
+  transition: background-color 0.3s, color 0.3s; /* Додайте перехід для кольору та фону */
+
+}
+
+.card-btn-primary:hover{
+  background-color:  #0097ff !important;
+  transition: background-color 0.3s, color 0.3s; /* Додайте перехід для кольору та фону */
+
+}
+
+.btn-styled-standart{
+  border-radius: 12px;
+  padding: 16px 20px;
+  width: 100% !important; 
+  text-align: center;
+}
+
+
+
+@media (max-width: 768px) {
+
+  .card-btn-primary{
+    margin-bottom: 12px;
+    }
+    
+
+  .panel-navigation-top{
+    display: block;
+  }
+
+.panel-navigation-bottom{
+  display: none;
+}
+
+.panel-navigation-sm{
+  display: none;
+}
+.product-details-in-pharmacies{
+  display: none;
+}
+
+.product-details-title{
+  font-size: 24px;
+}
+}
+

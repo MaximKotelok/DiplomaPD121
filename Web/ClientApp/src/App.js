@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Routes, Route } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
 // import { Layout } from './layouts/UserLayout/Layout';
 import "./custom.css";
 import { setupLocation } from "./utils/Location";
@@ -49,7 +49,15 @@ import { AddProductPharmacyComponent } from "./components/Admin/PAge/Pharmacy/Ad
 import { OrderListProductComponents } from "./components/Admin/PAge/Pharmacy/OrderListProductComponents/OrderListProductComponents";
 import { ProductDetailsAdminComponents } from "./components/Admin/PAge/Admin/ProductDetailsAdminComponents/ProductDetailsAdminComponents";
 import { UpsertBrendComponent } from "./components/Admin/PAge/Pharmacy/UpsertBrendComponent/UpsertBrendComponent";
+import { UpsertManufactureComponent } from "./components/Admin/PAge/Pharmacy/UpsertManufactureComponent/UpsertManufactureComponent";
+import { AddCategoryComponents } from "./components/Admin/PAge/Pharmacy/AddCategoryComponents/AddCategoryComponents";
+import { AttributeListComponents } from "./components/Admin/PAge/Admin/AttributeListComponents/AttributeListComponents";
+import { UpsertAttributeComponents } from "./components/Admin/PAge/Admin/UpsertAttributeComponents/UpsertAttributeComponents";
+import { ActiveSubstanceListComponents } from "./components/Admin/PAge/Admin/ActiveSubstanceListComponents/ActiveSubstanceListComponents";
+import { UpsertActiveSubstanceComponents } from "./components/Admin/PAge/Admin/UpsertActiveSubstanceComponents/UpsertActiveSubstanceComponents";
 
+import { BrandListComponent } from "./components/Admin/PAge/Admin/BrandListComponents/BrandListComponent"
+ 
 // export default class App extends Component {
 // static displayName = App.name;
 
@@ -57,110 +65,176 @@ import { UpsertBrendComponent } from "./components/Admin/PAge/Pharmacy/UpsertBre
    await setupLocation();
  }*/
 export default class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            locationAllowed: false,
-            isLoading: true
-        };
+  constructor(props) {
+    super(props);
+    this.state = {
+      locationAllowed: false,
+      isLoading: true,
+    };
+  }
+
+  async componentDidMount() {
+    try {
+      await setupLocation(this.handleLocationSetup);
+    } finally {
+      this.setState({ isLoading: false });
     }
 
-    async componentDidMount() {
-        try {
-            await setupLocation(this.handleLocationSetup);
-        } finally {
-            this.setState({ isLoading: false });
+    this.setupAxiosInterceptors();
+  }
+
+  setupAxiosInterceptors() {
+    axios.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response && error.response.status === 401) {
+          removeToken();
+          window.location.href = "/auth/login";
         }
+        return Promise.reject(error);
+      }
+    );
+  }
 
-        this.setupAxiosInterceptors();
+  handleLocationSetup = () => {
+    this.setState({ locationAllowed: true });
+  };
+
+  render() {
+    const { isLoading, locationAllowed } = this.state;
+
+    if (isLoading) {
+      return <div>Loading...</div>;
     }
 
-    setupAxiosInterceptors() {
-        axios.interceptors.response.use(
-            response => response,
-            error => {
-                if (error.response && error.response.status === 401) {
-                    removeToken();
-                    window.location.href = '/auth/login';
-                }
-                return Promise.reject(error);
-            }
-        );
+    if (!locationAllowed) {
+      return <div>Location not allowed. Please enable location services.</div>;
     }
-
-    handleLocationSetup = () => {
-        this.setState({ locationAllowed: true });
-    }
-
-    render() {
-        const { isLoading, locationAllowed } = this.state;
-
-        if (isLoading) {
-            return <div>Loading...</div>;
-        }
-
-        if (!locationAllowed) {
-            return <div>Location not allowed. Please enable location services.</div>;
-        }
     return (
-        <LayoutProvider>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-                <Route index path="" element={<Home />} />
-              <Route path="/PharmacyInfo/:pharmacyId" element={<PharmacyInfo />} />
-              <Route path="/ReservationConfirm/:pharmacyId" element={<Reservation />} />
-              <Route path="/Search/ByTitle/:title" element={<SearchProductPageComponent />} />
-              <Route path="/Search/ByTitle/" element={<SearchProductPageComponent />} />
-              <Route path="/Search/ByCategory/:categoryId" element={<SearchProductPageComponent />} />
-              <Route path="/Search/ByBrand/:brandId" element={<SearchProductPageComponent />} />
-              <Route path="/Search/ByActiveSubstance/:activeSubstanceId" element={<SearchProductPageComponent />} />
-              <Route path="res" element={<Reservation />} />
-              <Route path="auth/*" element={<AuthPageComponent />}>
-                <Route path="registration" element={<RegistrationForm />} />
-                <Route path="login" element={<LoginForm />} />
-                <Route path="" element={<LoginForm />} />
-              </Route>
+      <LayoutProvider>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index path="" element={<Home />} />
+            <Route
+              path="/PharmacyInfo/:pharmacyId"
+              element={<PharmacyInfo />}
+            />
+            <Route
+              path="/ReservationConfirm/:pharmacyId"
+              element={<Reservation />}
+            />
+            <Route
+              path="/Search/ByTitle/:title"
+              element={<SearchProductPageComponent />}
+            />
+            <Route
+              path="/Search/ByTitle/"
+              element={<SearchProductPageComponent />}
+            />
+            <Route
+              path="/Search/ByCategory/:categoryId"
+              element={<SearchProductPageComponent />}
+            />
+            <Route
+              path="/Search/ByBrand/:brandId"
+              element={<SearchProductPageComponent />}
+            />
+            <Route
+              path="/Search/ByActiveSubstance/:activeSubstanceId"
+              element={<SearchProductPageComponent />}
+            />
+            <Route path="res" element={<Reservation />} />
+            <Route path="auth/*" element={<AuthPageComponent />}>
+              <Route path="registration" element={<RegistrationForm />} />
+              <Route path="login" element={<LoginForm />} />
+              <Route path="" element={<LoginForm />} />
+            </Route>
 
-              <Route path="cart" element={<Cart />} />
-              <Route path="profile/*" element={<Profile />}>
-                <Route path="mypharmacies" element={<MyPharmacies />} />
-                <Route path="minebookeds" element={<MineBookeds />} />
-                <Route path="selectedproducts" element={<SelectedProducts />} />
-                <Route path="wathclist" element={<WathcList />} />
-                <Route path="edit" element={<EditProfile />} />
-              </Route>
-              <Route path="confirm-email" element={<ConfirmEmail />} />           
-              <Route path="map/:id?" element={<Map />} />              
-              <Route path="map/pharmacies/:pharmacyId" element={<Map />} />
-              <Route path="map/pharmacies/:pharmacyId/:companyId" element={<Map />} />
-              <Route path="map/pharmacies" element={<Map />} />
-              <Route path="product-details/:id" element={<Details />} />
-              <Route path="category/:categoryId" element={<Category />} />
-              <Route path="category/:categoryId/:currentPage" element={<Category />} />
-              <Route path="*" element={<Status404 />} />
+            <Route path="cart" element={<Cart />} />
+            <Route path="profile/*" element={<Profile />}>
+              <Route path="mypharmacies" element={<MyPharmacies />} />
+              <Route path="minebookeds" element={<MineBookeds />} />
+              <Route path="selectedproducts" element={<SelectedProducts />} />
+              <Route path="wathclist" element={<WathcList />} />
+              <Route path="edit" element={<EditProfile />} />
             </Route>
-            <Route path="loginPharmacy" element={<LoginLayuotPharmacy />}>
-            </Route>
+            <Route path="confirm-email" element={<ConfirmEmail />} />
+            <Route path="map/:id?" element={<Map />} />
+            <Route path="map/pharmacies/:pharmacyId" element={<Map />} />
+            <Route
+              path="map/pharmacies/:pharmacyId/:companyId"
+              element={<Map />}
+            />
+            <Route path="map/pharmacies" element={<Map />} />
+            <Route path="product-details/:id" element={<Details />} />
+            <Route path="category/:categoryId" element={<Category />} />
+            <Route
+              path="category/:categoryId/:currentPage"
+              element={<Category />}
+            />
+            <Route path="*" element={<Status404 />} />
+          </Route>
+          <Route path="loginPharmacy" element={<LoginLayuotPharmacy />}></Route>
 
           <Route path="admin" element={<LayoutAdmin />}>
             <Route path="zayavkaList" element={<ZayavkaComponents />} />
-            <Route path="zayavkaList/:paramPage" element={<ZayavkaComponents />} />
+            <Route
+              path="zayavkaList/:paramPage"
+              element={<ZayavkaComponents />}
+            />
             <Route path="userList" element={<UsersComponents />} />
             <Route path="productList" element={<ProductListComponents />} />
             <Route path="pharmacyList" element={<PharmacyListComponents />} />
-            <Route path="pharmacyList/:paramPage" element={<PharmacyListComponents />} />
+
+            <Route path="attributeList" element={<AttributeListComponents />} />
+            <Route
+              path="activeSubstanceList"
+              element={<ActiveSubstanceListComponents />}
+            />
+            {/* <Route
+              path="attributeUpsert"
+              element={<UpsertAttributeComponents />}
+            /> */}
+            <Route
+              path="attributeUpsert/:id"
+              element={<UpsertAttributeComponents />}
+            />
+
+            <Route
+              path="attributeUpsert/"
+              element={<UpsertAttributeComponents />}
+            />
+
+            <Route
+              path="activeSubstance/:id"
+              element={<UpsertActiveSubstanceComponents />}
+            />
+
+            {/* <Route
+              path="activeSubstance/"
+              element={<UpsertActiveSubstanceComponents />}
+            /> */}
+
+            <Route
+              path="pharmacyList/:paramPage"
+              element={<PharmacyListComponents />}
+            />
             <Route path="pharmacyUser" element={<UserPharmacy />} />
             <Route path="orderList" element={<OrderListProductComponents />} />
-            <Route path="addProductPharmacy" element={<AddProductPharmacyComponent />} />
+            <Route
+              path="addProductPharmacy"
+              element={<AddProductPharmacyComponent />}
+            />
 
+            <Route path="brandList" element={<BrandListComponent />} />
             <Route path="upsertBrand/:brandId" element={<UpsertBrendComponent />} />
             <Route path="addBrand" element={<UpsertBrendComponent />} />
+            
+          
             <Route
               path="updateBrand/:brandId"
               element={<UpsertBrendComponent />}
             />
-
-
 
             <Route path="detailProduct/:productId" element={<ProductDetailsAdminComponents />} />
             <Route path="addProduct" element={<UpsertProductComponent />} />
@@ -174,7 +248,12 @@ export default class App extends Component {
               path="updatePharmaCompany/:companyId"
               element={<UpsertPharmaCompanyComponent />}
             />
-            <Route path="addPharmacy" element={<UpsertPharmacyComponent />} />
+            <Route path="addCategory" element={<AddCategoryComponents />} />
+            <Route
+              path="updatePharmaCompany/:companyId"
+              element={<UpsertPharmaCompanyComponent />}
+            />
+                    <Route path="addPharmacy/:companyId" element={<UpsertPharmacyComponent />} />
             <Route
               path="updatePharmacy/:pharmacyId"
               element={<UpsertPharmacyComponent />}
