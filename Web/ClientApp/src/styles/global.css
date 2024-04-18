@@ -199,9 +199,15 @@ html {
 
 
 .row {
-    margin: 0;
+    margin: 0 !important;
 }
 
 
 
 
+
+
+.react-select-container:focus,
+.react-select__control:focus {
+  outline: none;
+}

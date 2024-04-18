@@ -57,6 +57,7 @@ const useStyles = makeStyles({
 });
 
 export const PharmacyListComponents = () => {
+  
   const classes = useStyles();
   const { paramPage } = useParams();
   const [page, setPage] = React.useState(paramPage);

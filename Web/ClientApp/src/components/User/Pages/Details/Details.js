@@ -19,7 +19,11 @@ import AccordionComponent from "../../../Common/AccordionQuestionComponent/accor
 import HeadOfDetailsComponent from "./Component/HeadOfDetailsComponent/HeadOfDetailsComponent";
 import { getCookie } from "../../../../utils/Cookies";
 import { getPathToCategory } from "../../../../services/category";
-import { GetPriceHistory, getMinAndMaxPrice, getProductById } from "../../../../services/product";
+import {
+  GetPriceHistory,
+  getMinAndMaxPrice,
+  getProductById,
+} from "../../../../services/product";
 import MedicineTableComponent from "./Component/MedicineTableComponent/MedicineTableComponent";
 import PriceHistoryComponent from "./Component/PriceHistoryComponent/PriceHistoryComponent";
 
@@ -40,8 +44,7 @@ export const Details = () => {
       let elem = document.getElementById(location.hash.slice(1));
       if (elem) {
         elem.scrollIntoView({ behavior: "smooth" });
-      } 
-
+      }
     } else {
       window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     }
@@ -61,7 +64,7 @@ export const Details = () => {
 
   async function init() {
     const res = await getProductById(id);
-    if (res.status === Success) {                                       
+    if (res.status === Success) {
       let product;
       if (res.data.product) {
         product = res.data.product;
@@ -99,7 +102,6 @@ export const Details = () => {
     } else {
       setLoader(StateInfos.ERROR);
     }
-
   }
 
   useEffect(() => {
@@ -154,10 +156,8 @@ export const Details = () => {
         <div className="col-12 col-md-6">
           <AccordionComponent />
         </div>
-        {
-          priceHistory && priceHistory.length > 0 &&
-          <div className="row">
-
+        {priceHistory && priceHistory.length > 0 && (
+          <div className="row" style={{ padding: "0" }}>
             <p className={`${styles["section-title"]}`} id="characteristic">
               Середня ціна по Україні
             </p>
@@ -165,7 +165,7 @@ export const Details = () => {
               <PriceHistoryComponent history={priceHistory} />
             </div>
           </div>
-        }
+        )}
 
         <div className="col-12 col-md-6"></div>
       </div>

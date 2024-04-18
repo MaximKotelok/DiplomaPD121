@@ -1,0 +1,15 @@
+
+.block-category{
+
+    font-family: var(--standart-font);
+font-size: 13px;
+font-weight: 500;
+line-height: 18px;
+letter-spacing: 0.1599999964237213px;
+text-align: left;
+color: rgba(255, 255, 255, 1);
+background-color: rgba(0, 122, 255, 1);
+padding: 6px;
+
+border-radius: 100px;
+}

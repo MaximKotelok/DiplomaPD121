@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./UpsertBrendComponent.module.css";
-import BtnWarningModal from "./components/BtnWarningModal/BtnWarningModal";
+import BtnWarningModal from "../../../Common/BtnWarningModal/BtnWarningModal";
 import { styled } from "@mui/material/styles";
 import { useParams } from "react-router-dom";
 
@@ -12,6 +12,9 @@ import { getBrandById, upsertBrand } from "../../../../../services/brand";
 import { getAllCountries } from "../../../../../services/country";
 import { postPhotoToServer } from "../../../../../services/photo";
 import { toast } from "react-toastify";
+import { InpurtStandart } from "../../../Common/InpurtStandart/InpurtStandart";
+import { TextAreaStandart } from "../../../Common/TextAreaStandart/TextAreaStandart";
+
 const VisuallyHiddenInput = styled("input")({
   clip: "rgba(229, 229, 234, 1)",
   clipPath: "inset(50%)",
@@ -185,7 +188,7 @@ export const UpsertBrendComponent = () => {
         </divv>
         <div className={`row ${styles["card-border"]}`}>
           <div className={`col-4 d-flex  flex-column `}>
-            <label className={`${styles["label-head"]}`}>Фото</label>
+            <label className={`${styles["label-head"]}`}>Логотип</label>
             <div className={`d-flex flex-column  justify-content-center `}>
               <CustomImgComponent 
               src={`${preview}`} alt="no photo" className={`${styles["img-product"]} mb-2`}/>
@@ -208,7 +211,7 @@ export const UpsertBrendComponent = () => {
 
           <div className={`col-8 `}>
             <div className={`d-flex   justify-content-between `}>
-              <div className=" flex-grow-1 mb-1 me-3">
+              {/* <div className=" flex-grow-1 mb-1 me-3">
                 <label>Назва</label>
                 <input
                   className={`input-text-form  mb-2 ${styles["my-input-text-form"]}`}
@@ -219,8 +222,14 @@ export const UpsertBrendComponent = () => {
                   onChange={handleInputChange}
                 />
               </div>
+               */}
+              <InpurtStandart
+                label={"Назва"}
+                placholder={"Введіть назву фарма-компанії"}
+                className={"me-3"}
+              />
 
-              <div className="dropdown">
+              {/* <div className="dropdown">
                 <div>
                   <label>Країна</label>
                 </div>
@@ -256,12 +265,38 @@ export const UpsertBrendComponent = () => {
                   <option value="3">Something else here</option>
                   <option disabled>---</option>
                   <option value="4">Separated link</option>
-                </select> */}
+                </select>
+              </div> */}
+
+              <div>
+                <div>
+                  <label>Країна</label>
+                </div>
+                <CustomSelectComponent
+                  // selectedId={pharmacyFormData.pharmaCompanyID}
+                  className={` ms-1 my-form-select ${styles["my-input-text-form-box"]} ${styles["custom-combobox"]}`}
+                  name="pharmaCompanyID"
+                  placeholder="Фарма компанія"
+                  // options={
+                  //   dataFromServer.pharmaCompanies &&
+                  //   dataFromServer.pharmaCompanies.map &&
+                  //   dataFromServer.pharmaCompanies.map((item) => ({
+                  //     value: item.id,
+                  //     label: item.title,
+                  //   }))
+                  // }
+                  // onChange={(selectedOption) => {
+                  //   setPharmacyFormData({
+                  //     ...pharmacyFormData,
+                  //     pharmaCompanyID: selectedOption.value,
+                  //   });
+                  // }}
+                />
               </div>
             </div>
 
             <div>
-              <div className="mb-1">
+              {/* <div className="mb-1">
                 <label>Опис</label>
                 <textarea
                   className={`${styles["text-area-zayavka"]}`}
@@ -272,7 +307,11 @@ export const UpsertBrendComponent = () => {
                   value={formData.description}
                   onChange={handleInputChange}
                 />
-              </div>
+              </div> */}
+              <TextAreaStandart
+                label={"Опис"}
+                placholder={"Ведіть опис фарма-компанії"}
+              />
             </div>
           </div>
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import styles from "./BtnWarningModal.module.css";
 
-function BtnWarningModal({onConfirm}) {
+function BtnWarningModal({ text = "Ви дійсно бажаєте це зробити...", onConfirm }) {
   const [show, setShow] = useState(false);
 
   return (
@@ -48,9 +48,7 @@ function BtnWarningModal({onConfirm}) {
         onHide={() => setShow(false)}
       >
         <Modal.Body>
-          <h2 className={`mb-5 ${styles["text-modal"]}`}>
-            Ви дійсно хочете додати цей товар до аптеки ?
-          </h2>
+          <h2 className={`mb-5 ${styles["text-modal"]}`}>{text}</h2>
           <div className="row mt-3">
             <div className="col-6 ps-2 pe-2">
               <button
