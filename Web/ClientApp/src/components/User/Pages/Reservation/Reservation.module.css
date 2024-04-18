@@ -2,15 +2,27 @@
 .global-text{
     font-family: var(--standart-font);
 color: rgba(28, 28, 28, 0.8);
-
+margin-bottom: 70px;
 }
+
+
+
 .head-text{
     color: rgba(14, 62, 117, 1) ;
-font-size: 34px;
+font-size: 24px;
 font-weight: 700;
-line-height: 30px;
-margin-top: 24px;
+/* line-height: 30px; */
+margin-top: 12px;
 margin-bottom: 44px;
+}
+
+@media (max-width: 768px) {
+    .head-text{
+font-size: 20px;
+
+        margin-top: 0px;
+        margin-bottom: 30px;
+    }
 }
 
 .div-form{
@@ -63,9 +75,10 @@ margin-bottom: 44px;
 
 
 .head-text-info{
-    font-size: 24px;
+    font-size: 24px !important;
     font-weight: 700;
     line-height: 30px;
+    color: rgba(28, 28, 28, 0.8) !important;
     /* color:  rgba(28, 28, 28, 0.8); */
 }
 .p-text-info{
@@ -79,7 +92,7 @@ margin-bottom: 44px;
 
 .div-text-instruction{
     background-color: rgba(255, 149, 0, 0.2);
-margin-bottom: 84px ;
+/* margin-bottom: 84px ; */
 
 }
 
@@ -120,4 +133,16 @@ line-height: 30px;
 /* color: rgba(28, 28, 28, 0.8); */
 
 
+}
+
+
+.btn-hover-order{
+    background-color: rgba(0, 122, 255, 1) !important;
+    color: rgba(242, 242, 247, 1) !important;
+
+}
+
+.btn-hover-order:hover{
+    background-color:  #0097ff !important;
+    transition: background-color 0.3s, color 0.3s;
 }

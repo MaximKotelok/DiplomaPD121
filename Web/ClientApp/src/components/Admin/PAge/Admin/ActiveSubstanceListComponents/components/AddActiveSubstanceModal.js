@@ -1,18 +1,23 @@
 import { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
-import styles from "./BtnWarningModal.module.css";
+import styles from "./AddActiveSubstanceModal.module.css";
+import { InpurtStandart } from "../../../../Common/InpurtStandart/InpurtStandart";
+import { CheckedBox } from "../../../../Common/CheckedBoxComponent/CheckedBox";
 
-function BtnWarningModal(props) {
+function AddActiveSubstanceModal() {
   const [show, setShow] = useState(false);
 
   return (
     <>
-      <button
+      {/* <button
         onClick={() => setShow(true)}
         className={`brn-form ${styles["card-btn-primary"]}  `}
       >
         Додати товар до аптеки
-      </button>
+      </button> */}
+      <div onClick={() => setShow(true)} className={`${styles["btn-add"]}`}>
+        Додати
+      </div>
 
       <Modal
         style={{
@@ -31,20 +36,22 @@ function BtnWarningModal(props) {
         show={show}
         onHide={() => setShow(false)}
       >
-        <Modal.Body>
-          <h2 className={`mb-5 ${styles["text-modal"]}`}>
-            Ви дійсно хочете додати цей товар до аптеки ?
+        <Modal.Body style={{ padding: "16px 32px" }}>
+          <h2 className={`mb-3 ${styles["text-modal"]}`}>
+            Додавання діючої речовини
           </h2>
-          <div className="row mt-3">
+
+          <div className="mb-3">
+            <InpurtStandart label={"Назва"} placholder={"Введіть назву"} />
+            <CheckedBox text="Неактивний" />
+          </div>
+
+          <div className="row mt-5">
             <div className="col-6 ps-2 pe-2">
               <button
                 className={`brn-form ${styles["card-btn-primary"]}  w-100`}
-                              onClick={() => {
-                                  props.onSubmit();
-                                  setShow(false)
-                              }}
               >
-                Так
+                Зберегти
               </button>
             </div>
             <div className="col-6 ps-2 pe-2">
@@ -52,7 +59,7 @@ function BtnWarningModal(props) {
                 onClick={() => setShow(false)}
                 className={` brn-form ${styles["card-btn-primary-500"]} w-100  `}
               >
-                Ні
+                Відмінити
               </button>
             </div>
           </div>
@@ -68,4 +75,4 @@ function BtnWarningModal(props) {
   );
 }
 
-export default BtnWarningModal;
+export default AddActiveSubstanceModal;

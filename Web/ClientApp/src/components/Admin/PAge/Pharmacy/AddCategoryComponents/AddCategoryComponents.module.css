@@ -1,0 +1,112 @@
+.box-container{
+    background-color: rgba(255, 255, 255, 1);
+    font-family: var(--standart-font);
+padding: 32px;
+border-radius: 12px;   
+height: 100%;
+}
+
+
+
+
+.row-parent{
+    padding: 32px;;
+    height: 100%;
+}
+
+
+.text-header-page{
+font-size: 22px;
+font-weight: 700;
+line-height: 27.61px;
+text-align: left;
+
+color:rgba(0, 122, 255, 1)
+}
+
+.btn-abolition{
+    background-color:  rgba(0, 122, 255, 0.15) !important;
+color:rgba(0, 122, 255, 1) !important;
+transition: background-color 0.3s, color 0.3s; /* Додайте перехід для кольору та фону */
+width: 280px !important;
+}
+
+.btn-save{
+    width: 280px !important;
+    background-color:  rgba(0, 122, 255, 1) !important;
+    transition: background-color 0.3s, color 0.3s; /* Додайте перехід для кольору та фону */
+
+}
+
+.btn-abolition:hover{
+    background-color:  #e6f4fe !important;
+    transition: background-color 0.3s, color 0.3s; /* Додайте перехід для кольору та фону */
+
+}
+
+.btn-save:hover{
+    background-color:  #0097ff !important;
+    transition: background-color 0.3s, color 0.3s; /* Додайте перехід для кольору та фону */
+
+}
+
+
+.my-input-text-form{
+    border: 2px solid  rgba(172, 172, 172, 1);
+    color: rgba(167, 167, 167, 1);
+    padding: 10px;
+    
+    }
+    
+    .my-input-text-form-combo{
+        border: 2px solid  rgba(172, 172, 172, 1);
+        color: rgba(167, 167, 167, 1);
+        padding: 12px ;
+        font-family: var(--standart-font);
+        font-size: 14px;
+        font-weight: 400;
+    border-radius: 12px;
+    height: 52px !important;
+        }
+
+    
+  
+
+
+        .fadeEnter {
+            opacity: 0;
+          }
+          
+          .fadeEnterActive {
+            opacity: 1;
+            transition: opacity 300ms;
+          }
+          
+          .fadeExit {
+            opacity: 1;
+          }
+          
+          .fadeExitActive {
+            opacity: 0;
+            transition: opacity 300ms;
+          }
+
+
+          .custom-combobox>*{
+            border: none!important;
+            }
+            .custom-combobox{
+                padding: 5px 0!important;
+                width: 100%;
+                margin: 0!important;
+            }
+            
+            .custom-combobox div{
+            box-shadow: none    !important;
+            }
+            
+            .my-input-text-form-box{
+                border: 2px solid  rgba(172, 172, 172, 1);
+                color: rgba(167, 167, 167, 1);
+                padding: 10px;
+            }

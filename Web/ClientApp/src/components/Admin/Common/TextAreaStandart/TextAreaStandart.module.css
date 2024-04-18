@@ -1,0 +1,29 @@
+.text-area-zayavka{
+    padding: 12px ;
+    border-radius: 12px;
+    border: 2px solid rgba(172, 172, 172, 1);
+    width: 100%;
+    resize: none;
+    color: rgba(13, 30, 49, 1);
+
+    font-family: var(--standart-font);
+font-size: 14px;
+font-weight: 400;
+outline: none;
+
+}
+
+.text-area-zayavka::placeholder {
+    color: rgba(167, 167, 167, 1); }
+
+
+    .label-style{
+        color: rgba(13, 30, 49, 1);
+font-family: var(--standart-font);
+font-size: 14px;
+font-weight: 700;
+line-height: 20.02px;
+letter-spacing: 0.17000000178813934px;
+text-align: left;
+
+    }

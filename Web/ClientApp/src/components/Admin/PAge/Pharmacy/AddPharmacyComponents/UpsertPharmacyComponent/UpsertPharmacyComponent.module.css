@@ -11,12 +11,32 @@ border: none!important;
     margin: 0!important;
 }
 
+.custom-combobox div{
+box-shadow: none    !important;
+}
+
+.my-input-text-form-box{
+    border: 2px solid  rgba(172, 172, 172, 1);
+    color: rgba(167, 167, 167, 1);
+    padding: 10px;
+}
+    
+
+    /* .my-input-text-form-box{
+    border: 2px solid  red;
+    color: rgba(167, 167, 167, 1);
+    padding: 10px;
+    }
+     */
+
 .div-parent-block{
     background-color: rgba(255, 255, 255, 1);
     font-family: var(--standart-font);
 padding: 20px 32px;
 border-radius: 12px;   
 height: 100%;
+
+
 }
 
 

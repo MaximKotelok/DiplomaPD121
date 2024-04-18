@@ -17,7 +17,7 @@ font-size: 16px;
 font-weight: 700;
 font-size: 24px;
 line-height: 30.12px;
-color:rgba(28, 28, 28, 0.8);
+color:rgba(0, 122, 255, 1);
 }
 
 
@@ -114,3 +114,23 @@ height: max-content;
             .my-w-text-celect{
                 width: 220px !important;
             }
+
+
+            .custom-combobox>*{
+                border: none!important;
+                }
+                .custom-combobox{
+                    padding: 5px 0!important;
+                    width: 100%;
+                    margin: 0!important;
+                }
+                
+                .custom-combobox div{
+                box-shadow: none    !important;
+                }
+                
+                .my-input-text-form-box{
+                    border: 2px solid  rgba(172, 172, 172, 1);
+                    color: rgba(167, 167, 167, 1);
+                    padding: 10px;
+                }
