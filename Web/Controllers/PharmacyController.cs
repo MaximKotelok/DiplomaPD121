@@ -123,8 +123,10 @@ namespace Web.Controllers
 
 				int countOfPages = model.GetCountOfPages(rawResult.Count());
 				return Ok(new { data = result, countOfPages });
-			}
-			return BadRequest("No records found");
+
+
+            }
+            return BadRequest("No records found");
 		}
 
 		[HttpGet("/GetAllConcreteProductsFromPharmacy/{id}")]

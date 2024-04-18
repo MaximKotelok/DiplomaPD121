@@ -2,9 +2,11 @@
 using Domain.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Services.ActiveSubstanceService;
 using Services.BrandService;
 using Services.CategoryService;
+using Services.ConcreteProductService;
 using System.Transactions;
 using Utility;
 
@@ -15,11 +17,14 @@ namespace Web.Controllers
 	public class BrandController : Controller
 	{
 		private readonly IBrandService _service;
+		private readonly IProductService _productService;
 
-		public BrandController(IBrandService service)
+        public BrandController(IBrandService service, IProductService productService)
 		{
 			this._service = service;
-		}
+            this._productService = productService;
+
+        }
 
 		[HttpGet("GetRecomendedBrands")]
 		public IActionResult GetRecomendedBrands(int count)
@@ -42,6 +47,31 @@ namespace Web.Controllers
 			}
 			return BadRequest("No records found");
 		}
+
+        [HttpPost("GetAllBrandsForAdmin")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+        public IActionResult GetAllBrandsForAdmin(PageViewModel model)
+        {
+            var rawResult = _service.GetAllBrands(includeProperties: "CountryBrand");
+            if (!model.Search.IsNullOrEmpty())
+            {
+                rawResult = rawResult.Where(a =>
+                {
+                    return
+                    a.Id.ToString().StartsWith(model.Search) ||
+                    a.Name.StartsWith(model.Search);
+                });
+            }
+            if (rawResult is not null)
+            {
+                int page = model.Page != null ? model.Page.Value - 1 : 0;
+                var result = rawResult.Skip(model.ItemsPerPage * page).Take(model.ItemsPerPage)
+                    .Select(a => a);
+                int countOfPages = model.GetCountOfPages(rawResult.Count());
+                return Ok(new { data = result, countOfPages });
+            }
+            return BadRequest("No records found");
+        }   
 
         [HttpGet("GetBrandById")]
         public IActionResult GetBrandById(int brandId)
@@ -92,6 +122,26 @@ namespace Web.Controllers
                 brand.Id = postModel.Id.Value;
                 _service.UpdateBrand(brand);
             }
+        }
+
+        [HttpDelete("DeleteBrand/{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+        public IActionResult DeleteBrand(int id)
+        {
+            /*using var transaction = new TransactionScope();*/
+
+            var brand = _service.GetBrand(a => a.Id == id, "Products");
+            if (brand != null)
+            {
+                foreach (var item in brand.Products)
+                {
+                    _productService.DeleteProduct(item.Id);
+                }
+                _service.DeleteBrand(id);
+            }
+
+            /*transaction.Complete();*/
+            return Ok("Data Deleted");
         }
     }
 }

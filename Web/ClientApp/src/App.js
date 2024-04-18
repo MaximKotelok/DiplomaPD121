@@ -56,6 +56,8 @@ import { UpsertAttributeComponents } from "./components/Admin/PAge/Admin/UpsertA
 import { ActiveSubstanceListComponents } from "./components/Admin/PAge/Admin/ActiveSubstanceListComponents/ActiveSubstanceListComponents";
 import { UpsertActiveSubstanceComponents } from "./components/Admin/PAge/Admin/UpsertActiveSubstanceComponents/UpsertActiveSubstanceComponents";
 
+import { BrandListComponent } from "./components/Admin/PAge/Admin/BrandListComponents/BrandListComponent"
+ 
 // export default class App extends Component {
 // static displayName = App.name;
 
@@ -224,6 +226,8 @@ export default class App extends Component {
               element={<AddProductPharmacyComponent />}
             />
 
+            <Route path="brandList" element={<BrandListComponent />} />
+            <Route path="upsertBrand/:brandId" element={<UpsertBrendComponent />} />
             <Route path="addBrand" element={<UpsertBrendComponent />} />
             
           
@@ -231,8 +235,6 @@ export default class App extends Component {
               path="updateBrand/:brandId"
               element={<UpsertBrendComponent />}
             />
-
-
 
             <Route path="detailProduct/:productId" element={<ProductDetailsAdminComponents />} />
             <Route path="addProduct" element={<UpsertProductComponent />} />

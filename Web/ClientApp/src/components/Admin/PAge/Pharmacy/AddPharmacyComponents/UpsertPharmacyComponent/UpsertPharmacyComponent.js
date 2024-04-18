@@ -17,8 +17,7 @@ import {
   LayoutProviderValues,
 } from "../../../../../../utils/Constants";
 
-import CustomSelectComponent from "../CustomSelectComponent/CustomSelectComponent";
-import InputForPharmacyComponent from "../InputForPharmacyComponent/InputForPharmacyComponent";
+import CustomSelectComponent from "../../../../../../components/Common/CustomSelectComponent/CustomSelectComponent";
 
 import { ReactComponent as Palka } from "./Palka.svg";
 import styles from "./UpsertPharmacyComponent.module.css";
