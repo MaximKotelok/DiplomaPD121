@@ -5,7 +5,7 @@ import { CategoryBlock } from "./components/CategoryBlock/CategoryBlock";
 import { SelectPhoto } from "./components/SelectPhoto/SelectPhoto";
 import { ReactComponent as ZnakOkloko } from "./znakOkloko.svg";
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
-import CustomSelectComponent from "../../Brand/AddBrandComponents/CustomSelectComponent/CustomSelectComponent";
+import CustomSelectComponent from "../../../../Common/CustomSelectComponent/CustomSelectComponent";
 
 export const AddCategoryComponents = () => {
   const [isChecked, setIsChecked] = useState(false);

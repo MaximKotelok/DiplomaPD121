@@ -4,7 +4,7 @@ import styles from "./UpsertManufactureComponent.module.css";
 import BtnWarningModal from "../../../Common/BtnWarningModal/BtnWarningModal";
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
 import { InpurtStandart } from "../../../Common/InpurtStandart/InpurtStandart";
-import CustomSelectComponent from "../../Brand/AddBrandComponents/CustomSelectComponent/CustomSelectComponent";
+import CustomSelectComponent from "../../../../Common/CustomSelectComponent/CustomSelectComponent";
 
 export const UpsertManufactureComponent = () => {
   return (

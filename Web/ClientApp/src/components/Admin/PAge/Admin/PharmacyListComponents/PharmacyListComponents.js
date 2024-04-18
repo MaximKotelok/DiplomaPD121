@@ -136,8 +136,7 @@ export const PharmacyListComponents = () => {
 
         <div className="col-4">
           <CheckedBox text="Показувати лише фарма-компанії?" 
-          checked={isDisplayOnlyCompanies}
-          setChecked={setIsDisplayOnlyCompanies} />
+          onChange={setIsDisplayOnlyCompanies}/>
         </div>
         <div className="col-2">
           <Link to="/admin/AddPharmaCompany" className={`btn btn-primary ${styles["add-button"]}`}>Додати</Link>
