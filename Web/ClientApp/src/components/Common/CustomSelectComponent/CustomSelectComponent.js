@@ -11,18 +11,18 @@ const CustomSelectComponent = ({
 }) => {
   const [selectedOption, setSelectedOption] = useState(null);
 
-  // useEffect(() => {
-  //   const optionWithId = options.find((option) => option.value === selectedId);
-  //   setSelectedOption(optionWithId);
-  // }, [options, selectedId]);
+  useEffect(() => {
+    const optionWithId = options.find((option) => option.value === selectedId);
+    setSelectedOption(optionWithId);
+  }, [options, selectedId]);
 
   return (
     <Select
       className={className}
       name={name}
       placeholder={placeholder}
-      // options={[{label: placeholder, value: -1, isDisabled: true},,...options]}
-      // onChange={onChange}
+       options={[{label: placeholder, value: -1, isDisabled: true},,...options]}
+       onChange={onChange}
       value={selectedOption}
       isDisabled={isDisabled}
     />

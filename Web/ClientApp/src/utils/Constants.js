@@ -85,6 +85,9 @@ export const LayoutProviderValues = {
     UPDATE: 'update',
     DISABLE_FOOTER: 'disable-footer'
 };
+export const Role_Admin = "адміністратор"
+export const Role_PharmaCompany = "представник компанії"
+export const Role_Pharmacist = "фармацевт"
 
 
 

@@ -63,6 +63,7 @@ import { ProductConcreatListComponents } from "./components/Admin/PAge/Admin/Pro
 import { HomeAdminPageComponents } from "./components/Admin/PAge/HomeAdminPageComponents/HomeAdminPageComponents";
 import { ProductInspectionComponents } from "./components/Admin/PAge/Admin/ProductInspectionComponents/ProductInspectionComponents";
 import { UpsertManufactureComponent } from "./components/Admin/PAge/Pharmacy/UpsertManufactureComponent/UpsertManufactureComponent";
+import { PharmacyListForPharmaCompanyComponent } from "./components/Admin/PAge/PharmaCompany/PharmacyListComponents/PharmacyListComponents";
 
 // export default class App extends Component {
 // static displayName = App.name;
@@ -74,8 +75,8 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        locationAllowed: false,
-        isLoading: true
+      locationAllowed: false,
+      isLoading: true
     };
   }
 
@@ -95,9 +96,9 @@ export default class App extends Component {
       (error) => {
         if (error.response && error.response.status === 401) {
           removeToken();
-            const currentLocation = (window.location.pathname+window.location.search).substr(1);
-            window.location.replace(`/auth/login?from=/${currentLocation}`);
-        } 
+          const currentLocation = (window.location.pathname + window.location.search).substr(1);
+          window.location.replace(`/auth/login?from=/${currentLocation}`);
+        }
         return Promise.reject(error);
       }
     );
@@ -207,6 +208,7 @@ export default class App extends Component {
             />
 
             <Route path="pharmacyList" element={<PharmacyListComponents />} />
+            <Route path="pharmaCompany/pharmacyList" element={<PharmacyListForPharmaCompanyComponent />} />
 
             <Route path="attributeList" element={<AttributeListComponents />} />
             <Route
@@ -301,6 +303,10 @@ export default class App extends Component {
             />
             <Route
               path="addPharmacy/:companyId"
+              element={<UpsertPharmacyComponent />}
+            />
+            <Route
+              path="addPharmacy"
               element={<UpsertPharmacyComponent />}
             />
             <Route

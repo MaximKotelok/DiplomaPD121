@@ -18,7 +18,7 @@ export async function upsertPharmaCompanyAdmin(user) {
     }, ClassHeader)
 }
 export async function getPharmaComapnyAdmin(companyId) {
-    return await getFromServer("getPharmaComapnyAdmin", { companyId: companyId })
+    return await getFromServer(`PharmaCompany/GetPharmaComapnyAdmin/${companyId}`)
 }
 export async function deletePharmaCompany(id){
     return await deleteFromServer(`PharmaCompany/DeletePharmaCompany/${id}`,  {})
