@@ -1,6 +1,6 @@
 
 .nav-admin:hover, .active-nav-admin{
-  background-color: rgba(0, 122, 255, 0.15);
+  background-color: rgba(0, 122, 255, 1);
 }
 
 .custom-button {
@@ -20,6 +20,11 @@
   .button-icon {
     width: 20px; /* Встановіть розмір, який підходить вам */
     height: 20px;
+  }
+  
+  .button-icon-pharmacy {
+    width: 24px; /* Встановіть розмір, який підходить вам */
+    height: 24px;
   }
   
   .icon-text-separator {

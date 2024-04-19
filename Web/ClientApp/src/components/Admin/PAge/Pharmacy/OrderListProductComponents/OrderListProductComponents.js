@@ -85,7 +85,7 @@ export const OrderListProductComponents = () => {
 
   return (
     <div className={`${styles["row-parent"]}`}>
-      <div className={`${styles["box-container"]} row`}>
+      <div className={`${styles["box-container"]} `}>
         <div className="col-6">
           <SearchComponent />
         </div>

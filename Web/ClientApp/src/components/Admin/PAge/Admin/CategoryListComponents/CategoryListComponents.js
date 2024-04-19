@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./BrandListComponents.module.css";
+import styles from "./CategoryListComponents.module.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
@@ -18,7 +18,7 @@ import CustomImgComponent from "../../../../Common/CustomImgComponent/CustomImgC
 import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
-import BtnEditBrandModal from "./components/BtnEditStatusModal/BtnEditStatusModal/BtnEditBrandModal";
+// import BtnEditBrandModal from "./components/BtnEditStatusModal/BtnEditStatusModal/BtnEditBrandModal";
 import { getAllBrandForAdmin } from "../../../../../services/brand";
 import {
   BrowserRouter as Router,
@@ -28,8 +28,8 @@ import {
 } from "react-router-dom";
 
 const columns = [
-  { id: "name", last: false, label: "Бренд", width: 1100 },
-  { id: "country", last: false, label: "Країна", width: 1200 },
+  { id: "name", last: false, label: "Категорія", width: 1100 },
+  { id: "country", last: false, label: "Статус", width: 1200 },
   { id: "buttonEdit", last: true, label: "", width: 1400 },
 ];
 
@@ -42,7 +42,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const BrandListComponent = () => {
+export const CategoryListComponents = () => {
   const classes = useStyles();
   const { paramPage } = useParams();
   const [page, setPage] = React.useState(paramPage);
@@ -112,7 +112,7 @@ export const BrandListComponent = () => {
 
           <div className="col-6 d-flex align-items-center justify-content-end ">
             <Link
-              to="/admin/addBrand"
+              to="/admin/addCategory"
               className={`btn btn-primary ${styles["add-button"]}`}
             >
               Додати
@@ -163,8 +163,8 @@ export const BrandListComponent = () => {
                       <TableCell
                         className={`${styles["header-body-pharmacy"]}`}
                       >
-                        <span className={` ${styles["text-span-table"]}`}>
-                          {brand.countryBrand.name}
+                        <span className={`${styles["div-statuc-category"]}`}>
+                          Актуальна
                         </span>
                       </TableCell>
 
@@ -173,11 +173,11 @@ export const BrandListComponent = () => {
                           <Link
                             className={`btn btn-primary ${styles["my-btn-edit"]} me-4`}
                             // to={`/admin/UpdateBrand/1`}
-                            to={`/admin/UpdateBrand/${brand.id}`}
+                            to={`/admin/addCategory`}
                           >
                             Оновити
                           </Link>
-                          <button
+                          {/* <button
                             className={`btn btn-danger ${styles["my-btn-delete"]}`}
                             // onClick={async () => {
                             //   let res = await deleteBrand(brand.id);
@@ -190,7 +190,7 @@ export const BrandListComponent = () => {
                             // }}
                           >
                             Видалити
-                          </button>
+                          </button> */}
                           {/* </div> */}
 
                           {/* <BtnEditBrandModal id={brand.id} /> */}
@@ -202,7 +202,7 @@ export const BrandListComponent = () => {
               </TableBody>
             </Table>
           </TableContainer>
-          <div className={`d-flex justify-content-end align-items-center`}>
+          {/* <div className={`d-flex justify-content-end align-items-center`}>
             <PaginationComponent
               setContent={(a) => setRows(a)}
               getContent={async (page) => {
@@ -218,7 +218,7 @@ export const BrandListComponent = () => {
               setPage={setPage}
               countOfPages={countOfPages}
             />
-          </div>
+          </div> */}
         </Paper>
       </div>
     </div>

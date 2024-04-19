@@ -98,7 +98,7 @@ export const ActiveSubstanceListComponents = () => {
                         to={"/admin/activeSubstance/1"}
                         className={`${styles["btn-edit"]}`}
                       >
-                        Редагувати
+                        оновити
                       </NavLink>
                     </TableCell>
                   </TableRow>
@@ -116,7 +116,7 @@ export const ActiveSubstanceListComponents = () => {
                         to={"/admin/attributeUpsert"}
                         className={`${styles["btn-edit"]}`}
                       >
-                        Редагувати
+                        оновити
                       </NavLink>
                     </TableCell>
                   </TableRow>
@@ -134,7 +134,7 @@ export const ActiveSubstanceListComponents = () => {
                         to={"/admin/attributeUpsert"}
                         className={`${styles["btn-edit"]}`}
                       >
-                        Редагувати
+                        оновити
                       </NavLink>
                     </TableCell>
                   </TableRow>

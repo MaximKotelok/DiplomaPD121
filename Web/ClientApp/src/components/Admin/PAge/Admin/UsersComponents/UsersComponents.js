@@ -51,14 +51,13 @@ const statuses = [
     id: false,
     status: "Активний",
     color: "#3BA42A",
-  }
-]
+  },
+];
 
 // function createData(name, code, population, size) {
 //   const density = population / size;
 //   return { name, code, population, size, density };
 // }
-
 
 const useStyles = makeStyles({
   root: {
@@ -74,14 +73,14 @@ export const UsersComponents = () => {
   const [page, setPage] = React.useState(1);
   const [countOfPages, setCountOfPages] = React.useState(1);
   //const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [rows, setRows] = React.useState([]);  
-  useEffect(()=>{
+  const [rows, setRows] = React.useState([]);
+  useEffect(() => {
     init();
-  },[])
+  }, []);
 
-  async function init(){
+  async function init() {
     let res = await getAllUsers(page);
-    if(res.status === Success){
+    if (res.status === Success) {
       setCountOfPages(res.data.countOfPages);
       setRows(res.data.data);
     }
@@ -110,18 +109,20 @@ export const UsersComponents = () => {
 
   return (
     <div className={`${styles["row-parent"]}`}>
-      <div className={`${styles["box-container"]} row`}>
+      <div className={`${styles["box-container"]} `}>
         <div className="col-6">
-          <SearchComponent  callback={async (text)=>{
-            let page = 1;
-            setPage(1);
-            const res = await getAllUsers(page,text);
-            if(res.status === Success){
-              //console.log(res);
-              setRows(res.data.data);
-              setCountOfPages(res.data.countOfPages)   
-            }
-          }}/>
+          <SearchComponent
+            callback={async (text) => {
+              let page = 1;
+              setPage(1);
+              const res = await getAllUsers(page, text);
+              if (res.status === Success) {
+                //console.log(res);
+                setRows(res.data.data);
+                setCountOfPages(res.data.countOfPages);
+              }
+            }}
+          />
         </div>
 
         <Paper className={classes.root}>
@@ -146,71 +147,71 @@ export const UsersComponents = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                
-                  <React.Fragment>
-                    {rows.map((row, index) => (
-                      <TableRow className={`${styles["tb-user"]}`} key={index}>
-                        <TableCell>
-                          <CustomImgComponent
-                            className={`${styles["img-product"]}`}
-                            // src={`${ApiPath}${item.pathToPhoto}`}
-                            src={``}
-                          />{" "}
-                          {row.user}
-                        </TableCell>
+                <React.Fragment>
+                  {rows.map((row, index) => (
+                    <TableRow className={`${styles["tb-user"]}`} key={index}>
+                      <TableCell>
+                        <CustomImgComponent
+                          className={`${styles["img-product"]}`}
+                          // src={`${ApiPath}${item.pathToPhoto}`}
+                          src={``}
+                        />{" "}
+                        {row.user}
+                      </TableCell>
 
-                        <TableCell>{row.email}</TableCell>
-                        <TableCell>{row.phoneNumber?row.phoneNumber:"НЕМАЄ"}</TableCell>
-                        <TableCell>
+                      <TableCell>{row.email}</TableCell>
+                      <TableCell>
+                        {row.phoneNumber ? row.phoneNumber : "НЕМАЄ"}
+                      </TableCell>
+                      <TableCell>
+                        <div
+                          className={`d-flex justify-content-between align-items-center`}
+                        >
                           <div
-                            className={`d-flex justify-content-between align-items-center`}
+                            className={`${styles["span-status-rozmir"]}`}
+                            style={{
+                              backgroundColor: statuses.find(
+                                (a) => a.id === row.isBanned
+                              ).color,
+                            }}
                           >
-                            <div
-                              className={`${styles["span-status-rozmir"]}`}
-                              style={
-                                {
-                                  backgroundColor: statuses.find(a=>a.id===row.isBanned).color ,
-                                }
-                              }
-                            >
-                              {statuses.find(a=>a.id===row.isBanned).status} 
-                            </div>
+                            {statuses.find((a) => a.id === row.isBanned).status}
                           </div>
-                        </TableCell>
-                        <TableCell>
-                          <BtnEditStatusModalUser 
-                            statuses={statuses} 
-                            id={row.id}
-                            statusId={row.isBanned}
-                            changeStatus={(id)=>{
-                            
-                              setRows((prevRows) => {
-
-                                const updatedRows = prevRows.map((row, rowIndex) => {
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <BtnEditStatusModalUser
+                          statuses={statuses}
+                          id={row.id}
+                          statusId={row.isBanned}
+                          changeStatus={(id) => {
+                            setRows((prevRows) => {
+                              const updatedRows = prevRows.map(
+                                (row, rowIndex) => {
                                   if (rowIndex === index) {
-                                    return {...row, isBanned: id}                                    
+                                    return { ...row, isBanned: id };
                                   }
                                   return row;
-                                });
-                                
-                                return updatedRows;
-                              });
-                              
-                            }}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </React.Fragment>                
+                                }
+                              );
+
+                              return updatedRows;
+                            });
+                          }}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </React.Fragment>
               </TableBody>
             </Table>
           </TableContainer>
           <div className={`d-flex justify-content-end align-items-center`}>
-            <PaginationComponent 
-              setContent={(a)=>setRows(a)}
-              getContent={async (page)=>{
+            <PaginationComponent
+              setContent={(a) => setRows(a)}
+              getContent={async (page) => {
                 let res = await getAllUsers(page);
-                if(res.status === Success){
+                if (res.status === Success) {
                   return res.data.data;
                 }
               }}
@@ -218,7 +219,7 @@ export const UsersComponents = () => {
               page={page}
               setPage={setPage}
               countOfPages={countOfPages}
-              />
+            />
           </div>
         </Paper>
       </div>

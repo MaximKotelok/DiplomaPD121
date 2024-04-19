@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./ProductListComponents.module.css";
+import styles from "./ProductConcreatListComponents.module.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
@@ -17,25 +17,27 @@ import CustomImgComponent from "../../../../Common/CustomImgComponent/CustomImgC
 import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
-import BtnEditSeriaModal from "./components/BtnEditSeriaModal/BtnEditSeriaModal";
+import { Link } from "react-router-dom";
 
 const columns = [
-  { id: "position", label: "Позиція", minWidth: 230 },
-  { id: "brend", label: "Бренд", minWidth: 230 },
+  { id: "position", label: "Позиція", minWidth: 200 },
+  { id: "brend", label: "Бренд", minWidth: 200 },
 
   {
     id: "manafacture",
     label: "Виробник",
-    minWidth: 230,
+    minWidth: 200,
     editable: true,
     // format: (value) => value.toLocaleString("en-US"),
   },
-  {
-    id: "shortDescreiption",
-    label: "Короткий опис",
-    minWidth: 280,
-    editable: true,
-  },
+  // {
+  //   id: "shortDescreiption",
+  //   label: "Короткий опис",
+  //   minWidth: 220,
+  //   editable: true,
+  // },
+  { id: "price", label: "Ціна за шт.", minWidth: 200 },
+  { id: "count", label: "Кількість на складі", minWidth: 200 },
 ];
 
 // function createData(name, code, population, size) {
@@ -52,6 +54,7 @@ const rows = [
         brend: "крутий бренд",
         seria: "SD354GR",
         artukul: "0239532",
+        price: "0239532",
       },
     ],
   },
@@ -63,18 +66,21 @@ const rows = [
         position: "тарілка",
         brend: "крутий бренд",
         seria: "SD354GR",
+        price: "0239532",
         artukul: "0239532",
       },
       {
         position: "тарілка",
         brend: "крутий бренд",
         seria: "SD354GR",
+        price: "0239532",
         artukul: "0239532",
       },
       {
         position: "тарілка",
         brend: "крутий бренд",
         seria: "SD354GR",
+        price: "0239532",
         artukul: "0239532",
       },
     ],
@@ -86,6 +92,7 @@ const rows = [
       {
         position: "тарілка",
         brend: "крутий бренд",
+        price: "0239532",
         seria: "SD354GR",
         artukul: "0239532",
       },
@@ -104,7 +111,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const ProductListComponents = () => {
+export const ProductConcreatListComponents = () => {
   const classes = useStyles();
   const [page, setPage] = React.useState(1);
   const [countOfPages, setCountOfPages] = React.useState(1);
@@ -140,8 +147,13 @@ export const ProductListComponents = () => {
           <SearchComponent />
         </div>
 
-        <div className="col-6">
-          {/* <CheckedBox text="Показувати лише фарма-компанії?" /> */}
+        <div className="col-6 d-flex justify-content-end  align-items-center">
+          <Link
+            to="/admin/addProductPharmacy"
+            className={`btn btn-primary ${styles["add-button"]}`}
+          >
+            Додати товар до складу
+          </Link>
         </div>
 
         <Paper className={classes.root}>
@@ -190,7 +202,7 @@ export const ProductListComponents = () => {
                           <TableCell>
                             <span className={`${styles["text-row-table"]}`}>
                               <CustomImgComponent
-                                className={`${styles["img-product"]} `}
+                                className={`${styles["img-product"]}`}
                                 // src={`${ApiPath}${item.pathToPhoto}`}
                               />{" "}
                               {item.position}
@@ -209,6 +221,11 @@ export const ProductListComponents = () => {
                           <TableCell>
                             <span className={`${styles["text-row-table"]}`}>
                               {item.artukul}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            <span className={`${styles["text-row-table"]}`}>
+                              {item.price}
                             </span>
                           </TableCell>
                           {/* <TableCell> */}

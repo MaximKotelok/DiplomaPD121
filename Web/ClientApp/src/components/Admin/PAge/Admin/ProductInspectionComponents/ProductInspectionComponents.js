@@ -1,6 +1,6 @@
 import React from "react";
-import styles from "./ZayavkaComponents.module.css";
-import "./ZayavkaComponents.css";
+import styles from "./ProductInspectionComponents.module.css";
+import "./ProductInspectionComponents.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
@@ -10,7 +10,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
-import BtnEditStatusModal from "./components/BtnEditStatusModal/BtnEditStatusModal";
+// import BtnEditStatusModal from "./components/BtnEditStatusModal/BtnEditStatusModal";
 import SearchComponent from "../../../../Common/SearchComponent/SearchComponent";
 import { useEffect } from "react";
 import { getAllProductConfirm } from "../../../../../services/productConfirm";
@@ -61,7 +61,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const ZayavkaComponents = () => {
+export const ProductInspectionComponents = () => {
   const { paramPage } = useParams();
   const classes = useStyles();
   const [page, setPage] = React.useState(paramPage ? parseInt(paramPage) : 1);
@@ -140,89 +140,58 @@ export const ZayavkaComponents = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((pharmacy, index) => (
-                  <React.Fragment>
-                    <TableRow>
+                {/* {rows.map((pharmacy, index) => ( */}
+                <React.Fragment>
+                  {/* <TableRow>
                       <TableCell
                         colSpan={12}
                         className={`${styles["header-body-pharmacy"]}`}
                       >
                         {pharmacy.name}
                       </TableCell>
-                    </TableRow>
+                    </TableRow> */}
 
-                    {pharmacy.data.map((item, itemIndex) => {
-                      return (
-                        <TableRow
-                          className={`${styles["tb-pharmacy"]}`}
-                          key={itemIndex}
-                        >
-                          <TableCell>
-                            <Link to={`/admin/detailProduct/${item.id}`}>
-                              <CustomImgComponent
-                                className={`${styles["img-product"]}`}
-                                src={`${ApiPath}${item.pathToPhoto}`}
-                              />{" "}
-                              {item.title}
-                            </Link>
-                          </TableCell>
-                          <TableCell>{item.category}</TableCell>
-                          <TableCell>{item.manufacturer}</TableCell>
-                          <TableCell>{item.date}</TableCell>
-                          <TableCell>{item.date}</TableCell>
-                          <TableCell>
-                            <div
-                              className={`d-flex justify-content-between align-items-center`}
-                            >
-                              <div
-                                className={`
-                            ${styles["span-status-rozmir"]}
-                            `}
-                                style={{ backgroundColor: item.statusColor }}
-                              >
-                                {item.status}
-                              </div>
-                              <BtnEditStatusModal
-                                id={item.id}
-                                statusId={item.statusId}
-                                statuses={statuses}
-                                changeStatusProduct={(c) => {
-                                  setRows((prevRows) => {
-                                    const updatedRows = prevRows.map(
-                                      (row, rowIndex) => {
-                                        if (rowIndex === index) {
-                                          const updatedData = row.data.map(
-                                            (rowData) => {
-                                              if (rowData.id === item.id) {
-                                                return {
-                                                  ...rowData,
-                                                  statusId: c.id,
-                                                  status: c.status,
-                                                  statusColor: c.color,
-                                                };
-                                              }
-                                              return rowData;
-                                            }
-                                          );
-                                          return {
-                                            ...row,
-                                            data: updatedData,
-                                          };
-                                        }
-                                        return row;
-                                      }
-                                    );
-                                    return updatedRows;
-                                  });
-                                }}
-                              />
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </React.Fragment>
-                ))}
+                  {/* {pharmacy.data.map((item, itemIndex) => {
+                      return ( */}
+                  <TableRow
+                    className={`${styles["tb-pharmacy"]}`}
+                    // key={itemIndex}
+                  >
+                    <TableCell>
+                      <Link
+                      //  to={`/admin/detailProduct/${item.id}`}
+                      >
+                        <CustomImgComponent
+                          className={`${styles["img-product"]}`}
+                          // src={`${ApiPath}${item.pathToPhoto}`}
+                        />{" "}
+                        title
+                        {/* {item.title} */}
+                      </Link>
+                    </TableCell>
+                    <TableCell>
+                      category
+                      {/* {item.category} */}
+                    </TableCell>
+                    <TableCell>
+                      {/* {item.manufacturer} */}
+                      manufacturer
+                    </TableCell>
+                    <TableCell>
+                      {/* {item.date} */}
+                      date
+                    </TableCell>
+                    <TableCell>
+                      {/* {item.date} */}
+                      <div className={`${styles["span-status"]}`}>
+                        на перевірці
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                  {/* ); */}
+                  {/* })} */}
+                </React.Fragment>
+                {/* ))} */}
               </TableBody>
             </Table>
           </TableContainer>
