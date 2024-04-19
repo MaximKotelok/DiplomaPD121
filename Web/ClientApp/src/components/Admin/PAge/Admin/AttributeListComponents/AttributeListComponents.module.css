@@ -26,6 +26,7 @@ font-size: 12px;
 font-weight: 600;
 line-height: 15.06px;
 color: rgba(255, 255, 255, 1);
+text-transform: uppercase;
 }
 
 .head-table{
@@ -58,6 +59,7 @@ font-weight: 500;
 line-height: 18px;
 letter-spacing: 0.1599999964237213px;
 text-align: center;
+text-transform: uppercase;
 
 }
 

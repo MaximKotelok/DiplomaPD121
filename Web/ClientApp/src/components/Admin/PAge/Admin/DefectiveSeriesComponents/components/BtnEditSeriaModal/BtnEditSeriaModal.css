@@ -1,0 +1,70 @@
+/* .form-control {
+    border: none;
+    box-shadow: none;
+    
+}
+
+
+.form-control:focus {
+    outline: none; 
+
+border: none;
+    box-shadow: none; 
+    
+}
+
+.modal-content:has(>.test) {
+border-radius: 32px;
+width: 400px;
+margin:  0 49.200px;
+} */
+
+
+
+/* .social-btn {
+    border: none;
+    background: none;
+}
+.my-search-bar {
+    font-family: var(--standart-font);
+    padding: 0px 8px 0 6px;
+    border: none;
+    background: none;
+    width: 100%;
+    flex: 1; 
+    font-size: 16px;
+    font-weight: 500;
+font-family: var(--standart-font);
+font-size: 16px;
+font-weight: 500;
+line-height: 20.08px;
+text-align: left;
+color: rgba(122, 122, 122, 1);
+}
+
+.back-serach-bar {
+    border-radius: 12px;
+    background: rgba(242, 242, 247, 1);
+    
+    padding: 8px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.icon {
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 40px;
+}
+
+.my-search-bar:focus {
+    border-color: initial;
+    outline: none;
+    box-shadow: none;
+} */
+
+.MuiInputBase-root {
+    padding: none;
+}
+/* MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-formControl MuiInputBase-adornedEnd Mui-readOnly MuiInputBase-readOnly */

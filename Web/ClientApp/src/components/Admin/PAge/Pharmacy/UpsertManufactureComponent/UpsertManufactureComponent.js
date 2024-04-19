@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./UpsertManufactureComponent.module.css";
 
 import BtnWarningModal from "../../../Common/BtnWarningModal/BtnWarningModal";

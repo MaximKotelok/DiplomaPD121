@@ -19,7 +19,12 @@ import PaginationComponent from "../../../../Common/PaginationComponent/Paginati
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
 import BtnEditPharmacyModal from "./components/BtnEditStatusModal/BtnPharmacyModal";
 import { getAllPharmaciesForAdmin } from "../../../../../services/pharmacy";
-import { BrowserRouter as Router, Route, Link, useParams } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  useParams,
+} from "react-router-dom";
 import BtnModalPharmaCompanyModal from "./components/BtnModalPharmaCompanyModal/BtnModalPharmaCompanyModal";
 
 const columns = [
@@ -46,7 +51,6 @@ const columns = [
 //   return { name, code, population, size, density };
 // }
 
-
 const useStyles = makeStyles({
   root: {
     width: "100%",
@@ -57,37 +61,40 @@ const useStyles = makeStyles({
 });
 
 export const PharmacyListComponents = () => {
-  
   const classes = useStyles();
   const { paramPage } = useParams();
   const [page, setPage] = React.useState(paramPage);
   const [countOfPages, setCountOfPages] = React.useState(1);
   const [rows, setRows] = React.useState([]);
-  const [isDisplayOnlyCompanies, setIsDisplayOnlyCompanies] = React.useState(false);
+  const [isDisplayOnlyCompanies, setIsDisplayOnlyCompanies] =
+    React.useState(false);
   const [search, setSearch] = React.useState("");
 
   useEffect(() => {
     init();
   }, []);
 
-  async function reloadData(){
+  async function reloadData() {
     let page = 1;
-            setPage(1);
-            const res = await getAllPharmaciesForAdmin(page, search, isDisplayOnlyCompanies);
-            if (res.status === Success) {
-              //console.log(res);
-              setRows(res.data.data);
-              setCountOfPages(res.data.countOfPages)
-            }
+    setPage(1);
+    const res = await getAllPharmaciesForAdmin(
+      page,
+      search,
+      isDisplayOnlyCompanies
+    );
+    if (res.status === Success) {
+      //console.log(res);
+      setRows(res.data.data);
+      setCountOfPages(res.data.countOfPages);
+    }
   }
 
-  useEffect(()=>{
-    
+  useEffect(() => {
     reloadData();
-  },[search,isDisplayOnlyCompanies]);
+  }, [search, isDisplayOnlyCompanies]);
 
   async function init() {
-    let res = await getAllPharmaciesForAdmin(page, "", isDisplayOnlyCompanies)
+    let res = await getAllPharmaciesForAdmin(page, "", isDisplayOnlyCompanies);
     if (res.status === Success) {
       let page = paramPage ? paramPage : 1;
       if (page > res.data.countOfPages) {
@@ -99,8 +106,7 @@ export const PharmacyListComponents = () => {
       }
       setPage(parseInt(page));
       setRows(res.data.data);
-      setCountOfPages(res.data.countOfPages)
-
+      setCountOfPages(res.data.countOfPages);
     }
   }
 
@@ -127,19 +133,26 @@ export const PharmacyListComponents = () => {
 
   return (
     <div className={`${styles["row-parent"]}`}>
-      <div className={`${styles["box-container"]} row`}>
+      <div className={`${styles["box-container"]} `}>
+        <div className="row">
+          <div className="col-6">
+            <SearchComponent callback={setSearch} />
+          </div>
 
-
-        <div className="col-6">
-          <SearchComponent callback={setSearch} />
-        </div>
-
-        <div className="col-4">
-          <CheckedBox text="Показувати лише фарма-компанії?" 
-          onChange={setIsDisplayOnlyCompanies}/>
-        </div>
-        <div className="col-2">
-          <Link to="/admin/AddPharmaCompany" className={`btn btn-primary ${styles["add-button"]}`}>Додати</Link>
+          <div className="col-4">
+            <CheckedBox
+              text="Показувати лише фарма-компанії?"
+              onChange={setIsDisplayOnlyCompanies}
+            />
+          </div>
+          <div className="col-2">
+            <Link
+              to="/admin/AddPharmaCompany"
+              className={`btn btn-primary ${styles["add-button"]}`}
+            >
+              Додати
+            </Link>
+          </div>
         </div>
 
         <Paper className={`${classes.root}`}>
@@ -177,9 +190,7 @@ export const PharmacyListComponents = () => {
                         />{" "}
                         {pharmacy.name}
                       </TableCell>
-                      <TableCell
-                        colSpan={1}
-                      >
+                      <TableCell colSpan={1}>
                         <div className="d-flex justify-content-end">
                           <BtnModalPharmaCompanyModal id={pharmacy.id} />
                         </div>
@@ -201,13 +212,11 @@ export const PharmacyListComponents = () => {
                               <BtnEditPharmacyModal id={item.pharmacy.id} />
                             </div>
                           </TableCell>
-
                         </TableRow>
                       );
                     })}
                   </React.Fragment>
                 ))}
-
               </TableBody>
             </Table>
           </TableContainer>
@@ -216,7 +225,7 @@ export const PharmacyListComponents = () => {
               setContent={(a) => setRows(a)}
               getContent={async (page) => {
                 const newUrl = `/admin/pharmacyList/${page}`;
-                window.history.pushState({}, '', newUrl);
+                window.history.pushState({}, "", newUrl);
                 let res = await getAllPharmaciesForAdmin(page);
                 if (res.status === Success) {
                   return res.data.data;

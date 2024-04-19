@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./ProductListComponents.module.css";
+import styles from "./DefectiveSeriesComponents.module.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
@@ -20,19 +20,19 @@ import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
 import BtnEditSeriaModal from "./components/BtnEditSeriaModal/BtnEditSeriaModal";
 
 const columns = [
-  { id: "position", label: "Позиція", minWidth: 230 },
-  { id: "brend", label: "Бренд", minWidth: 230 },
+  { id: "position", label: "Серія", minWidth: 230 },
+  { id: "brend", label: "Дата заборони", minWidth: 230 },
 
   {
     id: "manafacture",
-    label: "Виробник",
+    label: "Вирішення",
     minWidth: 230,
     editable: true,
     // format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "shortDescreiption",
-    label: "Короткий опис",
+    label: "Причина",
     minWidth: 280,
     editable: true,
   },
@@ -104,7 +104,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const ProductListComponents = () => {
+export const DefectiveSeriesComponents = () => {
   const classes = useStyles();
   const [page, setPage] = React.useState(1);
   const [countOfPages, setCountOfPages] = React.useState(1);
@@ -135,13 +135,20 @@ export const ProductListComponents = () => {
 
   return (
     <div className={`${styles["row-parent"]}`}>
-      <div className={`${styles["box-container"]} row`}>
-        <div className="col-6">
-          <SearchComponent />
-        </div>
+      <div className={`${styles["box-container"]}  `}>
+        <div className="row">
+          <div className="col-6">
+            <SearchComponent />
+          </div>
 
-        <div className="col-6">
-          {/* <CheckedBox text="Показувати лише фарма-компанії?" /> */}
+          <div
+            className={`col-6 d-flex align-items-center justify-content-end `}
+          >
+            <BtnEditSeriaModal />
+            {/* <div className="d-flex align-items-center"> */}
+
+            {/* <CheckedBox text="Показувати лише фарма-компанії?" /> */}
+          </div>
         </div>
 
         <Paper className={classes.root}>
@@ -168,19 +175,6 @@ export const ProductListComponents = () => {
               <TableBody>
                 {rows.map((pharmacy, index) => (
                   <React.Fragment key={index}>
-                    <TableRow>
-                      <TableCell
-                        colSpan={12}
-                        className={`${styles["header-body-pharmacy"]}`}
-                      >
-                        <CustomImgComponent
-                          className={`${styles["img-category"]} ms-3`}
-                          // src={`${ApiPath}${item.pathToPhoto}`}
-                        />{" "}
-                        {pharmacy.nameCategory}
-                      </TableCell>
-                    </TableRow>
-
                     {pharmacy.data.map((item, itemIndex) => {
                       return (
                         <TableRow
@@ -189,10 +183,6 @@ export const ProductListComponents = () => {
                         >
                           <TableCell>
                             <span className={`${styles["text-row-table"]}`}>
-                              <CustomImgComponent
-                                className={`${styles["img-product"]} `}
-                                // src={`${ApiPath}${item.pathToPhoto}`}
-                              />{" "}
                               {item.position}
                             </span>
                           </TableCell>

@@ -142,7 +142,7 @@ export const ActiveSubstanceListComponents = () => {
                         to={`/admin/activeSubstance/${item.id}`}
                         className={`${styles["btn-edit"]}`}
                       >
-                        Редагувати
+                        оновити
                       </NavLink>
                     </TableCell>
                   </TableRow>)

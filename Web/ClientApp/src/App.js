@@ -49,15 +49,21 @@ import { AddProductPharmacyComponent } from "./components/Admin/PAge/Pharmacy/Ad
 import { OrderListProductComponents } from "./components/Admin/PAge/Pharmacy/OrderListProductComponents/OrderListProductComponents";
 import { ProductDetailsAdminComponents } from "./components/Admin/PAge/Admin/ProductDetailsAdminComponents/ProductDetailsAdminComponents";
 import { UpsertBrendComponent } from "./components/Admin/PAge/Pharmacy/UpsertBrendComponent/UpsertBrendComponent";
-import { UpsertManufactureComponent } from "./components/Admin/PAge/Pharmacy/UpsertManufactureComponent/UpsertManufactureComponent";
 import { AddCategoryComponents } from "./components/Admin/PAge/Pharmacy/AddCategoryComponents/AddCategoryComponents";
 import { AttributeListComponents } from "./components/Admin/PAge/Admin/AttributeListComponents/AttributeListComponents";
 import { UpsertAttributeComponents } from "./components/Admin/PAge/Admin/UpsertAttributeComponents/UpsertAttributeComponents";
 import { ActiveSubstanceListComponents } from "./components/Admin/PAge/Admin/ActiveSubstanceListComponents/ActiveSubstanceListComponents";
 import { UpsertActiveSubstanceComponents } from "./components/Admin/PAge/Admin/UpsertActiveSubstanceComponents/UpsertActiveSubstanceComponents";
 
-import { BrandListComponent } from "./components/Admin/PAge/Admin/BrandListComponents/BrandListComponent"
- 
+import { BrandListComponent } from "./components/Admin/PAge/Admin/BrandListComponents/BrandListComponent";
+import { DefectiveSeriesComponents } from "./components/Admin/PAge/Admin/DefectiveSeriesComponents/DefectiveSeriesComponents";
+import { CategoryListComponents } from "./components/Admin/PAge/Admin/CategoryListComponents/CategoryListComponents";
+import { ManufactureListComponents } from "./components/Admin/PAge/Admin/ManufactureListComponents/ManufactureListComponents";
+import { ProductConcreatListComponents } from "./components/Admin/PAge/Admin/ProductConcreatListComponents/ProductConcreatListComponents";
+import { HomeAdminPageComponents } from "./components/Admin/PAge/HomeAdminPageComponents/HomeAdminPageComponents";
+import { ProductInspectionComponents } from "./components/Admin/PAge/Admin/ProductInspectionComponents/ProductInspectionComponents";
+import { UpsertManufactureComponent } from "./components/Admin/PAge/Pharmacy/UpsertManufactureComponent/UpsertManufactureComponent";
+
 // export default class App extends Component {
 // static displayName = App.name;
 
@@ -180,11 +186,26 @@ export default class App extends Component {
           <Route path="admin" element={<LayoutAdmin />}>
             <Route path="zayavkaList" element={<ZayavkaComponents />} />
             <Route
+              path="productInspection"
+              element={<ProductInspectionComponents />}
+            />
+            <Route
               path="zayavkaList/:paramPage"
               element={<ZayavkaComponents />}
             />
             <Route path="userList" element={<UsersComponents />} />
             <Route path="productList" element={<ProductListComponents />} />
+            <Route
+              path="productConcreatList"
+              element={<ProductConcreatListComponents />}
+            />
+
+            {/* //DefectiveSeriesComponents */}
+            <Route
+              path="defectiveSeriesList"
+              element={<DefectiveSeriesComponents />}
+            />
+
             <Route path="pharmacyList" element={<PharmacyListComponents />} />
 
             <Route path="attributeList" element={<AttributeListComponents />} />
@@ -219,6 +240,7 @@ export default class App extends Component {
               path="activeSubstance/"
               element={<UpsertActiveSubstanceComponents />}
             /> */}
+            <Route path="homePageAdmin" element={<HomeAdminPageComponents />} />
 
             <Route
               path="pharmacyList/:paramPage"
@@ -232,38 +254,59 @@ export default class App extends Component {
             />
 
             <Route path="brandList" element={<BrandListComponent />} />
-            <Route path="upsertBrand/:brandId" element={<UpsertBrendComponent />} />
+            <Route path="categoeyList" element={<CategoryListComponents />} />
+            <Route
+              path="manufactureList"
+              element={<ManufactureListComponents />}
+            />
+            <Route
+              path="upsertManufacture"
+              element={<UpsertManufactureComponent />}
+            />
+
+            <Route
+              path="upsertBrand/:brandId"
+              element={<UpsertBrendComponent />}
+            />
             <Route path="addBrand" element={<UpsertBrendComponent />} />
-            
-          
+
             <Route
               path="updateBrand/:brandId"
               element={<UpsertBrendComponent />}
             />
 
-            <Route path="detailProduct/:productId" element={<ProductDetailsAdminComponents />} />
+            <Route
+              path="detailProduct/:productId"
+              element={<ProductDetailsAdminComponents />}
+            />
             <Route path="addProduct" element={<UpsertProductComponent />} />
             <Route
               path="updateProduct/:productId"
               element={<UpsertProductComponent />}
             />
 
-            <Route path="addPharmaCompany" element={<UpsertPharmaCompanyComponent />} />
+            <Route
+              path="addPharmaCompany"
+              element={<UpsertPharmaCompanyComponent />}
+            />
             <Route
               path="updatePharmaCompany/:companyId"
               element={<UpsertPharmaCompanyComponent />}
             />
             <Route path="addCategory" element={<AddCategoryComponents />} />
+            <Route path="supportChat" element={<SupportChat />} />
             <Route
               path="updatePharmaCompany/:companyId"
               element={<UpsertPharmaCompanyComponent />}
             />
-                    <Route path="addPharmacy/:companyId" element={<UpsertPharmacyComponent />} />
+            <Route
+              path="addPharmacy/:companyId"
+              element={<UpsertPharmacyComponent />}
+            />
             <Route
               path="updatePharmacy/:pharmacyId"
               element={<UpsertPharmacyComponent />}
             />
-
           </Route>
         </Routes>
       </LayoutProvider>
