@@ -3,7 +3,6 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 import styles from "../AuthPage.module.css";
-
 const RegistrationForm = () => {
     const [formData, setFormData] = useState({
         username: '',
@@ -11,6 +10,7 @@ const RegistrationForm = () => {
         password: '',
         confirmPassword: '',
     });
+    
 
     //const [errors, setErrors] = useState({}); // Add this line
 

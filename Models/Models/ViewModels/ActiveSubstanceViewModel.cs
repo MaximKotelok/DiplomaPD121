@@ -9,11 +9,10 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-	public class ActiveSubstance:BaseEntity
+	public class ActiveSubstanceViewModel
 	{
-		[Required]
+		public int? Id { get; set; }
 		public string? Title { get; set; }
 		public bool? IsActive { get; set; } = true;
-		public IEnumerable<Medicine>? Medicines { get; set; }
 	}
 }

@@ -68,8 +68,8 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      locationAllowed: false,
-      isLoading: true,
+        locationAllowed: false,
+        isLoading: true
     };
   }
 
@@ -89,8 +89,9 @@ export default class App extends Component {
       (error) => {
         if (error.response && error.response.status === 401) {
           removeToken();
-          window.location.href = "/auth/login";
-        }
+            const currentLocation = (window.location.pathname+window.location.search).substr(1);
+            window.location.replace(`/auth/login?from=/${currentLocation}`);
+        } 
         return Promise.reject(error);
       }
     );
@@ -189,6 +190,10 @@ export default class App extends Component {
             <Route path="attributeList" element={<AttributeListComponents />} />
             <Route
               path="activeSubstanceList"
+              element={<ActiveSubstanceListComponents />}
+            />
+            <Route
+              path="activeSubstanceList/:paramPage"
               element={<ActiveSubstanceListComponents />}
             />
             {/* <Route

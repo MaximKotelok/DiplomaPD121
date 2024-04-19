@@ -9,11 +9,10 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-	public class ActiveSubstance:BaseEntity
+	public class GetListOfMedicineOfActiveSubstance
 	{
-		[Required]
-		public string? Title { get; set; }
-		public bool? IsActive { get; set; } = true;
-		public IEnumerable<Medicine>? Medicines { get; set; }
+		public int? Id { get; set; }
+		public int? Count { get; set; }
+		
 	}
 }

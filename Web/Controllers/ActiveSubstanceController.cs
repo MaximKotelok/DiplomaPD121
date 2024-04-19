@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Domain.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.ActiveSubstanceService;
@@ -20,19 +21,50 @@ namespace Web.Controllers
             this._service = service;
             _medicineService = medicineService;
         }
-
-        [HttpGet("GetAllActiveSubstances")]
-        public IActionResult GetAllActiveSubstances()
+		[HttpPost("GetActiveSubstancesCountOfPage")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		public IActionResult GetActiveSubstancesCountOfPage(PageViewModel model)
         {
-            var result = _service.GetAllActiveSubstances();
+			var result = _service.GetAllActiveSubstances().Where(a=> a.Title.Contains(model.Search));
+
+            return Ok(model.GetCountOfPages(result.Count()));
+		}
+
+        [HttpPost("GetAllActiveSubstancesForAdmin")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		public IActionResult GetAllActiveSubstancesForAdmin(PageViewModel model)
+        {
+            int page = model.Page != null ? model.Page.Value - 1 : 0;
+            var result = _service.GetAllActiveSubstances(includeProperties: "Medicines").Where(a => a.Title.Contains(model.Search))
+				.Skip(page*model.ItemsPerPage).Take(model.ItemsPerPage);
             if (result is not null)
             {
-                return Ok(result);
+                return Ok(result.Select(a => new {
+                    Id = a.Id,
+                    Title = a.Title,
+                    CountOfMedicines = a.Medicines.Count(),
+                    IsActive = a.IsActive == null || a.IsActive.Value
+                }
+                ));
             }
             return BadRequest("No records found");
         }
 
-        [HttpGet("GetActiveSubstance/{id}")]
+		[HttpGet("GetAllActiveSubstances")]
+		public IActionResult GetAllActiveSubstances()
+		{
+
+            var result = _service.GetAllActiveSubstances()
+                .Where(a=> a.IsActive == null || a.IsActive.Value);
+			if (result is not null)
+			{
+                return Ok(result);
+
+			}
+			return BadRequest("No records found");
+		}
+
+		[HttpGet("GetActiveSubstance/{id}")]
         public IActionResult GetActiveSubstance(int id)
         {
             var result = _service.GetActiveSubstance(x => x.Id == id);
@@ -42,22 +74,44 @@ namespace Web.Controllers
             }
             return BadRequest("No records found");
         }
-
-        [HttpPost]
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
-        public IActionResult AddActiveSubstance(ActiveSubstance activeSubstance)
+        [HttpPost("UpdateActiveSubstanceStatus")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		public IActionResult UpdateActiveSubstanceStatus(UpdateIsActiveForActiveSubstanceViewModel model)
         {
-            _service.InsertActiveSubstance(activeSubstance);
+            var result = _service.GetActiveSubstance(x => x.Id == model.Id);
+            if (result is not null)
+            {
+                result.IsActive = model.IsActive;
+                _service.UpdateActiveSubstance(result);
+                return Ok("Success");
+            }
+            return BadRequest("No records found");
+        }
+
+        [HttpPost("AddActiveSubstance")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+        public IActionResult AddActiveSubstance(ActiveSubstanceViewModel activeSubstance)
+        {
+            _service.InsertActiveSubstance(new ActiveSubstance { 
+				Title = activeSubstance.Title,
+                IsActive = activeSubstance.IsActive
+			});
             return Ok("Data inserted");
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("UpdateActiveSubstance")]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
-        public IActionResult UpdateActiveSubstance(int id, ActiveSubstance activeSubstance)
+        public IActionResult UpdateActiveSubstance(ActiveSubstanceViewModel model)
         {
-            activeSubstance.Id = id;
-            _service.UpdateActiveSubstance(activeSubstance);
-            return Ok("Updation done");
+            var activeSubstance = _service.GetActiveSubstance(a => a.Id == model.Id);
+            if(activeSubstance is not null)
+            {
+                activeSubstance.Title = model.Title;
+                activeSubstance.IsActive = model.IsActive;
+                _service.UpdateActiveSubstance(activeSubstance);
+                return Ok("Updation done");
+            }
+            return BadRequest("Updation failed");
         }
 
         [HttpDelete("{id}")]
@@ -68,13 +122,13 @@ namespace Web.Controllers
             return Ok("Data Deleted");
         }
 
-        [HttpGet("GetListOfMedicineOfActiveSubstance/{id}")]
-        public IActionResult GetListOfMedicineOfActiveSubstance(int id)
+        [HttpPost("GetListOfMedicineOfActiveSubstance")]
+        public IActionResult GetListOfMedicineOfActiveSubstance(GetListOfMedicineOfActiveSubstance model)
         {
-            var result = _service.GetActiveSubstance(a => a.Id == id, "Medicines");
+            var result = _service.GetActiveSubstance(a => a.Id == model.Id, "Medicines");
             if (result is not null)
             {
-                return Ok(result?.Medicines);
+                return Ok(result?.Medicines?.Take(model.Count.Value));
             }
             return BadRequest("No records found");
         }
