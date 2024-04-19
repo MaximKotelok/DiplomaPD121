@@ -26,6 +26,14 @@ export async function getAllPharmaciesForAdmin(page, search, isDisplayOnlyCompan
     })
 }
 
+export async function getAllPharmaciesForPharmaCompany(page, search){
+    return await postToServer("Pharmacy/GetAllPharmaciesForPharmaCompany",  {
+        itemsPerPage: 2,
+        page: page,
+        search
+    })
+}
+
 export async function deletePharmacy(id){
     return await deleteFromServer(`Pharmacy/DeletePharmacy/${id}`,  {})
 }

@@ -102,7 +102,7 @@ export const AttributeListComponents = () => {
                         to={"/admin/attributeUpsert/1"}
                         className={`${styles["btn-edit"]}`}
                       >
-                        Редагувати
+                        Оновити
                       </NavLink>
                     </TableCell>
                   </TableRow>

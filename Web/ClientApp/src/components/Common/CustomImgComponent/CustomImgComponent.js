@@ -1,17 +1,22 @@
-import React, { useState,useEffect } from "react";
-import { STANDART_IMG } from "../../../utils/Constants";
+import React, { useState, useEffect } from "react";
+import STANDART_IMG from "../../../assets/images/StandartPhotoNotFound.svg";
+// import { STANDART_IMG } from "../../../utils/Constants";
 
-const CustomImgComponent = ({ src, alt, defaultSrc=STANDART_IMG, className, style }) => {
+const CustomImgComponent = ({
+  src,
+  alt,
+  defaultSrc = STANDART_IMG,
+  className,
+  style,
+}) => {
   const [imageSrc, setImageSrc] = useState(src ? src : defaultSrc);
-  useEffect(()=>{
+  useEffect(() => {
     setImageSrc(src ? src : defaultSrc);
-  },[src])
+  }, [src]);
 
   const handleImageError = () => {
     setImageSrc(defaultSrc);
   };
-
-  
 
   return (
     <img

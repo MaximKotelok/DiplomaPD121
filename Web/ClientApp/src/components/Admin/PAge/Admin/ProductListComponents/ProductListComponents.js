@@ -20,26 +20,20 @@ import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
 import BtnEditSeriaModal from "./components/BtnEditSeriaModal/BtnEditSeriaModal";
 
 const columns = [
-  { id: "position", label: "Позиція", minWidth: 240 },
-  { id: "brend", label: "Бренд", minWidth: 240 },
+  { id: "position", label: "Позиція", minWidth: 230 },
+  { id: "brend", label: "Бренд", minWidth: 230 },
+
   {
-    id: "seria",
-    label: "Серія",
-    minWidth: 240,
-    editable: true,
-    // format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "artukul",
-    label: "Артикул",
+    id: "manafacture",
+    label: "Виробник",
     minWidth: 230,
     editable: true,
     // format: (value) => value.toLocaleString("en-US"),
   },
   {
-    id: "editSeria",
-    label: "Керувати серія",
-    minWidth: 200,
+    id: "shortDescreiption",
+    label: "Короткий опис",
+    minWidth: 280,
     editable: true,
   },
 ];
@@ -147,7 +141,7 @@ export const ProductListComponents = () => {
         </div>
 
         <div className="col-6">
-          <CheckedBox text="Показувати лише фарма-компанії?" />
+          {/* <CheckedBox text="Показувати лише фарма-компанії?" /> */}
         </div>
 
         <Paper className={classes.root}>
@@ -180,7 +174,7 @@ export const ProductListComponents = () => {
                         className={`${styles["header-body-pharmacy"]}`}
                       >
                         <CustomImgComponent
-                          className={`${styles["img-product"]}`}
+                          className={`${styles["img-category"]} ms-3`}
                           // src={`${ApiPath}${item.pathToPhoto}`}
                         />{" "}
                         {pharmacy.nameCategory}
@@ -193,15 +187,35 @@ export const ProductListComponents = () => {
                           className={`${styles["tb-pharmacy"]}`}
                           key={itemIndex}
                         >
-                          <TableCell>{item.position}</TableCell>
-                          <TableCell>{item.brend}</TableCell>
-                          <TableCell>{item.seria}</TableCell>
-                          <TableCell>{item.artukul}</TableCell>
                           <TableCell>
-                            {/* <div className="d-flex align-items-center"> */}
-                              <BtnEditSeriaModal />
-                            {/* </div> */}
+                            <span className={`${styles["text-row-table"]}`}>
+                              <CustomImgComponent
+                                className={`${styles["img-product"]} `}
+                                // src={`${ApiPath}${item.pathToPhoto}`}
+                              />{" "}
+                              {item.position}
+                            </span>
                           </TableCell>
+                          <TableCell>
+                            <span className={`${styles["text-row-table"]}`}>
+                              {item.brend}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            <span className={`${styles["text-row-table"]}`}>
+                              {item.seria}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            <span className={`${styles["text-row-table"]}`}>
+                              {item.artukul}
+                            </span>
+                          </TableCell>
+                          {/* <TableCell> */}
+                          {/* <div className="d-flex align-items-center"> */}
+                          {/* <BtnEditSeriaModal /> */}
+                          {/* </div> */}
+                          {/* </TableCell> */}
                         </TableRow>
                       );
                     })}

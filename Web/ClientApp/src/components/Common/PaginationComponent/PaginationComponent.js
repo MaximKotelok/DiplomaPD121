@@ -36,7 +36,6 @@ const PaginationComponent = ({ setContent, getContent, allowAppend, page=1, setP
         }   
     }
     async function nextPageClickHandle(){
-        console.log("a")
         if(page === countOfPages)
             return;
         let result = await getContent(page+1);

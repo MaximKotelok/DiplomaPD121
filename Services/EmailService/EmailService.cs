@@ -104,9 +104,9 @@ namespace Services.EmailService
 <body>
     <p>Шановний користувачу,</p>
     
-    <p>Ви успішно забронювали товари.</p>
+    <p>Статус вашего замовлення змінився на {reservation.Status!.Status}.</p>
     
-    <p>Дата бронювання: <strong>{currentDate}</strong></p>
+    <p>Дата зміни: <strong>{currentDate}</strong></p>
     
     <p>Дякуємо, що обрали наші послуги.</p>
 

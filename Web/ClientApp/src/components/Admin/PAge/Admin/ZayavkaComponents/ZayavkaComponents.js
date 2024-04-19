@@ -62,9 +62,9 @@ const useStyles = makeStyles({
 });
 
 export const ZayavkaComponents = () => {
-  const {paramPage} = useParams();
+  const { paramPage } = useParams();
   const classes = useStyles();
-  const [page, setPage] = React.useState(paramPage?parseInt(paramPage):1);
+  const [page, setPage] = React.useState(paramPage ? parseInt(paramPage) : 1);
   const [countOfPages, setCountOfPages] = React.useState(1);
   //const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [rows, setRows] = React.useState([]);
@@ -74,48 +74,48 @@ export const ZayavkaComponents = () => {
     setPage(newPage);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     init();
-  },[]);
+  }, []);
 
-  async function init(){
+  async function init() {
     let res = await getAllProductConfirm(page);
     const statusesRes = await getAllStatuses();
-    if(res.status === Success && statusesRes.status === Success){
+    if (res.status === Success && statusesRes.status === Success) {
       //console.log(res);
-      let page = paramPage?parseInt(paramPage):1;
-      console.log(page)
-      console.log(res.data.countOfPages)
-      if(page > res.data.countOfPages){
+      let page = paramPage ? parseInt(paramPage) : 1;
+      console.log(page);
+      console.log(res.data.countOfPages);
+      if (page > res.data.countOfPages) {
         res = await getAllProductConfirm(res.data.countOfPages);
         page = res.data.countOfPages;
-      }else if(page < 1){
+      } else if (page < 1) {
         res = await getAllProductConfirm(1);
         page = 1;
       }
-      setPage(page)
+      setPage(page);
       setStatuses(statusesRes.data);
       setRows(res.data.data);
-      setCountOfPages(res.data.countOfPages)   
-      
+      setCountOfPages(res.data.countOfPages);
     }
-  }  
- 
+  }
 
   return (
     <div className={`${styles["row-parent"]}`}>
-      <div className={`${styles["box-container"]} row`}>
+      <div className={`${styles["box-container"]} `}>
         <div className="col-6">
-          <SearchComponent callback={async (text)=>{
-            let page = 1;
-            setPage(1);
-            const res = await getAllProductConfirm(page,text);
-            if(res.status === Success){
-              //console.log(res);
-              setRows(res.data.data);
-              setCountOfPages(res.data.countOfPages)   
-            }
-          }}/>
+          <SearchComponent
+            callback={async (text) => {
+              let page = 1;
+              setPage(1);
+              const res = await getAllProductConfirm(page, text);
+              if (res.status === Success) {
+                //console.log(res);
+                setRows(res.data.data);
+                setCountOfPages(res.data.countOfPages);
+              }
+            }}
+          />
         </div>
 
         <Paper className={classes.root}>
@@ -141,7 +141,7 @@ export const ZayavkaComponents = () => {
               </TableHead>
               <TableBody>
                 {rows.map((pharmacy, index) => (
-                  <React.Fragment key={index}>
+                  <React.Fragment>
                     <TableRow>
                       <TableCell
                         colSpan={12}
@@ -153,78 +153,87 @@ export const ZayavkaComponents = () => {
 
                     {pharmacy.data.map((item, itemIndex) => {
                       return (
-                      <TableRow
-                        className={`${styles["tb-pharmacy"]}`}
-                        key={itemIndex}
-                      >
-                        <TableCell>
-                          <Link to={`/admin/detailProduct/${item.id}`}>
-
-                          <CustomImgComponent
-                          className={`${styles["img-product"]}`}
-                          src={`${ApiPath}${item.pathToPhoto}`}/>
-                          {" "}
-                          {item.title}
-                          </Link>
-                        </TableCell>
-                        <TableCell>{item.category}</TableCell>
-                        <TableCell>{item.manufacturer}</TableCell>
-                        <TableCell>{item.date}</TableCell>
-                        <TableCell>
-                          <div
-                            className={`d-flex justify-content-between align-items-center`}
-                          >
+                        <TableRow
+                          className={`${styles["tb-pharmacy"]}`}
+                          key={itemIndex}
+                        >
+                          <TableCell>
+                            <Link to={`/admin/detailProduct/${item.id}`}>
+                              <CustomImgComponent
+                                className={`${styles["img-product"]}`}
+                                src={`${ApiPath}${item.pathToPhoto}`}
+                              />{" "}
+                              {item.title}
+                            </Link>
+                          </TableCell>
+                          <TableCell>{item.category}</TableCell>
+                          <TableCell>{item.manufacturer}</TableCell>
+                          <TableCell>{item.date}</TableCell>
+                          <TableCell>{item.date}</TableCell>
+                          <TableCell>
                             <div
-                              className={`
+                              className={`d-flex justify-content-between align-items-center`}
+                            >
+                              <div
+                                className={`
                             ${styles["span-status-rozmir"]}
                             `}
-                            style={{backgroundColor: item.statusColor}}                            
-                            >
-                              {item.status}
-                            </div>
-                            <BtnEditStatusModal id={item.id} statusId={item.statusId} statuses={statuses} changeStatusProduct={(c)=>{
-                              setRows((prevRows) => {
-                                const updatedRows = prevRows.map((row, rowIndex) => {
-                                  if (rowIndex === index) {
-                                    const updatedData = row.data.map((rowData) => {
-                                      if (rowData.id === item.id) {
-                                        return {
-                                          ...rowData,
-                                          statusId: c.id,
-                                          status: c.status,
-                                          statusColor: c.color
-                                        };
+                                style={{ backgroundColor: item.statusColor }}
+                              >
+                                {item.status}
+                              </div>
+                              <BtnEditStatusModal
+                                id={item.id}
+                                statusId={item.statusId}
+                                statuses={statuses}
+                                changeStatusProduct={(c) => {
+                                  setRows((prevRows) => {
+                                    const updatedRows = prevRows.map(
+                                      (row, rowIndex) => {
+                                        if (rowIndex === index) {
+                                          const updatedData = row.data.map(
+                                            (rowData) => {
+                                              if (rowData.id === item.id) {
+                                                return {
+                                                  ...rowData,
+                                                  statusId: c.id,
+                                                  status: c.status,
+                                                  statusColor: c.color,
+                                                };
+                                              }
+                                              return rowData;
+                                            }
+                                          );
+                                          return {
+                                            ...row,
+                                            data: updatedData,
+                                          };
+                                        }
+                                        return row;
                                       }
-                                      return rowData;
-                                    });
-                                    return {
-                                      ...row,
-                                      data: updatedData
-                                    };
-                                  }
-                                  return row;
-                                });
-                                return updatedRows;
-                              });
-                              
-                            }}/>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    )})}
+                                    );
+                                    return updatedRows;
+                                  });
+                                }}
+                              />
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
                   </React.Fragment>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
-          <div className={`d-flex justify-content-end align-items-center`}>            
-            <PaginationComponent 
-              setContent={(a)=>setRows(a)}
-              getContent={async (page)=>{
+          <div className={`d-flex justify-content-end align-items-center`}>
+            <PaginationComponent
+              setContent={(a) => setRows(a)}
+              getContent={async (page) => {
                 let res = await getAllProductConfirm(page);
                 const newUrl = `/admin/zayavkaList/${page}`;
-                window.history.pushState({}, '', newUrl);
-                if(res.status === Success){
+                window.history.pushState({}, "", newUrl);
+                if (res.status === Success) {
                   return res.data.data;
                 }
               }}
@@ -232,7 +241,7 @@ export const ZayavkaComponents = () => {
               page={page}
               setPage={setPage}
               countOfPages={countOfPages}
-              />
+            />
           </div>
         </Paper>
       </div>

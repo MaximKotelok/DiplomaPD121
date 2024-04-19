@@ -119,11 +119,16 @@ const UpsertPharmaCompanyComponent = () => {
       if (companyId) {
           tmpObject = await getPharmaCompanyById(companyId);
           tmpPharmCompanyAdminObject = await getPharmaComapnyAdmin(companyId);
-
-          setPreview(tmpObject.pathToPhoto ? ApiPath + tmpObject.pathToPhoto : null);
-
-        if (tmpObject.status === Success) {
+          setPreview(tmpObject.data.pathToPhoto ? ApiPath + tmpObject.data.pathToPhoto : null);
+        if (tmpObject.status === Success && tmpPharmCompanyAdminObject.status === Success) {
             setPharmaCompanyFormData(tmpObject.data);
+    
+            setPharmaComapnyIdState(tmpObject.data.id);
+            setUserFormData({...userFormData,       
+                username: tmpPharmCompanyAdminObject.data.username,
+                email: tmpPharmCompanyAdminObject.data.email,
+                password: ""
+            })
         } else {
           setStateInfo(StateInfos.ERROR);
         }
@@ -195,7 +200,6 @@ const UpsertPharmaCompanyComponent = () => {
         }
     };
     const submitPharmaCompanyAdmin = async () => {
-        console.log(userFormData)
         let res = await upsertPharmaCompanyAdmin(userFormData);
         if (res.status === Success) {
             toast.success("Успіх!");
