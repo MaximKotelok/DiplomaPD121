@@ -72,13 +72,13 @@ import { PharmacyListForPharmaCompanyComponent } from "./components/Admin/PAge/P
    await setupLocation();
  }*/
 export default class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      locationAllowed: false,
-      isLoading: true
-    };
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+            locationAllowed: false,
+            isLoading: true
+        };
+    }
 
     async componentDidMount() {
         try {
@@ -90,19 +90,19 @@ export default class App extends Component {
         this.setupAxiosInterceptors();
     }
 
-  setupAxiosInterceptors() {
-    axios.interceptors.response.use(
-      (response) => response,
-      (error) => {
-        if (error.response && error.response.status === 401) {
-          removeToken();
-          const currentLocation = (window.location.pathname + window.location.search).substr(1);
-          window.location.replace(`/auth/login?from=/${currentLocation}`);
-        }
-        return Promise.reject(error);
-      }
-    );
-  }
+    setupAxiosInterceptors() {
+        axios.interceptors.response.use(
+            (response) => response,
+            (error) => {
+                if (error.response && error.response.status === 401) {
+                    removeToken();
+                    const currentLocation = (window.location.pathname + window.location.search).substr(1);
+                    window.location.replace(`/auth/login?from=/${currentLocation}`);
+                }
+                return Promise.reject(error);
+            }
+        );
+    }
 
     handleLocationSetup = () => {
         this.setState({ locationAllowed: true });
@@ -184,156 +184,125 @@ export default class App extends Component {
                     </Route>
                     <Route path="loginPharmacy" element={<LoginLayuotPharmacy />}></Route>
 
-          <Route path="admin" element={<LayoutAdmin />}>
-            <Route path="zayavkaList" element={<ZayavkaComponents />} />
-            <Route
-              path="productInspection"
-              element={<ProductInspectionComponents />}
-            />
-            <Route
-              path="zayavkaList/:paramPage"
-              element={<ZayavkaComponents />}
-            />
-            <Route path="userList" element={<UsersComponents />} />
-            <Route path="productList" element={<ProductListComponents />} />
-            <Route
-              path="productConcreatList"
-              element={<ProductConcreatListComponents />}
-            />
+                    <Route path="admin" element={<LayoutAdmin />}>
+                        {/*HOME*/}
+                        <Route path="homePageAdmin" element={<HomeAdminPageComponents />} />
 
-            {/* //DefectiveSeriesComponents */}
-            <Route
-              path="defectiveSeriesList"
-              element={<DefectiveSeriesComponents />}
-            />
+                        {/*USER*/}
+                        <Route path="userList" element={<UsersComponents />} />
+                        <Route path="pharmacyUser" element={<UserPharmacy />} />
 
-            <Route path="pharmacyList" element={<PharmacyListComponents />} />
-            <Route path="pharmaCompany/pharmacyList" element={<PharmacyListForPharmaCompanyComponent />} />
+                        {/*DEFECTIVE SERIES*/}
+                        <Route
+                            path="defectiveSeriesList"
+                            element={<DefectiveSeriesComponents />}
+                        />
 
-            <Route path="attributeList" element={<AttributeListComponents />} />
-            <Route
-              path="activeSubstanceList"
-              element={<ActiveSubstanceListComponents />}
-            />
-            <Route
-              path="activeSubstanceList/:paramPage"
-              element={<ActiveSubstanceListComponents />}
-            />
-            {/* <Route
-              path="attributeUpsert"
-              element={<UpsertAttributeComponents />}
-            /> */}
-            <Route
-              path="attributeUpsert/:id"
-              element={<UpsertAttributeComponents />}
-            />
+                        {/*ATTRIBUTE*/}
+                        <Route path="attributeList" element={<AttributeListComponents />} />
+                        <Route path="attributeList/:paramPage" element={<AttributeListComponents />} />
+                        <Route path="addAttribute/" element={<UpsertAttributeComponents />} />
+                        <Route
+                            path="updateAttribute/:attributeId"
+                            element={<UpsertAttributeComponents />}
+                        />
 
-            <Route
-              path="attributeUpsert/"
-              element={<UpsertAttributeComponents />}
-            />
+                        {/*OFFER*/}
+                        <Route path="zayavkaList" element={<ZayavkaComponents />} />
+                        <Route
+                            path="zayavkaList/:paramPage"
+                            element={<ZayavkaComponents />}
+                        />
 
+                        {/*ACTIVE SUBVTANCES*/}
+                        <Route path="activeSubstanceList" element={<ActiveSubstanceListComponents />} />
+                        <Route
+                            path="activeSubstanceList/:paramPage"
+                            element={<ActiveSubstanceListComponents />}
+                        />
                         <Route
                             path="activeSubstance/:id"
                             element={<UpsertActiveSubstanceComponents />}
                         />
 
-            {/* <Route
-              path="activeSubstance/"
-              element={<UpsertActiveSubstanceComponents />}
-            /> */}
-            <Route path="homePageAdmin" element={<HomeAdminPageComponents />} />
+                        {/*MANUFACTURER*/}
+                        <Route
+                            path="manufactureList"
+                            element={<ManufactureListComponents />}
+                        />
+                        <Route
+                            path="upsertManufacture"
+                            element={<UpsertManufactureComponent />}
+                        />
 
-            <Route
-              path="pharmacyList/:paramPage"
-              element={<PharmacyListComponents />}
-            />
-            <Route path="pharmacyUser" element={<UserPharmacy />} />
-            <Route path="orderList" element={<OrderListProductComponents />} />
-            <Route
-              path="addProductPharmacy"
-              element={<AddProductPharmacyComponent />}
-            />
+                        {/*BRAND*/}
+                        <Route path="brandList" element={<BrandListComponent />} />
+                        <Route path="brandList/:id" element={<BrandListComponent />} />
+                        <Route path="addBrand" element={<UpsertBrendComponent />} />
+                        <Route
+                            path="updateBrand/:brandId"
+                            element={<UpsertBrendComponent />}
+                        />
 
-            <Route path="brandList" element={<BrandListComponent />} />
-            <Route path="categoeyList" element={<CategoryListComponents />} />
-            <Route
-              path="manufactureList"
-              element={<ManufactureListComponents />}
-            />
-            <Route
-              path="upsertManufacture"
-              element={<UpsertManufactureComponent />}
-            />
+                        {/*CONCREAT PRODUCT*/}
+                        <Route
+                            path="productConcreatList"
+                            element={<ProductConcreatListComponents />}
+                        />
 
-            <Route
-              path="upsertBrand/:brandId"
-              element={<UpsertBrendComponent />}
-            />
-            <Route path="addBrand" element={<UpsertBrendComponent />} />
+                        {/*PRODUCT*/}
+                        <Route path="productList" element={<ProductListComponents />} />
+                        <Route
+                            path="detailProduct/:productId"
+                            element={<ProductDetailsAdminComponents />}
+                        />
+                        <Route path="addProduct" element={<UpsertProductComponent />} />
+                        <Route
+                            path="updateProduct/:productId"
+                            element={<UpsertProductComponent />}
+                        />
+                        <Route
+                            path="productInspection"
+                            element={<ProductInspectionComponents />}
+                        />
 
-            <Route
-              path="updateBrand/:brandId"
-              element={<UpsertBrendComponent />}
-            />
+                        {/*PHARMA COMPANY*/}
+                        <Route path="pharmaCompany/pharmacyList" element={<PharmacyListForPharmaCompanyComponent />} />
+                        <Route path="pharmaCompany/pharmacyList/:paramPage" element={<PharmacyListForPharmaCompanyComponent />} />
+                        <Route
+                            path="addPharmaCompany"
+                            element={<UpsertPharmaCompanyComponent />}
+                        />
+                        <Route
+                            path="updatePharmaCompany/:companyId"
+                            element={<UpsertPharmaCompanyComponent />}
+                        />
 
-            <Route
-              path="detailProduct/:productId"
-              element={<ProductDetailsAdminComponents />}
-            />
-            <Route path="addProduct" element={<UpsertProductComponent />} />
-            <Route
-              path="updateProduct/:productId"
-              element={<UpsertProductComponent />}
-            />
+                        {/*CATEGORY*/}
+                        <Route path="categoeyList" element={<CategoryListComponents />} />
+                        <Route path="addCategory" element={<AddCategoryComponents />} />
 
-            <Route
-              path="addPharmaCompany"
-              element={<UpsertPharmaCompanyComponent />}
-            />
-            <Route
-              path="updatePharmaCompany/:companyId"
-              element={<UpsertPharmaCompanyComponent />}
-            />
-            <Route path="addCategory" element={<AddCategoryComponents />} />
-            <Route path="supportChat" element={<SupportChat />} />
-            <Route
-              path="updatePharmaCompany/:companyId"
-              element={<UpsertPharmaCompanyComponent />}
-            />
-            <Route
-              path="addPharmacy/:companyId"
-              element={<UpsertPharmacyComponent />}
-            />
-            <Route
-              path="addPharmacy"
-              element={<UpsertPharmacyComponent />}
-            />
-            <Route
-              path="updatePharmacy/:pharmacyId"
-              element={<UpsertPharmacyComponent />}
-            />
-          </Route>
-        </Routes>
-      </LayoutProvider>
-    );
-  }
+
+                        {/*PARMACY*/}
+                        <Route path="pharmacyList" element={<PharmacyListComponents />} />
+                        <Route path="pharmacyList/:paramPage" element={<PharmacyListComponents />} />
+                        <Route path="addPharmacy" element={<UpsertPharmacyComponent />} />
+                        <Route
+                            path="updatePharmacy/:pharmacyId"
+                            element={<UpsertPharmacyComponent />}
+                        />
+                        <Route
+                            path="addProductPharmacy"
+                            element={<AddProductPharmacyComponent />}
+                        />
+                        <Route path="orderList" element={<OrderListProductComponents />} />
+
+
+                        {/*CHAT*/}
+                        <Route path="supportChat" element={<SupportChat />} />
+                    </Route>
+                </Routes>
+            </LayoutProvider>
+        );
+    }
 }
-//
-//   <Routes>
-//     {AppRoutes.map((route, index) => {
-//       const { element, Layout, ...rest } = route;
-
-//       const RenderedElement = Layout ? (
-//         <Layout>{element}</Layout>
-//       ) : (
-//         element
-//       );
-
-//       return <Route key={index} {...rest} element={RenderedElement} />;
-//     })}
-//   </Routes>
-// </LayoutProvider>
-//     );
-//   }
-// }

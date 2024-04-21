@@ -20,12 +20,7 @@ namespace Services.AttributeService
 			_repository = repository;
 		}
 
-		/*public void DeleteAttribute(int id)
-		{
-			ProductAttribute? attribute = _repository.Get(x => x.Id == id);
-			_repository.Remove(attribute);
-			_repository.SaveChanges();
-		}*/
+		
 		public IEnumerable<ProductAttribute> GetAllAttributes(Expression<Func<ProductAttribute, bool>>? filter = null, string? includeProperties = null)
 		{
 			return _repository.GetAll(filter, includeProperties);
@@ -36,17 +31,22 @@ namespace Services.AttributeService
 			return _repository.Get(filter, includeProperties);
 		}
 
-		
-	
-		public void InsertAttribute(ProductAttribute attribute)
+        public void DeleteAttribute(int id)
+        {
+            ProductAttribute? attribute = _repository.Get(x => x.Id == id);
+            _repository.Remove(attribute);
+            _repository.SaveChanges();
+        }
+
+        public void InsertAttribute(ProductAttribute attribute)
 		{
 			_repository.Insert(attribute);
-		}/*
+		}
 
 		public void UpdateAttribute(ProductAttribute attribute)
 		{
 			_repository.Update(attribute);
 		}
-*/
+
 	}
 }

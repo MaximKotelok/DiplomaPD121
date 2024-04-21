@@ -19,13 +19,14 @@ import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
 import BtnEditBrandModal from "./components/BtnEditStatusModal/BtnEditStatusModal/BtnEditBrandModal";
-import { getAllBrandForAdmin } from "../../../../../services/brand";
+import { getAllBrandForAdmin, deleteBrand } from "../../../../../services/brand";
 import {
   BrowserRouter as Router,
   Route,
   Link,
   useParams,
 } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const columns = [
   { id: "name", last: false, label: "Бренд", width: 1100 },
@@ -69,27 +70,6 @@ export const BrandListComponent = () => {
       setCountOfPages(res.data.countOfPages);
     }
   }
-
-  // const handleChangePage = (event, newPage) => {
-  //   setPage(newPage);
-  // };
-
-  // useEffect(()=>{
-  //   init();
-  // },[]);
-
-  // async function init(){
-  //   const res = await getAllProductConfirm(page);
-  //   const statusesRes = await getAllStatuses();
-  //   if(res.status === Success && statusesRes.status === Success){
-  //     //console.log(res);
-  //     setStatuses(statusesRes.data);
-  //     setRows(res.data.data);
-  //     setCountOfPages(res.data.countOfPages)
-  //     console.log(res)
-  //   }
-  // }
-  // console.log(statuses);
 
   return (
     <div className={`${styles["row-parent"]}`}>
@@ -172,28 +152,23 @@ export const BrandListComponent = () => {
                         <div className="d-flex  align-items-center justify-content-end">
                           <Link
                             className={`btn btn-primary ${styles["my-btn-edit"]} me-4`}
-                            // to={`/admin/UpdateBrand/1`}
                             to={`/admin/UpdateBrand/${brand.id}`}
                           >
                             Оновити
                           </Link>
                           <button
                             className={`btn btn-danger ${styles["my-btn-delete"]}`}
-                            // onClick={async () => {
-                            //   let res = await deleteBrand(brand.id);
-                            //   if (res.status === Success) {
-                            //     //toast.success("Успіх!");
-                            //     window.location.reload();
-                            //   } else {
-                            //     toast.error("Помилка");
-                            //   }
-                            // }}
+                             onClick={async () => {
+                               let res = await deleteBrand(brand.id);
+                               if (res.status === Success) {
+                                 window.location.reload();
+                               } else {
+                                 toast.error("Помилка");
+                               }
+                             }}
                           >
                             Видалити
                           </button>
-                          {/* </div> */}
-
-                          {/* <BtnEditBrandModal id={brand.id} /> */}
                         </div>
                       </TableCell>
                     </TableRow>
@@ -206,7 +181,7 @@ export const BrandListComponent = () => {
             <PaginationComponent
               setContent={(a) => setRows(a)}
               getContent={async (page) => {
-                const newUrl = `/admin/pharmacyList/${page}`;
+                const newUrl = `/admin/brandList/${page}`;
                 window.history.pushState({}, "", newUrl);
                 let res = await getAllBrandForAdmin(page);
                 if (res.status === Success) {

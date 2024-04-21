@@ -15,8 +15,8 @@ namespace Domain.Models
 		[Required]
 		public string? Name { get; set; }
 		[Required]
-		public int Index { get; set; }
-		public int ProductAttributeGroupID { get; set; }
+		public int? Index { get; set; }
+		public int? ProductAttributeGroupID { get; set; }
 		[ForeignKey("ProductAttributeGroupID")]
 		[JsonIgnore]
 		public ProductAttributeGroup? ProductAttributeGroup { get; set; }

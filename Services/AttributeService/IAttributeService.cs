@@ -12,8 +12,8 @@ namespace Services.AttributeService
 	{
 		IEnumerable<ProductAttribute> GetAllAttributes(Expression<Func<ProductAttribute, bool>>? filter = null, string? includeProperties = null);
 		ProductAttribute? GetAttribute(Expression<Func<ProductAttribute, bool>> filter, string? includeProperties = null);
-		void InsertAttribute(ProductAttribute category);
-		/*void UpdateAttribute(ProductAttribute category);
-		void DeleteAttribute(int id);*/
+		void InsertAttribute(ProductAttribute attribute);
+		void UpdateAttribute(ProductAttribute attribute);
+		void DeleteAttribute(int id);
 	}
 }
