@@ -18,9 +18,16 @@ import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
 import BtnEditSeriaModal from "./components/BtnEditSeriaModal/BtnEditSeriaModal";
+import { getCountOfPagesForProductsAdmin, getProductsAdmin } from "../../../../../services/product";
 
 const columns = [
   { id: "position", label: "Позиція", minWidth: 230 },
+  {
+    id: "shortDescreiption",
+    label: "Короткий опис",
+    minWidth: 280,
+    editable: true,
+  },
   { id: "brend", label: "Бренд", minWidth: 230 },
 
   {
@@ -30,12 +37,7 @@ const columns = [
     editable: true,
     // format: (value) => value.toLocaleString("en-US"),
   },
-  {
-    id: "shortDescreiption",
-    label: "Короткий опис",
-    minWidth: 280,
-    editable: true,
-  },
+
 ];
 
 // function createData(name, code, population, size) {
@@ -106,12 +108,27 @@ const useStyles = makeStyles({
 
 export const ProductListComponents = () => {
   const classes = useStyles();
-  const [page, setPage] = React.useState(1);
   const [countOfPages, setCountOfPages] = React.useState(1);
-  //const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  // const [rows, setRows] = React.useState([]);
-  const [statuses, setStatuses] = React.useState([]);
+  const [page, setPage] = React.useState(1);
+  const [search, setSearch] = React.useState("");
+  const [rows, setRows] = React.useState([]);
 
+  useEffect(()=>{
+    reload(1);
+  },[])
+
+
+  async function reload(page, searchText){    
+    setPage(page);
+    let res = await getProductsAdmin(page, searchText?searchText:search);
+    let resCountOfPages = await getCountOfPagesForProductsAdmin(searchText?searchText:search);
+    if(res.status === Success && 
+      resCountOfPages.status === Success){
+        setCountOfPages(resCountOfPages.data);
+        setRows(res.data);
+        
+      }
+  }
   // const handleChangePage = (event, newPage) => {
   //   setPage(newPage);
   // };
@@ -137,7 +154,10 @@ export const ProductListComponents = () => {
     <div className={`${styles["row-parent"]}`}>
       <div className={`${styles["box-container"]} row`}>
         <div className="col-6">
-          <SearchComponent />
+          <SearchComponent callback={async (text)=>{
+            setSearch(text);
+            await reload(1, text);
+          }} />
         </div>
 
         <div className="col-6">
@@ -166,7 +186,7 @@ export const ProductListComponents = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((pharmacy, index) => (
+                {rows.map((category, index) => (
                   <React.Fragment key={index}>
                     <TableRow>
                       <TableCell
@@ -175,13 +195,13 @@ export const ProductListComponents = () => {
                       >
                         <CustomImgComponent
                           className={`${styles["img-category"]} ms-3`}
-                          // src={`${ApiPath}${item.pathToPhoto}`}
+                          src={`${ApiPath}${category.categoryPathToPhoto}`}
                         />{" "}
-                        {pharmacy.nameCategory}
+                        {category.categoryTitle}
                       </TableCell>
                     </TableRow>
 
-                    {pharmacy.data.map((item, itemIndex) => {
+                    {category.data.map((item, itemIndex) => {
                       return (
                         <TableRow
                           className={`${styles["tb-pharmacy"]}`}
@@ -191,26 +211,27 @@ export const ProductListComponents = () => {
                             <span className={`${styles["text-row-table"]}`}>
                               <CustomImgComponent
                                 className={`${styles["img-product"]} `}
-                                // src={`${ApiPath}${item.pathToPhoto}`}
+                                 src={`${ApiPath}${item.pathToPhoto}`}
                               />{" "}
-                              {item.position}
+                              {item.title}
                             </span>
                           </TableCell>
                           <TableCell>
                             <span className={`${styles["text-row-table"]}`}>
-                              {item.brend}
+                              {item.shortDescription}
                             </span>
                           </TableCell>
                           <TableCell>
                             <span className={`${styles["text-row-table"]}`}>
-                              {item.seria}
+                              {item.brand}
                             </span>
                           </TableCell>
                           <TableCell>
                             <span className={`${styles["text-row-table"]}`}>
-                              {item.artukul}
+                              {item.manufacturer}
                             </span>
                           </TableCell>
+
                           {/* <TableCell> */}
                           {/* <div className="d-flex align-items-center"> */}
                           {/* <BtnEditSeriaModal /> */}
@@ -297,19 +318,19 @@ export const ProductListComponents = () => {
             </Table>
           </TableContainer>
           <div className={`d-flex justify-content-end align-items-center`}>
-            {/* <PaginationComponent 
+            <PaginationComponent 
               setContent={(a)=>setRows(a)}
               getContent={async (page)=>{
-                let res = await getAllProductConfirm(page);
+                let res = await getProductsAdmin(page, search);
                 if(res.status === Success){
-                  return res.data.data;
+                  return res.data;
                 }
               }}
               allowAppend={false}
               page={page}
               setPage={setPage}
               countOfPages={countOfPages}
-              /> */}
+              /> 
           </div>
         </Paper>
       </div>
