@@ -19,7 +19,7 @@ export async function GetPharmacist(id){
 
 export async function getAllPharmaciesForAdmin(page, search, isDisplayOnlyCompanies){
     return await postToServer("Pharmacy/GetAllPharmaciesForAdmin",  {
-        itemsPerPage: 2,
+        itemsPerPage: 6,
         page: page,
         search,
         isDisplayOnlyCompanies
@@ -28,7 +28,7 @@ export async function getAllPharmaciesForAdmin(page, search, isDisplayOnlyCompan
 
 export async function getAllPharmaciesForPharmaCompany(page, search){
     return await postToServer("Pharmacy/GetAllPharmaciesForPharmaCompany",  {
-        itemsPerPage: 2,
+        itemsPerPage: 6,
         page: page,
         search
     })
