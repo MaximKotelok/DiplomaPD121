@@ -285,7 +285,9 @@ export default class App extends Component {
 
                         {/*CATEGORY*/}
                         <Route path="categoeyList" element={<CategoryListComponents />} />
+                        <Route path="categoryList/:paramPage" element={<CategoryListComponents />} />
                         <Route path="addCategory" element={<AddCategoryComponents />} />
+                        <Route path="updateCategory/:categoryId" element={<AddCategoryComponents />} />
 
 
                         {/*PARMACY*/}

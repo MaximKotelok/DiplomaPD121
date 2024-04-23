@@ -38,7 +38,7 @@ namespace Web.Controllers
 		}
         [HttpPost("GetAllManufacturersForAdmin")]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
-        public IActionResult GetAllBrandsForAdmin(PageViewModel model)
+        public IActionResult GetAllManufacturersForAdmin(PageViewModel model)
         {
             var rawResult = _service.GetAllManufacturers(includeProperties: "CountryManufacture");
             if (!model.Search.IsNullOrEmpty())
