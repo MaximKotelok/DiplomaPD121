@@ -6,6 +6,10 @@ export async function getAllManufacturers() {
     return await getFromServer(GetAllManufacturers)
 } 
 
+export async function getManufacturerById(manufacturerId) {
+    return await getFromServer("Manufacturer/GetManufacturerById", { manufacturerId: manufacturerId })
+} 
+
 export async function getAllManufacturerForAdmin(page, search) {
     return await postToServer("Manufacturer/GetAllManufacturersForAdmin", {
         itemsPerPage: 6,

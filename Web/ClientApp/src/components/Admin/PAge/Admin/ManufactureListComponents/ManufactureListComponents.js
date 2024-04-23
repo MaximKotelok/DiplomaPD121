@@ -18,7 +18,7 @@ import CustomImgComponent from "../../../../Common/CustomImgComponent/CustomImgC
 import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 // import BtnEditBrandModal from "./components/BtnEditStatusModal/BtnEditStatusModal/BtnEditBrandModal";
-import { getAllManufacturerForAdmin } from "../../../../../services/manufacture";
+import { getAllManufacturerForAdmin, deleteManufacturer } from "../../../../../services/manufacture";
 import {
     BrowserRouter as Router,
     Route,
@@ -30,7 +30,7 @@ import { toast } from "react-toastify";
 const columns = [
     { id: "name", last: false, label: "Виробник", width: 1100 },
     { id: "country", last: false, label: "Країна, Місто", width: 500 },
-    { id: "Adress", last: false, label: "Адресса", width: 400 },
+    { id: "Address", last: false, label: "Адреса", width: 400 },
     { id: "Site", last: false, label: "Сайт", width: 400 },
     { id: "buttonEdit", last: true, label: "", width: 400 },
 ];
@@ -93,7 +93,7 @@ export const ManufactureListComponents = () => {
 
                     <div className="col-6 d-flex align-items-center justify-content-end ">
                         <Link
-                            to="/admin/upsertManufacture"
+                            to="/admin/AddManufacturer"
                             className={`btn btn-primary ${styles["add-button"]}`}
                         >
                             Додати
@@ -161,15 +161,13 @@ export const ManufactureListComponents = () => {
                                                 <div className="d-flex  align-items-center justify-content-between">
                                                     <Link
                                                         className={`btn btn-primary ${styles["my-btn-edit"]} me-4`}
-                                                        to={`/admin/UpdateBrand/1`}
-                                                        to={`/admin/upsertManufacture`}
+                                                        to={`/admin/UpdateManufacturer/${manufacturer.id}`}
                                                     >
                                                         Оновити
                                                     </Link>
                                                     <button className={`btn btn-danger ${styles["my-btn-delete"]}`}
                                                         onClick={async () => {
-                                                            //let res = await deleteBrand(brand.id);
-                                                            let res = 1;
+                                                            let res = await deleteManufacturer(manufacturer.id);
                                                             if (res.status === Success) {
                                                                 //toast.success("Успіх!");
                                                                 window.location.reload();

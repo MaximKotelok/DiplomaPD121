@@ -234,9 +234,9 @@ export default class App extends Component {
                             path="manufactureList/:paramPage"
                             element={<ManufactureListComponents />}
                         />
-                        <Route path="addManufacture" element={<UpsertManufactureComponent />} />
+                        <Route path="addManufacturer" element={<UpsertManufactureComponent />} />
                         <Route
-                            path="updateManufacture/:brandId"
+                            path="updateManufacturer/:manufacturerId"
                             element={<UpsertManufactureComponent />}
                         />
 

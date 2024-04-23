@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Services.ActiveSubstanceService;
 using Services.CategoryService;
+using Services.ConcreteProductService;
 using Services.ManufacturerService;
+using System.Transactions;
 using Utility;
 
 namespace Web.Controllers
@@ -15,10 +17,13 @@ namespace Web.Controllers
 	public class ManufacturerController : Controller
 	{
 		private readonly IManufacturerService _service;
+        private readonly IProductService _productService;
 
-		public ManufacturerController(IManufacturerService service)
+
+        public ManufacturerController(IManufacturerService service, IProductService productService)
 		{
 			this._service = service;
+			this._productService = productService; 
 		}
 
 		[HttpGet("GetAllManufacturers")]
@@ -67,5 +72,65 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-	}
+
+        [HttpPost("UpsertManufacturer")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+        public IActionResult UpsertManufacturer(PostManufacturerViewModel postModel)
+        {
+            using var transaction = new TransactionScope();
+            try
+            {
+                UpsertManufacturerEntity(postModel);
+
+                transaction.Complete();
+                return Ok("Data inserted");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Failed to upsert product. Error: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("DeleteManufacturer/{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+        public IActionResult DeleteManufacturer(int id)
+        {
+            using var transaction = new TransactionScope();
+
+            var brand = _service.GetManufacturer(a => a.Id == id, "Products");
+            if (brand != null)
+            {
+                foreach (var item in brand.Products)
+                {
+                    _productService.DeleteProduct(item.Id);
+                }
+                _service.DeleteManufacturer(id);
+            }
+
+            transaction.Complete();
+            return Ok("Data Deleted");
+        }
+
+        private void UpsertManufacturerEntity(PostManufacturerViewModel postModel)
+        {
+            var manufacturer = new Manufacturer
+            {
+                Name = postModel.Name,
+                Address = postModel.Address,
+                URLSite = postModel.URLSite,
+                CountryManufactureID = postModel.CountryID,
+            };
+
+
+            if (postModel.Id == null)
+            {
+                _service.InsertManufacturer(manufacturer);
+            }
+            else
+            {
+                manufacturer.Id = postModel.Id.Value;
+                _service.UpdateManufacturer(manufacturer);
+            }
+        }
+    }
 }
