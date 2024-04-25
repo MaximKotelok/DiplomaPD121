@@ -6,11 +6,13 @@ import {
   getProductForPharmacyById,
 } from "../../../../../../services/product";
 import { ApiPath, Success } from "../../../../../../utils/Constants";
-import { addConcreteProductAsync } from "../../../../../../services/concreteProduct";
+import { addConcreteProductAsync, getConcreteProduct } from "../../../../../../services/concreteProduct";
 import { toast } from "react-toastify";
 import BtnWarningModal from "../../../../Common/BtnWarningModal/BtnWarningModal";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
+import CustomImgComponent from "../../../../../Common/CustomImgComponent/CustomImgComponent";
+import { useParams } from "react-router";
 const VisuallyHiddenInput = styled("input")({
   clip: "rgba(229, 229, 234, 1)",
   clipPath: "inset(50%)",
@@ -43,21 +45,23 @@ const StyledButton = styled(Button)({
 
 export const AddProductPharmacyComponent = () => {
   const [imageSrc, setImageSrc] = useState(null);
+  const { concreteProductId } = useParams();
+  
+  // const handleFileChange = (event) => {
+  //   const file = event.target.files[0];
+  //   const reader = new FileReader();
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
+  //   reader.onloadend = () => {
+  //     setImageSrc(reader.result);
+  //   };
 
-    reader.onloadend = () => {
-      setImageSrc(reader.result);
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
-    }
-  };
+  //   if (file) {
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   const [data, setData] = useState({
+    id: null,
     price: null,
     quantity: null,
   });
@@ -72,12 +76,30 @@ export const AddProductPharmacyComponent = () => {
   const [id, setId] = useState(null);
 
   useEffect(() => {
-    if (id != null) initProduct();
+    if (id != null) initProduct(id);
+    
   }, [id]);
+  useEffect(() => {
+    if(concreteProductId){
+      init(concreteProductId);
+    }
+    
+  }, []);
 
-  async function initProduct() {
+  async function initProduct(id) {
     let res = await getProductForPharmacyById(id);
     setProduct(res.data);
+  }
+
+  async function init() {
+    let res = await getConcreteProduct(concreteProductId);
+    setId(res.data.productID);
+    initProduct(res.data.productID) ;
+    setData({
+      id: id,
+      price: res.data.price,
+      quantity: res.data.quantity
+    });
   }
 
   const handleInputChange = (e) => {
@@ -87,15 +109,11 @@ export const AddProductPharmacyComponent = () => {
     });
   };
   const onSubmit = async (e) => {
-    console.log({
-      quantity: parseInt(data.quantity),
-      price: parseInt(data.price),
-      productId: id,
-    });
     let res = await addConcreteProductAsync({
       quantity: parseInt(data.quantity),
       price: parseInt(data.price),
       productId: id,
+      id: concreteProductId
     });
     if (res.status === Success) {
       toast.success(`Операція пройшла успішно`);
@@ -131,24 +149,12 @@ export const AddProductPharmacyComponent = () => {
           <div className={`col-4 d-flex flex-column  `}>
             <label className={`${styles["label-head"]}`}>Товар</label>
             <div className={`d-flex flex-column  justify-content-center `}>
-              <img
-                src={imageSrc}
+              <CustomImgComponent
+                src={`${ApiPath}${product.pathToPhoto}`}
                 alt="no photo"
                 className={`${styles["img-product"]} mb-2`}
               />
-              <StyledButton
-                component="label"
-                role={undefined}
-                variant="contained"
-                tabIndex={-1}
-              >
-                Оберіть файл
-                <VisuallyHiddenInput
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                />
-              </StyledButton>
+             
             </div>
           </div>
 
@@ -202,7 +208,7 @@ export const AddProductPharmacyComponent = () => {
 
         <div className="d-flex justify-content-center">
           <div>
-            <BtnWarningModal text={"а шо а нічо"} onSubmit={onSubmit} />
+            <BtnWarningModal text={"а шо а нічо"} onConfirm={onSubmit} />
           </div>
         </div>
       </div>

@@ -45,58 +45,6 @@ const columns = [
 //   return { name, code, population, size, density };
 // }
 
-const rows = [
-  {
-    nameCategory: "Для тварин: Собаки",
-    data: [
-      {
-        position: "тарілка",
-        brend: "крутий бренд",
-        seria: "SD354GR",
-        artukul: "0239532",
-      },
-    ],
-  },
-  {
-    nameCategory: "Вітаміни: вітамін B",
-
-    data: [
-      {
-        position: "тарілка",
-        brend: "крутий бренд",
-        seria: "SD354GR",
-        artukul: "0239532",
-      },
-      {
-        position: "тарілка",
-        brend: "крутий бренд",
-        seria: "SD354GR",
-        artukul: "0239532",
-      },
-      {
-        position: "тарілка",
-        brend: "крутий бренд",
-        seria: "SD354GR",
-        artukul: "0239532",
-      },
-    ],
-  },
-  {
-    nameCategory: "Для тварин: Коти",
-
-    data: [
-      {
-        position: "тарілка",
-        brend: "крутий бренд",
-        seria: "SD354GR",
-        artukul: "0239532",
-      },
-    ],
-  },
-
-  // Додайте інші записи за потреби
-];
-
 const useStyles = makeStyles({
   root: {
     width: "100%",

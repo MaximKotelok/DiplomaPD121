@@ -249,6 +249,10 @@ export default class App extends Component {
                             path="productConcreatList"
                             element={<ProductConcreatListComponents />}
                         />
+                        <Route
+                            path="productConcreatList/:pageParam"
+                            element={<ProductConcreatListComponents />}
+                        />
 
                         {/*PRODUCT*/}
                         <Route path="productList" element={<ProductListComponents />} />
@@ -283,7 +287,7 @@ export default class App extends Component {
                         <Route path="addCategory" element={<AddCategoryComponents />} />
 
 
-                        {/*PARMACY*/}
+                        {/*PHARMACY*/}
                         <Route path="pharmacyList" element={<PharmacyListComponents />} />
                         <Route path="pharmacyList/:paramPage" element={<PharmacyListComponents />} />
                         <Route path="addPharmacy" element={<UpsertPharmacyComponent />} />
@@ -293,6 +297,10 @@ export default class App extends Component {
                         />
                         <Route
                             path="addProductPharmacy"
+                            element={<AddProductPharmacyComponent />}
+                        />
+                        <Route
+                            path="updateProductPharmacy/:concreteProductId"
                             element={<AddProductPharmacyComponent />}
                         />
                         <Route path="orderList" element={<OrderListProductComponents />} />

@@ -75,7 +75,7 @@ export const UpsertPharmacyComponent = () => {
   const [stateInfo, setStateInfo] = useState(StateInfos.LOADING);
 
   const [pharmacyFormData, setPharmacyFormData] = useState({
-    id: null,
+    id: pharmacyId?pharmacyId:undefined,
     address: undefined,
     workingWeekOpenTime: undefined,
     workingWeekCloseTime: undefined,
@@ -113,7 +113,6 @@ export const UpsertPharmacyComponent = () => {
       if (pharmacyId) {
         tmpObject = await getPharmacyById(pharmacyId);
         tmpPharmacistObject = await GetPharmacist(pharmacyId);
-        console.log(tmpPharmacistObject);
         if (
           tmpObject.status === Success &&
           tmpPharmacistObject.status === Success

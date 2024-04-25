@@ -1,4 +1,4 @@
-import { getFromServer, postToServer } from "../utils/Queries";
+import { deleteFromServer, getFromServer, postToServer } from "../utils/Queries";
 import { postPhotoToServer } from "./photo";
 import { ClassHeader } from "../utils/Constants"
 
@@ -6,6 +6,36 @@ export async function getListOfConcreteProductInYourCity(city, productId){
     return await getFromServer(
         `ConcreteProduct/GetListOfConcreteProductInYourCity/${city}/${productId}`
         )
+}
+
+export async function getCountOfPagesForConcreteProductsFromPharmacy(search=""){
+    return await postToServer(
+        `ConcreteProduct/GetCountOfPagesForConcreteProductsFromPharmacy`,
+        {
+            search,
+            itemsPerPage: 2
+        }
+        )
+}
+
+export async function getConcreteProductsFromPharmacy(search="", page=1){
+    return await postToServer(
+        `ConcreteProduct/GetConcreteProductsFromPharmacy`,
+        {
+            search,
+            itemsPerPage: 2,
+            page
+        }
+        )
+}
+
+
+export async function deleteConcreteProduct(id){
+    return await deleteFromServer(`ConcreteProduct/DeleteConcreteProduct/${id}`);       
+}
+
+export async function getConcreteProduct(id){
+    return await getFromServer(`ConcreteProduct/GetConcreteProduct/${id}`);       
 }
 
 export async function Coords(lat,lng,productId){

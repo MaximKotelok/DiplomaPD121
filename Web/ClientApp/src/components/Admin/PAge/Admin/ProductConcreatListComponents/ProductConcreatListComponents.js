@@ -17,7 +17,9 @@ import CustomImgComponent from "../../../../Common/CustomImgComponent/CustomImgC
 import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { getConcreteProductsFromPharmacy, getCountOfPagesForConcreteProductsFromPharmacy } from "../../../../../services/concreteProduct";
+import BtnConcreteProductModal from "./components/BtnEditStatusModal/BtnConcreteProductModal";
 
 const columns = [
   { id: "position", label: "Позиція", minWidth: 200 },
@@ -115,9 +117,27 @@ export const ProductConcreatListComponents = () => {
   const classes = useStyles();
   const [page, setPage] = React.useState(1);
   const [countOfPages, setCountOfPages] = React.useState(1);
+  const [search, setSearch] = React.useState("");
   //const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  // const [rows, setRows] = React.useState([]);
+  const [rows, setRows] = React.useState([]);
   const [statuses, setStatuses] = React.useState([]);
+  const { pageParam } = useParams();
+  useEffect(()=>{
+    if(pageParam)
+      refresh(parseInt(pageParam));
+      else
+      refresh(1)
+  },[])
+
+  async function refresh(page, searchText){
+    setPage(page);
+    let resCount = await getCountOfPagesForConcreteProductsFromPharmacy(searchText == "" || search?searchText:search);
+    let res = await getConcreteProductsFromPharmacy(searchText == "" || search?searchText:search,page);
+    if(res.status === Success && resCount.status === Success){
+      setCountOfPages(resCount.data);
+      setRows(res.data);
+    }
+  }
 
   // const handleChangePage = (event, newPage) => {
   //   setPage(newPage);
@@ -144,7 +164,10 @@ export const ProductConcreatListComponents = () => {
     <div className={`${styles["row-parent"]}`}>
       <div className={`${styles["box-container"]} row`}>
         <div className="col-6">
-          <SearchComponent />
+          <SearchComponent callback={async (text)=>{
+              setSearch(text);
+              await refresh(1, text);
+          }}/>
         </div>
 
         <div className="col-6 d-flex justify-content-end  align-items-center">
@@ -187,9 +210,9 @@ export const ProductConcreatListComponents = () => {
                       >
                         <CustomImgComponent
                           className={`${styles["img-category"]} ms-3`}
-                          // src={`${ApiPath}${item.pathToPhoto}`}
+                          src={`${ApiPath}${pharmacy.categoryPathToPhoto}`}
                         />{" "}
-                        {pharmacy.nameCategory}
+                        {pharmacy.categoryName}
                       </TableCell>
                     </TableRow>
 
@@ -203,30 +226,34 @@ export const ProductConcreatListComponents = () => {
                             <span className={`${styles["text-row-table"]}`}>
                               <CustomImgComponent
                                 className={`${styles["img-product"]}`}
-                                // src={`${ApiPath}${item.pathToPhoto}`}
+                                src={`${ApiPath}${item.pathToPhoto}`}
                               />{" "}
-                              {item.position}
+                              {item.title}
                             </span>
                           </TableCell>
                           <TableCell>
                             <span className={`${styles["text-row-table"]}`}>
-                              {item.brend}
+                              {item.brandName}
                             </span>
                           </TableCell>
                           <TableCell>
                             <span className={`${styles["text-row-table"]}`}>
-                              {item.seria}
+                              {item.manufacturerName}
                             </span>
                           </TableCell>
                           <TableCell>
                             <span className={`${styles["text-row-table"]}`}>
-                              {item.artukul}
+                            {item.price}
                             </span>
                           </TableCell>
                           <TableCell>
+                          <div className="d-flex justify-content-between">
                             <span className={`${styles["text-row-table"]}`}>
-                              {item.price}
+                            {item.quantity}
+                              
                             </span>
+                            <BtnConcreteProductModal id={item.id}/>
+                            </div>
                           </TableCell>
                           {/* <TableCell> */}
                           {/* <div className="d-flex align-items-center"> */}
@@ -314,19 +341,21 @@ export const ProductConcreatListComponents = () => {
             </Table>
           </TableContainer>
           <div className={`d-flex justify-content-end align-items-center`}>
-            {/* <PaginationComponent 
+            <PaginationComponent 
               setContent={(a)=>setRows(a)}
               getContent={async (page)=>{
-                let res = await getAllProductConfirm(page);
+                const newUrl = `/admin/productConcreatList/${page}`;
+                window.history.pushState({}, "", newUrl);
+                let res = await getConcreteProductsFromPharmacy(search, page);
                 if(res.status === Success){
-                  return res.data.data;
+                  return res.data;
                 }
               }}
               allowAppend={false}
               page={page}
               setPage={setPage}
               countOfPages={countOfPages}
-              /> */}
+              /> 
           </div>
         </Paper>
       </div>
