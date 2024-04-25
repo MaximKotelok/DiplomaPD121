@@ -1,5 +1,5 @@
 import { ClassHeader, GetCategoriesForProductAdd, GetMainCategories, GetRecomendedCategory, GetRecomendedCategoryById, PathToCategory, Success } from "../utils/Constants";
-import { getFromServer} from "../utils/Queries";
+import { getFromServer, postToServer, deleteFromServer } from "../utils/Queries";
 import { getSupInfo } from "./product";
 
 export async function getAllCategories() {
@@ -10,6 +10,10 @@ export async function GetCategoryById(id) {
     return await getFromServer("Category/GetById", {id:id})
 } 
 
+export async function GetCategoryByIdForAdmin(id) {
+    return await getFromServer("Category/GetByIdForAdmin", { id: id })
+}
+
 export async function GetByIdForMenu(id) {
     return await getFromServer("Category/GetByIdForMenu", {id:id})
 } 
@@ -19,6 +23,14 @@ export async function GetProductsFromCategory(id, count) {
     
     return data;
 } 
+
+export async function getAllCategoriesForAdmin(page, search) {
+    return await postToServer("Category/GetAllCategoriesForAdmin", {
+        itemsPerPage: 6,
+        page: page,
+        search
+    })
+}
 
 
 export async function GetWithProducts(id, from, to, count) {
@@ -55,4 +67,13 @@ export async function getFirstNItemRecomendedCategoryByPhoto(typeOfPhoto, count)
  
 export async function getFirstNItemMainCategories(count){
     return await getFromServer(GetMainCategories, { count: count })
+}
+
+export async function upsertCategory(category) {
+    return await postToServer("Category/UpsertCategory", {
+        ...category,
+    }, ClassHeader)
+}
+export async function deleteCategory(id) {
+    return await deleteFromServer(`Category/DeleteCategory/${id}`, {})
 }

@@ -128,7 +128,7 @@ namespace Web.Controllers
         [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult DeleteBrand(int id)
         {
-            /*using var transaction = new TransactionScope();*/
+            using var transaction = new TransactionScope();
 
             var brand = _service.GetBrand(a => a.Id == id, "Products");
             if (brand != null)
@@ -140,7 +140,7 @@ namespace Web.Controllers
                 _service.DeleteBrand(id);
             }
 
-            /*transaction.Complete();*/
+            transaction.Complete();
             return Ok("Data Deleted");
         }
     }

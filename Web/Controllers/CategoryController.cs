@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Domain.Models.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -6,10 +7,12 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Services.CategoryService;
+using Services.ConcreteProductService;
 using Services.PharmacyCompanyService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 using Utility;
 
 namespace Web.Controllers
@@ -19,10 +22,12 @@ namespace Web.Controllers
 	public class CategoryController : ControllerBase
 	{
 		private readonly ICategoryService _service;
+		private readonly IProductService _productService;
 
-		public CategoryController(ICategoryService service)
+        public CategoryController(ICategoryService service, IProductService productService)
 		{
 			this._service = service;
+			this._productService = productService;
 		}
 
 		[HttpGet("GetRecomendedCategoryById")]
@@ -82,8 +87,19 @@ namespace Web.Controllers
 			}
 			return BadRequest("No records found");
 		}
+        [HttpGet("GetByIdForAdmin")]
+        public IActionResult GetByIdForAdmin(int? id)
+        {
+            var result = _service.GetCategory(x => x.Id == id, "Products,SubCategories,SubCategories.Products");
 
-		[HttpGet("GetByIdForMenu")]
+            if (result is not null)
+            {
+                return Ok(result);
+            }
+            return BadRequest("No records found");
+        }
+
+        [HttpGet("GetByIdForMenu")]
 		public IActionResult GetByIdForMenu(int? id)
 		{
 			var result = _service.GetCategory(x => x.Id == id, "SubCategories,SubCategories.SubCategories");
@@ -226,7 +242,32 @@ namespace Web.Controllers
 
 		}
 
-		[HttpGet("PathToCategory")]
+        [HttpPost("GetAllCategoriesForAdmin")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+        public IActionResult GetAllCategoriesForAdmin(PageViewModel model)
+        {
+            var rawResult = _service.GetAllCategories();
+            if (!model.Search.IsNullOrEmpty())
+            {
+                rawResult = rawResult.Where(a =>
+                {
+                    return
+                    a.Id.ToString().StartsWith(model.Search) ||
+                    a.Title.StartsWith(model.Search);
+                });
+            }
+            if (rawResult is not null)
+            {
+                int page = model.Page != null ? model.Page.Value - 1 : 0;
+                var result = rawResult.Skip(model.ItemsPerPage * page).Take(model.ItemsPerPage)
+                    .Select(a => a);
+                int countOfPages = model.GetCountOfPages(rawResult.Count());
+                return Ok(new { data = result, countOfPages });
+            }
+            return BadRequest("No records found");
+        }
+
+        [HttpGet("PathToCategory")]
 		public IActionResult GetCategoryPath(int id)
 		{
 			List<Category> path = new List<Category>();
@@ -250,30 +291,69 @@ namespace Web.Controllers
 			}
 			return BadRequest("No records found");
 		}
+        [HttpPost("UpsertCategory")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+        public IActionResult UpsertCategory(PostCategoryViewModel postModel)
+        {
+            using var transaction = new TransactionScope();
+            try
+            {
+                UpsertCategoryEntity(postModel);
 
-		[HttpPost]
-		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
-		public IActionResult AddCategory(Category category)
-		{
-			_service.InsertCategory(category);
-			return Ok("Data inserted");
-		}
+                transaction.Complete();
+                return Ok("Data inserted");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Failed to upsert product. Error: {ex.Message}");
+            }
+        }
 
-		[HttpPut("{id}")]
-		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
-		public IActionResult UpdateCategory(int id, Category category)
-		{
-			category.Id = id;
-			_service.UpdateCategory(category);
-			return Ok("Updation done");
-		}
+        private void UpsertCategoryEntity(PostCategoryViewModel postModel)
+        {
+            var category = new Category
+            {
+                Title = postModel.Title,
+                ParentCategoryID = postModel.ParentCategoryID,
+                IsRecomended = postModel.IsRecomended,
+                PathToPhoto = postModel.PathToPhoto,
+                PathToRecomendedPhoto = postModel.PathToRecomendedPhoto,
+            };
 
-		[HttpDelete("{id}")]
+
+            if (postModel.Id == null)
+            {
+                _service.InsertCategory(category);
+            }
+            else
+            {
+                category.Id = postModel.Id.Value;
+                _service.UpdateCategory(category);
+            }
+        }
+
+		[HttpDelete("DeleteCategory/{id}")]
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
 		public IActionResult DeleteCategory(int id)
 		{
-			_service.DeleteCategory(id);
-			return Ok("Data Deleted");
-		}
+            using var transaction = new TransactionScope();
+
+            var category = _service.GetCategory(a => a.Id == id, "Products,SubCategories");
+            if (category != null)
+            {
+                foreach (var item in category.SubCategories)
+                {
+					DeleteCategory(item.Id);
+                }
+                foreach (var item in category.Products)
+                {
+                    _productService.DeleteProduct(item.Id);
+                }
+                _service.DeleteCategory(id);
+            }
+
+            transaction.Complete();
+            return Ok("Data Deleted");
+        }
 	}
 }

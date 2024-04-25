@@ -246,20 +246,9 @@ export const UpsertBrendComponent = () => {
                                     }}
 
                                 />
-                                {/* <select
-                  className={`my-form-select ${styles["my-input-text-form"]} ${styles["my-w-text-celect"]}`}
-                  // aria-label="Обери країну"
-                >
-                  <option selected>Open this </option>
-                  <option value="1">Action</option>
-                  <option value="2">Another action</option>
-                  <option value="3">Something else here</option>
-                  <option disabled>---</option>
-                  <option value="4">Separated link</option>
-                </select> */}
+                               
                             </div>
                         </div>
-
                         <div>
                             <div className="mb-1">
                                 <label>Опис</label>
@@ -275,44 +264,6 @@ export const UpsertBrendComponent = () => {
                             </div>
                         </div>
                     </div>
-
-                    {/* <div className={`col-5 `}>
-            <div className="mb-3">
-              <label className={`${styles["label-head"]}`}>Назва</label>
-              <p className={`${styles["text-opus"]}`}>Стрепсілс інтенсив</p>
-            </div>
-
-            <div className="mb-3">
-              <label className={`${styles["label-head"]}`}>Опис</label>
-              <p className={`${styles["text-opus"]}`}>Стрепсілс інтенсив</p>
-            </div>
-
-            <div className="mb-3">
-              <label className={`${styles["label-head"]}`}>Виробник</label>
-              <p className={`${styles["text-opus"]}`}>Стрепсілс інтенсив</p>
-            </div>
-          </div>
-
-          <div className={`col-3`}>
-            <div className="mb-3">
-              <label className={`${styles["label-head"]}`}>Ціна</label>
-              <input
-                className={`input-text-form  mb-2 ${styles["my-input-text-form"]}`}
-                placeholder="Вкажіть ціну товару"
-                type="text"
-                name=""
-              />
-            </div>
-            <div className="mb-3">
-              <label className={`${styles["label-head"]}`}>Кількість</label>
-              <input
-                className={`input-text-form  mb-2 ${styles["my-input-text-form"]}`}
-                placeholder="Вкажіть кількість товару на складі"
-                type="text"
-                name=""
-              />
-            </div>
-          </div> */}
                 </div>
 
                 <div className="d-flex justify-content-center">

@@ -231,7 +231,12 @@ export default class App extends Component {
                             element={<ManufactureListComponents />}
                         />
                         <Route
-                            path="upsertManufacture"
+                            path="manufactureList/:paramPage"
+                            element={<ManufactureListComponents />}
+                        />
+                        <Route path="addManufacturer" element={<UpsertManufactureComponent />} />
+                        <Route
+                            path="updateManufacturer/:manufacturerId"
                             element={<UpsertManufactureComponent />}
                         />
 
@@ -284,7 +289,9 @@ export default class App extends Component {
 
                         {/*CATEGORY*/}
                         <Route path="categoeyList" element={<CategoryListComponents />} />
+                        <Route path="categoryList/:paramPage" element={<CategoryListComponents />} />
                         <Route path="addCategory" element={<AddCategoryComponents />} />
+                        <Route path="updateCategory/:categoryId" element={<AddCategoryComponents />} />
 
 
                         {/*PHARMACY*/}
