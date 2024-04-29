@@ -19,6 +19,7 @@ using Services.ProductConfirmService;
 using Services.ProductStatusService;
 using Services.PropertyService;
 using Services.ReservationService;
+using Services.UserService;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Principal;
@@ -40,6 +41,7 @@ namespace Web.Controllers
 		private readonly IProductStatusService _productStatusService;
 		private readonly IProductConfirmService _productConfirmService;
 		private readonly IReservationService _reservationService;
+		private readonly IUserService _userService;
 
 		public ProductController(
 				IProductService productService,
@@ -50,7 +52,8 @@ namespace Web.Controllers
 				IMedicineService medicineService,
 				IProductStatusService productStatusService,
 				IProductConfirmService productConfirmService,
-				IReservationService reservationService
+				IReservationService reservationService,
+				IUserService userService
 			)
 		{
 
@@ -63,6 +66,7 @@ namespace Web.Controllers
 			this._concreteProductService = concreteProductService;
 			this._productStatusService = productStatusService;
 			this._reservationService = reservationService;
+			this._userService = userService;
 		}
 
 		private IEnumerable<ProductProperty> _convertProperties(List<PropertyViewModel> properties)
@@ -612,17 +616,18 @@ namespace Web.Controllers
 		//Update - admin
 		//Add - pharamacy & admin
 		[HttpPost("UpsertProduct")]
-		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
-		public IActionResult UpsertProduct(PostProductViewModel postModel)
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = $"{SD.Role_Admin} ${SD.Role_Pharmacist}")]
+		public async Task<IActionResult> UpsertProduct(PostProductViewModel postModel)
 		{
+			var user = await _userService.GetUserByName(User.Identity.Name);
 			using var transaction = new TransactionScope();
 			try
 			{
 
 				if (postModel.ActiveSubstanceID is not null)
-					UpsertMedicine(postModel);
+					UpsertMedicine(postModel, (await _userService.GetRolesAsync(user.Id)).Contains(SD.Role_Admin));
 				else
-					UpsertProductEntity(postModel);
+					UpsertProductEntity(postModel, (await _userService.GetRolesAsync(user.Id)).Contains(SD.Role_Admin));
 
 				transaction.Complete();
 				return Ok("Data inserted");
@@ -633,16 +638,10 @@ namespace Web.Controllers
 			}
 		}
 
-		private void UpsertMedicine(PostProductViewModel postModel)
+		private void UpsertMedicine(PostProductViewModel postModel, bool isAdmin)
 		{
 
 			var props = (ICollection<ProductProperty>)_convertProperties(postModel!.Properties!).ToList();
-			var productConfirm = new ProductConfirm
-			{
-				PharmacompanyID = postModel.PharmaCompanyID,
-				ProductStatusID = _productStatusService.GetProductStatusByName(SD.ProductStatusUnderConsideration).Id,
-				CreationDate = DateTime.Now
-			};
 			var medicine = new Medicine
 			{
 				Title = postModel.Title,
@@ -662,15 +661,35 @@ namespace Web.Controllers
 				DriversID = postModel.DriversID,
 				NursingMothersID = postModel.NursingMothersID,
 				PregnantID = postModel.PregnantID,
-				ProductConfirm = productConfirm
 
 			};
-
-			foreach (var item in props)
+			if (!isAdmin)
 			{
 				if (postModel.Id != null)
-					_propertyService.DeleteProperty(postModel.Id.Value);
+				{
+					return;
+				}
+				var productConfirm = new ProductConfirm
+				{
+					PharmacompanyID = postModel.PharmaCompanyID,
+					ProductStatusID = _productStatusService.GetProductStatusByName(SD.ProductStatusUnderConsideration).Id,
+					CreationDate = DateTime.Now
+				};
+				medicine.ProductConfirm = productConfirm;
+
 			}
+			foreach (var item in props)
+			{
+				item.Product = medicine;
+			}
+
+			if (postModel.Id != null)
+			{
+
+				_propertyService.DeleteProperty(postModel.Id.Value);
+
+			}
+
 			if (postModel.Id == null)
 			{
 				_productService.InsertProduct(medicine);
@@ -679,20 +698,13 @@ namespace Web.Controllers
 			{
 				medicine.Id = postModel.Id.Value;
 				_productService.UpdateProduct(medicine);
-				productConfirm.ProductID = postModel.Id.Value;
-				_productConfirmService.UpdateProductConfirm(productConfirm);
 			}
 		}
 
-		private void UpsertProductEntity(PostProductViewModel postModel)
+		private void UpsertProductEntity(PostProductViewModel postModel, bool isAdmin)
 		{
 			var props = (ICollection<ProductProperty>)_convertProperties(postModel!.Properties!).ToList();
-			var productConfirm = new ProductConfirm
-			{
-				PharmacompanyID = postModel.PharmaCompanyID,
-				ProductStatusID = _productStatusService.GetProductStatusByName(SD.ProductStatusUnderConsideration).Id,
-				CreationDate = DateTime.Now
-			};
+
 			var product = new Product
 			{
 				Title = postModel.Title,
@@ -704,15 +716,31 @@ namespace Web.Controllers
 				Description = postModel.Description,
 				Properties = _convertProperties(postModel!.Properties!).ToList(),
 				ProductAttributeGroupID = postModel.ProductAttributeGroupID,
-				ProductConfirm = productConfirm
 			};
 
 
+			if (postModel.Id != null)
+				_propertyService.DeleteProperty(postModel.Id.Value);
+
 			foreach (var item in props)
 			{
-				if (postModel.Id != null)
-					_propertyService.DeleteProperty(postModel.Id.Value);
 				item.Product = product;
+			}
+
+
+			if (!isAdmin)
+			{
+				if (postModel.Id != null)
+				{
+					return;
+				}
+				var productConfirm = new ProductConfirm
+				{
+					PharmacompanyID = postModel.PharmaCompanyID,
+					ProductStatusID = _productStatusService.GetProductStatusByName(SD.ProductStatusUnderConsideration).Id,
+					CreationDate = DateTime.Now
+				};
+				product.ProductConfirm = productConfirm;
 			}
 			if (postModel.Id == null)
 			{
@@ -722,8 +750,6 @@ namespace Web.Controllers
 			{
 				product.Id = postModel.Id.Value;
 				_productService.UpdateProduct(product);
-				productConfirm.ProductID = postModel.Id.Value;
-				_productConfirmService.UpdateProductConfirm(productConfirm);
 			}
 		}
 

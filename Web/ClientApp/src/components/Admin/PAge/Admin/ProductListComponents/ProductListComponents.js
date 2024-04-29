@@ -19,6 +19,7 @@ import PaginationComponent from "../../../../Common/PaginationComponent/Paginati
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
 import BtnEditSeriaModal from "./components/BtnEditSeriaModal/BtnEditSeriaModal";
 import { getCountOfPagesForProductsAdmin, getProductsAdmin } from "../../../../../services/product";
+import { Link } from "react-router-dom";
 
 const columns = [
   { id: "position", label: "Позиція", minWidth: 230 },
@@ -110,6 +111,14 @@ export const ProductListComponents = () => {
 
         <div className="col-6">
           {/* <CheckedBox text="Показувати лише фарма-компанії?" /> */}
+          <div className="col-2">
+            <Link
+              to="/admin/AddProduct"
+              className={`btn btn-primary ${styles["add-button"]}`}
+            >
+              Додати
+            </Link>
+          </div>
         </div>
 
         <Paper className={classes.root}>

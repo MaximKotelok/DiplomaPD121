@@ -105,14 +105,13 @@ export const AddCategoryComponents = () => {
         setFormDataAttribute(e.target.name, e.target.value);
     };
 
-    const postCategoryPhoto = async (postPath, image) => {
+    const postCategoryPhoto = async (postPath, image, formDataPath) => {
         let path = "";
-
         if (image) {
-            if (formData.pathToPhoto)
+            if (formDataPath)
                 path = await postPhotoToServer(
                     "Photo/Update",
-                    formData.pathToPhoto.replace(/[\/\\]images[\/\\]/g, ""),
+                    formDataPath,
                     image
                 );
 
@@ -135,8 +134,19 @@ export const AddCategoryComponents = () => {
     };
 
     const submit = async () => {
-        let path = await postCategoryPhoto("png", image);
-        let recomendedPath = await postCategoryPhoto("recomended", recomendedImage);
+        
+        let path = image? await postCategoryPhoto("png", 
+            image,
+            formData.pathToPhoto?
+                formData.pathToPhoto.replace(/[\/\\]images[\/\\]/g, "")
+                :formData.pathToPhoto
+            ) : formData.pathToPhoto;
+        let recomendedPath = recomendedImage? await postCategoryPhoto("recomended", 
+            recomendedImage,
+            formData.pathToRecomendedPhoto?
+                formData.pathToRecomendedPhoto.replace(/[\/\\]images[\/\\]/g, "")
+                :formData.pathToRecomendedPhoto
+        ) : formData.pathToRecomendedPhoto;
 
         formData["pathToPhoto"] = path;
         formData["pathToRecomendedPhoto"] = recomendedPath;

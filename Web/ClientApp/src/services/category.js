@@ -1,4 +1,4 @@
-import { ClassHeader, GetCategoriesForProductAdd, GetMainCategories, GetRecomendedCategory, GetRecomendedCategoryById, PathToCategory, Success } from "../utils/Constants";
+import { ClassHeader, GetCategoriesForProductAdd, GetMainCategories, PathToCategory, Success } from "../utils/Constants";
 import { getFromServer, postToServer, deleteFromServer } from "../utils/Queries";
 import { getSupInfo } from "./product";
 
@@ -54,13 +54,19 @@ export async function getPathToCategory(id) {
     return await getFromServer(PathToCategory, {id:id})
 }
 
-export async function getFirstNItemsOfRecomendedCategoryById(id, count) {
-    return await getFromServer(GetRecomendedCategoryById, {id:id, count:count})
+export async function getFirstNItemsOfBottomCategoryById(id, count) {
+    return await getFromServer("Category/GetBottomCategoryById", {id:id, count:count})
 }
 
-export async function getFirstNItemRecomendedCategoryByPhoto(typeOfPhoto, count) {
-    return await getFromServer(GetRecomendedCategory, {
+export async function getFirstNItemBottomCategory(typeOfPhoto, count) {
+    return await getFromServer("Category/GetBottomCategory", {
         typeOfPhoto: typeOfPhoto,
+        count: count,
+      });
+}
+
+export async function getRecomendedCategory(count) {
+    return await getFromServer("Category/GetRecomendedCategories", {
         count: count,
       });
 }

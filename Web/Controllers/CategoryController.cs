@@ -30,8 +30,8 @@ namespace Web.Controllers
 			this._productService = productService;
 		}
 
-		[HttpGet("GetRecomendedCategoryById")]
-		public IActionResult GetRecomendedCategoryById(int id, int count)
+		[HttpGet("GetBottomCategoryById")]
+		public IActionResult GetBottomCategoryById(int id, int count)
 		{
 			var result = _service.GetCategory(a =>
 				a.Id == id, includeProperties: "SubCategories");
@@ -43,8 +43,8 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-		[HttpGet("GetRecomendedCategory")]  // GetBottomCategory
-		public IActionResult GetRecomendedCategory(int count)
+		[HttpGet("GetBottomCategory")]  // GetBottomCategory
+		public IActionResult GetBottomCategory(int count)
 		{
 			var result = _service.GetAllCategories(a =>
 				(a.IsDisplayOnBottom != null && a.IsDisplayOnBottom.Value));
@@ -56,6 +56,20 @@ namespace Web.Controllers
 				var randomRes = _service!.GetCategory(a => a.Id == randomId,
 					includeProperties: "SubCategories")!.SubCategories!.Take(count);
 				return Ok(new { result = randomRes, id = randomId });
+			}
+			return BadRequest("No records found");
+		}
+
+		[HttpGet("GetRecomendedCategories")]  
+		public IActionResult GetRecomendedCategories(int count)
+		{
+			var result = _service.GetAllCategories(a =>
+				(a.IsRecomended != null && a.IsRecomended.Value)).TakeLast(count);
+
+
+			if (result is not null && result.Count() > 0)
+			{
+				return Ok(result);
 			}
 			return BadRequest("No records found");
 		}

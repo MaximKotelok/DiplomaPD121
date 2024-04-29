@@ -226,7 +226,7 @@ export const PharmacyListComponents = () => {
               getContent={async (page) => {
                 const newUrl = `/admin/pharmacyList/${page}`;
                 window.history.pushState({}, "", newUrl);
-                let res = await getAllPharmaciesForAdmin(page);
+                let res = await getAllPharmaciesForAdmin(page, search, isDisplayOnlyCompanies);
                 if (res.status === Success) {
                   return res.data.data;
                 }

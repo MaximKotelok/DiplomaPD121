@@ -27,9 +27,10 @@ import ImageUploaderComponent from "../../../../../Common/ImageUploaderComponent
 import InputForProductComponent from "../../../../../Common/InputForProductComponent/InputForProductComponent";
 
 import "./UpsertProductComponent.css";
+import styles from "./UpsertProductComponent.module.css";
 import UpsertDescriptionComponent from "../UpsertDescriptionComponent/UpsertDescriptionComponent";
 import FormDataStandartInputsComponent from "../FormDataStandartInputsComponent/FormDataStandartInputsComponent";
-import LayoutAdmin from "../../../../../../layouts/AdminLayout/LayoutAdmin";
+
 import {
   getAllCategories,
   getFirstNCategoryByTitle,
@@ -313,7 +314,10 @@ const UpsertProductComponent = () => {
 
   //#endregion
 
-  if (stateInfo == StateInfos.LOADING) return "Loading";
+  if (stateInfo == StateInfos.LOADING)
+      return (<div className={`${styles["row-parent"]}`}>
+                <div className={`${styles["box-container"]} `}>Loading</div>
+              </div>);
 
   // <LayoutAdmin additionalHeader={
   //     <TypeAndCategoryComboboxComponent

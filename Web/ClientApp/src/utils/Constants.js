@@ -9,9 +9,7 @@ export const GetAllProductsFromIdArray = "Product/GetAllProductsFromIdArray";
 export const GetAllManufacturers = "Manufacturer/GetAllManufacturers";
 export const GetMainCategories = "Category/Main/All";
 export const GetRecomendedBrands = "Brand/GetRecomendedBrands";
-export const GetRecomendedCategory = "Category/GetRecomendedCategory";
 export const PathToCategory = "Category/PathToCategory";
-export const GetRecomendedCategoryById = "Category/GetRecomendedCategoryById";
 
 // Product
 export const GetCategoriesForProductAdd = "Category/GetCategoriesForProductAdd";
