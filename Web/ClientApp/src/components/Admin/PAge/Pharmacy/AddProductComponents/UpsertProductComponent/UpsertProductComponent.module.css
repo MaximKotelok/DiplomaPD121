@@ -1,0 +1,12 @@
+.box-container{
+    background-color: rgba(255, 255, 255, 1);
+    font-family: var(--standart-font);
+padding: 32px;
+border-radius: 12px;   
+height: 100%;
+}
+
+.row-parent{
+    padding: 32px;;
+    height: 100%;
+}

@@ -1,7 +1,7 @@
 
      .parent-side-accardion {
-        padding: 8px;
-        margin: 8px 0;
+        /* padding: 8px; */
+        /* margin: 8px 0; */
         border-radius: 8px;
     border: none;
     cursor: pointer;
@@ -41,7 +41,7 @@
       }
       
       .side-text-body-victorina {
-        padding: 0 20px;
+        /* padding: 20px 0px 0px  0px; */
         font-size: 12px;
         max-height: 0;
 
@@ -50,8 +50,10 @@
       }
       
       .side-text-header-victorina.collapsed .side-text-body-victorina {
-        padding:  20px 20px 0 20px;
+        /* padding:  20px 20px 0 20px; */
         max-height: 500px; 
+        padding: 10px 0px 0px  0px;
+
     }
       
       .hide{
@@ -74,7 +76,45 @@
     }
 
 
-    
+    .div-accardion-hover:hover .block-hover{
+      background-color: rgba(0, 122, 255, 1) !important;
+    }
+
+    .div-active-acordeon .block-hover{
+      background-color: rgba(0, 122, 255, 1) !important;
+    }
+ 
+    .block-hover{
+ 
+      padding: 8px;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      transition: background-color 0.3s, color 0.3s;
+      border-radius: 8px;
+      /* margin: 8px 0; */
+      width: 100%;
+    }
+    .text-body-victorina:hover{
+      background-color: rgba(0, 122, 255, 1) !important;
+    }
+    .active-nav-admin-menejment{
+      background-color: rgba(0, 122, 255, 1) !important;
+
+    }
+    .text-body-victorina{
+      margin-bottom: 8px !important;
+      color: rgba(243, 244, 246, 1) !important;
+      font-family: var(--standart-font);
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 15.06px;
+      transition: background-color 0.3s, color 0.3s;
+      z-index: 1;
+      padding: 4px 8px !important;
+      padding-left: 40px !important;
+      border-radius:  4px;
+    }
 
     /* .side-btn-togle-victorina.collapsed .side-text-body-victorina{
 margin: 0px;

@@ -11,3 +11,9 @@
 .disabled{
     cursor: not-allowed;
 }
+
+.disable-selection{
+    -webkit-user-select: none; 
+    -ms-user-select: none; 
+    user-select: none; 
+}

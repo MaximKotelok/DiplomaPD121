@@ -30,6 +30,9 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -42,21 +45,25 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1,
+                            IsActive = true,
                             Title = "аскорбінова кислота"
                         },
                         new
                         {
                             Id = 2,
+                            IsActive = true,
                             Title = "парацетамол"
                         },
                         new
                         {
                             Id = 3,
+                            IsActive = true,
                             Title = "кофеїн"
                         },
                         new
                         {
                             Id = 4,
+                            IsActive = true,
                             Title = "ацетилсаліцилова кислота"
                         });
                 });
@@ -2421,7 +2428,7 @@ namespace DataAccess.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Models.PharmaCompany", "PharmaCompany")
-                        .WithMany()
+                        .WithMany("Pharmacies")
                         .HasForeignKey("PharmaCompanyID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2440,7 +2447,7 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.Models.Product", b =>
                 {
                     b.HasOne("Domain.Models.Brand", "Brand")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("BrandID");
 
                     b.HasOne("Domain.Models.Category", "Category")
@@ -2761,6 +2768,11 @@ namespace DataAccess.Migrations
                     b.Navigation("Medicines");
                 });
 
+            modelBuilder.Entity("Domain.Models.Brand", b =>
+                {
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("Domain.Models.Category", b =>
                 {
                     b.Navigation("Products");
@@ -2771,6 +2783,11 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.Models.HistoryDate", b =>
                 {
                     b.Navigation("PriceHistory");
+                });
+
+            modelBuilder.Entity("Domain.Models.PharmaCompany", b =>
+                {
+                    b.Navigation("Pharmacies");
                 });
 
             modelBuilder.Entity("Domain.Models.Pharmacy", b =>

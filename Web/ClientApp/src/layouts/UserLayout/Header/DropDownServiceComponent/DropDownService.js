@@ -27,11 +27,11 @@ export const DropDownService = () => {
         className={`dropdown-menu ${styles["dropdown-my-menu"]}`}
       >
         <div className={`mb-3`}>
-          <BlockMenu iconPath={Medecine} hrf={"..."} text="Аптеки поблизу" />
+          <BlockMenu iconPath={Medecine} hrf="/map" text="Аптеки поблизу" />
         </div>
-        <div className={`mb-3`}>
+        {/* <div className={`mb-3`}>
           <BlockMenu iconPath={SearchIcon} text="Пошук по діючій речовині" />
-        </div>
+        </div> */}
         <div className={``}>
           <BlockMenu iconPath={AlertIcon} text="Браковані серії" />
         </div>

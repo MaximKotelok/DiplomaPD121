@@ -33,9 +33,12 @@ border-radius: 30px 30px 0px  0px;
 
 
   .text-title{
+    color: black !important;
     margin-top: 3px;
-    line-height: 20px;
-    font-size: 32px;
-    font-weight: 500!important;
-    font-weight: var(--standart-font);
+    font-family: var(--standart-font);
+font-size: 24px;
+font-weight: 700;
+line-height: 30.12px;
+text-align: left;
+
   }

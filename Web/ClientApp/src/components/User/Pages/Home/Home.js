@@ -24,6 +24,9 @@ import {
   getFirstNItemRecomendedCategoryByPhoto,
   getFirstNItemMainCategories,
   getFirstNItemsOfRecomendedCategoryById,
+  getFirstNItemBottomCategory,
+  getFirstNItemsOfBottomCategoryById,
+  getRecomendedCategory,
 } from "../../../../services/category";
 import {
   getCountProducts,
@@ -34,6 +37,7 @@ import {
 import { getCountBrands } from "../../../../services/brand";
 import { getFavs } from "../../../../services/favProducts";
 import { initFavsProducts, isFavoriteProduct } from "../../../../utils/Functions";
+import ActualCategoryComponent from "./Component/ActualCategoryComponent/ActualCategoryComponent";
 export const Home = () => {
   var displayName = Home.name;
 
@@ -43,8 +47,9 @@ export const Home = () => {
   const [brands, setBrands] = useState({});
   const [favs, setFavs] = useState([]);
   const [pngCards, setPngCards] = useState({});
+  const [recommendedCategory, setRecommendedCategory] = useState([]);
   const [city, setCity] = useState(Cookies.get("city"));
-  
+
   const [topOffers, setTopOffers] = useState({});
   const [selectedTopOfferIndex, setSelectedTopOfferIndex] = useState(null);
 
@@ -52,13 +57,20 @@ export const Home = () => {
     let id = getRecomendedRandomCategory("PNG");
     const count = 5;
     if (id) {
-      let pngCards = await getFirstNItemsOfRecomendedCategoryById(id, count);
+      let pngCards = await getFirstNItemsOfBottomCategoryById(id, count);
       setPngCards(pngCards.data.result);
     } else {
-      let pngCards = await getFirstNItemRecomendedCategoryByPhoto("PNG", count);
+      let pngCards = await getFirstNItemsOfBottomCategoryById("PNG", count);
 
       setRecomendedRandomCategory("PNG", pngCards.data.id);
       setPngCards(pngCards.data.result);
+    }
+  }
+
+  async function initRecomendedCategory() {
+    let res = await getRecomendedCategory(3);
+    if (res.status === Success) {
+      setRecommendedCategory(res.data);
     }
   }
 
@@ -72,8 +84,7 @@ export const Home = () => {
 
   async function initTopOffers() {
     let tmp = await getTopOffer();
-    console.log(tmp)
-    if(tmp.status === Success && tmp.data.length > 0) {
+    if (tmp.status === Success && tmp.data.length > 0) {
       setTopOffers(tmp.data);
       setSelectedTopOfferIndex(0);
     }
@@ -83,31 +94,32 @@ export const Home = () => {
     setBrands(await getCountBrands(7));
   }
   async function initRecentlyViewed() {
-    
+
     let ids = getRecentlyViewedProductsIds();
     if (ids.length == 0) return;
 
     setRecently(await getProductsFromIdsArray(ids));
   }
 
-    useEffect(() => {
+  useEffect(() => {
     initFavsProducts(setFavs);
+    initRecomendedCategory();
     initProducts();
     initRecentlyViewed();
     initCategories();
     initBrands();
-    initPngCards();    
-    initTopOffers();    
+    initPngCards();
+    initTopOffers();
   }, [city]);
 
   function isCustomFavorite(id) {
-      return isFavoriteProduct(id);
-    }
+    return isFavoriteProduct(id);
+  }
 
-    const presenceCookie = Cookies.get("city");
-    if (presenceCookie && city !== presenceCookie ) {
-        setCity(presenceCookie);
-    }
+  const presenceCookie = Cookies.get("city");
+  if (presenceCookie && city !== presenceCookie) {
+    setCity(presenceCookie);
+  }
 
   // Макс поправ карточки і каруселі!!!!!!!!!!!!!!!!!!!!!!-!!!!!!!!!!!!!!!!!!!!!!!!!
   return (
@@ -127,29 +139,17 @@ export const Home = () => {
 
           <div className="col-8">
             <div className="row mt-5" style={{ margin: 0, padding: 0 }}>
-              <div>
-                <CarouselListComponent title="Пропозиції">
-                  {products && products.map
-                    ? products.map((a) => (
-                        <MiniProductCardComponent
-                          key={a.id}
-                          id={a.id}
-                          isFavorite={isCustomFavorite}
-                          title={a.title}
-                          description={a.shortDescription}
-                          minPrice={a.minPrice}
-                          countOfPharmacies={a.count}
-                          manufacturer={a.manufacturer}
-                          imageUrl={a.pathToPhoto}
-                        />
-                      ))
-                    : new Array(15)
-                        .fill(null)
-                        .map((_, index) => (
-                          <MiniProductCardComponent key={index} />
-                        ))}
-                </CarouselListComponent>
-              </div>
+
+            <h3 className="text-title mb-3">Актуальні категорії</h3>
+              <AdaptiveContainerComponent xlDisplayCount={3} lgDisplayCount={2} mdDisplayCount={1} isInMiddleIfNotFull={false}
+              >
+                {
+                  recommendedCategory.map(a => 
+                  <ActualCategoryComponent id={a.id} title={a.title} pathToRecomendedPhoto={a.pathToRecomendedPhoto} className="mx-1"/>
+                )
+                }
+              </AdaptiveContainerComponent>
+
             </div>
             <div className="row mt-5" style={{ margin: 0, padding: 0 }}>
               {recently && recently.map && (
@@ -179,39 +179,41 @@ export const Home = () => {
           <div className="d-flex justify-content-between mb-3">
             <h3 className="text-title ">Бренд</h3>
           </div>
-          <div className="flex-container d-flex flex-wrap">
+          <AdaptiveContainerComponent xxlDisplayCount={5} xlDisplayCount={3} lgDisplayCount={2} isInMiddleIfNotFull={false} className="flex-container d-flex flex-wrap"
+              >
+
             {brands.data && brands.data.map
               ? brands.data.map((a) => {
-                  return (
-                    <CircleCard
-                      key={a.id}
-                      id={a.id}
-                      text={a.name}
-                      imageUrl={`${ApiPath}${a.pathToPhoto}`}
-                    />
-                  );
-                })
+                return (
+                  <CircleCard
+                    key={a.id}
+                    id={a.id}
+                    text={a.name}
+                    imageUrl={`${ApiPath}${a.pathToPhoto}`}
+                  />
+                );
+              })
               : new Array(7).fill(null).map((_, index) => {
-                  return <CircleCard key={index} text="Name" />;
-                })}
-          </div>
+                return <CircleCard key={index} text="Name" />;
+              })}
+          </AdaptiveContainerComponent>
         </div>
-        {topOffers && topOffers.map && 
-        (<div className="col-12 mt-5">
-          <div className="d-flex justify-content-between">
-            <h3 className="text-title mb-4">Популярні товари</h3>
-            <MoreLink link="." />
-          </div>
-         
-          
-          <div className="d-flex justify-content-start">
-            {
-              topOffers.map((a,index)=><PopularButtonComponnent text={a.title} key={index} onClick={()=>setSelectedTopOfferIndex(index)}/>)
-            }
-            
-          </div>
-          <CarouselListComponent xlDisplayCount={5} xxlDisplayCount={6}>
-            {topOffers[selectedTopOfferIndex].data.map((a,index)=>(<MiniProductCardComponent
+        {topOffers && topOffers.map &&
+          (<div className="col-12 mt-5">
+            <div className="d-flex justify-content-between">
+              <h3 className="text-title mb-4">Популярні товари</h3>
+              <MoreLink link="." />
+            </div>
+
+
+            <div className="d-flex justify-content-start">
+              {
+                topOffers.map((a, index) => <PopularButtonComponnent text={a.title} key={index} onClick={() => setSelectedTopOfferIndex(index)} />)
+              }
+
+            </div>
+            <CarouselListComponent xlDisplayCount={5} xxlDisplayCount={6}>
+              {topOffers[selectedTopOfferIndex].data.map((a, index) => (<MiniProductCardComponent
                 key={index}
                 isFavorite={isCustomFavorite}
                 id={a.id}
@@ -221,14 +223,14 @@ export const Home = () => {
                 countOfPharmacies={a.count}
                 manufacturer={a.manufacturer}
                 imageUrl={a.pathToPhoto}
-                
-                />))}
-          </CarouselListComponent>
-        </div>)
-      }
+
+              />))}
+            </CarouselListComponent>
+          </div>)
+        }
         <div className="col-12 baner-bottom mt-5"></div>
       </div>
-      
+
 
       {pngCards && pngCards.map && (
         <div className="col-12 mt-5">
@@ -277,7 +279,7 @@ export const Home = () => {
           />
         </div>
 
-        <div className="col-12 col-md-6">7</div>
+        <div className="col-12 col-md-6"></div>
       </div>
     </>
   );

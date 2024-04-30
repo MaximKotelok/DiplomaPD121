@@ -13,6 +13,7 @@ namespace Domain.Models
 	{
 		[Required]
 		public string? Title { get; set; }
+		public bool? IsActive { get; set; } = true;
 		public IEnumerable<Medicine>? Medicines { get; set; }
 	}
 }

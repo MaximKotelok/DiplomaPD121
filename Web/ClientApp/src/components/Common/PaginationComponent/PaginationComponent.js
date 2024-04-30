@@ -36,7 +36,6 @@ const PaginationComponent = ({ setContent, getContent, allowAppend, page=1, setP
         }   
     }
     async function nextPageClickHandle(){
-        console.log("a")
         if(page === countOfPages)
             return;
         let result = await getContent(page+1);
@@ -59,10 +58,10 @@ const PaginationComponent = ({ setContent, getContent, allowAppend, page=1, setP
                     ))}
                 </div>
                 <div className='col-2 d-flex justify-content-end align-items-center pe-0'>
-                    <span className={`${styles["pages"]}`}>
+                    <span className={`${styles["pages"]} ${styles["disable-selection"]}`}>
                         {`${page} з ${countOfPages}`}
                     </span>
-                    <div>
+                    <div className={styles["disable-selection"]}>
                         <img onClick={prevPageClickHandle} src={prevImg} role="button" className={(page === 1 ? `opacity-50 ${styles["disabled"]}`:"")}/>
                         <img onClick={nextPageClickHandle} src={nextImg} role="button" className={(page === countOfPages ? `opacity-50 ${styles["disabled"]}`:"")}/>
                     </div>

@@ -1,38 +1,57 @@
-.box-container{
+.box-container {
     background-color: rgba(255, 255, 255, 1);
     font-family: var(--standart-font);
-padding: 32px;
-border-radius: 12px;   
-height: 100%;
+    padding: 32px;
+    border-radius: 12px;
+    height: 100%;
 }
-.row-parent{
-    padding: 32px;;
+
+.row-parent {
+    padding: 32px;
+    ;
     height: 100%;
 }
 
 
-.header-text-add{
-font-family: var(--standart-font);
-font-size: 16px;
-font-weight: 700;
-font-size: 24px;
-line-height: 30.12px;
-color:rgba(0, 122, 255, 1);
+.header-text-add {
+    font-family: var(--standart-font);
+    font-size: 16px;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 30.12px;
+    color: rgba(0, 122, 255, 1);
 }
 
-.custom-country-select>*{
-    width: 100%!important;
+.custom-country-select > * {
+    width: 100% !important;
+}
+
+.custom-combobox > * {
+    border: none !important;
+}
+
+.custom-combobox {
+    padding: 5px 0 !important;
+    width: 100%;
+    margin: 0 !important;
+}
+
+    .custom-combobox div {
+        box-shadow: none !important;
+    }
+
+.my-input-text-form-box {
+    border: 2px solid rgba(172, 172, 172, 1);
+    color: rgba(167, 167, 167, 1);
+    padding: 10px;
 }
 
 
-
-
-.custom-country-select *{
-    border: 0!important;
-    
+.custom-country-select * {
+    border: 0 !important;
 }
 
-.custom-country-select{
+.custom-country-select {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -41,114 +60,110 @@ color:rgba(0, 122, 255, 1);
 
 
 
-.my-input-text-form::placeholder{
+.my-input-text-form::placeholder {
     color: rgba(13, 30, 49, 1);
-
 }
-.my-input-text-form{
-    border: 2px solid  rgba(172, 172, 172, 1);
+
+.my-input-text-form {
+    border: 2px solid rgba(172, 172, 172, 1);
     color: rgba(13, 30, 49, 1);
     padding: 10px;
-font-family: var(--standart-font);
-font-size: 14px;
-font-weight: 400;
-    }
-   
-   
-    .label-head{
-        color: rgba(13, 30, 49, 1);
-        font-family: var(--standart-font);
-font-size: 14px;
-font-weight: 700;
-line-height: 20.02px;
-text-align: left;
+    font-family: var(--standart-font);
+    font-size: 14px;
+    font-weight: 400;
+}
 
-    }
 
-    .text-opus{
-        color: rgba(28, 28, 28, 0.8);
-font-family: var(--standart-font);
-font-size: 14px;
-font-weight: 400;
-line-height: 20.02px;
-    }
+.label-head {
+    color: rgba(13, 30, 49, 1);
+    font-family: var(--standart-font);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 20.02px;
+    text-align: left;
+}
 
+.text-opus {
+    color: rgba(28, 28, 28, 0.8);
+    font-family: var(--standart-font);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20.02px;
+}
 
 
 
-    .img-product{
-        /* border: 2px solid rgba(172, 172, 172, 1); */
-        width: 280px;
-        height: 160px;
-        margin: 0 auto;
-border-radius: 10px;
-object-fit: contain;
 
-    }
-
-
-    .card-border{
-    
-
-padding: 20px 16px;
-border: 2px solid         rgba(240, 240, 240, 1);
-border-radius: 16px;
-height: max-content;
-    }
+.img-product {
+    /* border: 2px solid rgba(172, 172, 172, 1); */
+    width: 280px;
+    height: 160px;
+    margin: 0 auto;
+    border-radius: 10px;
+    object-fit: contain;
+}
 
 
-    .text-area-zayavka{
-        padding: 12px ;
-        border-radius: 12px;
-        border: 2px solid rgba(172, 172, 172, 1);
-        width: 100%;
-        resize: none;
-    
-        color:  rgba(167, 167, 167, 1);
-        font-family: var(--standart-font);
+.card-border {
+    padding: 20px 16px;
+    border: 2px solid rgba(240, 240, 240, 1);
+    border-radius: 16px;
+    height: max-content;
+}
+
+
+.text-area-zayavka {
+    padding: 12px;
+    border-radius: 12px;
+    border: 2px solid rgba(172, 172, 172, 1);
+    width: 100%;
+    resize: none;
+    color: rgba(167, 167, 167, 1);
+    font-family: var(--standart-font);
     font-size: 14px;
     font-weight: 400;
     outline: none;
-    
-    }
-    
+}
+
     .text-area-zayavka::placeholder {
-        color: rgba(167, 167, 167, 1); }
-    
-
-        .my-input-text-form{
-            border: 2px solid  rgba(172, 172, 172, 1);
-            color: rgba(167, 167, 167, 1);
-            padding: 12px ;
-            font-family: var(--standart-font);
-            font-size: 14px;
-            font-weight: 400;
-        border-radius: 12px;
-        height: 52px !important;
-            }
-
-       
-
-            .my-w-text-celect{
-                width: 220px !important;
-            }
+        color: rgba(167, 167, 167, 1);
+    }
 
 
-            .custom-combobox>*{
-                border: none!important;
-                }
-                .custom-combobox{
-                    padding: 5px 0!important;
-                    width: 100%;
-                    margin: 0!important;
-                }
-                
-                .custom-combobox div{
-                box-shadow: none    !important;
-                }
-                
-                .my-input-text-form-box{
-                    border: 2px solid  rgba(172, 172, 172, 1);
-                    color: rgba(167, 167, 167, 1);
-                    padding: 10px;
-                }
+.my-input-text-form {
+    border: 2px solid rgba(172, 172, 172, 1);
+    color: rgba(167, 167, 167, 1);
+    padding: 12px;
+    font-family: var(--standart-font);
+    font-size: 14px;
+    font-weight: 400;
+    border-radius: 12px;
+    height: 52px !important;
+}
+
+
+
+.my-w-text-celect {
+    width: 220px !important;
+}
+
+
+.custom-combobox > * {
+    border: none !important;
+}
+
+.custom-combobox {
+    padding: 5px 0 !important;
+    width: 100%;
+    margin: 0 !important;
+}
+
+    .custom-combobox div {
+        box-shadow: none !important;
+    }
+
+.my-input-text-form-box {
+    border: 2px solid rgba(172, 172, 172, 1);
+    color: rgba(167, 167, 167, 1);
+    padding: 10px;
+}

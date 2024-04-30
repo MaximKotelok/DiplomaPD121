@@ -20,6 +20,7 @@ export async function postToServer(url, data, headers) {
         return { status: 'Error', error };
     }
 }
+
 export async function putToServer(url, data, headers) {
     try {
         const response = await axios.put(

@@ -7,13 +7,6 @@ function BtnWarningModal({ text = "Ви дійсно бажаєте це зро�
 
   return (
     <>
-      {/* <button
-        onClick={() => setShow(true)}
-        className={`brn-form ${styles["card-btn-primary"]}  `}
-      >
-        Додати товар до аптеки
-      </button> */}
-
       <div className={`d-flex mt-auto`}>
         <button
           className={`brn-form brn-primary-form mt-auto me-4 ${styles["btn-save"]}`}

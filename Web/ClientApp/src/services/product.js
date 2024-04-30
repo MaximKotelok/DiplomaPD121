@@ -75,6 +75,19 @@ export async function GetSearchInput(title = null, categories = null, brands = n
         activeSubstanceId
     }, ClassHeader)
 } 
+export async function getProductsAdmin(page = 1, search = ""){
+    return await postToServer("Product/GetProductsAdmin", {
+        itemsPerPage:4,
+        page: page,
+        search: search
+    }, ClassHeader)
+} 
+export async function getCountOfPagesForProductsAdmin(search = ""){
+    return await postToServer("Product/GetCountOfPagesForProductsAdmin", {
+        itemsPerPage:4,
+        search: search
+    }, ClassHeader)
+} 
 
 export async function changeStatus(productId, statusId) {
     return await putToServer(`Product/ChangeStatus/${productId}/${statusId}`, ClassHeader)

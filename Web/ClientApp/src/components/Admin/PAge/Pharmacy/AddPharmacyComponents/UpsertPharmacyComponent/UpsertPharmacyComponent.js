@@ -75,16 +75,15 @@ export const UpsertPharmacyComponent = () => {
   const [stateInfo, setStateInfo] = useState(StateInfos.LOADING);
 
   const [pharmacyFormData, setPharmacyFormData] = useState({
-    id: undefined,
+    id: pharmacyId?pharmacyId:undefined,
     address: undefined,
-    openTime: undefined,
     workingWeekOpenTime: undefined,
     workingWeekCloseTime: undefined,
     weekendOpenTime: undefined,
     weekendCloseTime: undefined,
     longitude: undefined,
     latitude: undefined,
-    pharmaCompanyID: companyId?parseInt(companyId):undefined,
+    pharmaCompanyID: companyId?parseInt(companyId):null,
     cityID: undefined,
   });
 
@@ -114,7 +113,6 @@ export const UpsertPharmacyComponent = () => {
       if (pharmacyId) {
         tmpObject = await getPharmacyById(pharmacyId);
         tmpPharmacistObject = await GetPharmacist(pharmacyId);
-        console.log(tmpPharmacistObject);
         if (
           tmpObject.status === Success &&
           tmpPharmacistObject.status === Success
@@ -165,6 +163,7 @@ export const UpsertPharmacyComponent = () => {
   };
 
   const submitPharmacy = async () => {
+    console.log(pharmacyFormData)
     let res = await upsertPharmacy(pharmacyFormData);
     if (res.status === Success) {
       setPharmacyIdState(res.data);
@@ -241,7 +240,7 @@ export const UpsertPharmacyComponent = () => {
           </div>
 
           <div className="dropdown">
-            <label>Місто і Фармакомпанія</label>
+            <label>Місто</label>
             <div className=" d-flex">
 
 

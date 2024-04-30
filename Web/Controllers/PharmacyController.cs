@@ -14,6 +14,7 @@ using Services.ConcreteProductService;
 using Services.PharmacyCompanyService;
 using Services.PharmacyService;
 using Services.UserService;
+using System.Data;
 using System.Transactions;
 using Utility;
 
@@ -125,8 +126,63 @@ namespace Web.Controllers
 				return Ok(new { data = result, countOfPages });
 
 
-            }
-            return BadRequest("No records found");
+			}
+			return BadRequest("No records found");
+		}
+
+		[HttpPost("GetAllPharmaciesForPharmaCompany")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_PharmaCompany)]
+		public async Task<IActionResult> GetAllPharmaciesForPharmaCompany(PageViewModel model)
+		{
+			var user = await _userService.GetUserByName(User.Identity.Name);
+
+
+			if (user == null)
+			{
+				return NoContent();
+			}
+
+			var pharmaCompany = _pharmaCompany.GetPharmaCompany(a => a.UserID == user.Id, includeProperties: "Pharmacies,Pharmacies.User");
+
+			IEnumerable<Pharmacy> rawResult = pharmaCompany.Pharmacies;
+			if (!model.Search.IsNullOrEmpty())
+			{
+				rawResult = rawResult.Where(a =>
+				{
+					return a.Id.ToString().Contains(model.Search) ||
+						a.Address.Contains(model.Search) ||
+						(a.User != null && a.User.Email.Contains(model.Search)
+					);
+				});
+
+
+			}
+
+
+			if (rawResult is not null)
+			{
+				int page = model.Page != null ? model.Page.Value - 1 : 0;
+				int skipNumber = model.ItemsPerPage * page;
+				int takeNumber = model.ItemsPerPage;
+
+				var result = rawResult
+					.Skip(skipNumber)
+					.Take(takeNumber)
+					.Select(a => new
+					{
+						pharmacy = a
+						,
+						pharmacist = a.User != null
+						? a.User.Email : null
+					})
+					;
+
+				int countOfPages = model.GetCountOfPages(rawResult.Count());
+				return Ok(new { data = result, countOfPages });
+
+
+			}
+			return BadRequest("No records found");
 		}
 
 		[HttpGet("/GetAllConcreteProductsFromPharmacy/{id}")]
@@ -163,13 +219,25 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 		[HttpGet("GetPharmacist/{id}")]
-		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
-		public IActionResult GetPharmacist(int id)
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = $"{SD.Role_Admin},{SD.Role_PharmaCompany}")]
+		public async Task<IActionResult> GetPharmacist(int id)
 		{
-			var result = _pharmacyService.GetPharmacy(a => a.Id == id, "User");
+			var user = await _userService.GetUserByName(User.Identity.Name);
+
+			if (user == null)
+			{
+				return NoContent();
+			}
+
+			var result = _pharmacyService.GetPharmacy(a => a.Id == id, "User,PharmaCompany");
+
 			if (result is not null && result.User is not null)
 			{
-				return Ok(new PharmacistViewModel { PharmacyId = id, Email = result.User.Email, Username = result.User.UserName });
+				if ((await _userService.GetRolesAsync(user.Id)).Contains(SD.Role_Admin)
+				|| result.PharmaCompany.UserID == user.Id)
+					return Ok(new PharmacistViewModel { PharmacyId = id, Email = result.User.Email, Username = result.User.UserName });
+				else
+					return Forbid();
 			}
 			return Ok(new PharmacistViewModel { PharmacyId = id });
 
@@ -214,12 +282,42 @@ namespace Web.Controllers
 		}
 
 		[HttpPost("UpsertPharmacy")]
-		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
-		public async Task<IActionResult> UpsertPharmact(PostPharmacyViewModel postModel)
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = $"{SD.Role_Admin},{SD.Role_PharmaCompany}")]
+		public async Task<IActionResult> UpsertPharmacy(PostPharmacyViewModel postModel)
 		{
+			var user = await _userService.GetUserByName(User.Identity.Name);
+			var roles = (await _userService.GetRolesAsync(user.Id));
+
+			if (user == null)
+			{
+				return NoContent();
+			}
+			var result = _pharmaCompany.GetPharmaCompany(a => a.UserID == user.Id);
 			try
 			{
-				return Ok(await UpsertPharmacyEntity(postModel));
+				if (roles.Contains(SD.Role_PharmaCompany))
+				{
+
+					if (postModel.Id != null)
+					{
+						var pharmacy = _pharmacyService.GetPharmacy(a => a.Id == postModel.Id,
+							"PharmaCompany"
+							);
+						if (pharmacy == null || pharmacy.PharmaCompany.UserID != user.Id)
+							return Forbid();
+
+
+					}
+					postModel.PharmaCompanyID = result.Id;
+				}
+
+
+				if (roles.Contains(SD.Role_Admin)
+					|| (result.Id == postModel.PharmaCompanyID))
+					return Ok(await UpsertPharmacyEntity(postModel));
+				else
+					return Forbid();
+
 			}
 			catch (Exception ex)
 			{
@@ -228,61 +326,75 @@ namespace Web.Controllers
 		}
 
 		[HttpPost("UpsertPharmacist")]
-		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = $"{SD.Role_Admin},{SD.Role_PharmaCompany}")]
 		public async Task<IActionResult> UpsertPharmacist(PharmacistViewModel postModel)
 		{
+			var user = await _userService.GetUserByName(User.Identity.Name);
+
+			if (user == null)
+			{
+				return NoContent();
+			}
 			try
 			{
-				var pharmacy = _pharmacyService.GetPharmacy(a => a.Id == postModel.PharmacyId, "User");
-
-				if (pharmacy != null)
+				var pharmacy = _pharmacyService.GetPharmacy(a => a.Id == postModel.PharmacyId, "User,PharmaCompany");
+				if ((await _userService.GetRolesAsync(user.Id)).Contains(SD.Role_Admin)
+					|| pharmacy.PharmaCompany.UserID == user.Id)
 				{
-					if (pharmacy.UserID == null)
+
+					if (pharmacy != null)
 					{
-
-						var user = new UserRegistrationDto
+						if (pharmacy.UserID == null)
 						{
-							UserName = postModel.Username,
-							Password = postModel.Password,
-							Email = postModel.Email,
-						};
 
-						user.Roles = new List<string>
+							var pharmaUser = new UserRegistrationDto
+							{
+								UserName = postModel.Username,
+								Password = postModel.Password,
+								Email = postModel.Email,
+							};
+
+							pharmaUser.Roles = new List<string>
 					{
 						SD.Role_Pharmacist
 					};
 
-						if ((await _repository.UserAuthentication.RegisterUserAsync(user)).Succeeded)
-						{
-							User registrationResult = await _userService.GetUserByName(postModel.Username);
-
-							pharmacy.UserID = registrationResult.Id;
-							_pharmacyService.UpdatePharmacy(pharmacy);
-							return Ok("Data inserted");
-						}
-					}
-
-					else
-					{
-						try
-						{
-
-							User user = await _userService.GetUserById(pharmacy.UserID);
-							if (user != null)
+							if ((await _repository.UserAuthentication.RegisterUserAsync(pharmaUser)).Succeeded)
 							{
+								User registrationResult = await _userService.GetUserByName(postModel.Username);
 
-								await _userService.ChangePasswordWithoutConfirmAsync(user.Id, postModel.Password);
-								await _userService.UpdateUser(user.Id, email: postModel.Email, userName: postModel.Username);
-
-								return Ok("Data updated");
+								pharmacy.UserID = registrationResult.Id;
+								_pharmacyService.UpdatePharmacy(pharmacy);
+								return Ok("Data inserted");
 							}
 						}
-						catch (Exception ex)
-						{
-							Console.WriteLine(ex.Message);
-						}
-						return BadRequest($"Failed to update user");
 
+						else
+						{
+							try
+							{
+
+								User pharmaUser = await _userService.GetUserById(pharmacy.UserID);
+								if (pharmaUser != null)
+								{
+
+									await _userService.ChangePasswordWithoutConfirmAsync(pharmaUser.Id, postModel.Password);
+									await _userService.UpdateUser(pharmaUser.Id, email: postModel.Email, userName: postModel.Username);
+
+									return Ok("Data updated");
+								}
+							}
+							catch (Exception ex)
+							{
+								Console.WriteLine(ex.Message);
+							}
+							return BadRequest($"Failed to update user");
+
+						}
+					}
+					else
+					{
+						return Forbid();
 					}
 				}
 				return BadRequest($"Failed to upsert user");
@@ -321,27 +433,37 @@ namespace Web.Controllers
 
 		private async Task<int> UpsertPharmacyEntity(PostPharmacyViewModel postModel)
 		{
-			var pharmacy = new Pharmacy
-			{
-				Address = postModel.Address,
-				WorkingWeekOpenTime = postModel.WorkingWeekOpenTime,
-				WorkingWeekCloseTime = postModel.WorkingWeekCloseTime,
-				WeekendOpenTime = postModel.WeekendOpenTime,
-				WeekendCloseTime = postModel.WeekendCloseTime,
-				Longitude = postModel.Longitude,
-				Latitude = postModel.Latitude,
-				PharmaCompanyID = postModel.PharmaCompanyID,
-				CityID = postModel.CityID,
-			};
+
 
 			if (postModel.Id == null)
 			{
+				var pharmacy = new Pharmacy
+				{
+					Address = postModel.Address,
+					WorkingWeekOpenTime = postModel.WorkingWeekOpenTime,
+					WorkingWeekCloseTime = postModel.WorkingWeekCloseTime,
+					WeekendOpenTime = postModel.WeekendOpenTime,
+					WeekendCloseTime = postModel.WeekendCloseTime,
+					Longitude = postModel.Longitude,
+					Latitude = postModel.Latitude,
+					PharmaCompanyID = postModel.PharmaCompanyID.Value,
+					CityID = postModel.CityID,
+				};
 				_pharmacyService.InsertPharmacy(pharmacy);
 				return pharmacy.Id;
 			}
 			else
 			{
-				pharmacy.Id = postModel.Id.Value;
+				var pharmacy = _pharmacyService.GetPharmacy(a => a.Id == postModel.Id.Value);
+				pharmacy.Address = postModel.Address;
+				pharmacy.WorkingWeekOpenTime = postModel.WorkingWeekOpenTime;
+				pharmacy.WorkingWeekCloseTime = postModel.WorkingWeekCloseTime;
+				pharmacy.WeekendOpenTime = postModel.WeekendOpenTime;
+				pharmacy.WeekendCloseTime = postModel.WeekendCloseTime;
+				pharmacy.Longitude = postModel.Longitude;
+				pharmacy.Latitude = postModel.Latitude;
+				pharmacy.PharmaCompanyID = postModel.PharmaCompanyID.Value;
+				pharmacy.CityID = postModel.CityID;
 				_pharmacyService.UpdatePharmacy(pharmacy);
 				return postModel.Id.Value;
 			}

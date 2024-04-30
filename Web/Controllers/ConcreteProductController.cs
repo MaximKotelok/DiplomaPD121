@@ -44,6 +44,17 @@ namespace Web.Controllers
             return BadRequest("No records found");
         }
 
+        [HttpGet("GetConcreteProduct/{id}")]
+        public IActionResult GetConcreteProduct(int id)
+        {
+            var result = _concreteProductService.GetConcreteProduct(a=>a.Id==id);
+            if (result is not null)
+            {
+                return Ok(result);
+            }
+            return BadRequest("No records found");
+        }
+
         [HttpGet("GetSupInfoForProductInYourCity")]
         public IActionResult GetSupInfoForProductInYourCity(string city, int id)
         {
@@ -100,18 +111,77 @@ namespace Web.Controllers
             return BadRequest("No records found");
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetConcreteProduct(int id)
-        {
-            var result = _concreteProductService.GetConcreteProduct(x => x.Id == id);
-            if (result is not null)
-            {
-                return Ok(result);
-            }
-            return BadRequest("No records found");
-        }
+		[HttpPost("GetCountOfPagesForConcreteProductsFromPharmacy")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Pharmacist)]
+		public async Task<IActionResult> GetCountOfPagesForConcreteProductsFromPharmacy(PageViewModel model)
+		{
+			User user = await _userService.GetUserByName(User.Identity.Name);
+			var pharmacy = _pharmacyService.GetPharmacy(a => a.UserID == user.Id);
 
-        [HttpGet("Search/{pharmacyId}/{title}")]
+            var result = _concreteProductService.GetAllConcreteProducts(x =>
+                x.PharmacyID == pharmacy.Id &&
+                (
+                    x.Product.Brand.Name.Contains(model.Search) ||
+                    x.Product.Manufacturer.Name.Contains(model.Search) ||
+                    x.Product.Category.Title.Contains(model.Search)
+                )
+            , "Product,Product.Brand,Product.Manufacturer,Product.Category");
+				
+
+
+			if (result is not null)
+			{
+				return Ok(model.GetCountOfPages(result.Count()));
+			}
+			return BadRequest("No records found");
+		}
+
+		[HttpPost("GetConcreteProductsFromPharmacy")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Pharmacist)]
+		public async Task<IActionResult> GetAllConcreteProductsFromPharmacy(PageViewModel model)
+		{
+			User user = await _userService.GetUserByName(User.Identity.Name);
+            var pharmacy = _pharmacyService.GetPharmacy(a => a.UserID == user.Id);
+
+            int page = model.Page != null ? model.Page.Value-1 : 0;
+
+            var result = _concreteProductService.GetAllConcreteProducts(x =>
+                x.PharmacyID == pharmacy.Id &&
+                (
+                    x.Product.Brand.Name.Contains(model.Search) ||
+                    x.Product.Manufacturer.Name.Contains(model.Search) ||
+                    x.Product.Category.Title.Contains(model.Search)
+                )
+            , "Product,Product.Brand,Product.Manufacturer,Product.Category")
+                .Select(a => new
+                {
+                    a.Id,
+                    a.Product.Title,
+                    a.Product.PathToPhoto,
+                    BrandName = a.Product.Brand.Name,
+                    ManufacturerName = a.Product.Manufacturer.Name,
+                    CategoryPathToPhoto = a.Product.Category.PathToPhoto,
+                    CategoryName = a.Product.Category.Title,
+                    CategoryId = a.Product.Category.Id,
+                    a.Price,
+                    a.Quantity,
+                })
+                .GroupBy(a => a.CategoryId)
+                .SelectMany(a => a)
+                .Skip(page * model.ItemsPerPage)
+                .Take(model.ItemsPerPage)
+                .GroupBy(a => new { a.CategoryId, a.CategoryName, a.CategoryPathToPhoto })
+                .Select(a=> new { a.Key.CategoryId, a.Key.CategoryName, a.Key.CategoryPathToPhoto, data=a });
+               
+                
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+
+		[HttpGet("Search/{pharmacyId}/{title}")]
         public IActionResult SearchConcreteProductByPharmacy(int pharmacyId, string title)
         {
             var result = _concreteProductService.GetAllConcreteProducts(x => x.PharmacyID == pharmacyId && x.Product!.Title!.StartsWith(title), "Product");
@@ -120,11 +190,11 @@ namespace Web.Controllers
                 return Ok(result);
             }
             return BadRequest("No records found");
-        } 
+        }
 
         [HttpPost("AddConcreteProductAsync")]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Pharmacist)]
-        public async Task<IActionResult> AddConcreteProductAsync([FromBody]PostProductToPharmacyViewModel viewModel)
+        public async Task<IActionResult> AddConcreteProductAsync([FromBody] PostProductToPharmacyViewModel viewModel)
         {
             User user = await _userService.GetUserByName(User.Identity.Name);
             if (user == null)
@@ -134,7 +204,13 @@ namespace Web.Controllers
             if (pharmacy == null)
                 return BadRequest("No records found");
 
-            ConcreteProduct concreteProduct = new ConcreteProduct()
+            var product = _concreteProductService.GetConcreteProduct(a => a.ProductID == viewModel.ProductId && 
+                a.PharmacyID == pharmacy.Id);
+            if (product != null)
+                return BadRequest();
+			if (viewModel.Id == null)
+			{
+				ConcreteProduct concreteProduct = new ConcreteProduct()
             {
                 ProductID = viewModel.ProductId.Value,
                 Price = viewModel.Price.Value,
@@ -142,7 +218,18 @@ namespace Web.Controllers
                 PharmacyID = pharmacy.Id,
             };
 
-            _concreteProductService.InsertConcreteProduct(concreteProduct);
+                _concreteProductService.InsertConcreteProduct(concreteProduct);
+            }
+            else
+            {
+                ConcreteProduct concreteProduct = 
+                    _concreteProductService.GetConcreteProduct(a => a.Id == viewModel.Id);
+                concreteProduct.ProductID = viewModel.ProductId.Value;
+                concreteProduct.Price = viewModel.Price.Value;
+                concreteProduct.Quantity = viewModel.Quantity.Value;
+				_concreteProductService.UpdateConcreteProduct(concreteProduct);
+
+			}
             return Ok("Data inserted");
         }
 
@@ -156,12 +243,19 @@ namespace Web.Controllers
             return Ok("Updation done");
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteConcreteProduct/{id}")]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Pharmacist)]
-        public IActionResult DeleteConcreteProduct(int id)
+        public async Task<IActionResult> DeleteConcreteProduct(int id)
         {
-            _concreteProductService.DeleteConcreteProduct(id);
-            return Ok("Data Deleted");
+            var res = _concreteProductService.GetConcreteProduct(a => a.Id == id, "Pharmacy");
+			User user = await _userService.GetUserByName(User.Identity.Name);
+
+			if (res.Pharmacy.UserID == user.Id) {         
+                _concreteProductService.DeleteConcreteProduct(id);
+                return Ok("Data Deleted");
+            }
+
+            return BadRequest();
         }
     }
 }

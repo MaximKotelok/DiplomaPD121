@@ -1,15 +1,30 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { setToken } from '../../../utils/Login';
 import styles from "../AuthPage.module.css";
-import  { useNavigate } from 'react-router-dom'
+import  { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from "react-toastify";
 import { getFavs } from "../../../services/favProducts";
 import { initStorageFavs } from "../../../utils/Functions";
 
 const LoginForm = () => {
+    
     const navigate = useNavigate();
+
+
+    const location = useLocation();
+ 
+    const [from, setFrom] = useState();
+  
+    useEffect(() => {
+      const urlParams = new URLSearchParams(window.location.search);
+      setFrom(urlParams.get("from"));
+    }, [location]);
+  
+  
+  
+
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -32,7 +47,10 @@ const LoginForm = () => {
                 setToken(response.data.token);
                 initStorageFavs();
                 //Swal.fire('Success!', 'Login successful', 'success');
-                navigate("/profile");
+                if(!from)
+                    navigate("/profile");
+                else
+                    navigate(from);
                 toast.success("Ви успішно зайшли на сайт!");
                 // Додайте необхідні дії після успішного входу, наприклад, перенаправлення на іншу сторінку
             } else {

@@ -9,9 +9,7 @@ export const GetAllProductsFromIdArray = "Product/GetAllProductsFromIdArray";
 export const GetAllManufacturers = "Manufacturer/GetAllManufacturers";
 export const GetMainCategories = "Category/Main/All";
 export const GetRecomendedBrands = "Brand/GetRecomendedBrands";
-export const GetRecomendedCategory = "Category/GetRecomendedCategory";
 export const PathToCategory = "Category/PathToCategory";
-export const GetRecomendedCategoryById = "Category/GetRecomendedCategoryById";
 
 // Product
 export const GetCategoriesForProductAdd = "Category/GetCategoriesForProductAdd";
@@ -85,7 +83,11 @@ export const LayoutProviderValues = {
     UPDATE: 'update',
     DISABLE_FOOTER: 'disable-footer'
 };
+export const Role_Admin = "адміністратор"
+export const Role_PharmaCompany = "представник компанії"
+export const Role_Pharmacist = "фармацевт"
 
 
 
 export const STANDART_IMG = "https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png";
+// export const STANDART_IMG = "../";

@@ -4,28 +4,27 @@ import "./AccordionSideMenu.css";
 // import $ from "jquery";
 import { ReactComponent as LogoSvb } from "../../../assets/images/samsungpass.svg";
 import { ReactComponent as Dowthrow } from "../../../assets/images/dow.svg";
+import { NavLink } from "react-router-dom";
 
-const AccordionSideMenuComponent = ({ id, title, content, isActive }) => {
+const AccordionSideMenuComponent = ({
+  ListMenejment = [],
+  id,
+  title,
+  content,
+  isActive,
+}) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [isOpen, setIsOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+  // const [isHovered, setIsHovered] = useState(false);
+  // const [rows, setRows] = React.useState([]);
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
+  // const handleMouseEnter = () => {
+  //   setIsHovered(true);
+  // };
 
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
-
-  const buttonStyle = {
-    backgroundColor: isActive
-      ? "#007AFF"
-      : isHovered
-      ? "rgba(0, 122, 255, 0.15)"
-      : "transparent",
-    color: isActive ? "yellow" : "red",
-  };
+  // const handleMouseLeave = () => {
+  //   setIsHovered(false);
+  // };
 
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
@@ -43,15 +42,15 @@ const AccordionSideMenuComponent = ({ id, title, content, isActive }) => {
 
   return (
     <div
-      className="parent-side-accardion"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      style={buttonStyle}
+      className="parent-side-accardion div-accardion-hover"
+      // onMouseEnter={handleMouseEnter}
+      // onMouseLeave={handleMouseLeave}
+      // style={buttonStyle}
     >
       <div className="d-flex align-items-center">
         <div
           className={`side-text-header-victorina side-btn-togle-victorina ${
-            isOpen ? "collapsed" : ""
+            isOpen ? "collapsed div-active-acordeon" : ""
           } `}
           style={{ width: "100%" }}
         >
@@ -65,7 +64,10 @@ const AccordionSideMenuComponent = ({ id, title, content, isActive }) => {
         //     aria-expanded={isOpen}
         //     aria-controls={`collapse-${title.replace(/\s+/g, "")}`}
         //   > */}
-          <div onClick={toggleAccordion} className="d-flex align-items-center">
+          <div
+            onClick={toggleAccordion}
+            className="d-flex align-items-center block-hover"
+          >
             <LogoSvb className="me-3" /> <div>Менеджмент</div>
             <button
               data-bs-target={id}
@@ -90,14 +92,20 @@ const AccordionSideMenuComponent = ({ id, title, content, isActive }) => {
             // className={`accordion-collapse collapse side-text-body-victorina   ${
             className={`  side-text-body-victorina `}
           >
-            <p className="text-body-victorina">sdfsdfdsfsdf</p>
-            <p className="text-body-victorina">sdfsdfdsfsdf</p>
-            <p className="text-body-victorina">sdfsdfdsfsdf</p>
-            <p className="text-body-victorina">sdfsdfdsfsdf</p>
-            <p className="text-body-victorina">sdfsdfdsfsdf</p>
-            <p className="text-body-victorina">sdfsdfdsfsdf</p>
-            <p className="text-body-victorina">sdfsdfdsfsdf</p>
-            <p className="text-body-victorina">sdfsdfdsfsdf</p>
+            {ListMenejment.map((item, index) => (
+              <NavLink
+
+              className={({ isActive }) =>
+              `w-100 d-flex text-body-victorina ${
+                isActive && "active-nav-admin-menejment"
+              }`
+            }
+                to={item.link}
+                // className="w-100 d-flex text-body-victorina "
+              >
+                {item.text}
+              </NavLink>
+            ))}
           </div>
         </div>
       </div>

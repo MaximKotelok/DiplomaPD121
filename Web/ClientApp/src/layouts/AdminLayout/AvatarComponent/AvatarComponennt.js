@@ -6,28 +6,8 @@ import CustomImgComponent from "../../../components/Common/CustomImgComponent/Cu
 import { ApiPath, Success } from "../../../utils/Constants";
 import photo from "../../../assets/images/download.jpg";
 
-const AvatarComponennt = () => {
-  const [userInfo, setUserInfo] = useState(null);
-  useEffect(() => {    
-    init();
-  }, []);
+const AvatarComponennt = ({userInfo}) => {
 
-  
-  async function init(){
-    let userInfoFromServer = {};
-    let res = await getMyInfo();
-    if(res.status == Success){
-      if(res.data.firstName && res.data.lastName){
-        userInfoFromServer.name = `${res.data.firstName} ${res.data.lastName}`;
-      }
-      else{
-        userInfoFromServer.name = res.data.email;
-      }
-      userInfoFromServer.role = res.data.role;
-      userInfoFromServer.pathToPhoto = res.data.pathToPhoto;
-      setUserInfo(userInfoFromServer);
-    }
-  }
 
   
   

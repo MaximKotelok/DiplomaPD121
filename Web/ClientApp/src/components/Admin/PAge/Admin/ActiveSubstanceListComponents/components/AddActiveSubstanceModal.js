@@ -3,9 +3,47 @@ import Modal from "react-bootstrap/Modal";
 import styles from "./AddActiveSubstanceModal.module.css";
 import { InpurtStandart } from "../../../../Common/InpurtStandart/InpurtStandart";
 import { CheckedBox } from "../../../../Common/CheckedBoxComponent/CheckedBox";
+import { toast } from "react-toastify";
+import { addActiveSustance } from "../../../../../../services/activeSubstance";
+import { Success } from "../../../../../../utils/Constants";
 
 function AddActiveSubstanceModal() {
   const [show, setShow] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [formData, setFormData] = useState({
+    title : "",
+    isNotActive: false
+  });
+
+  useEffect(()=>{
+    if(show){
+      setFormData({
+        title : "",
+        isNotActive: false
+      })
+      setIsDisabled(false);
+    }
+  },[show])
+  
+  async function submit(){
+    if(!formData.title)
+    {
+      toast.error("Заповніть всі поля!");
+      return;
+    }
+    setIsDisabled(true);
+    let res = await addActiveSustance(formData.title, !formData.isNotActive)
+    if(res.status === Success){
+      toast.success("Успіх");
+      setIsDisabled(false);
+      setFormData({
+        title : "",
+        isNotActive: false
+      })
+
+      window.location.reload(); 
+    }
+  }
 
   return (
     <>
@@ -42,14 +80,23 @@ function AddActiveSubstanceModal() {
           </h2>
 
           <div className="mb-3">
-            <InpurtStandart label={"Назва"} placholder={"Введіть назву"} />
-            <CheckedBox text="Неактивний" />
+            <InpurtStandart label={"Назва"} placholder={"Введіть назву"}
+              onChange={(e)=>{
+                setFormData({...formData, title: e.target.value})
+              }}
+            />
+            <CheckedBox text="Неактивний" 
+            onChange={(value)=>{
+                setFormData({...formData, isNotActive: value})
+            }} />
           </div>
 
           <div className="row mt-5">
             <div className="col-6 ps-2 pe-2">
               <button
                 className={`brn-form ${styles["card-btn-primary"]}  w-100`}
+                onClick={submit}
+                disabled={isDisabled}
               >
                 Зберегти
               </button>

@@ -50,8 +50,9 @@ namespace Web.Controllers
             return BadRequest("No records found");
         }
 
-        [HttpGet("GetPharmaComapnyAdmin/{id}")]
-        public IActionResult GetPharmaComapnyAdmin(int companyId)
+        [HttpGet("GetPharmaComapnyAdmin/{companyId}")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		public IActionResult GetPharmaComapnyAdmin(int companyId)
         {
             var result = _service.GetPharmaCompany(x => x.Id == companyId, "User");
             if (result is not null && result.User is not null)
