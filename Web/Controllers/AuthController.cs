@@ -2,6 +2,11 @@
 using Domain.Dto;
 using Domain.Dtos;
 using Domain.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -76,5 +81,36 @@ namespace Web.Controllers
                 ? Ok("Mail successfully confirmed")
                 : BadRequest("Failed to confirm mail");
         }
+
+        [Route("google-login")]
+        public  IActionResult GoogleLogin()
+        {
+            var properties = new AuthenticationProperties { RedirectUri = Url.Action("GoogleResponse")};
+            return Challenge(properties,GoogleDefaults.AuthenticationScheme);
+        }
+        [Route("google-response")]
+        public async Task<IActionResult> GoogleResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync(JwtBearerDefaults.AuthenticationScheme);
+            var claims = result.Principal.Identities.FirstOrDefault().Claims.Select(claim => new
+            {
+                claim.Issuer,
+                claim.OriginalIssuer,
+                claim.Type,
+                claim.Value
+            });
+
+            return Json(claims);
+        }
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[Route("account/external-login")]
+        //public IActionResult ExternalLogin(string provider, string returnUrl)
+        //{
+        //    var redirectUrl = $"https://api.domain.com/identity/v1/account/external-auth-callback?returnUrl={returnUrl}";
+        //    var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+        //    properties.AllowRefresh = true;
+        //    return Challenge(properties, provider);
+        //}
     }
 }

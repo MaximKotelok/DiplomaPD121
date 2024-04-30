@@ -79,6 +79,14 @@ builder.Services.AddAuthentication(opt =>
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication();
 
+var GoogleConfig = builder.Configuration.GetSection("GoogleConfig");
+
+builder.Services.AddAuthentication().AddGoogle(options =>
+{
+    options.ClientId = GoogleConfig["ClientId"];
+    options.ClientSecret = GoogleConfig["ClientSecret"];
+});
+
 builder.Services.AddSwaggerGen(
     c =>
     {
