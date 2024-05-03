@@ -14,6 +14,7 @@ namespace Repository.Repository.Interfaces
     {
         Task<IdentityResult> RegisterUserAsync(UserRegistrationDto userForRegistration);
         Task<UserInfoDto> ValidateUserAsync(UserLoginDto loginDto);
+        Task<UserInfoDto> ValidateExternalUserAsync(UserLoginDto loginDto);
         Task<string> CreateTokenAsync();
         Task<bool> ConfirmEmailAsync(string email);
         Task<IdentityResult> ChangePasswordAsync(string email, string currentPassword, string newPassword);

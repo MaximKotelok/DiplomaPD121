@@ -80,12 +80,18 @@ builder.Services.AddAuthorization();
 builder.Services.AddAuthentication();
 
 var GoogleConfig = builder.Configuration.GetSection("GoogleConfig");
+var FacebookConfig = builder.Configuration.GetSection("FacebookConfig");
 
 builder.Services.AddAuthentication().AddGoogle(options =>
 {
     options.ClientId = GoogleConfig["ClientId"];
     options.ClientSecret = GoogleConfig["ClientSecret"];
-});
+}).AddFacebook(options =>
+{
+    options.AppId = FacebookConfig["AppId"];
+    options.AppSecret = FacebookConfig["AppSecret"];
+}); 
+    
 
 builder.Services.AddSwaggerGen(
     c =>

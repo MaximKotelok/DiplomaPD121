@@ -10,9 +10,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.IdentityModel.Tokens;
 using Repository.Repository.Interfaces;
+using SendGrid.Helpers.Mail;
 using Services.EmailService;
+using System.Security.Claims;
 using Utility;
 using Web.Filters;
 
@@ -25,13 +28,16 @@ namespace Web.Controllers
         private readonly IRepositoryManager _repository;
         private readonly IEmailService _emailService;
         private readonly IMapper _mapper;
-        UserManager<User> _userManager;
-        public AuthController(IRepositoryManager repository, IMapper mapper, UserManager<User> userManager, IEmailService emailService)
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+
+        public AuthController(IRepositoryManager repository, IMapper mapper, UserManager<User> userManager, IEmailService emailService, SignInManager<User> signInManager)
         {
             _repository = repository;
             _mapper = mapper;
             _userManager = userManager;
             _emailService = emailService;
+            _signInManager = signInManager;
         }
 
         [HttpPost("register")]
@@ -73,7 +79,21 @@ namespace Web.Controllers
                 return Unauthorized("Invalid credentials");
             }
         }
+        [Route("external-login")]
+        public async Task<IActionResult> ExternalAuthenticateAsync(string email)
+        {
+            var result = await _repository.UserAuthentication.ValidateExternalUserAsync(new UserLoginDto { Email = email });
 
+            if (result is not null)
+            {
+                var token = await _repository.UserAuthentication.CreateTokenAsync();
+                return Ok(new { Token = token, User = result });
+            }
+            else
+            {
+                return Unauthorized("Invalid credentials");
+            }
+        }
         [HttpGet("confirm")]
         public async Task<IActionResult> ConfirmEmailAsync([FromQuery] string email)
         {
@@ -81,36 +101,98 @@ namespace Web.Controllers
                 ? Ok("Mail successfully confirmed")
                 : BadRequest("Failed to confirm mail");
         }
+        [Route("external-login/google")]
+        public IActionResult ExternalLoginGoogle(string provider = "Google", string? returnUrl = null)
+        {
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Auth",
+                                    new { ReturnUrl = returnUrl });
 
-        [Route("google-login")]
-        public  IActionResult GoogleLogin()
-        {
-            var properties = new AuthenticationProperties { RedirectUri = Url.Action("GoogleResponse")};
-            return Challenge(properties,GoogleDefaults.AuthenticationScheme);
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+
+            return new ChallengeResult(provider, properties);
         }
-        [Route("google-response")]
-        public async Task<IActionResult> GoogleResponse()
+        [Route("external-login/facebook")]
+        public IActionResult ExternalLoginFacebook(string provider = "Facebook", string? returnUrl = null)
         {
-            var result = await HttpContext.AuthenticateAsync(JwtBearerDefaults.AuthenticationScheme);
-            var claims = result.Principal.Identities.FirstOrDefault().Claims.Select(claim => new
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Auth",
+                                    new { ReturnUrl = returnUrl });
+
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+
+            return new ChallengeResult(provider, properties);
+        }
+        public async Task<IActionResult> ExternalLoginCallback(string? returnUrl = null, string? remoteError = null)
+        {
+            returnUrl = returnUrl ?? Url.Content("~/");
+
+            UserLoginDto loginViewModel = new UserLoginDto
             {
-                claim.Issuer,
-                claim.OriginalIssuer,
-                claim.Type,
-                claim.Value
-            });
+                ReturnUrl = returnUrl,
+                ExternalLogins =
+                        (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
+            };
 
-            return Json(claims);
+            if (remoteError != null)
+            {
+                ModelState
+                    .AddModelError(string.Empty, $"Error from external provider: {remoteError}");
+
+                return NotFound($"Error from external provider: {remoteError}");
+            }
+
+            // Get the login information about the user from the external login provider
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                ModelState
+                    .AddModelError(string.Empty, "Error loading external login information.");
+
+                return NotFound("Error loading external login information.");
+            }
+
+            // If the user already has a login (i.e if there is a record in AspNetUserLogins
+            // table) then sign-in the user with this external login provider
+            var signInResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider,
+                info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+
+            if (signInResult.Succeeded)
+            {
+                // Get the email claim value
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                return LocalRedirect($"/api/userauthentication/external-login?email={email}");
+            }
+            // If there is no record in AspNetUserLogins table, the user may not have
+            // a local account
+            else
+            {
+                // Get the email claim value
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+
+                if (email != null)
+                {
+                    // Create a new user without password if we do not have a user already
+                    var user = await _userManager.FindByEmailAsync(email);
+
+                    if (user == null)
+                    {
+                        user = new User
+                        {
+                            UserName = info.Principal.FindFirstValue(ClaimTypes.Email),
+                            Email = info.Principal.FindFirstValue(ClaimTypes.Email)
+                        };
+
+                        await _userManager.CreateAsync(user);
+                    }
+
+                    // Add a login (i.e insert a row for the user in AspNetUserLogins table)
+                    await _userManager.AddLoginAsync(user, info);
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+
+                    return LocalRedirect("");
+                }
+
+                return NotFound($"Email claim not received from: {info.LoginProvider}");
+            }
         }
-        //[HttpPost]
-        //[AllowAnonymous]
-        //[Route("account/external-login")]
-        //public IActionResult ExternalLogin(string provider, string returnUrl)
-        //{
-        //    var redirectUrl = $"https://api.domain.com/identity/v1/account/external-auth-callback?returnUrl={returnUrl}";
-        //    var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
-        //    properties.AllowRefresh = true;
-        //    return Challenge(properties, provider);
-        //}
     }
 }

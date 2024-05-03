@@ -54,9 +54,17 @@ namespace Repository.Repository.Services
             var result = _user != null && await _userManager.CheckPasswordAsync(_user, loginDto.Password!);
 
             if (!result || (_user != null && _user.LockoutEnd.HasValue && _user.LockoutEnd > DateTimeOffset.UtcNow && _user.EmailConfirmed == true))
-            {
                 return null;
-            }
+
+            return new UserInfoDto { Email = _user!.Email, };
+        }
+        public async Task<UserInfoDto> ValidateExternalUserAsync(UserLoginDto loginDto)
+        {
+
+            _user = await _userManager.FindByEmailAsync(loginDto.Email!);
+
+            if (_user != null && _user.LockoutEnd.HasValue && _user.LockoutEnd > DateTimeOffset.UtcNow && _user.EmailConfirmed == true)
+                return null;
 
             return new UserInfoDto { Email = _user!.Email, };
         }
