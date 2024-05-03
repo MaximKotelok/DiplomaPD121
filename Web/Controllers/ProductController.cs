@@ -1,5 +1,6 @@
 ﻿using DataAccess.Migrations;
 using Domain.Models;
+using Domain.Models.CalculateActionModels;
 using Domain.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -435,7 +436,11 @@ namespace Web.Controllers
 				   || a.Brand.Name.Contains(model.Search)
 				   || a.Manufacturer.Name.Contains(model.Search)
 				   || a.ShortDescription.Contains(model.Search);
-			   });
+			   })
+				.GroupBy(a => a.Category.Title)
+			   .SelectMany(group => group.Select(a => new ProductAdminCalculateModel
+			   {
+			   }).Prepend(new ProductAdminCalculateModel { IsTmp = true }));
 			return Ok(model.GetCountOfPages(products.Count()));
 		}
 
@@ -443,6 +448,8 @@ namespace Web.Controllers
 		public IActionResult GetProductsAdmin([FromBody] PageViewModel model)
 		{
 			int page = model.Page != null ? model.Page.Value - 1 : 0;
+			bool isClearLast = false;
+
 			var products = _productService.GetAllProducts(includeProperties: "Category,Brand,Manufacturer")
 				.Where(a =>
 				{
@@ -454,8 +461,9 @@ namespace Web.Controllers
 					|| a.ShortDescription.Contains(model.Search);
 				})
 				.GroupBy(a => a.Category.Title)
-				.SelectMany(a => a.Select(a => new
+				.SelectMany(group => group.Select(a => new ProductAdminCalculateModel
 				{
+
 					CategoryId = a.Category.Id,
 					CategoryPathToPhoto = a.Category.PathToPhoto,
 					CategoryTitle = a.Category.Title,
@@ -464,12 +472,28 @@ namespace Web.Controllers
 					Manufacturer = a.Manufacturer.Name,
 					ShortDescription = a.ShortDescription,
 					PathToPhoto = a.PathToPhoto,
-				}))
-				.Skip(page * model.ItemsPerPage).Take(model.ItemsPerPage)
+				}).Prepend(new ProductAdminCalculateModel { IsTmp = true }))
+				.Skip(page * model.ItemsPerPage)
+				.TakeWhile((item, index) => {
+					if (index < model.ItemsPerPage || (isClearLast && index == model.ItemsPerPage))
+					{
+						if(index == model.ItemsPerPage - 1 && item.IsTmp == true)
+						{
+							isClearLast = true;
+						}
+						return true;
+					}
+					return false;
+					})
+				.Where(a => a.IsTmp != true)
 				.GroupBy(a => new { a.CategoryId, a.CategoryTitle, a.CategoryPathToPhoto })
-				.Select(a => new { a.Key.CategoryTitle, a.Key.CategoryPathToPhoto, data = a });
+				.Select(a => new { a.Key.CategoryTitle, a.Key.CategoryPathToPhoto, data = a.ToList() })
+				.ToList();
 
-
+			if(isClearLast)
+			{
+				products.Last().data.Clear();
+			}
 
 			return Ok(products);
 

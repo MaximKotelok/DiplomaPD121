@@ -18,7 +18,6 @@ import AccordionComponnent from "../../../Common/AccordionQuestionComponent/acco
 import MiniProductCardComponent from "../../../Common/MiniProductCardComponent/MiniProductCardComponent";
 import homePageImg from "../../../../assets/images/BANNER.png";
 import AdaptiveContainerComponent from "../../../Common/AdaptiveContainerComponent/AdaptiveContainerComponent";
-
 import "./Home.css";
 import {
   getFirstNItemRecomendedCategoryByPhoto,
@@ -142,6 +141,7 @@ export const Home = () => {
 
             <h3 className="text-title mb-3">Актуальні категорії</h3>
               <AdaptiveContainerComponent xlDisplayCount={3} lgDisplayCount={2} mdDisplayCount={1} isInMiddleIfNotFull={false}
+              className="p-0"
               >
                 {
                   recommendedCategory.map(a => 

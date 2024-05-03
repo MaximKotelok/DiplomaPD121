@@ -1,4 +1,4 @@
-import { GetAllManufacturers, ClassHeader } from "../utils/Constants";
+import { GetAllManufacturers, ClassHeader, itemsPerPageForAdmin } from "../utils/Constants";
 import { postToServer, getFromServer, deleteFromServer } from "../utils/Queries";
 
 
@@ -12,7 +12,7 @@ export async function getManufacturerById(manufacturerId) {
 
 export async function getAllManufacturerForAdmin(page, search) {
     return await postToServer("Manufacturer/GetAllManufacturersForAdmin", {
-        itemsPerPage: 6,
+        itemsPerPage: itemsPerPageForAdmin,
         page: page,
         search
     })

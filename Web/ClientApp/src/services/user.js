@@ -1,4 +1,4 @@
-import { GetAllBrands, GetRecomendedBrands, Success } from "../utils/Constants";
+import { GetAllBrands, GetRecomendedBrands, Success, itemsPerPageForAdmin } from "../utils/Constants";
 import { getToken } from "../utils/Login";
 import { postToServer, getFromServer} from "../utils/Queries";
 
@@ -11,7 +11,7 @@ export async function getMyInfo() {
 } 
 
 export async function getAllUsers(page, search = "") {
-    return await postToServer("User/getAllUsers", {itemsPerPage: 6, page: page, search: search});
+    return await postToServer("User/getAllUsers", {itemsPerPage: itemsPerPageForAdmin, page: page, search: search});
 } 
 
 export async function banOrUnban(userId, status) {

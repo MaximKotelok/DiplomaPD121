@@ -19,7 +19,7 @@ import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
 // import BtnEditBrandModal from "./components/BtnEditStatusModal/BtnEditStatusModal/BtnEditBrandModal";
-import { getAllCategoriesForAdmin, deleteCategory } from "../../../../../services/category";
+import { getAllCategoriesForAdmin, deleteCategory, getCountOfPagesAllCategoriesForAdmin } from "../../../../../services/category";
 import {
     BrowserRouter as Router,
     Route,
@@ -51,27 +51,24 @@ export const CategoryListComponents = () => {
     const [page, setPage] = React.useState(paramPage);
     const [countOfPages, setCountOfPages] = React.useState(1);
     const [rows, setRows] = React.useState([]);
-
-    useEffect(() => {
-        init();
-    }, []);
-
-    async function init() {
-        let res = await getAllCategoriesForAdmin(page);
-        if (res.status === Success) {
-            let page = paramPage ? paramPage : 1;
-            if (page > res.data.countOfPages) {
-                res = await getAllCategoriesForAdmin(res.data.countOfPages);
-                page = res.data.countOfPages;
-            } else if (page < 1) {
-                res = await getAllCategoriesForAdmin(1);
-                page = 1;
-            }
-            setPage(parseInt(page));
-            setRows(res.data.data);
-            setCountOfPages(res.data.countOfPages);
+    const [search, setSearch] = React.useState("");
+    
+    useEffect(()=>{
+        if(paramPage)
+          refresh(parseInt(paramPage));
+          else
+          refresh(1)
+      },[])
+    
+      async function refresh(page, searchText){
+        setPage(page);
+        let resCount = await getCountOfPagesAllCategoriesForAdmin(searchText == "" || search?searchText:search);
+        let res = await getAllCategoriesForAdmin(searchText == "" || search?searchText:search,page);
+        if(res.status === Success && resCount.status === Success){
+          setCountOfPages(resCount.data);
+          setRows(res.data);
         }
-    }
+      }
 
     return (
         <div className={`${styles["row-parent"]}`}>
@@ -80,14 +77,8 @@ export const CategoryListComponents = () => {
                     <div className="col-6">
                         <SearchComponent
                             callback={async (text) => {
-                                let page = 1;
-                                setPage(1);
-                                const res = await getAllCategoriesForAdmin(page, text);
-                                if (res.status === Success) {
-                                    //console.log(res);
-                                    setRows(res.data.data);
-                                    setCountOfPages(res.data.countOfPages);
-                                }
+                                setSearch(text);
+                                await refresh(1, text);
                             }}
                         />
                     </div>
@@ -187,9 +178,9 @@ export const CategoryListComponents = () => {
                             getContent={async (page) => {
                                 const newUrl = `/admin/categoryList/${page}`;
                                 window.history.pushState({}, "", newUrl);
-                                let res = await getAllCategoriesForAdmin(page);
+                                let res = await getAllCategoriesForAdmin(search, page);
                                 if (res.status === Success) {
-                                    return res.data.data;
+                                    return res.data;
                                 }
                             }}
                             allowAppend={false}

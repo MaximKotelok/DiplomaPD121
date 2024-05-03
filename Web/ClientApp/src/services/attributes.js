@@ -1,4 +1,4 @@
-import { ClassHeader } from "../utils/Constants";
+import { ClassHeader, itemsPerPageForAdmin } from "../utils/Constants";
 import { postToServer, getFromServer, deleteFromServer } from "../utils/Queries";
 
 export async function getAllAttributes() {
@@ -12,7 +12,7 @@ export async function getCountAttributes(count) {
 } 
 export async function getAllAttributesForAdmin(page, search) {
     return await postToServer("Attribute/GetAllAttributesForAdmin", {
-        itemsPerPage: 6,
+        itemsPerPage: itemsPerPageForAdmin,
         page: page,
         search
     })
