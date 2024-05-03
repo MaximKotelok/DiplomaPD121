@@ -18,7 +18,7 @@ import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
 import BtnEditPharmacyModal from "./components/BtnEditStatusModal/BtnPharmacyModal";
-import { getAllPharmaciesForAdmin } from "../../../../../services/pharmacy";
+import { getAllPharmaciesForAdmin, getCountOfPagesPharmaciesForAdmin } from "../../../../../services/pharmacy";
 import {
   BrowserRouter as Router,
   Route,
@@ -70,79 +70,45 @@ export const PharmacyListComponents = () => {
     React.useState(false);
   const [search, setSearch] = React.useState("");
 
-  useEffect(() => {
-    init();
-  }, []);
+  useEffect(()=>{
+    reload(1, search, isDisplayOnlyCompanies);
+  },[])
 
-  async function reloadData() {
-    let page = 1;
-    setPage(1);
-    const res = await getAllPharmaciesForAdmin(
-      page,
-      search,
-      isDisplayOnlyCompanies
-    );
-    if (res.status === Success) {
-      //console.log(res);
-      setRows(res.data.data);
-      setCountOfPages(res.data.countOfPages);
-    }
-  }
 
-  useEffect(() => {
-    reloadData();
-  }, [search, isDisplayOnlyCompanies]);
-
-  async function init() {
-    let res = await getAllPharmaciesForAdmin(page, "", isDisplayOnlyCompanies);
-    if (res.status === Success) {
-      let page = paramPage ? paramPage : 1;
-      if (page > res.data.countOfPages) {
-        res = await getAllPharmaciesForAdmin(res.data.countOfPages);
-        page = res.data.countOfPages;
-      } else if (page < 1) {
-        res = await getAllPharmaciesForAdmin(1);
-        page = 1;
+  async function reload(page, searchText, isDisplayOnlyCompanies){    
+    setPage(page);
+    let res = await getAllPharmaciesForAdmin(page, searchText?searchText:search, isDisplayOnlyCompanies);
+    //let resCountOfPages = await getCountOfPagesPharmaciesForAdmin(searchText?searchText:search, isDisplayOnlyCompanies);
+    if(res.status === Success 
+      //&& resCountOfPages.status === Success
+    ){
+        setCountOfPages(res.data.countOfPages);
+        setRows(res.data.data);
+        
       }
-      setPage(parseInt(page));
-      setRows(res.data.data);
-      setCountOfPages(res.data.countOfPages);
-    }
   }
 
-  // const handleChangePage = (event, newPage) => {
-  //   setPage(newPage);
-  // };
-
-  // useEffect(()=>{
-  //   init();
-  // },[]);
-
-  // async function init(){
-  //   const res = await getAllProductConfirm(page);
-  //   const statusesRes = await getAllStatuses();
-  //   if(res.status === Success && statusesRes.status === Success){
-  //     //console.log(res);
-  //     setStatuses(statusesRes.data);
-  //     setRows(res.data.data);
-  //     setCountOfPages(res.data.countOfPages)
-  //     console.log(res)
-  //   }
-  // }
-  // console.log(statuses);
+  console.log(rows)
 
   return (
     <div className={`${styles["row-parent"]}`}>
       <div className={`${styles["box-container"]} `}>
         <div className="row">
           <div className="col-6">
-            <SearchComponent callback={setSearch} />
+            <SearchComponent callback={(text)=>{
+              setSearch(text);
+              reload(1, text, isDisplayOnlyCompanies);
+            }
+          } />
           </div>
 
           <div className="col-4">
             <CheckedBox
               text="Показувати лише фарма-компанії?"
-              onChange={setIsDisplayOnlyCompanies}
+              onChange={(value)=>{
+                setIsDisplayOnlyCompanies(value);
+                reload(1, search, value);
+              }}
             />
           </div>
           <div className="col-2">

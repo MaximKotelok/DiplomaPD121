@@ -1,4 +1,4 @@
-import { ClassHeader, GetAllBrands, GetRecomendedBrands, Success } from "../utils/Constants";
+import { ClassHeader, GetAllBrands, GetRecomendedBrands, Success, itemsPerPageForAdmin } from "../utils/Constants";
 import { postToServer, getFromServer} from "../utils/Queries";
 import { removePharmacyFromCart } from "./cartService";
 
@@ -26,7 +26,7 @@ export async function postReservation(concreteProducts, phone, email, pharmacyId
 export async function getPharmacyReservations(page) {
     let res = await postToServer("Reservation/GetPharmacyReservations", 
     {
-        itemsPerPage: 6,
+        itemsPerPage: itemsPerPageForAdmin,
         page:page
     }, ClassHeader);
     return res;

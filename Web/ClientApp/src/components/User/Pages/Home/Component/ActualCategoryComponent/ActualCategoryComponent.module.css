@@ -15,12 +15,12 @@
 
 .title{
     position: absolute;
-    color:white;
+    color:color;
     bottom: 10px;
-    left: 10px;
+    left: 25px;
     font-family: var(--standart-font);
-font-size: 16px;
-font-weight: 500;
+font-size: 17px;
+font-weight: 600;
 line-height: 20.08px;
 text-align: left;
 

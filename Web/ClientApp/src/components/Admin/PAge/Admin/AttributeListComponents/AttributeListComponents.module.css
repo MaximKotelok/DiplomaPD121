@@ -46,21 +46,35 @@ text-transform: uppercase;
     
 }
 
-.btn-edit{
-
-    padding: 4px 8px;
-    border-radius: 100px ;
-        background-color: rgba(14, 62, 117, 1);
-    
+.my-btn-delete{
+    text-transform: uppercase;
     color: rgba(255, 255, 255, 1);
     font-family: var(--standart-font);
 font-size: 13px;
-font-weight: 500;
+font-weight: 400;
 line-height: 18px;
 letter-spacing: 0.1599999964237213px;
-text-align: center;
-text-transform: uppercase;
+background-color:  rgba(255, 59, 48, 1) !important;
+    padding: 6px 14px;
+    border-radius: 100px;
+    border:none !important;
+}
 
+.my-btn-edit{
+    border:none !important;
+
+    color: rgba(255, 255, 255, 1);
+    font-family: var(--standart-font);
+font-size: 13px;
+font-weight: 400;
+line-height: 18px;
+letter-spacing: 0.1599999964237213px;
+
+    background-color:  rgba(14, 62, 117, 1) !important;
+    padding: 6px 14px;
+    border-radius: 100px;
+
+text-transform: uppercase;
 }
 
 

@@ -1,4 +1,4 @@
-﻿import { GetPharmacyProduct, GetPharmacyById, UpsertPharmcy, ClassHeader } from "../utils/Constants";
+﻿import { GetPharmacyProduct, GetPharmacyById, UpsertPharmcy, ClassHeader, itemsPerPageForAdmin } from "../utils/Constants";
 import { postToServer, getFromServer, deleteFromServer } from "../utils/Queries";
 
 export async function getPharmacyById(id){
@@ -19,8 +19,16 @@ export async function GetPharmacist(id){
 
 export async function getAllPharmaciesForAdmin(page, search, isDisplayOnlyCompanies){
     return await postToServer("Pharmacy/GetAllPharmaciesForAdmin",  {
-        itemsPerPage: 6,
+        itemsPerPage: itemsPerPageForAdmin,
         page: page,
+        search,
+        isDisplayOnlyCompanies
+    })
+}
+
+export async function getCountOfPagesPharmaciesForAdmin(search, isDisplayOnlyCompanies){
+    return await postToServer("Pharmacy/GetCountOfPagesPharmaciesForAdmin",  {
+        itemsPerPage: itemsPerPageForAdmin,
         search,
         isDisplayOnlyCompanies
     })
@@ -28,7 +36,7 @@ export async function getAllPharmaciesForAdmin(page, search, isDisplayOnlyCompan
 
 export async function getAllPharmaciesForPharmaCompany(page, search){
     return await postToServer("Pharmacy/GetAllPharmaciesForPharmaCompany",  {
-        itemsPerPage: 6,
+        itemsPerPage: itemsPerPageForAdmin,
         page: page,
         search
     })

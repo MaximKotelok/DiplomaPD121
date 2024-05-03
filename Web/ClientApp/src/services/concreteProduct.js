@@ -1,6 +1,6 @@
 import { deleteFromServer, getFromServer, postToServer } from "../utils/Queries";
 import { postPhotoToServer } from "./photo";
-import { ClassHeader } from "../utils/Constants"
+import { ClassHeader, itemsPerPageForAdmin } from "../utils/Constants"
 
 export async function getListOfConcreteProductInYourCity(city, productId){
     return await getFromServer(
@@ -13,7 +13,7 @@ export async function getCountOfPagesForConcreteProductsFromPharmacy(search=""){
         `ConcreteProduct/GetCountOfPagesForConcreteProductsFromPharmacy`,
         {
             search,
-            itemsPerPage: 2
+            itemsPerPage: itemsPerPageForAdmin
         }
         )
 }
@@ -23,7 +23,7 @@ export async function getConcreteProductsFromPharmacy(search="", page=1){
         `ConcreteProduct/GetConcreteProductsFromPharmacy`,
         {
             search,
-            itemsPerPage: 2,
+            itemsPerPage: itemsPerPageForAdmin,
             page
         }
         )

@@ -11,6 +11,9 @@ export const GetMainCategories = "Category/Main/All";
 export const GetRecomendedBrands = "Brand/GetRecomendedBrands";
 export const PathToCategory = "Category/PathToCategory";
 
+
+export const itemsPerPageForAdmin = 6;
+
 // Product
 export const GetCategoriesForProductAdd = "Category/GetCategoriesForProductAdd";
 export const GetGroupsForProductAdd = "ProductAttributeGroup/GetGroupsForProductAdd";

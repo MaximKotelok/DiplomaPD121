@@ -120,7 +120,6 @@ export const ProductConcreatListComponents = () => {
   const [search, setSearch] = React.useState("");
   //const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [rows, setRows] = React.useState([]);
-  const [statuses, setStatuses] = React.useState([]);
   const { pageParam } = useParams();
   useEffect(()=>{
     if(pageParam)

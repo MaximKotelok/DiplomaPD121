@@ -1,4 +1,4 @@
-import { GetAllBrands, GetRecomendedBrands, GetBrandById, UpsertBrand, ClassHeader } from "../utils/Constants";
+import { GetAllBrands, GetRecomendedBrands, GetBrandById, UpsertBrand, ClassHeader, itemsPerPageForAdmin } from "../utils/Constants";
 import { postToServer, getFromServer, deleteFromServer } from "../utils/Queries";
 
 export async function getAllBrands() {
@@ -12,7 +12,7 @@ export async function getCountBrands(count) {
 } 
 export async function getAllBrandForAdmin(page, search) {
     return await postToServer("Brand/GetAllBrandsForAdmin", {
-        itemsPerPage: 6,
+        itemsPerPage: itemsPerPageForAdmin,
         page: page,
         search
     })

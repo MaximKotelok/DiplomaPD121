@@ -1,7 +1,5 @@
-import { GetAllCities } from "../utils/Constants";
+import { GetAllCities, itemsPerPageForAdmin } from "../utils/Constants";
 import { postToServer, getFromServer, putToServer} from "../utils/Queries";
-
-const ItemsPePage = 3;
 
 export async function getActiveSubstance(id) {
     return await getFromServer(`ActiveSubstance/GetActiveSubstance/${id}`);
@@ -11,7 +9,7 @@ export async function getActiveSubstancesCountOfPage(search) {
     return await postToServer(`ActiveSubstance/GetActiveSubstancesCountOfPage`,
     {
         search,
-        itemsPerPage: ItemsPePage
+        itemsPerPage: itemsPerPageForAdmin
     });
 } 
 
@@ -19,7 +17,7 @@ export async function getAllActiveSubstances(page, search) {
     return await postToServer(`ActiveSubstance/GetAllActiveSubstancesForAdmin`,
     {
         search,
-        itemsPerPage: ItemsPePage,
+        itemsPerPage: itemsPerPageForAdmin,
         page: page
     });
 } 

@@ -11,7 +11,7 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
 import SearchComponent from "../../../../Common/SearchComponent/SearchComponent";
-import { NavLink, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { ApiPath, STANDART_IMG, Success } from "../../../../../utils/Constants";
 import { getAllAttributesForAdmin, deleteAttribute } from "../../../../../services/attributes";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
@@ -82,12 +82,12 @@ export const AttributeListComponents = () => {
                     </div>
 
                     <div className="col-6 d-flex  align-items-center justify-content-end">
-                        <NavLink
+                        <Link
                             to={"/admin/addAttribute"}
                             className={`${styles["btn-add"]}`}
                         >
                             Додати
-                        </NavLink>
+                        </Link>
                     </div>
                 </div>
 
@@ -128,12 +128,12 @@ export const AttributeListComponents = () => {
                                                 <span className={`${styles["text-table"]}`}>{attibute.index}</span>
                                             </TableCell>
                                             <TableCell className="d-flex align-items-center justify-content-end">
-                                                <NavLink
+                                                <Link
                                                     to={`/admin/updateAttribute/${attibute.id}`}
-                                                    className={`${styles["btn-edit"]}`}
+                                                    className={`${styles["my-btn-edit"]} me-4`}
                                                 >
                                                     Оновити
-                                                </NavLink>
+                                                </Link>
                                                 <button
                                                     className={`btn btn-danger ${styles["my-btn-delete"]}`}
                                                     onClick={async () => {

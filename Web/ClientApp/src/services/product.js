@@ -1,4 +1,4 @@
-import { UpsertProduct, GetProduct, ClassHeader, GetAllProductsFromIdArray, Success, GetSupInfoForProductInYourCity, GetTopOffers, GetProductForPharmacy } from "../utils/Constants";
+import { UpsertProduct, GetProduct, ClassHeader, GetAllProductsFromIdArray, Success, GetSupInfoForProductInYourCity, GetTopOffers, GetProductForPharmacy, itemsPerPageForAdmin } from "../utils/Constants";
 import { getCookie } from "../utils/Cookies";
 import { postToServer, getFromServer, putToServer} from "../utils/Queries";
 import { postPhotoToServer } from "./photo";
@@ -57,7 +57,7 @@ export async function Search(title = null, categories = null, brands = null, act
         activeSubstanceId,
         properties,
         page,
-        itemsPerPage:4,
+        itemsPerPage:itemsPerPageForAdmin,
         orderBy
     }, ClassHeader)
 
@@ -77,14 +77,14 @@ export async function GetSearchInput(title = null, categories = null, brands = n
 } 
 export async function getProductsAdmin(page = 1, search = ""){
     return await postToServer("Product/GetProductsAdmin", {
-        itemsPerPage:4,
+        itemsPerPage:itemsPerPageForAdmin,
         page: page,
         search: search
     }, ClassHeader)
 } 
 export async function getCountOfPagesForProductsAdmin(search = ""){
     return await postToServer("Product/GetCountOfPagesForProductsAdmin", {
-        itemsPerPage:4,
+        itemsPerPage:itemsPerPageForAdmin,
         search: search
     }, ClassHeader)
 } 

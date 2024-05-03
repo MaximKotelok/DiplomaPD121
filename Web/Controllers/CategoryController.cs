@@ -256,27 +256,52 @@ namespace Web.Controllers
 
 		}
 
-        [HttpPost("GetAllCategoriesForAdmin")]
+		[HttpPost("GetCountOfPagesAllCategoriesForAdmin")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		public IActionResult GetCountOfPagesAllCategoriesForAdmin(PageViewModel model)
+		{
+			var catalogue = _service.GetCategory(a => a.ParentCategoryID == null);
+			var rawResult = _service.GetAllCategories(a =>
+			a.ParentCategoryID != null && a.ParentCategoryID != catalogue!.Id
+			);
+			if (!model.Search.IsNullOrEmpty())
+			{
+				rawResult = rawResult.Where(a =>
+				{
+					return
+					a.Id.ToString().Contains(model.Search) ||
+					a.Title.Contains(model.Search);
+				});
+			}
+			if (rawResult is not null)
+			{
+				int countOfPages = model.GetCountOfPages(rawResult.Count());
+				return Ok(countOfPages);
+			}
+			return BadRequest("No records found");
+		}
+
+		[HttpPost("GetAllCategoriesForAdmin")]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
         public IActionResult GetAllCategoriesForAdmin(PageViewModel model)
         {
-            var rawResult = _service.GetAllCategories();
-            if (!model.Search.IsNullOrEmpty())
-            {
-                rawResult = rawResult.Where(a =>
-                {
-                    return
-                    a.Id.ToString().StartsWith(model.Search) ||
-                    a.Title.StartsWith(model.Search);
-                });
-            }
-            if (rawResult is not null)
-            {
-                int page = model.Page != null ? model.Page.Value - 1 : 0;
-                var result = rawResult.Skip(model.ItemsPerPage * page).Take(model.ItemsPerPage)
-                    .Select(a => a);
-                int countOfPages = model.GetCountOfPages(rawResult.Count());
-                return Ok(new { data = result, countOfPages });
+			int page = model.Page != null ? model.Page.Value - 1 : 0;
+			var catalogue = _service.GetCategory(a => a.ParentCategoryID == null);
+            var result = _service.GetAllCategories(a =>
+			a.ParentCategoryID != null && a.ParentCategoryID != catalogue!.Id
+			)
+			.Where(a =>
+			{
+				return
+				a.Id.ToString().Contains(model.Search) ||
+				a.Title.Contains(model.Search);
+			})
+			.Skip(model.ItemsPerPage * page).Take(model.ItemsPerPage)
+					.Select(a => a);
+
+            if (result is not null)
+            {                
+                return Ok(result);
             }
             return BadRequest("No records found");
         }

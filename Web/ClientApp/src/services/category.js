@@ -1,4 +1,4 @@
-import { ClassHeader, GetCategoriesForProductAdd, GetMainCategories, PathToCategory, Success } from "../utils/Constants";
+import { ClassHeader, GetCategoriesForProductAdd, GetMainCategories, PathToCategory, Success, itemsPerPageForAdmin } from "../utils/Constants";
 import { getFromServer, postToServer, deleteFromServer } from "../utils/Queries";
 import { getSupInfo } from "./product";
 
@@ -24,10 +24,17 @@ export async function GetProductsFromCategory(id, count) {
     return data;
 } 
 
-export async function getAllCategoriesForAdmin(page, search) {
+export async function getAllCategoriesForAdmin(search,page) {
     return await postToServer("Category/GetAllCategoriesForAdmin", {
-        itemsPerPage: 6,
+        itemsPerPage: itemsPerPageForAdmin,
         page: page,
+        search
+    })
+}
+
+export async function getCountOfPagesAllCategoriesForAdmin(search) {
+    return await postToServer("Category/GetCountOfPagesAllCategoriesForAdmin", {
+        itemsPerPage: itemsPerPageForAdmin,
         search
     })
 }

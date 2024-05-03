@@ -1,5 +1,6 @@
 ﻿using Domain.Dto;
 using Domain.Models;
+using Domain.Models.CalculateActionModels;
 using Domain.Models.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
@@ -69,9 +70,9 @@ namespace Web.Controllers
 			var rawResult = pharmacies
 				.SelectMany(a => a.Pharmacies.Count() > 0 ?
 				a.Pharmacies.Select(pharmacy =>
-				new PairPharmaViewModel { Item = a, Pharmacy = pharmacy }) :
-				new List<PairPharmaViewModel>{
-					new() { Item = a, Pharmacy = null }
+				new PharmacyAdminCalculateModel { PharmaCompany = a, Pharmacy = pharmacy }) :
+				new List<PharmacyAdminCalculateModel>{
+					new() { PharmaCompany = a, Pharmacy = null }
 				}
 				);
 
@@ -81,9 +82,9 @@ namespace Web.Controllers
 				rawResult = rawResult.Where(a =>
 				{
 					if (a.Pharmacy == null)
-						return a.Item.Title.Contains(model.Search);
+						return a.PharmaCompany.Title.Contains(model.Search);
 					else
-						return a.Item.Title.Contains(model.Search) ||
+						return a.PharmaCompany.Title.Contains(model.Search) ||
 							a.Pharmacy.Id.ToString().Contains(model.Search) ||
 							a.Pharmacy.Address.Contains(model.Search) ||
 							(a.Pharmacy.User != null && a.Pharmacy.User.Email.Contains(model.Search)
@@ -105,9 +106,9 @@ namespace Web.Controllers
 					.Take(takeNumber)
 					.GroupBy(a => new
 					{
-						id = a.Item.Id,
-						name = a.Item.Title,
-						pathToPhoto = a.Item.PathToPhoto
+						id = a.PharmaCompany.Id,
+						name = a.PharmaCompany.Title,
+						pathToPhoto = a.PharmaCompany.PathToPhoto
 					}).Select(a => new
 					{
 						a.Key.id,
