@@ -53,3 +53,24 @@ width: 280px !important;
     transition: background-color 0.3s, color 0.3s; /* Додайте перехід для кольору та фону */
 
 }
+
+
+.custom-combobox > * {
+    border: none !important;
+}
+
+.custom-combobox {
+    padding: 5px 0 !important;
+    width: 100%;
+    margin: 0 !important;
+}
+
+    .custom-combobox div {
+        box-shadow: none !important;
+    }
+
+.my-input-text-form-box {
+    border: 2px solid rgba(172, 172, 172, 1);
+    color: rgba(167, 167, 167, 1);
+    padding: 10px;
+}

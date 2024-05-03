@@ -4,19 +4,26 @@ import CardHistory from "./CardHistory/CardHistoryComponent";
 import srcImg from "../../../../../../assets/images/authPage.png";
 import { getReservations } from "../../../../../../services/reservation";
 import { Success } from "../../../../../../utils/Constants";
-import { formatDate, groupBy, toLocalString } from "../../../../../../utils/Functions";
+import {
+  formatDate,
+  groupBy,
+  toLocalString,
+} from "../../../../../../utils/Functions";
+import { BackButton } from "../../../../Common/BackButton/BackButton";
+import useWindowSize from "../../UseWindowSize.js";
+import styles from "./MineBookeds.module.css";
 
 const MineBookeds = () => {
   const [reservs, setReservs] = useState([]);
 
   useEffect(() => {
     init();
-  }, [])
+  }, []);
 
   async function init() {
     let res = await getReservations();
     if (res.status === Success) {
-      let selected = res.data.map(a => {
+      let selected = res.data.map((a) => {
         return {
           id: a.id,
           name: a.name,
@@ -24,13 +31,15 @@ const MineBookeds = () => {
           status: a.status,
           total: a.total,
           reservedTimeGroup: toLocalString(a.reservedTime),
-          reservedTime: formatDate(a.reservedTime)
-        }
-      })
-      console.log(groupBy(selected, "reservedTimeGroup"))
+          reservedTime: formatDate(a.reservedTime),
+        };
+      });
+      console.log(groupBy(selected, "reservedTimeGroup"));
       setReservs(groupBy(selected, "reservedTimeGroup"));
     }
   }
+  const { width } = useWindowSize();
+  const isMobile = width <= 768;
 
   return (
     <div>
@@ -47,41 +56,43 @@ const MineBookeds = () => {
       </h5> */}
 
       {/* Якщо є історія */}
-      <h4>Історія</h4>
+      {/* <h4>Історія</h4>
+      <BackButton text={"Історія"} /> */}
 
+      {isMobile && (
+        <BackButton text={"Мої броні"} />
+      ) }
 
+      <h3 className={`mb-3 mt-3 ${styles["title-edit-page"]}`}>Історія</h3>
       <div className=" ">
         {/* Якщо історія не пуста  */}
 
-        {Object.keys(reservs).length > 0 && Object.keys(reservs).map(date => {    
-          return (
-            <div>
-              <h6
-                className="mb-4 mt-2"
-                style={{ color: "rgba(122, 122, 122, 1)", fontSize: "14px" }}
-              >
-                {date}
-              </h6>
-              {
-                reservs[date].map(a =>
-                (
-                  <CardHistory 
-                    name={a.name} 
-                    number={a.id} 
-                    price={a.total} 
-                    address={a.pharmacy.address} 
-                    date={a.reservedTimeGroup} 
+        {Object.keys(reservs).length > 0 &&
+          Object.keys(reservs).map((date) => {
+            return (
+              <div>
+                <h6
+                  className="mb-4 mt-2"
+                  style={{ color: "rgba(122, 122, 122, 1)", fontSize: "14px" }}
+                >
+                  {date}
+                </h6>
+                {reservs[date].map((a) => (
+                  <CardHistory
+                    name={a.name}
+                    number={a.id}
+                    price={a.total}
+                    address={a.pharmacy.address}
+                    date={a.reservedTimeGroup}
                     statusText={a.status.status}
-                    statusColor={a.status.color} 
+                    statusColor={a.status.color}
                     statusPathToPhoto={a.status.path}
-                    />
-                )
-                )
-              }
-            </div>
-          )
-        })
-        }
+                  />
+                ))}
+              </div>
+            );
+          })}
+
         {/* Якщо історія пуста */}
         {/*  <AccordionComponent
           id="1"

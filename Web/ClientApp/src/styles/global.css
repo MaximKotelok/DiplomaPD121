@@ -180,6 +180,19 @@ html {
     outline: none;
 }
 
+.my-form-select-175 {
+    width: 175px !important;
+    /* padding: 16px 20px; */
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    text-align: left;
+    outline: none;
+    
+}
+
 
 .input-text-secondary-form {
     background-color: rgba(239, 239, 239, 1);
@@ -201,7 +214,6 @@ html {
 .row {
     margin: 0 !important;
 }
-
 
 
 

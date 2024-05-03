@@ -14,3 +14,7 @@ font-weight: 700;
 line-height: 20px;
 
 }
+
+.style-icon path {
+    background-color: rgba(255, 149, 0, 1);
+}

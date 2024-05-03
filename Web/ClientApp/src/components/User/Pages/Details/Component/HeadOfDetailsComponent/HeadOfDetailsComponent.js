@@ -82,16 +82,18 @@ const HeadOfDetailsComponent = ({ product }) => {
           <hr className={`${styles["panel-navigation-sm"]}`} />
 
           <div className="row mt-4">
-            <div className="col-12 col-md-6 ps-2 pe-2 d-flex">
+            <div className={`col-12 col-md-6 ${styles["pe-md-3"]} p-0  d-flex`}>
               <Link
                 className={`brn-form ${styles["card-btn-primary"]}  ${styles["btn-styled-standart"]} `}
-                href={`/map/${product.id}`}
+                to={`/map/${product.id}`}
               >
                 Знайти в аптеках
               </Link>
             </div>
             {product.activeSubstanceId && (
-              <div className="col-12 col-md-6 ps-2 pe-2 d-flex">
+              <div
+                className={`col-12 col-md-6 ${styles["ps-md-3"]} p-0 d-flex`}
+              >
                 <Link
                   to={`/Search/ByActiveSubstance/${product.activeSubstanceId}`}
                   className={` brn-form ${styles["card-btn-primary-500"]}  ${styles["btn-styled-standart"]}    `}

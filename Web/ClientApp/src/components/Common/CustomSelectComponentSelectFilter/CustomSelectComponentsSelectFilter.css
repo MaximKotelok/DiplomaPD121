@@ -1,0 +1,9 @@
+
+.react-select__menu-list{
+  /* background-color: red !important; */
+/* padding: none !important; */
+}
+.react-select__option{
+  /* background-color: violet !important; */
+border-bottom: 1px solid rgba(172, 172, 172, 1) !important;
+}

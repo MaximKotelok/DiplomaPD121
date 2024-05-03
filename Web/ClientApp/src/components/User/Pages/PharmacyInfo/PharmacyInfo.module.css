@@ -53,15 +53,44 @@ border: 2px solid rgba(255, 149, 0, 1);
 
 .btn-style{
 font-family: var(--standart-font) ;
-padding: 8px 12px;
+padding: 10px 12px;
 border-radius: 8px;
 line-height: 18px;
 font-size: 14px;
 white-space: nowrap;
-width: min-content;
+/* width: min-content; */
 margin: 12px 0;
 }
 
+@media (min-width: 768px) {
+.ps-md-3{
+    padding-left: 1rem;
+}
+.pe-md-3{
+    padding-right: 1rem;
+
+}
+.pt-md-3{
+    padding-top: 0rem;
+}
+
+}
+  
+  /* Для екранів менше, ніж md */
+  @media (max-width: 767px) {
+    .ps-md-3{
+        padding-left: 0rem;
+    }
+    .pe-md-3{
+        padding-right: 0rem;
+    
+    }
+    .pt-md-3{
+        padding-top: 3rem;
+    
+    }
+        
+}
 
 
 .btn-img{
