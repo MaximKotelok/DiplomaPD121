@@ -7,7 +7,7 @@ const Filter = () => {
     <div>
       <span className="d-flex align-items-center">
         <FilterIcon />
-        <p className={`${styles["text-data-filter"]} ms-2`}>Фільтр</p>
+        <p className={`${styles["text-data-filter"]} m-0 ms-2`}>Фільтр</p>
       </span>
     </div>
   );

@@ -1,0 +1,108 @@
+
+.btn-hover{
+    cursor: pointer;
+}
+
+
+    .card-btn-primary {
+        background-color: rgba(0, 122, 255, 1);
+        color: rgba(242, 242, 247, 1);
+        transition: background-color 0.3s, color 0.3s; /* Додайте перехід для кольору та фону */
+    }
+    
+    .card-btn-primary:hover {
+        background-color: #0e3e75;
+        color: rgba(242, 242, 247, 1);
+    }
+    
+    .card-btn-primary-500{
+        background-color: rgba(0, 122, 255, 0.15);
+        color: rgba(0, 122, 255, 1);
+        transition: background-color 0.3s, color 0.3s; /* Додайте перехід для кольору та фону */
+    
+    }
+    .card-btn-primary-500:hover{
+        background-color: rgba(0, 122, 255, 0.5);
+        color: rgba(0, 122, 255, 1);
+        transition: background-color 0.3s, color 0.3s; /* Додайте перехід для кольору та фону */
+    
+    }
+
+
+
+    .btn-edit-photo:hover{
+        cursor: pointer;
+    }
+    .btn-edit-photo{
+        font-family: var(--standart-font);
+font-size: 12px;
+font-weight: 500;
+line-height: 15.06px;
+text-align: left;
+color: rgba(0, 122, 255, 1);
+margin-bottom: 0px !important;
+    }
+
+   
+
+    .img-style-circle{
+        width: 118px;
+        height: 118px;
+border-radius: 100px;
+object-fit: cover;
+margin:  0 auto;
+    }
+
+    .text-center{
+        color: rgba(0, 0, 0, 1);
+font-family: var(--standart-font);
+font-size: 16px;
+font-weight: 700;
+line-height: 20.08px;
+text-align: center;
+
+
+    }
+
+
+
+
+
+
+
+
+
+    .divider {
+        flex-grow: 1;
+        position: relative;
+      }
+      
+      .divider::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 10px;
+        height: 2px;
+        background-color: black;
+        transform: translateY(-50%);
+        right: -5px;
+      }
+      
+      .arrow {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        width: 0; 
+        height: 0; 
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent; 
+        border-left: 10px solid black; 
+      }
+
+      .img-sm{
+        width: 64px;
+        height: 64px;
+        border-radius: 100px;
+object-fit:  cover;
+}

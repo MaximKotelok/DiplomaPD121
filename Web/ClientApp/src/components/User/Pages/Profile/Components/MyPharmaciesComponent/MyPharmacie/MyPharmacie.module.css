@@ -21,3 +21,7 @@ font-weight: 700;
 line-height: 15px;
 color: rgba(13, 30, 49, 1);
 }
+
+.btn-delet:hover{
+cursor: pointer;
+}

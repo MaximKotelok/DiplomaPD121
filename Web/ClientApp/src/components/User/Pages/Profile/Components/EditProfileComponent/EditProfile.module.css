@@ -20,3 +20,22 @@ color: rgba(0, 122, 255, 1);
     line-height: 15px;
 margin: 0 0 20px 16px ;
 }
+
+.title-edit-page{
+    color: rgba(13, 30, 49, 1);
+font-family: var(--standart-font);
+font-size: 24px;
+font-weight: 700;
+line-height: 30.12px;
+text-align: left;
+
+}
+
+
+.circle-avatar{
+    width: 64px;
+height: 64px;
+border-radius: 100px;
+object-fit: cover; 
+
+}

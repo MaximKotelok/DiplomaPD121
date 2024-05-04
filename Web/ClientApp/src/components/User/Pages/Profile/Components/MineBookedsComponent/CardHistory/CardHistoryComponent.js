@@ -12,13 +12,17 @@ const CardHistory = ({
   address,
   statusText,
   statusPathToPhoto,
-  statusColor
+  statusColor,
 }) => {
   return (
     <div className={`row ${styles["peren-card-history"]} mb-3 `}>
-      <div className="col-6">
+      <div className="col-6 ps-0 ms-0">
         <p>
-          <StatusComponent color={statusColor} text={statusText} pathToPhoto={statusPathToPhoto} />
+          <StatusComponent
+            color={statusColor}
+            text={statusText}
+            pathToPhoto={statusPathToPhoto}
+          />
         </p>
 
         <p
@@ -31,24 +35,26 @@ const CardHistory = ({
           </span>
         </p>
 
-        <p className={`${styles["text-adress"]}`}>{address}</p>
+        <p className={`${styles["text-adress"]} mt-3`}>{address}</p>
       </div>
 
-      <div
-        className={`col-3 d-flex align-items-center justify-content-end ${styles["text-Number"]}`}
-      >
-        <p>
-          <span>№</span> {number}
-        </p>
-      </div>
+      <div className="col-6 row m-0 p-0">
+        <div
+          className={`col-12 col-md-6 d-flex align-items-center justify-content-end ${styles["text-Number"]}`}
+        >
+          <p>
+            <span>№</span> {number}
+          </p>
+        </div>
 
-      <div
-        className={`col-3 d-flex  flex-column align-items-end  justify-content-center`}
-      >
-        <p className={`${styles["text-Number"]} mb-1`}>
-          {price} <span>грн</span>
-        </p>
-        <p className={`${styles["text-data"]}`}>{date}</p>
+        <div
+          className={`col-12 col-md-6 d-flex  flex-column align-items-end  justify-content-center`}
+        >
+          <p className={`${styles["text-Number"]} mb-3`}>
+            {price} <span>грн</span>
+          </p>
+          <p className={` text-nowrap ${styles["text-data"]}`}>{date}</p>
+        </div>
       </div>
     </div>
   );

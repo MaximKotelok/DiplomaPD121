@@ -156,3 +156,36 @@ font-weight: 700;
 }
 }
 
+
+
+
+
+@media (min-width: 768px) {
+  .ps-md-3{
+      padding-left: 1rem !important;
+  }
+  .pe-md-3{
+      padding-right: 1rem !important;
+  
+  }
+  .pt-md-3{
+      padding-top: 0rem !important;
+  }
+  
+  }
+    
+    /* Для екранів менше, ніж md */
+    @media (max-width: 767px) {
+      .ps-md-3{
+          padding-left: 0rem !important;
+      }
+      .pe-md-3{
+          padding-right: 0rem !important;
+      
+      }
+      .pt-md-3{
+          padding-top: 3rem !important;
+      
+      }
+          
+  }

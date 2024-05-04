@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import MenuComponent from "../User/Pages/Profile/Components/MenuComponent/MenuComponent";
 import LoginForm from "./LoginFormComponent/LoginForm";
 import styles from "./AuthPage.module.css";
@@ -7,28 +7,23 @@ import BtnSocialComponenent from "./components/BtnSocialComponenent/BtnSocialCom
 import google from "../../assets/images/google.svg";
 import faceboo from "../../assets/images/Facebook.svg";
 import authPage from "../../assets/images/authPage.png";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from "react-router-dom";
 import { NavLink, Outlet } from "react-router-dom";
 import { checkIsAuth } from "../../services/user";
-
-
 
 var active = ({ isActive }) =>
   isActive
     ? ` ms-3 ${styles["navigation-h"]} ${styles["navigation-h-active"]}`
     : ` ms-3 ${styles["navigation-h"]}`;
-    
-const AuthPageComponent = () => {
 
-  
+const AuthPageComponent = () => {
   const navigate = useNavigate();
 
-  useEffect(()=>{
-      if (checkIsAuth()) {
-        navigate("/profile");
+  useEffect(() => {
+    if (checkIsAuth()) {
+      navigate("/profile");
     }
   }, []);
-
 
   return (
     <div
@@ -77,7 +72,6 @@ const AuthPageComponent = () => {
             </a>
           </div>
         </div>
-
       </div>
 
       <div className="col-12 col-md-12 col-lg-7  ">

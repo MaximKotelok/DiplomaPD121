@@ -22,7 +22,7 @@ const MyPharmacie = (props) => {
     };
 
   return (
-    <div className={`col-6 p-2`}>
+    <div className={`col-12 col-md-6 p-2`}>
       <div className={`${styles["perent-card-pharmacie"]}`}>
         <div className="d-flex justify-content-between">
           <div>
@@ -33,7 +33,9 @@ const MyPharmacie = (props) => {
           </div>
 
           <div className="d-flex justify-content-end">
-            <BtnDump onClick={handlDeleteCardClick} />
+            <span className={`${styles["btn-delet"]}`}>
+              <BtnDump onClick={handlDeleteCardClick} />
+              </span>
           </div>
         </div>
         <hr />

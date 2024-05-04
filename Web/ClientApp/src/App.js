@@ -64,6 +64,7 @@ import { HomeAdminPageComponents } from "./components/Admin/PAge/HomeAdminPageCo
 import { ProductInspectionComponents } from "./components/Admin/PAge/Admin/ProductInspectionComponents/ProductInspectionComponents";
 import { UpsertManufactureComponent } from "./components/Admin/PAge/Pharmacy/UpsertManufactureComponent/UpsertManufactureComponent";
 import { PharmacyListForPharmaCompanyComponent } from "./components/Admin/PAge/PharmaCompany/PharmacyListComponents/PharmacyListComponents";
+import { DefectiveSeries } from "./components/User/Pages/DefectiveSeries/DefectiveSeries";
 
 // export default class App extends Component {
 // static displayName = App.name;
@@ -123,6 +124,7 @@ export default class App extends Component {
                 <Routes>
                     <Route path="/" element={<Layout />}>
                         <Route index path="" element={<Home />} />
+                        <Route index path="/DefectiveSeries" element={<DefectiveSeries />} />
                         <Route
                             path="/PharmacyInfo/:pharmacyId"
                             element={<PharmacyInfo />}

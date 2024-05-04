@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
-import { ReactComponent as BtnEditProfile } from "../../../../../../assets/images/EditProfile.svg";
+import { ReactComponent as BtnEditProfile } from "../../../../../../assets/images/profile/EditProfile.svg";
 import photo from "../../../../../../assets/images/download.jpg";
 
 import styles from "./Avatat.module.css";
@@ -14,14 +14,12 @@ const AvatarComponent = () => {
     init();
   }, []);
 
-
   async function init() {
     let res = await getMyInfo();
     if (res.status == Success) {
       if (res.data.firstName && res.data.lastName)
         setName(`${res.data.firstName} ${res.data.lastName}`);
-      else
-        setName(res.data.email);
+      else setName(res.data.email);
 
       setPathToPhoto(res.data.pathToPhoto);
     }
@@ -33,12 +31,13 @@ const AvatarComponent = () => {
           defaultSrc={photo}
           alt="Avatar"
           className={` ${styles["circle-avatar"]} `}
-          src={`${ApiPath}${pathToPhoto}`} />
+          src={`${ApiPath}${pathToPhoto}`}
+        />
 
         <p className={`ms-3  ${styles["name-user"]}`}>{name}</p>
       </div>
       <Link to="/profile/edit">
-        <BtnEditProfile />
+        <BtnEditProfile className={`${styles["style-icon"]}`} />
       </Link>
     </div>
   );
