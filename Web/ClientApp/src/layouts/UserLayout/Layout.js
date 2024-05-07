@@ -52,7 +52,7 @@ export class Layout extends Component {
         <Container tag="main">
           <Outlet />
         </Container>
-        <ToastContainer position="bottom-right" autoClose={3000} />
+        <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
         <FooterComponent />
 
         {this.state.isMobile && <MenuBottomPhone />}

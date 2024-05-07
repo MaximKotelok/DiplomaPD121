@@ -97,10 +97,10 @@ export const PharmacyListForPharmaCompanyComponent = () => {
     if (res.status === Success) {
       let page = paramPage ? paramPage : 1;
       if (page > res.data.countOfPages) {
-        res = await getAllPharmaciesForAdmin(res.data.countOfPages);
+        res = await getAllPharmaciesForPharmaCompany(res.data.countOfPages);
         page = res.data.countOfPages;
       } else if (page < 1) {
-        res = await getAllPharmaciesForAdmin(1);
+        res = await getAllPharmaciesForPharmaCompany(1);
         page = 1;
       }
       setPage(parseInt(page));

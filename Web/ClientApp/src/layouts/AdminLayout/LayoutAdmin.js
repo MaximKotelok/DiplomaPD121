@@ -298,7 +298,7 @@ const LayoutAdmin = ({ children }) => {
         {/* {children} */}
         <Outlet />
       </div>
-      <ToastContainer position="bottom-right" autoClose={3000} />
+      <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar/>
     </div>
   );
 };

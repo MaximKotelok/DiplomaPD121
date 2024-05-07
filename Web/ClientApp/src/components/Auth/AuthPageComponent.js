@@ -10,6 +10,7 @@ import authPage from "../../assets/images/authPage.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { NavLink, Outlet } from "react-router-dom";
 import { checkIsAuth } from "../../services/user";
+import { EXT_FACEBOOK, EXT_GOOGLE } from "../../utils/Constants";
 
 var active = ({ isActive }) =>
   isActive
@@ -63,8 +64,8 @@ const AuthPageComponent = () => {
 
         <div className="mr-2 ">
           <div className="mb-3">
-            <BtnSocialComponenent icon={google} text={"Вхід через Google"} />
-            <BtnSocialComponenent icon={faceboo} text={"Вхід через Facebook"} />
+            <BtnSocialComponenent icon={google} text={"Вхід через Google"} href={EXT_GOOGLE}/>
+            <BtnSocialComponenent icon={faceboo} text={"Вхід через Facebook"} href={EXT_FACEBOOK}/>
           </div>
           <div>
             <a href="#" className={`${styles["login-ugota-text"]} `}>

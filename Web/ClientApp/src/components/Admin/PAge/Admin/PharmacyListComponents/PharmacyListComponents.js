@@ -18,7 +18,7 @@ import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
 import BtnEditPharmacyModal from "./components/BtnEditStatusModal/BtnPharmacyModal";
-import { getAllPharmaciesForAdmin, getCountOfPagesPharmaciesForAdmin } from "../../../../../services/pharmacy";
+import { getPharmaciesForAdmin, getCountOfPagesPharmaciesForAdmin } from "../../../../../services/pharmacy";
 import {
   BrowserRouter as Router,
   Route,
@@ -71,19 +71,19 @@ export const PharmacyListComponents = () => {
   const [search, setSearch] = React.useState("");
 
   useEffect(()=>{
-    reload(1, search, isDisplayOnlyCompanies);
+    reload(parseInt(paramPage)  , search, isDisplayOnlyCompanies);
   },[])
 
 
   async function reload(page, searchText, isDisplayOnlyCompanies){    
     setPage(page);
-    let res = await getAllPharmaciesForAdmin(page, searchText?searchText:search, isDisplayOnlyCompanies);
-    //let resCountOfPages = await getCountOfPagesPharmaciesForAdmin(searchText?searchText:search, isDisplayOnlyCompanies);
+    let res = await getPharmaciesForAdmin(page, searchText?searchText:search, isDisplayOnlyCompanies);
+    let resCountOfPages = await getCountOfPagesPharmaciesForAdmin(searchText?searchText:search, isDisplayOnlyCompanies);
     if(res.status === Success 
-      //&& resCountOfPages.status === Success
+      && resCountOfPages.status === Success
     ){
-        setCountOfPages(res.data.countOfPages);
-        setRows(res.data.data);
+        setCountOfPages(resCountOfPages.data);
+        setRows(res.data);
         
       }
   }
@@ -192,9 +192,9 @@ export const PharmacyListComponents = () => {
               getContent={async (page) => {
                 const newUrl = `/admin/pharmacyList/${page}`;
                 window.history.pushState({}, "", newUrl);
-                let res = await getAllPharmaciesForAdmin(page, search, isDisplayOnlyCompanies);
+                let res = await getPharmaciesForAdmin(page, search, isDisplayOnlyCompanies);
                 if (res.status === Success) {
-                  return res.data.data;
+                  return res.data;
                 }
               }}
               allowAppend={false}

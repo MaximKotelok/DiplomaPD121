@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.IdentityModel.Tokens;
 using Repository.Repository.Interfaces;
 using Services.CategoryService;
@@ -54,7 +55,140 @@ namespace Web.Controllers
 			}
 			return BadRequest("No records found");
 		}
-		[HttpPost("GetAllPharmaciesForAdmin")]
+
+		[HttpPost("GetCountOfPagesPharmaciesForAdmin")]
+		public IActionResult GetCountOfPagesPharmaciesForAdmin(PagePharmacyViewModel model)
+		{
+			int page = model.Page != null ? model.Page.Value - 1 : 0;
+			bool isClearLast = false;
+
+			var pharmaCompanies = _pharmaCompany.GetAllPharmaCompanies(includeProperties: "Pharmacies,Pharmacies.User");
+
+			if (model.IsDisplayOnlyCompanies != null && model.IsDisplayOnlyCompanies.Value) //Очищуємо аптеки якщо треба відобразити лише фарма компанії
+			{
+				pharmaCompanies = pharmaCompanies.Select(a =>
+				{
+					a.Pharmacies = new List<Pharmacy>();
+					return a;
+				});
+			}
+
+			int count = pharmaCompanies
+				.SelectMany(a => a.Pharmacies.Count() > 0 ?
+				(a.Pharmacies.Select(pharmacy =>
+					new PharmacyAdminCalculateModel { PharmaCompany = a, Pharmacy = pharmacy }))
+					:
+					new List<PharmacyAdminCalculateModel> { new PharmacyAdminCalculateModel { PharmaCompany = a, Pharmacy = null } }
+					).Prepend(
+						new PharmacyAdminCalculateModel { IsTmp = true })
+					.Where(a =>
+					{
+						if (a.IsTmp == true)
+						{
+							return true;
+						}
+						if (a.Pharmacy == null)
+							return a.PharmaCompany!.Title!.Contains(model!.Search!);
+						else
+							return a.PharmaCompany!.Title!.Contains(model!.Search!) ||
+							a.Pharmacy.Id.ToString().Contains(model.Search!) ||
+							a.Pharmacy.Address.Contains(model.Search) ||
+							(a.Pharmacy.User != null && a.Pharmacy.User.Email.Contains(model.Search)
+						);
+					}).Count();
+			
+
+
+			return Ok(model.GetCountOfPages(count));
+
+		}
+
+		[HttpPost("GetPharmaciesForAdmin")]
+		public IActionResult GetPharmaciesForAdmin(PagePharmacyViewModel model)
+		{
+			int page = model.Page != null ? model.Page.Value - 1 : 0;
+			int skipCount = page * model.ItemsPerPage;
+			bool isClearLast = false;
+			bool isClearFirst = false;
+
+			var pharmaCompanies = _pharmaCompany.GetAllPharmaCompanies(includeProperties: "Pharmacies,Pharmacies.User");
+
+			if (model.IsDisplayOnlyCompanies != null && model.IsDisplayOnlyCompanies.Value) //Очищуємо аптеки якщо треба відобразити лише фарма компанії
+			{
+				pharmaCompanies = pharmaCompanies.Select(a =>
+				{
+					a.Pharmacies = new List<Pharmacy>();
+					return a;
+				});
+			}
+
+			var result = pharmaCompanies
+				.SelectMany(a => a.Pharmacies.Count() > 0 ?
+				(a.Pharmacies.Select(pharmacy =>
+					new PharmacyAdminCalculateModel { PharmaCompany = a, Pharmacy = pharmacy }).Prepend(
+						new PharmacyAdminCalculateModel { IsTmp = true })
+				) :
+					(new List<PharmacyAdminCalculateModel> { new PharmacyAdminCalculateModel { PharmaCompany = a, Pharmacy = null } })
+					.Prepend(
+						new PharmacyAdminCalculateModel { IsTmp = true })
+					).Where(a =>
+					{
+						if (a.IsTmp == true)
+						{
+							return true;
+						}
+						else if (a.Pharmacy == null)
+							return a.PharmaCompany!.Title!.Contains(model!.Search!);
+						else
+							return a.PharmaCompany!.Title!.Contains(model!.Search!) ||
+							a.Pharmacy.Id.ToString().Contains(model.Search!) ||
+							a.Pharmacy.Address.Contains(model.Search) ||
+							(a.Pharmacy.User != null && a.Pharmacy.User.Email.Contains(model.Search)
+						);
+					})
+					.Skip(skipCount)
+					.TakeWhile((item, index) => {
+
+						if (index < model.ItemsPerPage || (isClearLast && index == model.ItemsPerPage))
+						{
+							if (index == model.ItemsPerPage - 1 && item.IsTmp == true)
+							{
+								isClearLast = true;
+							}
+							return true;
+						}
+						return false;
+					})
+				.Where(a => a.IsTmp != true)
+
+					.GroupBy(a => new
+					{
+						id = a.PharmaCompany.Id,
+						name = a.PharmaCompany.Title,
+						pathToPhoto = a.PharmaCompany.PathToPhoto
+					}).Select(a => new
+					{
+						a.Key.id,
+						a.Key.name,
+						a.Key.pathToPhoto,
+						data = a.Where(a => a.Pharmacy != null).Select(a => new
+						{
+							pharmacy = a.Pharmacy
+						,
+							pharmacist = a.Pharmacy.User != null
+						? a.Pharmacy.User.Email : null
+						}).ToList()
+					}).ToList();
+			if (isClearLast)
+			{
+				result.Last().data.Clear();
+			}
+			
+
+			return Ok(result);
+
+		}
+		/*[HttpPost("GetAllPharmaciesForAdmin")]
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
 		public IActionResult GetAllPharmaciesForAdmin(PagePharmacyViewModel model)
 		{
@@ -129,7 +263,7 @@ namespace Web.Controllers
 
 			}
 			return BadRequest("No records found");
-		}
+		}*/
 
 		[HttpPost("GetAllPharmaciesForPharmaCompany")]
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_PharmaCompany)]

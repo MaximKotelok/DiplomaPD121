@@ -445,6 +445,8 @@ namespace Web.Controllers
 		}
 
 		[HttpPost("GetProductsAdmin")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+
 		public IActionResult GetProductsAdmin([FromBody] PageViewModel model)
 		{
 			int page = model.Page != null ? model.Page.Value - 1 : 0;

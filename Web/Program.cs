@@ -79,7 +79,7 @@ builder.Services.AddAuthentication(opt =>
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication();
 
-var GoogleConfig = builder.Configuration.GetSection("GoogleConfig");
+/*var GoogleConfig = builder.Configuration.GetSection("GoogleConfig");
 var FacebookConfig = builder.Configuration.GetSection("FacebookConfig");
 
 builder.Services.AddAuthentication().AddGoogle(options =>
@@ -91,7 +91,7 @@ builder.Services.AddAuthentication().AddGoogle(options =>
     options.AppId = FacebookConfig["AppId"];
     options.AppSecret = FacebookConfig["AppSecret"];
 }); 
-    
+    */
 
 builder.Services.AddSwaggerGen(
     c =>

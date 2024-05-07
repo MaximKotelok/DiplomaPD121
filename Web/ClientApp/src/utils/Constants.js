@@ -12,6 +12,9 @@ export const GetRecomendedBrands = "Brand/GetRecomendedBrands";
 export const PathToCategory = "Category/PathToCategory";
 
 
+export const EXT_GOOGLE =  ApiPath + "/userauthentication/external-login/google";
+export const EXT_FACEBOOK = ApiPath + "/userauthentication/external-login/facebook";
+
 export const itemsPerPageForAdmin = 6;
 
 // Product
