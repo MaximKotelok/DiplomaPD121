@@ -4,10 +4,13 @@ import BtnEditProfile from "../../../../../../../assets/images/profile/camera.sv
 import styles from "./BtnEditPhotoModal.module.css";
 import LineArro from "./LineArrow.svg";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import CustomImgComponent from "../../../../../../Common/CustomImgComponent/CustomImgComponent";
+import { ApiPath, Success } from "../../../../../../../utils/Constants";
+import { postPhotoToServer } from "../../../../../../../services/photo";
+import { updateUserPhoto } from "../../../../../../../services/user";
+import { toast } from "react-toastify";
 
 // const VisuallyHiddenInput = styled("input")({
 //   clip: "rgba(229, 229, 234, 1)",
@@ -67,8 +70,9 @@ const StyledButton = styled(Button)({
   },
 });
 
-function BtnEditPhotoModal() {
+function BtnEditPhotoModal({pathToPhoto, defaultSrc}) {
   const [image, setImage] = useState(BtnEditProfile);
+  const [file, setFile] = useState(null);
 
   const [show, setShow] = useState(false);
 
@@ -81,6 +85,7 @@ function BtnEditPhotoModal() {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      setFile(file);
       const reader = new FileReader();
 
       reader.onload = () => {
@@ -90,6 +95,32 @@ function BtnEditPhotoModal() {
       reader.readAsDataURL(file);
     }
   };
+
+  const submit = async () => {
+    let path = "";
+    if (file) {
+        if (pathToPhoto.startsWith("/") || pathToPhoto.startsWith("\\")) 
+            path = await postPhotoToServer(
+                "Photo/Update",
+                pathToPhoto.replace(/[\/\\]images[\/\\]/g, ""),
+                file
+            );
+        else path = await postPhotoToServer("Photo/Add", "user", file);
+        if (path.status === Success) {
+            path = `/images/user/${path.data}`;
+        }
+        if((await updateUserPhoto(path)).status === Success){
+          toast.success("Успіх");
+          window.location.reload();
+        }
+    } 
+    else{
+      toast.error("Помилка")
+    }
+
+    
+  }
+  
 
   return (
     <>
@@ -143,13 +174,14 @@ function BtnEditPhotoModal() {
           <div
             className={`d-flex align-items-center justify-content-center mb-3`}
           >
-            <img className={`${styles["img-sm"]}`} src={image} />
+            <CustomImgComponent className={`${styles["img-sm"]}`} src={`${ApiPath}${pathToPhoto}`} defaultSrc={defaultSrc} />
             <img src={LineArro} />
+            <img className={`${styles["img-sm"]}`} src={image} />
             {/* СТАРЕ ФОТО */}
-            <img className={`${styles["img-sm"]}`} src={BtnEditProfile} />
           </div>
           <button
             className={` mt-3 brn-form brn-primary-form mt-auto me-4 ${styles["card-btn-primary"]}`}
+            onClick={submit}
           >
             Застосувати зміни
           </button>

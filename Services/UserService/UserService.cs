@@ -65,6 +65,16 @@ namespace Services.UserService
 			return result.Succeeded;
 		}
 
+		public async Task UpdatePhoto(string id, string newPath)
+        {
+
+			var user = await _userManager.FindByIdAsync(id);
+			if (newPath != "")
+				user.PathToPhoto = newPath;
+            else
+                throw new ArgumentException("Cannot set empty string as path to photo");
+			await _userManager.UpdateAsync(user);
+		}
 		public async Task ChangePassword(string id, string currentPassword, string newPassword)
 		{
 			var user = await _userManager.FindByIdAsync(id);

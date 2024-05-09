@@ -1,5 +1,4 @@
 import React from "react";
-import Photo from "../../../../../assets/images/download.jpg";
 import styles from "./ProductComponent.module.css";
 import CustomImgComponent from "../../../../Common/CustomImgComponent/CustomImgComponent";
 const ProductComponent = ({title, shortDescription, image, quantity, price = 0}) => {

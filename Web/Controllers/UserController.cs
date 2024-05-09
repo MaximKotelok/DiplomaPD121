@@ -86,6 +86,7 @@ namespace Web.Controllers
                     a.UserName),
                     email=a.Email,
 					phoneNumber=a.PhoneNumber,
+                    pathToPhoto=a.PathToPhoto,
 					isBanned = a.LockoutEnd.HasValue && a.LockoutEnd > DateTimeOffset.UtcNow
 				}),
 				countOfPages
@@ -129,7 +130,28 @@ namespace Web.Controllers
 
         }
 
-        [HttpPost("updateUser")]
+		[HttpPost("updatePhoto")]
+		[Authorize(AuthenticationSchemes = "Bearer")]
+		public async Task<IActionResult> UpdateUser(UserUpdatePhotoViewModel model)
+		{
+			var user = await _userService.GetUserByName(User.Identity.Name!);
+
+
+			if (user == null)
+			{
+				return NoContent();
+			}
+            try
+            {
+			    await _userService.UpdatePhoto(user.Id, model.NewPathToPhoto);
+            }catch(ArgumentException)
+            {
+                return BadRequest();
+            }
+			return Ok("Ваш профіль було успішно оновлено");
+		}
+
+		[HttpPost("updateUser")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UpdateUser(UserUpdateViewModel model)
         {

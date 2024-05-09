@@ -24,6 +24,9 @@ export async function banOrUnban(userId, status) {
 export async function updateUser(data) {
     return await postToServer("User/updateUser", data);
 } 
+export async function updateUserPhoto(newPathToPhoto) {
+    return await postToServer("User/updatePhoto", {newPathToPhoto});
+} 
 
 export async function changePassword(data) {
     return await postToServer("User/changePassword", data);

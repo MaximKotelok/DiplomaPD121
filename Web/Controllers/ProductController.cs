@@ -211,9 +211,9 @@ namespace Web.Controllers
 		[HttpGet("GetForPharmacyById")]
 		public IActionResult GetForPharmacyById(int id)
 		{
-			Product product = _productService!.GetProduct(a => a.Id == id, includeProperties: "Manufacturer")!;
+			Product product = _productService!.GetProduct(a => a.Id == id, includeProperties: "Manufacturer,ProductConfirm,ProductConfirm.ProductStatus")!;
 
-			if (product == null)
+			if (product == null || (product.ProductConfirm != null && !product!.ProductConfirm!.ProductStatus!.Status!.Equals(SD.ProductStatusConfirmed)))
 				return BadRequest("No records found");
 
 			ProductToPharmacyViewModel viewModel = new()
@@ -244,7 +244,8 @@ namespace Web.Controllers
 
 		private IEnumerable<Product> filter(IEnumerable<Product> products, SearchViewModel model)
 		{
-			return products
+			var res = products
+				.Where(a => (a.ProductConfirm == null || a!.ProductConfirm!.ProductStatus!.Status!.Equals(SD.ProductStatusConfirmed)))
 				.Where(a =>
 				{
 					if (model.Brands != null && model.Brands.Length > 0)
@@ -275,6 +276,11 @@ namespace Web.Controllers
 					return true;
 				}
 				);
+			foreach(var item in res)
+			{
+				item.ProductConfirm = null;
+			}
+			return res;
 		}
 
 		private IEnumerable<Product> orderBy(IEnumerable<Product> products, SearchViewModel model)
@@ -318,13 +324,13 @@ namespace Web.Controllers
 			{
 
 				result = filter(_productService
-					.GetAllProducts(includeProperties: "Manufacturer,Properties,Properties.Attribute,Category,Brand,Category")
+					.GetAllProducts(includeProperties: "Manufacturer,Properties,Properties.Attribute,Category,Brand,Category,ProductConfirm,ProductConfirm.ProductStatus")
 
 					, model);
 			}
 			else
 			{
-				result = filter(_medicineService.GetAllMedicines(includeProperties: "Manufacturer,Properties,Properties.Attribute,Category,Brand,Category").Where(a => a.ActiveSubstanceID == model.ActiveSubstanceId)
+				result = filter(_medicineService.GetAllMedicines(includeProperties: "Manufacturer,Properties,Properties.Attribute,Category,Brand,Category,ProductConfirm,ProductConfirm.ProductStatus").Where(a => a.ActiveSubstanceID == model.ActiveSubstanceId)
 					, model);
 			}
 
@@ -386,8 +392,7 @@ namespace Web.Controllers
 			if (model.ActiveSubstanceId == null)
 			{
 
-				result = filter(orderBy(_productService.GetAllProducts(includeProperties: "Manufacturer,Properties,Properties.Attribute,Category,Brand,Category,PriceHistory,PriceHistory.HistoryDate")
-
+				result = filter(orderBy(_productService.GetAllProducts(includeProperties: "Manufacturer,Properties,Properties.Attribute,Category,Brand,Category,PriceHistory,PriceHistory.HistoryDate,ProductConfirm,ProductConfirm.ProductStatus")
 					, model), model).Where(a =>
 					{
 						if (model.Title != null)
@@ -396,11 +401,11 @@ namespace Web.Controllers
 						}
 						return true;
 					}
-				);
+				).ToList();
 			}
 			else
 			{
-				result = filter(orderBy(_medicineService.GetAllMedicines(includeProperties: "Manufacturer,Properties,Properties.Attribute,Category,Brand,Category,PriceHistory,PriceHistory.HistoryDate")
+				result = filter(orderBy(_medicineService.GetAllMedicines(includeProperties: "Manufacturer,Properties,Properties.Attribute,Category,Brand,Category,PriceHistory,PriceHistory.HistoryDate,ProductConfirm,ProductConfirm.ProductStatus")
 					.Where(a => a.ActiveSubstanceID == model.ActiveSubstanceId)
 					.Where(a =>
 					{
@@ -476,23 +481,24 @@ namespace Web.Controllers
 					PathToPhoto = a.PathToPhoto,
 				}).Prepend(new ProductAdminCalculateModel { IsTmp = true }))
 				.Skip(page * model.ItemsPerPage)
-				.TakeWhile((item, index) => {
+				.TakeWhile((item, index) =>
+				{
 					if (index < model.ItemsPerPage || (isClearLast && index == model.ItemsPerPage))
 					{
-						if(index == model.ItemsPerPage - 1 && item.IsTmp == true)
+						if (index == model.ItemsPerPage - 1 && item.IsTmp == true)
 						{
 							isClearLast = true;
 						}
 						return true;
 					}
 					return false;
-					})
+				})
 				.Where(a => a.IsTmp != true)
 				.GroupBy(a => new { a.CategoryId, a.CategoryTitle, a.CategoryPathToPhoto })
 				.Select(a => new { a.Key.CategoryTitle, a.Key.CategoryPathToPhoto, data = a.ToList() })
 				.ToList();
 
-			if(isClearLast)
+			if (isClearLast)
 			{
 				products.Last().data.Clear();
 			}
@@ -529,7 +535,8 @@ namespace Web.Controllers
 		public IActionResult GetProductByTitle(string title, int count)
 		{
 			var result = _productService
-				.GetAllProducts(a => a.Title.StartsWith(title)).Take(count);
+				.GetAllProducts(a => a.Title.StartsWith(title), "ProductConfirm,ProductConfirm.ProductStatus").Take(count)
+				.Where(a => (a.ProductConfirm == null || a!.ProductConfirm!.ProductStatus!.Status!.Equals(SD.ProductStatusConfirmed)));
 			if (result is not null)
 			{
 				return Ok(result);
@@ -541,21 +548,28 @@ namespace Web.Controllers
 		public IActionResult GetTopOffers(int count)
 		{
 			var result = _productService
-				.GetAllProducts(includeProperties: "Manufacturer,ProductConfirm,ProductConfirm.ProductStatus,Category")
+				.GetAllProducts(includeProperties: "Manufacturer,ConcreteProducts,ConcreteProducts.ReservationItems,ConcreteProducts.ReservationItems.Reservation,ConcreteProducts.ReservationItems.Reservation.Status,Category,ProductConfirm,ProductConfirm.ProductStatus")
 				.Where(a => (a.ProductConfirm == null || a!.ProductConfirm!.ProductStatus!.Status!.Equals(SD.ProductStatusConfirmed)))
-				.GroupBy(a => a.Category.Title)
-				.TakeLast(3).Select(a => new
+				.Select(a => new HomeProductViewModel
+				{
+					Id = a.Id,
+					Manufacturer = a.Manufacturer!.Name,
+					CategoryName = a.Category!.Title,
+					Title = a.Title,
+					ShortDescription = a.ShortDescription,
+					PathToPhoto = a.PathToPhoto,
+					Popularity = a.ConcreteProducts
+						.Select(b => b.ReservationItems
+						.Where(a => a.Reservation.Status.Status == SD.ReservationStatusFinished)
+						.Count()
+					).Sum(a => a)
+				}).OrderByDescending(a => a.Popularity)
+				.GroupBy(a => a.CategoryName)
+				.OrderByDescending(a => a.Sum(a => a.Popularity))
+				.Take(3).Select(a => new
 				{
 					title = a.Key,
-					data = a
-				.Select(b => new HomeProductViewModel
-				{
-					Id = b.Id,
-					Manufacturer = b.Manufacturer!.Name,
-					Title = b.Title,
-					ShortDescription = b.ShortDescription,
-					PathToPhoto = b.PathToPhoto
-				}).Take(count)
+					data = a.Take(count)
 				});
 			if (result is not null)
 			{
@@ -646,6 +660,10 @@ namespace Web.Controllers
 		public async Task<IActionResult> UpsertProduct(PostProductViewModel postModel)
 		{
 			var user = await _userService.GetUserByName(User.Identity.Name);
+			if (postModel.Id != null && !(await _userService.GetRolesAsync(user.Id)).Contains(SD.Role_Admin))
+			{
+				return StatusCode(403);
+			}
 			using var transaction = new TransactionScope();
 			try
 			{
@@ -661,6 +679,10 @@ namespace Web.Controllers
 			catch (Exception ex)
 			{
 				return BadRequest($"Failed to upsert product. Error: {ex.Message}");
+			}
+			finally
+			{
+				transaction.Dispose();
 			}
 		}
 

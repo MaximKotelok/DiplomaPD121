@@ -44,7 +44,6 @@ export const Home = () => {
   const [recently, setRecently] = useState({});
   const [categories, setCategories] = useState({});
   const [brands, setBrands] = useState({});
-  const [favs, setFavs] = useState([]);
   const [pngCards, setPngCards] = useState({});
   const [recommendedCategory, setRecommendedCategory] = useState([]);
   const [city, setCity] = useState(Cookies.get("city"));
@@ -101,7 +100,6 @@ export const Home = () => {
   }
 
   useEffect(() => {
-    initFavsProducts(setFavs);
     initRecomendedCategory();
     initProducts();
     initRecentlyViewed();
@@ -137,7 +135,7 @@ export const Home = () => {
           </div>
 
           <div className="col-8">
-            <div className="row mt-5" style={{ margin: 0, padding: 0 }}>
+            <div className="row mt-2" style={{ margin: 0, padding: 0 }}>
 
             <h3 className="text-title mb-3">Актуальні категорії</h3>
               <AdaptiveContainerComponent xlDisplayCount={3} lgDisplayCount={2} mdDisplayCount={1} isInMiddleIfNotFull={false}

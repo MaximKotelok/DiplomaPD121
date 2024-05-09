@@ -20,6 +20,7 @@ import PaginationComponent from "../../../../Common/PaginationComponent/Paginati
 import BtnEditStatusModalUser from "./components/BtnEditStatusModalUser/BtnEditStatusModalUser";
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
 import { getAllUsers } from "../../../../../services/user";
+import DefaultUserPhoto from "../../../../../assets/images/user/user-photo-default.svg";
 
 const columns = [
   { id: "user", label: "Користувач", minWidth: 270 },
@@ -153,8 +154,8 @@ export const UsersComponents = () => {
                       <TableCell>
                         <CustomImgComponent
                           className={`${styles["img-product"]}`}
-                          // src={`${ApiPath}${item.pathToPhoto}`}
-                          src={``}
+                          src={`${ApiPath}${row.pathToPhoto}`}
+                          defaultSrc={DefaultUserPhoto}
                         />{" "}
                         {row.user}
                       </TableCell>

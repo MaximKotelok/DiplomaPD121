@@ -76,7 +76,7 @@ namespace Web.Controllers
             }
             else
             {
-                return Unauthorized("Invalid credentials");
+                return BadRequest("Invalid credentials");
             }
         }
         /* [Route("external-login")]

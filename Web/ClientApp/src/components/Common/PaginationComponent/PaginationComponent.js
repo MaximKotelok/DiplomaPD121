@@ -41,7 +41,6 @@ const PaginationComponent = ({ setContent, getContent, allowAppend, page=1, setP
         let result = await getContent(page+1);
         if(result){
             setPage(page+1);
-            console.log(result);
             setContent(result);
         }   
     }

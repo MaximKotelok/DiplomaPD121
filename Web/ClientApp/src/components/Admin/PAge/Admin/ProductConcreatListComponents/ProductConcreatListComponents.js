@@ -211,7 +211,7 @@ export const ProductConcreatListComponents = () => {
                           className={`${styles["img-category"]} ms-3`}
                           src={`${ApiPath}${pharmacy.categoryPathToPhoto}`}
                         />{" "}
-                        {pharmacy.categoryName}
+                        {pharmacy.categoryTitle}
                       </TableCell>
                     </TableRow>
 
@@ -232,12 +232,12 @@ export const ProductConcreatListComponents = () => {
                           </TableCell>
                           <TableCell>
                             <span className={`${styles["text-row-table"]}`}>
-                              {item.brandName}
+                              {item.brand}
                             </span>
                           </TableCell>
                           <TableCell>
                             <span className={`${styles["text-row-table"]}`}>
-                              {item.manufacturerName}
+                              {item.manufacturer}
                             </span>
                           </TableCell>
                           <TableCell>

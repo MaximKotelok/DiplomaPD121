@@ -70,7 +70,7 @@ const LoginForm = () => {
                 <input className={`input-text-form input-text-secondary-form mb-2 ${styles["my-input-text-form"]}`} placeholder='Password' type="password" name="password" value={formData.password} onChange={handleInputChange} required/>
             </div>
 
-            <button  className="brn-form brn-primary-form mb-2" type="submit">Вхід</button>
+            <button  className="brn-form brn-primary-form mb-2">Вхід</button>
         </form>
 
 

@@ -91,6 +91,9 @@ const UpsertProductComponent = () => {
     if (productId) {
       initAfterConfirm();
       
+    }else{
+      setStateInfo(StateInfos.CHOOSE_TYPE_AND_CATEGORY)
+
     }
   }
 
@@ -317,6 +320,10 @@ const UpsertProductComponent = () => {
   if (stateInfo == StateInfos.LOADING)
       return (<div className={`${styles["row-parent"]}`}>
                 <div className={`${styles["box-container"]} `}>Loading</div>
+              </div>);
+  if (stateInfo == StateInfos.CHOOSE_TYPE_AND_CATEGORY)
+      return (<div className={`${styles["row-parent"]}`}>
+                <div className={`${styles["box-container"]} `}>Оберіть категорію і тип товару</div>
               </div>);
 
   // <LayoutAdmin additionalHeader={

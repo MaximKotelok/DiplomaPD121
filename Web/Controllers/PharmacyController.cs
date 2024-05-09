@@ -109,7 +109,6 @@ namespace Web.Controllers
 			int page = model.Page != null ? model.Page.Value - 1 : 0;
 			int skipCount = page * model.ItemsPerPage;
 			bool isClearLast = false;
-			bool isClearFirst = false;
 
 			var pharmaCompanies = _pharmaCompany.GetAllPharmaCompanies(includeProperties: "Pharmacies,Pharmacies.User");
 
@@ -548,7 +547,7 @@ namespace Web.Controllers
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
 		public IActionResult DeletePharmacy(int id)
 		{
-			/*using var transaction = new TransactionScope();*/
+			using var transaction = new TransactionScope();
 
 			var pharmacy = _pharmacyService.GetPharmacy(a => a.Id == id, "ConcreteProducts");
 			if (pharmacy != null)
@@ -560,7 +559,7 @@ namespace Web.Controllers
 				_pharmacyService.DeletePharmacy(id);
 			}
 
-			/*transaction.Complete();*/
+			transaction.Complete();
 			return Ok("Data Deleted");
 		}
 

@@ -71,7 +71,7 @@ export const PharmacyListComponents = () => {
   const [search, setSearch] = React.useState("");
 
   useEffect(()=>{
-    reload(parseInt(paramPage)  , search, isDisplayOnlyCompanies);
+    reload(parseInt(paramPage?paramPage:1), search, isDisplayOnlyCompanies);
   },[])
 
 

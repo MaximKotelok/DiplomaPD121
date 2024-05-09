@@ -9,7 +9,7 @@ import "./EditPro.css";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import { getMyInfo, updateUser } from "../../../../../../services/user";
-import { Success } from "../../../../../../utils/Constants";
+import { ApiPath, Success } from "../../../../../../utils/Constants";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import ChangePasswordComponent from "../ChangePasswordComponent/ChangePasswordComponent";
@@ -19,8 +19,12 @@ import BtnEditPhotoModal from "../AvataComponent/BtnEditPhotoModal/BtnEditPhotoM
 import useWindowSize from "../../UseWindowSize.js";
 import { NavLink, useLocation } from "react-router-dom";
 import { BackButton } from "../../../../Common/BackButton/BackButton.js";
+
+import DefaultUserPhoto from "../../../../../../assets/images/user/user-photo-default.svg"
 const EditProfile = () => {
   const [show, setShow] = useState(false);
+  const [pathToPhoto, setPathToPhoto] = useState("");
+
   // const [showEmail, setShowEmail] = useState(false);
   const [formData, setFormData] = useState({
     firstName: undefined,
@@ -46,7 +50,9 @@ const EditProfile = () => {
         }
       });
       setFormData(userData);
+      setPathToPhoto(res.data.pathToPhoto);
     }
+    
   }
 
   async function submit() {
@@ -88,13 +94,12 @@ const EditProfile = () => {
             <div className="mb-3">
               <div className="d-flex  align-items-center">
                 <CustomImgComponent
-                  // defaultSrc={photo}
                   alt="Avatar"
                   className={` ${styles["circle-avatar"]}  me-3`}
-                  // src={`${ApiPath}${pathToPhoto}`}
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT94gM5Uiorl3CIjHucuXivExvSro9azY1Prta1s1aK4fjo_qt6HIbzWjFW6Us4ujppqms&usqp=CAU"
+                  src={`${ApiPath}${pathToPhoto}`}
+                  defaultSrc={DefaultUserPhoto}
                 />
-                <BtnEditPhotoModal />
+                <BtnEditPhotoModal pathToPhoto={`${pathToPhoto}`} defaultSrc={DefaultUserPhoto}/>
               </div>
             </div>
             {/* <form onSubmit={handleLogin}> */}

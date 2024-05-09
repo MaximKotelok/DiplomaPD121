@@ -25,11 +25,33 @@ export async function upsertProduct(product, options) {
 
 export async function getTopOffer() {
     let res = await getFromServer(GetTopOffers, {
-        count: 6
+        count: 10
     }, ClassHeader);
-    return res;
     if(res.status === Success){
+        console.log({
+            status: res.status,
+            data: await Promise.all(res.data.map(a=>
+            {
+                return{
+                    title: a.title,
+                    data: getSupInfo(a.data)
+                }
+            })
+        )
         
+    })
+        return {
+            status: res.status,
+            data: await Promise.all(res.data.map(async a=>
+            {
+                return{
+                    title: a.title,
+                    data: await getSupInfo(a.data)
+                }
+            })
+        )
+        
+    }
     }
     return "error";
     

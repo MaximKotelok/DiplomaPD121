@@ -1,10 +1,12 @@
 ﻿using Domain.Models;
+using Domain.Models.CalculateActionModels;
 using Domain.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Org.BouncyCastle.Math;
 using Services.CategoryService;
 using Services.CityService;
 using Services.ConcreteProductService;
@@ -125,9 +127,12 @@ namespace Web.Controllers
                     x.Product.Manufacturer.Name.Contains(model.Search) ||
                     x.Product.Category.Title.Contains(model.Search)
                 )
-            , "Product,Product.Brand,Product.Manufacturer,Product.Category");
-				
-
+            , "Product,Product.Brand,Product.Manufacturer,Product.Category")
+            .GroupBy(a => a.Product.Category.Title)
+			   .SelectMany(group => group.Select(a => new ProductAdminCalculateModel
+			   {
+			   }).Prepend(new ProductAdminCalculateModel { IsTmp = true }));
+			return Ok(model.GetCountOfPages(result.Count()));
 
 			if (result is not null)
 			{
@@ -143,9 +148,11 @@ namespace Web.Controllers
 			User user = await _userService.GetUserByName(User.Identity.Name);
             var pharmacy = _pharmacyService.GetPharmacy(a => a.UserID == user.Id);
 
-            int page = model.Page != null ? model.Page.Value-1 : 0;
 
-            var result = _concreteProductService.GetAllConcreteProducts(x =>
+			int page = model.Page != null ? model.Page.Value - 1 : 0;
+			bool isClearLast = false;
+
+			/*var result = _concreteProductService.GetAllConcreteProducts(x =>
                 x.PharmacyID == pharmacy.Id &&
                 (
                     x.Product.Brand.Name.Contains(model.Search) ||
@@ -173,12 +180,71 @@ namespace Web.Controllers
                 .GroupBy(a => new { a.CategoryId, a.CategoryName, a.CategoryPathToPhoto })
                 .Select(a=> new { a.Key.CategoryId, a.Key.CategoryName, a.Key.CategoryPathToPhoto, data=a });
                
-                
-			if (result is not null)
+                */
+
+
+			var products = _concreteProductService.GetAllConcreteProducts(x =>
+				x.PharmacyID == pharmacy.Id &&
+				(
+					x.Product.Brand.Name.Contains(model.Search) ||
+					x.Product.Manufacturer.Name.Contains(model.Search) ||
+					x.Product.Category.Title.Contains(model.Search)
+				)
+			, "Product,Product.Brand,Product.Manufacturer,Product.Category")
+				.Select(a => new
+				{
+					a.Id,
+					a.Product.Title,
+					a.Product.ShortDescription,
+					a.Product.PathToPhoto,
+					BrandName = a.Product.Brand.Name,
+					ManufacturerName = a.Product.Manufacturer.Name,
+					CategoryPathToPhoto = a.Product.Category.PathToPhoto,
+					CategoryTitle = a.Product.Category.Title,
+					CategoryId = a.Product.Category.Id,
+					a.Price,
+					a.Quantity,
+				})
+				.GroupBy(a => a.CategoryId)
+				.SelectMany(group => group.Select(a => new ConcreteProductAdminCalculateModel
+				{
+
+					CategoryId = group.Key,
+					CategoryPathToPhoto = a.CategoryPathToPhoto,
+					CategoryTitle = a.CategoryTitle,
+					Title = a.Title,
+					Brand = a.BrandName,
+					Manufacturer = a.ManufacturerName,
+					ShortDescription = a.ShortDescription,
+					PathToPhoto = a.PathToPhoto,
+					Price=a.Price,
+					Quantity=a.Quantity
+				}).Prepend(new ProductAdminCalculateModel { IsTmp = true }))
+				.Skip(page * model.ItemsPerPage)
+				.TakeWhile((item, index) =>
+				{
+
+					if (index < model.ItemsPerPage || (isClearLast && index == model.ItemsPerPage))
+					{
+						if (index == model.ItemsPerPage - 1 && item.IsTmp == true)
+						{
+							isClearLast = true;
+						}
+						return true;
+					}
+					return false;
+				})
+				.Where(a => a.IsTmp != true)
+				.GroupBy(a => new { a.CategoryId, a.CategoryTitle, a.CategoryPathToPhoto })
+				.Select(a => new { a.Key.CategoryTitle, a.Key.CategoryPathToPhoto, data = a.ToList() })
+				.ToList();
+
+			if (isClearLast)
 			{
-				return Ok(result);
+				products.Last().data.Clear();
 			}
-			return BadRequest("No records found");
+
+			return Ok(products);
 		}
 
 		[HttpGet("Search/{pharmacyId}/{title}")]

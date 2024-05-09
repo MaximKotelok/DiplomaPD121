@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { getMyInfo } from "../../../services/user";
 import CustomImgComponent from "../../../components/Common/CustomImgComponent/CustomImgComponent";
 import { ApiPath, Success } from "../../../utils/Constants";
-import photo from "../../../assets/images/download.jpg";
+import photo from "../../../assets/images/user/user-photo-default.svg";
 
 const AvatarComponennt = ({userInfo}) => {
 

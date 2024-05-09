@@ -80,7 +80,8 @@ export const FileHeader = {
 export const StateInfos = {
     LOADING: 'loading',
     ERROR: 'error',
-    LOADED: 'LOADED'
+    LOADED: 'LOADED',
+    CHOOSE_TYPE_AND_CATEGORY: "choose-type-and-category"
 };
 
 export const LayoutProviderValues = {

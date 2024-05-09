@@ -24,6 +24,7 @@ namespace Services.UserService
         public Task<bool> ChangePasswordWithoutConfirmAsync(string id, string newPassword);
 		public Task AddFavouriteProduct(int productId, string userName);
         public Task UpdateUser(string id, string? firstName = "", string? lastName = "", string? phoneNumber = "", string email = "", string userName = "");
+        public Task UpdatePhoto(string id, string newPath);
         public Task RemoveFavouriteProduct(int productId, string userName);
         public Task AddFavouritePharmacy(int pharmacyId, string userName);
         public Task RemoveFavouritePharmacy(int pharmacyId, string userName);

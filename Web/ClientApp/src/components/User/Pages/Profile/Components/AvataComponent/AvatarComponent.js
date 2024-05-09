@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { ReactComponent as BtnEditProfile } from "../../../../../../assets/images/profile/EditProfile.svg";
-import photo from "../../../../../../assets/images/download.jpg";
+import photo from "../../../../../../assets/images/user/user-photo-default.svg";
 
 import styles from "./Avatat.module.css";
 import { ApiPath, Success } from "../../../../../../utils/Constants";
