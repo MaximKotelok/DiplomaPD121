@@ -11,6 +11,7 @@ import stethoscope from "../../../../../assets/images/svg-menu/tabler-icon-steth
 import bottle from "../../../../../assets/images/svg-menu/tabler-icon-vaccine-bottle.svg";
 import vaccine from "../../../../../assets/images/svg-menu/tabler-icon-vaccine.svg";
 import { ApiPath } from "../../../../../utils/Constants";
+import { Link } from "react-router-dom";
 // import { NavLink } from "react-router-dom";
 
 var active = ` d-flex align-items-center ${styles["my-list-group-item"]} `;
@@ -26,12 +27,12 @@ const MenuComponentModal = ({ onSelect, categories, closeMenu }) => {
       {categories.map((a) => {
         return (<li>
 
-          <div onMouseOver={() => handleMenuSelect(a.id)} className={active}>
+          <Link onClick={closeMenu} to={`/category/${a.id}`} onMouseOver={() => handleMenuSelect(a.id)} className={active}>
             <img className={styles["category-icon"]} src={`${ApiPath}${a.pathToPhoto}`} />
             <a className={`label ${styles["link-text"]} `}>
               {a.title}
             </a>
-          </div>
+          </Link>
         </li>)
       })}
       </ul>

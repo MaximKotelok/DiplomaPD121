@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Repository.Repository.Interfaces;
 using Services.ConcreteProductService;
+using Services.EmailService;
 using Services.PharmacyCompanyService;
 using Services.PharmacyService;
 using Services.UserService;
@@ -21,11 +22,13 @@ namespace Web.Controllers
     {
         private readonly IUserService _userService;
         private readonly IPharmaCompanyService _pharmaCompanyService;
+        private readonly IEmailService _emailService;
 
-        public UserController(IUserService userService, IPharmaCompanyService pharmaCompanyService)
+        public UserController(IUserService userService, IPharmaCompanyService pharmaCompanyService, IEmailService emailService)
         {
             _userService = userService;
             _pharmaCompanyService = pharmaCompanyService;
+			_emailService = emailService;
         }
 
 
@@ -325,12 +328,23 @@ namespace Web.Controllers
 
         [HttpPost("ban/{id}")]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
-        public async Task<IActionResult> BanUser(string id)
+        public async Task<IActionResult> BanUser(string id, [FromBody] EmailDescriptionViewModel model)
         {
             try
             {
                 await _userService.BanUser(id);
-                return Ok();
+				if (!model.Description.IsNullOrEmpty())
+				{
+					var user = await _userService.GetUserById(id);
+					await _emailService.SendUserStatusUpdateInfo(user.Email,
+						user.FirstName != null && user.LastName != null ?
+						$"{user.FirstName} {user.LastName}" :
+						user.UserName,
+						model.Description,
+						"Заблокований"
+						);
+				}
+				return Ok();
             }
             catch
             {
@@ -340,11 +354,22 @@ namespace Web.Controllers
 
         [HttpPost("unban/{id}")]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
-        public async Task<IActionResult> UnbanUser(string id)
+        public async Task<IActionResult> UnbanUser(string id, [FromBody] EmailDescriptionViewModel model)
         {
             try
             {
                 await _userService.UnbanUser(id);
+				if (!model.Description.IsNullOrEmpty())
+				{
+                    var user = await _userService.GetUserById(id);
+                    await _emailService.SendUserStatusUpdateInfo(user.Email,
+                        user.FirstName != null && user.LastName != null ?
+                        $"{user.FirstName} {user.LastName}":
+                        user.UserName,
+                        model.Description,
+                        "Активний"
+                        );
+                }
                 return Ok();
             }
             catch

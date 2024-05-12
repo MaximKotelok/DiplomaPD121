@@ -61,6 +61,8 @@ const HeadOfDetailsComponent = ({ product }) => {
               Ціни у <b className={styles["in-your-city"]}>{product.city}</b>
             </p>
             <p className={styles["product-price-range"]}>
+              {product.from && product.to?<span>
+
               від
               <span className={styles["product-details-price"]}>
                 {" "}
@@ -72,12 +74,17 @@ const HeadOfDetailsComponent = ({ product }) => {
                 {Number(product.to).toFixed(2)}{" "}
               </span>
               грн
+              </span>:
+              <span>
+                Немає у вашему місті
+              </span>
+              }
             </p>
           </div>
 
-          <div>
+          {/* <div>
             <AdditionalDivRadio title="Смак" />
-          </div>
+          </div> */}
 
           <hr className={`${styles["panel-navigation-sm"]}`} />
 

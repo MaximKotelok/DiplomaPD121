@@ -43,6 +43,7 @@ namespace Web.Controllers
 		private readonly IProductConfirmService _productConfirmService;
 		private readonly IReservationService _reservationService;
 		private readonly IUserService _userService;
+		private readonly IEmailService _emailService;
 
 		public ProductController(
 				IProductService productService,
@@ -54,7 +55,8 @@ namespace Web.Controllers
 				IProductStatusService productStatusService,
 				IProductConfirmService productConfirmService,
 				IReservationService reservationService,
-				IUserService userService
+				IUserService userService,
+				IEmailService emailService
 			)
 		{
 
@@ -68,6 +70,7 @@ namespace Web.Controllers
 			this._productStatusService = productStatusService;
 			this._reservationService = reservationService;
 			this._userService = userService;
+			this._emailService = emailService;
 		}
 
 		private IEnumerable<ProductProperty> _convertProperties(List<PropertyViewModel> properties)
@@ -813,15 +816,29 @@ namespace Web.Controllers
 
 		[HttpPut("ChangeStatus/{id}/{statusID}")]
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
-		public IActionResult ChangeStatus(int id, int statusID)
+		public async Task<IActionResult> ChangeStatus(int id, int statusID, [FromBody] EmailDescriptionViewModel model)
 		{
-			var productConfirm = _productService!
-				.GetProduct(a => a.Id == id, "ProductConfirm")
-				!.ProductConfirm;
+			var product = _productService!.GetProduct(a => a.Id == id, "ProductConfirm,ProductConfirm.PharmaCompany");
+			var productConfirm = product!.ProductConfirm;
 			if (productConfirm is not null)
 			{
 				productConfirm!.ProductStatusID = statusID;
 				_productConfirmService.UpdateProductConfirm(productConfirm!);
+				if (!model.Description.IsNullOrEmpty())
+				{
+					var user = await _userService.GetUserById(productConfirm.PharmaCompany.UserID);
+					var status = _productStatusService.GetProductStatusById(statusID);
+					await _emailService.SendChangeProductStatus(
+						new Utility.Models.ProductDto { Name = product.Title, Id= product.Id},
+						user.Email,
+						user.FirstName != null && user.LastName != null ?
+						$"{user.FirstName} {user.LastName}" :
+						$"Представник {productConfirm.PharmaCompany.Title}",
+						model.Description,
+						status.Status
+						);
+					
+				}
 				return Ok("Data Updated");
 			}
 			return Ok("Data Not Found");

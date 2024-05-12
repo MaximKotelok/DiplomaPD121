@@ -111,8 +111,8 @@ export async function getCountOfPagesForProductsAdmin(search = ""){
     }, ClassHeader)
 } 
 
-export async function changeStatus(productId, statusId) {
-    return await putToServer(`Product/ChangeStatus/${productId}/${statusId}`, ClassHeader)
+export async function changeStatus(productId, statusId, description) {
+    return await putToServer(`Product/ChangeStatus/${productId}/${statusId}`, {description}, ClassHeader)
 } 
 
 export async function getProductsFromIdsArray(ids){

@@ -11,9 +11,10 @@ namespace Services.EmailService
     public interface IEmailService
     {
         Task SendBookingInfo(string email, ProductDto productDto);
-        Task SendChangeProductStatus(string email, ProductDto productDto, string newStatus);
+        Task SendChangeProductStatus(ProductDto productDto, string email, string name, string description, string newStatus);
+		Task SendUserStatusUpdateInfo(string email, string name, string description, string newStatus);
         Task<bool> SendConfirmationMail(string email);
-        Task SendBookingInfoForUser(Reservation reservation);
+        Task SendBookingInfoForUser(string email, string status, string total);
 
     }
 }

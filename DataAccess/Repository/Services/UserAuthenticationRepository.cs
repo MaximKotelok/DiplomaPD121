@@ -53,10 +53,20 @@ namespace Repository.Repository.Services
             _user = await _userManager.FindByEmailAsync(loginDto.Email!);
             var result = _user != null && await _userManager.CheckPasswordAsync(_user, loginDto.Password!);
 
-            if (!result || (_user != null && _user.LockoutEnd.HasValue && _user.LockoutEnd > DateTimeOffset.UtcNow && _user.EmailConfirmed == true))
-                return null;
+			if (!result || _user == null)
+				return new UserInfoDto { ErrorMessage = "Невірні облікові дані" };
+			var roles = await _userManager.GetRolesAsync(_user);
+			if (!(roles.Contains(SD.Role_Admin) || roles.Contains(SD.Role_Pharmacist) || roles.Contains(SD.Role_PharmaCompany)))
+            {
 
-            return new UserInfoDto { Email = _user!.Email, };
+				if (!_user.EmailConfirmed)
+					return new UserInfoDto { ErrorMessage = "Ви не підтвердили свою електронну адресу" };
+			}
+			if (_user.LockoutEnd.HasValue && _user.LockoutEnd > DateTimeOffset.UtcNow)
+				return new UserInfoDto { ErrorMessage = "Ваш аккаунт заблоковано" };
+
+
+			return new UserInfoDto { Email = _user!.Email, };
         }
         public async Task<UserInfoDto> ValidateExternalUserAsync(UserLoginDto loginDto)
         {

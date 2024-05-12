@@ -185,6 +185,7 @@ export const UsersComponents = () => {
                           statuses={statuses}
                           id={row.id}
                           statusId={row.isBanned}
+                          email={row.email}
                           changeStatus={(id) => {
                             setRows((prevRows) => {
                               const updatedRows = prevRows.map(

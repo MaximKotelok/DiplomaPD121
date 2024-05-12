@@ -4,7 +4,7 @@ import styles from "./ListProductItemComponent.module.css"
 import {ReactComponent as Geo} from "../../../../../../assets/images/geo.svg"
 import { addToCart } from "../../../../../../services/cartService";
 import { toast } from "react-toastify";
-
+import { Link } from "react-router-dom";
 const ListProductItemComponent = ({id, pharmacyId, isSelected, price, title, productTitle, manufacturer, address, timeClosed, timeOpen, onClick,lon,lat }) => {
 
     
@@ -38,7 +38,7 @@ const ListProductItemComponent = ({id, pharmacyId, isSelected, price, title, pro
 
     return (
         <div onClick={onClick} className={`${styles["card"]} ${(isSelected&&styles["active"])}`}>        
-            <p className={`${styles["pharma-name"]}`}>{title} <i className={`bi bi-info-circle ${styles["info-icon"]}`}></i></p>            
+            <p className={`${styles["pharma-name"]}`}>{title} <Link to={`/pharmacyInfo/${pharmacyId}`}><i className={`bi bi-info-circle ${styles["info-icon"]}`}></i></Link> </p>            
             <div className={`${styles["pharma-info"]}`}>
                 <p>
                 {isOpen?`Відкрито до ${timeClosed}`:`Буде відкрито з ${timeOpen}`}

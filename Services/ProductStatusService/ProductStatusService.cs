@@ -27,6 +27,11 @@ namespace Services.ProductStatusService
 			return _repository.GetAll(filter, includeProperties);
 		}
 
+		public ProductStatus GetProductStatusById(int id)
+		{
+			return _repository.Get(a => a.Id == id);
+		}
+
 		public ProductStatus GetProductStatusByName(string name)
 		{
 			return _repository.Get(a => a.Status == name);

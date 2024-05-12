@@ -30,7 +30,7 @@ export const SearchProductPageComponent = () => {
   const [page, setPage] = useState(1);
   const [countOfPages, setCountOfPages] = useState(1);
 
-  async function search(page = 1) {
+  async function search(page = 1, sortBy) {
     let clone = { ...filters };
     let categories = clone.categories
       ? Object.keys(clone.categories).map((a) =>
@@ -63,7 +63,7 @@ export const SearchProductPageComponent = () => {
         ...Object.keys(clone).map((a) => convertToServerModel(a, clone[a]))
       ),
       page,
-      orderBy
+      sortBy?sortBy:orderBy
     );
     if (searchResult.status === Success) return searchResult.data;
     return null;
@@ -93,6 +93,12 @@ export const SearchProductPageComponent = () => {
   useEffect(() => {
     if (orderByNames) setOrderBy(orderByNames[0]);
   }, [orderByNames]);
+
+  
+  async function refresh(sortBy){
+    setPage(1);
+    setProducts((await search(1, sortBy)).products);
+  }
 
   useEffect(() => {
     init();
@@ -230,6 +236,10 @@ export const SearchProductPageComponent = () => {
                       return { label: a, value: a };
                     }),
                   ]}
+                  onChange={async(e)=>{
+                    setOrderBy(e.value);
+                    await refresh(e.value);
+                  }}
                 />
               </div>
             </div>
