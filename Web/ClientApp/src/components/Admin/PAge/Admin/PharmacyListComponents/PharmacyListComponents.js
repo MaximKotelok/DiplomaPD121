@@ -114,6 +114,7 @@ export const PharmacyListComponents = () => {
           <div className="col-2">
             <Link
               to="/admin/AddPharmaCompany"
+              state={{pathToPharmacyTable: window.location.pathname }}
               className={`btn btn-primary ${styles["add-button"]}`}
             >
               Додати

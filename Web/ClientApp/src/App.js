@@ -65,6 +65,7 @@ import { ProductInspectionComponents } from "./components/Admin/PAge/Admin/Produ
 import { UpsertManufactureComponent } from "./components/Admin/PAge/Pharmacy/UpsertManufactureComponent/UpsertManufactureComponent";
 import { PharmacyListForPharmaCompanyComponent } from "./components/Admin/PAge/PharmaCompany/PharmacyListComponents/PharmacyListComponents";
 import { DefectiveSeries } from "./components/User/Pages/DefectiveSeries/DefectiveSeries";
+import { ActiveSubstanceListPath, AttributeListPath, BrandListPath, CategoryListPath, ConcreteProductListPath, ManufacturerListPath, OrderListPath, PharmaCompanyPharmacyListPath, PharmacyListPath, ProductConfirmListPath, ProductListPath, UserListPath } from "./utils/TablesPathes";
 
 // export default class App extends Component {
 // static displayName = App.name;
@@ -100,6 +101,10 @@ export default class App extends Component {
                     const currentLocation = (window.location.pathname + window.location.search).substr(1);
                     window.location.replace(`/auth/login?from=/${currentLocation}`);
                 }
+                if (error.response && error.response.status === 403) {
+                    window.location.replace(`/`);
+                }
+                    
                 return Promise.reject(error);
             }
         );
@@ -191,7 +196,7 @@ export default class App extends Component {
                         <Route path="homePageAdmin" element={<HomeAdminPageComponents />} />
 
                         {/*USER*/}
-                        <Route path="userList" element={<UsersComponents />} />
+                        <Route path={UserListPath} element={<UsersComponents />} />
                         <Route path="pharmacyUser" element={<UserPharmacy />} />
 
                         {/*DEFECTIVE SERIES*/}
@@ -201,8 +206,8 @@ export default class App extends Component {
                         />
 
                         {/*ATTRIBUTE*/}
-                        <Route path="attributeList" element={<AttributeListComponents />} />
-                        <Route path="attributeList/:paramPage" element={<AttributeListComponents />} />
+                        <Route path={`${AttributeListPath}`} element={<AttributeListComponents />} />
+                        <Route  path={`${AttributeListPath}/:paramPage`} element={<AttributeListComponents />} />
                         <Route path="addAttribute/" element={<UpsertAttributeComponents />} />
                         <Route
                             path="updateAttribute/:attributeId"
@@ -210,16 +215,16 @@ export default class App extends Component {
                         />
 
                         {/*OFFER*/}
-                        <Route path="zayavkaList" element={<ZayavkaComponents />} />
+                        <Route path={ProductConfirmListPath} element={<ZayavkaComponents />} />
                         <Route
-                            path="zayavkaList/:paramPage"
+                            path={`${ProductConfirmListPath}/:paramPage`}
                             element={<ZayavkaComponents />}
                         />
 
                         {/*ACTIVE SUBVTANCES*/}
-                        <Route path="activeSubstanceList" element={<ActiveSubstanceListComponents />} />
+                        <Route path={`${ActiveSubstanceListPath}`} element={<ActiveSubstanceListComponents />} />
                         <Route
-                            path="activeSubstanceList/:paramPage"
+                            path={`${ActiveSubstanceListPath}/:paramPage`}
                             element={<ActiveSubstanceListComponents />}
                         />
                         <Route
@@ -229,11 +234,11 @@ export default class App extends Component {
 
                         {/*MANUFACTURER*/}
                         <Route
-                            path="manufactureList"
+                            path={`${ManufacturerListPath}`}
                             element={<ManufactureListComponents />}
                         />
                         <Route
-                            path="manufactureList/:paramPage"
+                            path={`${ManufacturerListPath}/:paramPage`}
                             element={<ManufactureListComponents />}
                         />
                         <Route path="addManufacturer" element={<UpsertManufactureComponent />} />
@@ -243,26 +248,26 @@ export default class App extends Component {
                         />
 
                         {/*BRAND*/}
-                        <Route path="brandList" element={<BrandListComponent />} />
-                        <Route path="brandList/:id" element={<BrandListComponent />} />
+                        <Route path={`${BrandListPath}`} element={<BrandListComponent />} />
+                        <Route path={`${BrandListPath}/:id`} element={<BrandListComponent />} />
                         <Route path="addBrand" element={<UpsertBrendComponent />} />
                         <Route
                             path="updateBrand/:brandId"
                             element={<UpsertBrendComponent />}
                         />
 
-                        {/*CONCREAT PRODUCT*/}
+                        {/*CONCRETE PRODUCT*/}
                         <Route
-                            path="productConcreatList"
+                            path={`${ConcreteProductListPath}`}
                             element={<ProductConcreatListComponents />}
                         />
                         <Route
-                            path="productConcreatList/:pageParam"
+                            path={`${ConcreteProductListPath}/:pageParam`}
                             element={<ProductConcreatListComponents />}
                         />
 
                         {/*PRODUCT*/}
-                        <Route path="productList" element={<ProductListComponents />} />
+                        <Route path={`${ProductListPath}`} element={<ProductListComponents />} />
                         <Route
                             path="detailProduct/:productId"
                             element={<ProductDetailsAdminComponents />}
@@ -278,8 +283,8 @@ export default class App extends Component {
                         />
 
                         {/*PHARMA COMPANY*/}
-                        <Route path="pharmaCompany/pharmacyList" element={<PharmacyListForPharmaCompanyComponent />} />
-                        <Route path="pharmaCompany/pharmacyList/:paramPage" element={<PharmacyListForPharmaCompanyComponent />} />
+                        <Route path={PharmaCompanyPharmacyListPath} element={<PharmacyListForPharmaCompanyComponent />} />
+                        <Route path={`${PharmaCompanyPharmacyListPath}/:paramPage`} element={<PharmacyListForPharmaCompanyComponent />} />
                         <Route
                             path="addPharmaCompany"
                             element={<UpsertPharmaCompanyComponent />}
@@ -290,16 +295,17 @@ export default class App extends Component {
                         />
 
                         {/*CATEGORY*/}
-                        <Route path="categoeyList" element={<CategoryListComponents />} />
-                        <Route path="categoryList/:paramPage" element={<CategoryListComponents />} />
+                        <Route path={CategoryListPath} element={<CategoryListComponents />} />
+                        <Route path={`${CategoryListPath}/:paramPage`} element={<CategoryListComponents />} />
                         <Route path="addCategory" element={<AddCategoryComponents />} />
                         <Route path="updateCategory/:categoryId" element={<AddCategoryComponents />} />
 
 
                         {/*PHARMACY*/}
-                        <Route path="pharmacyList" element={<PharmacyListComponents />} />
-                        <Route path="pharmacyList/:paramPage" element={<PharmacyListComponents />} />
+                        <Route path={PharmacyListPath} element={<PharmacyListComponents />} />
+                        <Route path={`${PharmacyListPath}/:paramPage`} element={<PharmacyListComponents />} />
                         <Route path="addPharmacy" element={<UpsertPharmacyComponent />} />
+                        <Route path="addPharmacy/:companyId" element={<UpsertPharmacyComponent />} />
                         <Route
                             path="updatePharmacy/:pharmacyId"
                             element={<UpsertPharmacyComponent />}
@@ -312,7 +318,7 @@ export default class App extends Component {
                             path="updateProductPharmacy/:concreteProductId"
                             element={<AddProductPharmacyComponent />}
                         />
-                        <Route path="orderList" element={<OrderListProductComponents />} />
+                        <Route path={`${OrderListPath}`} element={<OrderListProductComponents />} />
 
 
                         {/*CHAT*/}

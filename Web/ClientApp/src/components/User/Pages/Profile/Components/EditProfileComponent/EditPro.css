@@ -1,18 +1,4 @@
-.form-control {
-    border: none;
-    box-shadow: none;
-    
-}
 
-
-.form-control:focus {
-    outline: none; 
-background-color: rgba(239, 239, 239, 1);
-color: rgba(122, 122, 122, 1);
-border: none;
-    box-shadow: none; 
-    
-}
 /* 
 .modal-dialog{
     max-width: none ;

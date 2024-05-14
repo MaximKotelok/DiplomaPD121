@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./UpsertBrendComponent.module.css";
 import BtnWarningModal from "../../../Common/BtnWarningModal/BtnWarningModal";
 import { styled } from "@mui/material/styles";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import Button from "@mui/material/Button";
 import CustomSelectComponent from "../../../../Common/CustomSelectComponent/CustomSelectComponent";
@@ -12,6 +12,8 @@ import { getBrandById, upsertBrand } from "../../../../../services/brand";
 import { getAllCountries } from "../../../../../services/country";
 import { postPhotoToServer } from "../../../../../services/photo";
 import { toast } from "react-toastify";
+import { checkFormParamsAreNotEmpty } from "../../../../../utils/Functions";
+import { BrandListPath, adminRoutePath } from "../../../../../utils/TablesPathes";
 const VisuallyHiddenInput = styled("input")({
     clip: "rgba(229, 229, 234, 1)",
     clipPath: "inset(50%)",
@@ -42,6 +44,11 @@ const StyledButton = styled(Button)({
     },
 });
 export const UpsertBrendComponent = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const { pathToBrandTable } = location.state || {pathToBrandTable: `${adminRoutePath}/${BrandListPath}`};
+
     const [image, setImage] = useState(null);
     const { brandId } = useParams();
 
@@ -151,6 +158,7 @@ export const UpsertBrendComponent = () => {
 
         if (res.status === Success) {
             toast.success("Успіх")
+            navigate(pathToBrandTable)
         } else {
             toast.error("Помилка")
         }
@@ -212,7 +220,7 @@ export const UpsertBrendComponent = () => {
                                 <label>Назва</label>
                                 <input
                                     className={`input-text-form  mb-2 ${styles["my-input-text-form"]}`}
-                                    placeholder="Введіть назву фарма-компанії"
+                                    placeholder="Введіть назву бренду"
                                     type="text"
                                     name="name"
                                     value={formData.name}
@@ -254,7 +262,7 @@ export const UpsertBrendComponent = () => {
                                 <label>Опис</label>
                                 <textarea
                                     className={`${styles["text-area-zayavka"]}`}
-                                    placeholder="Ведіть опис фарма-компанії"
+                                    placeholder="Ведіть опис бренду"
                                     type="text"
                                     rows={4}
                                     name="description"
@@ -268,7 +276,13 @@ export const UpsertBrendComponent = () => {
 
                 <div className="d-flex justify-content-center">
                     <div>
-                        <BtnWarningModal onConfirm={submit} />
+                        <BtnWarningModal onCancel={()=>navigate(pathToBrandTable)} onConfirm={submit} openIf={()=>{
+                                    if(!checkFormParamsAreNotEmpty(formData, ["id", "pathToPhoto"])){
+                                        toast.error("Не всі поля заповнені");
+                                        return false;
+                                    }
+                                    return true;
+                        }} />
                     </div>
                 </div>
             </div>

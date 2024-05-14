@@ -659,7 +659,7 @@ namespace Web.Controllers
 		//Update - admin
 		//Add - pharamacy & admin
 		[HttpPost("UpsertProduct")]
-		[Authorize(AuthenticationSchemes = "Bearer", Roles = $"{SD.Role_Admin} ${SD.Role_Pharmacist}")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = $"{SD.Role_Admin},${SD.Role_Pharmacist}")]
 		public async Task<IActionResult> UpsertProduct(PostProductViewModel postModel)
 		{
 			var user = await _userService.GetUserByName(User.Identity.Name);
@@ -685,7 +685,7 @@ namespace Web.Controllers
 			}
 			finally
 			{
-				transaction.Dispose();
+				//transaction.Dispose();
 			}
 		}
 

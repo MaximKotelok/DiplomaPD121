@@ -9,6 +9,7 @@ import { getAttributeById, upsertAttribute } from "../../../../../services/attri
 import { getAllAttributeGroups } from "../../../../../services/attributeGroup";
 import CustomSelectComponent from "../../../../Common/CustomSelectComponent/CustomSelectComponent";
 import { toast } from "react-toastify";
+import { checkFormParamsAreNotEmpty } from "../../../../../utils/Functions";
 
 
 export const UpsertAttributeComponents = () => {
@@ -82,6 +83,11 @@ export const UpsertAttributeComponents = () => {
     };
 
     const submit = async () => {
+        if(!checkFormParamsAreNotEmpty(formData, ["id"])){
+            toast.error("Не всі поля заповнені");
+            return;
+        }
+      
         const res = await upsertAttribute(formData);
 
         if (res.status === Success) {
@@ -108,7 +114,7 @@ export const UpsertAttributeComponents = () => {
                         value={formData.name}
                         name="name"
                     />
-                    <TextAreaStandart
+                    <InpurtStandart
                         label={"Індекс"}
                         placholder={"Ведіть сюди індекс ..."}
                         onChange={handleInputChange}

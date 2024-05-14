@@ -12,7 +12,7 @@ const FormDataStandartInputsComponent = ({
   return (
     <div>
       <InputForProductComponent
-        className="margin-bottom"
+        className={`margin-bottom ${styles["border"]}`}
         label="Назва товару"
         placeholder="Введіть назву товару"
         type="text"
@@ -23,7 +23,7 @@ const FormDataStandartInputsComponent = ({
         }}
       />
       <InputForProductComponent
-        className="margin-bottom"
+        className={`margin-bottom ${styles["border"]}`}
         label="Короткий опис"
         placeholder="Введіть короткий опис"
         type="text"

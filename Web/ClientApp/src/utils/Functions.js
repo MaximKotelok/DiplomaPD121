@@ -22,6 +22,10 @@ export function groupBy(xs, key) {
   }, {});
 };
 
+export function checkFormParamsAreNotEmpty(form, ignoreParams) {
+  return Object.keys(form).every(a=>form[a] || ignoreParams.findIndex(b=>b==a) != -1);
+};
+
 export function toLocalString(str){
 
     const date = new Date(str);
@@ -64,6 +68,17 @@ export function addMinutes(timeString, addMinutes) {
 
   return updatedTimeString;
 
+}
+
+export function fillNullValues(originalObject, fillObject) {
+  const result = { ...originalObject };
+  for (const key in originalObject) {
+    if (!originalObject[key] && fillObject[key]) {
+      result[key] = fillObject[key];
+    }
+  }
+
+  return result;
 }
 
 

@@ -25,6 +25,7 @@ import styles from "./UpsertPharmacyComponent.module.css";
 import LayoutContext from "../../../../../../layouts/LayoutContext";
 import CustomTimeComponent from "../CustomTimeComponent/CustomTimeComponent";
 import { toast } from "react-toastify";
+import { checkFormParamsAreNotEmpty } from "../../../../../../utils/Functions";
 
 export const UpsertPharmacyComponent = () => {
   const [IsActive, setIsActive] = useState(false);
@@ -83,7 +84,7 @@ export const UpsertPharmacyComponent = () => {
     weekendCloseTime: undefined,
     longitude: undefined,
     latitude: undefined,
-    pharmaCompanyID: companyId?parseInt(companyId):null,
+    pharmaCompanyID: companyId?parseInt(companyId):undefined,
     cityID: undefined,
   });
 
@@ -118,6 +119,7 @@ export const UpsertPharmacyComponent = () => {
           tmpPharmacistObject.status === Success
         ) {
           setPharmacyFormData(fillNullValues(pharmacyFormData, tmpObject.data));
+          
           setUserFormData(
             fillNullValues(userFormData, tmpPharmacistObject.data)
           );
@@ -163,7 +165,12 @@ export const UpsertPharmacyComponent = () => {
   };
 
   const submitPharmacy = async () => {
-    console.log(pharmacyFormData)
+    
+    if(!checkFormParamsAreNotEmpty(pharmacyFormData, ['id'])){
+      console.log(pharmacyFormData)
+      toast.error("Не всі поля заповнені");
+      return;
+  }
     let res = await upsertPharmacy(pharmacyFormData);
     if (res.status === Success) {
       setPharmacyIdState(res.data);
@@ -173,7 +180,10 @@ export const UpsertPharmacyComponent = () => {
     }
   };
   const submitPharmacist = async () => {
-    console.log(userFormData);
+    if(!checkFormParamsAreNotEmpty(userFormData, [])){
+      toast.error("Не всі поля заповнені");
+      return;
+  }
     let res = await upsertPharmacist(userFormData);
     if (res.status === Success) {
       toast.success("Успіх!");
