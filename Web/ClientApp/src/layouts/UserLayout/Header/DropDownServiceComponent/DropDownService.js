@@ -6,9 +6,9 @@ import SearchIcon from "./tabler-icon-list-search.svg";
 import AlertIcon from "./tabler-icon-alert-triangle.svg";
 import { ReactComponent as ServiceIcon } from "./ServiceIcon.svg";
 
-export const DropDownService = () => {
+export const DropDownService = ({className}) => {
   return (
-    <div className="dropdown">
+    <div className={`dropdown ${className}`}>
       <button
         className={`btn   d-flex align-items-center ${styles["btn-service"]}  ${styles["btn-style-hover"]}`}
         type="button"

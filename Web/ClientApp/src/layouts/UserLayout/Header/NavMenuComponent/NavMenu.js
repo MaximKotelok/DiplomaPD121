@@ -62,7 +62,7 @@ export class NavMenu extends Component {
               <DropDown iconPath={CatalogIcon} />
             </div>
             
-            <DropDownService />
+            <DropDownService className="services" />
 
             <div className="geo me-2">
               <DropDownLocation iconPath={GeoIcon} text="Геолокація" />

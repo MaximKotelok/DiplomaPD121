@@ -4,6 +4,7 @@ using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240516181456_FewNewEntities")]
+    partial class FewNewEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -316,7 +319,6 @@ namespace DataAccess.Migrations
                         {
                             Id = 921,
                             CanHasProducts = false,
-                            IsRecomended = true,
                             ParentCategoryID = 9,
                             PathToRecomendedPhoto = "/images/category/recomemnded/1.png",
                             Title = "Схуднення"
@@ -325,7 +327,6 @@ namespace DataAccess.Migrations
                         {
                             Id = 922,
                             CanHasProducts = false,
-                            IsRecomended = true,
                             ParentCategoryID = 2,
                             PathToRecomendedPhoto = "/images/category/recomemnded/2.png",
                             Title = "Від застуди та грипу"
@@ -334,7 +335,6 @@ namespace DataAccess.Migrations
                         {
                             Id = 923,
                             CanHasProducts = false,
-                            IsRecomended = true,
                             ParentCategoryID = 2,
                             PathToRecomendedPhoto = "/images/category/recomemnded/3.png",
                             Title = "Від стресу"

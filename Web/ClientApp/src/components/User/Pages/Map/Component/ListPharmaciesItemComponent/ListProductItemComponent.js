@@ -10,6 +10,7 @@ import ConreteProductSearchComponent from "../ConreteProductSearchComponent/Conr
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import PharmacySearchProductAutoCompleteInputComponent from "../../../../../Common/PharmacySearchProductAutoCompleteInputComponent/PharmacySearchProductAutoCompleteInputComponent";
+import { getProductByTitleFromPharmacy } from "../../../../../../services/pharmacy";
 
 const ListPharmaciesItemComponent = ({
   id,
@@ -60,8 +61,8 @@ const ListPharmaciesItemComponent = ({
 
       <hr />
       <div className="row">
-        <div className="d-flex justify-content-center">
-          <PharmacySearchProductAutoCompleteInputComponent />
+        <div className="d-flex justify-content-center p-0">
+                  <PharmacySearchProductAutoCompleteInputComponent pharmacyId={id} getData={(search)=>getProductByTitleFromPharmacy(id,search)} />
           {/* <ConreteProductSearchComponent pharmacyId={id} className={styles["search"]}/> */}
         </div>
       </div>

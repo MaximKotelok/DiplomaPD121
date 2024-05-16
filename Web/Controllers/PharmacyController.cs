@@ -45,6 +45,22 @@ namespace Web.Controllers
 			this._pharmaCompany = pharmaCompany;
 		}
 
+		[HttpGet("GetPharmacyProductByTitle")]
+		public IActionResult GetPharmacyProductByTitle(int? id, string? search, int? count)
+		{
+			var pharmacy = _pharmacyService.GetPharmacy(a=>a.Id == id, "ConcreteProducts,ConcreteProducts.Product");
+			if (pharmacy is not null)
+			{
+				var result = pharmacy.ConcreteProducts.Where(a => 
+				a.Quantity>0&&
+				(a.Product.Title.Contains(search) ||
+				a.Product.ShortDescription.Contains(search)))
+					.Take(count == null?3:count.Value);
+				return Ok(result);
+			}
+			return BadRequest("No pharmacy found");
+		}
+
 		[HttpGet("")]
 		public IActionResult GetAllPharmacies()
 		{

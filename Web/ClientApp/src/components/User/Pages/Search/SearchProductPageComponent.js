@@ -85,8 +85,6 @@ export const SearchProductPageComponent = () => {
   const [orderByNames, setOrderByNames] = useState([]);
   const [orderBy, setOrderBy] = useState(null);
 
-  const SEPARATED_COUNT = 8;
-
   const handleGridTableClick = (boolean) => {
     setGridTalbeActive(boolean);
   };
@@ -200,10 +198,11 @@ export const SearchProductPageComponent = () => {
             <div className="ms-auto">
               <div className="btn-group">
                 <CustomSelectComponentSelectFilter
+                  selectedId={orderBy}
                   className={` my-form-select-175 ${styles["my-input-text-form-box"]} ${styles["custom-combobox"]}`}
                   options={[
                     ...orderByNames.map((a) => {
-                      return { label: a, value: a };
+                      return {id:a, label: a, value: a };
                     }),
                   ]}
                   onChange={async(e)=>{
@@ -247,7 +246,6 @@ export const SearchProductPageComponent = () => {
             {products &&
               products.map &&
               products
-                .slice(0, SEPARATED_COUNT)
                 .map((a) => (
                   <MiniCardProductANDTableProductComponent
                     key={a.id}
@@ -257,30 +255,13 @@ export const SearchProductPageComponent = () => {
                     description={a.shortDescription}
                     minPrice={a.minPrice}
                     countOfPharmacies={a.count}
-                    manufacturer={a.manufacturer}
+                    manufacturer={a.manufacturer.name}
                     imageUrl={a.pathToPhoto}
+                    manufacter={a.manufacter}
                   />
                 ))}
           </div>
           <div className="w-100">
-            {products &&
-              products.map &&
-              products.length > SEPARATED_COUNT &&
-              products
-                .slice(SEPARATED_COUNT, products.length)
-                .map((a) => (
-                  <MiniCardProductANDTableProductComponent
-                    key={a.id}
-                    id={a.id}
-                    isFavorite={isFavoriteProduct}
-                    title={a.title}
-                    description={a.shortDescription}
-                    minPrice={a.minPrice}
-                    countOfPharmacies={a.count}
-                    manufacturer={a.manufacturer}
-                    imageUrl={a.pathToPhoto}
-                  />
-                ))}
 
             <PaginationComponent
               setContent={setProducts}

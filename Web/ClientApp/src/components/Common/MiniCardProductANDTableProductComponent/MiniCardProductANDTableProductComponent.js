@@ -18,6 +18,7 @@ const MiniCardProductANDTableProductComponent = ({
   description = "...",
   minPrice = 0.0,
   countOfPharmacies = 0,
+  manufacturer
 }) => {
   const [isFavoriteState, setIsFavoriteState] = useState(false);
   useEffect(() => {
@@ -63,7 +64,7 @@ const MiniCardProductANDTableProductComponent = ({
         <CustomImgComponent
           src={`${ApiPath}${imageUrl}`}
           style={{ width: "100%", height: "170px" }}
-          className={`${stylesMiniCard["product-image"]}`}
+          className={`${stylesMiniCard["product-image"]} ${styles["image"]}`}
           alt={title}
         />
       </Link>
@@ -74,14 +75,14 @@ const MiniCardProductANDTableProductComponent = ({
           to={`/product-details/${id}`}
           className={`${stylesMiniCard["text-decoration-none"]}`}
         >
-          <p className={`${stylesMiniCard["product-title"]}`}>
+          <p className={`${stylesMiniCard["product-title"]} ${styles["default-height-if-table"]}`}>
             {title && minimizeText(title, 20)}
           </p>
-          <p className={`${stylesMiniCard["product-description"]}`}>
+          <p className={`${stylesMiniCard["product-description"]} ${styles["default-height-if-table"]}`}>
             {description && minimizeText(description, 57)}
           </p>
         </Link>
-        <p className={`${stylesMiniCard["product-opus"]}`}>dsfsdsfdsfdsfsdf</p>
+        <p className={`${stylesMiniCard["product-opus"]}`}>{manufacturer}</p>
         <p className={`${stylesMiniCard["product-count"]}`}>
           <span>
             <Galochka />

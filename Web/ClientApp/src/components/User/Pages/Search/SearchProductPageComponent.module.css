@@ -367,6 +367,13 @@ position: relative;
 width: 251px !important;
 /* padding: 8px 80px; */
 }
+.tableView .default-height-if-table{
+  height: initial !important;
+}
+.tableView .image{
+  height: 100%!important;
+  width: 100%important;
+}
 
 .tableView .products-header {
   display: flex;
