@@ -93,8 +93,20 @@ export const SearchProductPageComponent = () => {
   useEffect(() => {
     if (orderByNames) setOrderBy(orderByNames[0]);
   }, [orderByNames]);
-
   
+  useEffect(() => {
+    updateSearch();
+  }, [filters,searchByTitle]);
+
+  async function updateSearch() {
+    let result = await search();
+    if (result) {
+        setPage(1);
+        setCountOfPages(result.countOfPages);
+        setProducts(result.products);
+    }
+}
+
   async function refresh(sortBy){
     setPage(1);
     setProducts((await search(1, sortBy)).products);

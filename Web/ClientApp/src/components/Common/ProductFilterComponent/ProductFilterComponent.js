@@ -64,16 +64,6 @@ const ProductFilterComponent = ({
     }
 
 
-    async function submit() {
-        let result = await search();
-        if (result) {
-            setPage(1);
-            setCountOfPages(result.countOfPages);
-            setProducts(result.products);
-        }
-    }
-
-
     const handleFilterChange = (attributeName, selectedValue, isDelete = false, displayedName = "") => {
         if (Object.keys(filters).indexOf(attributeName) === -1) {
             setFilters(prevFilters => ({
@@ -108,7 +98,7 @@ const ProductFilterComponent = ({
 
             })}
 
-            <SearchComponent value={searchByTitle} onClick={submit} callback={setSearchByTitle} className={styles["search"]} />
+            <SearchComponent value={searchByTitle} callback={setSearchByTitle} className={styles["search"]} />
 
             {(Object.keys(categories).length > 0 && <ProductFilterItemGroupComponent title="Категорія">
                 {Object.keys(categories).map(key => {
