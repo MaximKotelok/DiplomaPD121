@@ -2,7 +2,8 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import stylesMiniCard from "./MiniCardProductANDTableProductComponent.module.css";
 import { Link } from "react-router-dom";
-import styles from "../../User/Pages/Category/Component/CategoryWithProductsComponent/CategoryWithSubCategoriesComponent.module.css";
+import styles from "../../User/Pages/Search/SearchProductPageComponent.module.css";
+// import styles from "../../User/Pages/Category/Component/CategoryWithProductsComponent/CategoryWithSubCategoriesComponent.module.css";
 import React, { useEffect, useState } from "react";
 import FavoriteProductButton from "../FavoriteProductButtonComponent/FavoriteProductButton.js";
 import { ApiPath } from "../../../utils/Constants.js";
@@ -51,10 +52,14 @@ const MiniCardProductANDTableProductComponent = ({
 
   return (
     <div
-      className={`${styles["products-row"]} m-1 ${stylesMiniCard["product-card"]}  `}
+      className={`${styles["products-row"]} m-1 ${stylesMiniCard["product-card"]}  position-relative `}
       // className={`${styles["products-row"]} m-1 ${stylesMiniCard["product-card"]} position-relative`}
     >
-      <Link to={`/product-details/${id}`} className={`text-decoration-none  `}>
+      <Link
+        to={`/product-details/${id}`}
+        style={{ width: "34%" }}
+        className={`text-decoration-none  `}
+      >
         <CustomImgComponent
           src={`${ApiPath}${imageUrl}`}
           style={{ width: "100%", height: "170px" }}
@@ -63,7 +68,7 @@ const MiniCardProductANDTableProductComponent = ({
         />
       </Link>
       <div
-        className={`${stylesMiniCard["product-info"]} ${styles["content-info"]}`}
+        className={` mt-3 ${stylesMiniCard["product-info"]} ${styles["content-info"]}`}
       >
         <Link
           to={`/product-details/${id}`}
@@ -92,7 +97,7 @@ const MiniCardProductANDTableProductComponent = ({
         </p>
         <Link
           to={`/map/${id}`}
-          className={`btn brn-form_2 btn-primary mb-2 ${styles["btn-pr"]}`}
+          className={`btn brn-form_2 btn-primary  mb-2 ${styles["btn-pr"]}`}
         >
           Ціни в аптеках
         </Link>

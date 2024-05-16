@@ -5,14 +5,11 @@ import React, { useState, useEffect, useRef } from "react";
 import { getCookie } from "../../../../../../utils/Cookies";
 import ListProducts from "../ListProductsComponent/ListProducts";
 import "./MapProducts.css";
-import styles from "./ListProduct.module.css";
 import { getProductById } from "../../../../../../services/product";
 import {
   Coords,
   getListOfConcreteProductInYourCity,
 } from "../../../../../../services/concreteProduct";
-import { NavigationDetailsComponent } from "../../../../Common/NavigationDetailsComponent/NavigationDetailsComponent";
-import ListProductItemComponent from "../ListProductItemComponent/ListProductItemComponent";
 
 const MapProducts = (props) => {
   const [map, setMap] = useState(null);
@@ -22,7 +19,6 @@ const MapProducts = (props) => {
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [city, setCity] = useState(getCookie("city"));
   const [product, setProduct] = useState(null);
-  const [mapPage, setMapPage] = useState(false);
 
   const selectedProductPrice = useRef(null);
 
@@ -43,7 +39,7 @@ const MapProducts = (props) => {
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(myMap);
 
-      setCity(city);
+      setCity(props.city);
 
       setMap(myMap);
     });
@@ -175,66 +171,24 @@ const MapProducts = (props) => {
     selectedProductPrice.current = product.price;
   };
 
-  const isValid = city && townProducts && product;
-
   return (
     <div>
-      {/* <div id="map" style={{ height: "400px" }}></div> */}
+      <div id="map" style={{ height: "400px" }}></div>
 
-      <div className="map-left  p-3">
-        <div className="mx-3">
-          {isValid && (
-            <div>
-              <p className={styles["product-title"]}>
-                {product.title} {product.shortDescription} ціна у {city}
-              </p>
-              <NavigationDetailsComponent id={product.id} />
-              {/* <div className="my-3">
-        <ChangeCityComponent city={city}/>
-    </div> */}
-              <p className={`${styles["found-in"]}`}>
-                Знайдено у {townProducts.length} аптеках
-              </p>
-            </div>
-          )}
-
-          {/* це кнопка яка повина бути на мапі, Данило порішай */}
-          {/* <button
-            className={`brn-form brn-primary-form mt-auto me-4 ${styles["btn-map-page"]}`}
-            onClick={() => { setMapPage(true)}}
-          >
-            Шукати на мапі
-          </button> */}
-
-          <div id="map" style={{ height: "240px" }}></div>
-
-          {isValid &&
-            townProducts.map((product, index) => (
-              <ListProductItemComponent
-                key={index}
-                pharmacyId={product.pharmacy.id}
-                id={product.id}
-                isSelected={selectedProduct && selectedProduct.id == product.id}
-                price={product.price}
-                lon={product.pharmacy.longitude}
-                lat={product.pharmacy.latitude}
-                title={product.pharmacy.pharmaCompany.title}
-                productTitle={`${product.product.title} ${product.shortDescription}`}
-                address={product.pharmacy.address}
-                manufacturer={product.product.manufacturer.name}
-                timeClosed={product.pharmacy.closeTime}
-                timeOpen={product.pharmacy.openTime}
-                onClick={() => {
-                  //   onProductClick(product);
-                  setSelectedProduct(product);
-                  if (handleMapSelect) {
-                    handleMapSelect(product);
-                  }
-                }}
-              />
-            ))}
-        </div>
-      </div>
+      {city !== "" && townProducts != null && product != null ? (
+        <ListProducts
+          product={product}
+          city={city}
+          selectedProduct={selectedProduct}
+          townProducts={townProducts}
+          onProductClick={(pharmacy) => {
+            setSelectedProduct(pharmacy);
+          }}
+          onMapSelect={handleMapSelect}
+        />
+      ) : (
+        <p>Loading...</p>
+      )}
     </div>
   );
 };

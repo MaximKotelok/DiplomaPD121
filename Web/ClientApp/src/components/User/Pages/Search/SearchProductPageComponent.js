@@ -18,6 +18,7 @@ import banner from "../../../../assets/images/search/banner.svg";
 import MiniCardProductANDTableProductComponent from "../../../Common/MiniCardProductANDTableProductComponent/MiniCardProductANDTableProductComponent";
 // import Select from "react-select";
 import styles from "./SearchProductPageComponent.module.css";
+import baner from "./ban.svg";
 import { Search } from "../../../../services/product";
 import { getBrandById } from "../../../../services/brand";
 import { getActiveSubstance } from "../../../../services/activeSubstance";
@@ -179,50 +180,7 @@ export const SearchProductPageComponent = () => {
               Ціни в аптеках
             </div>
             <div className="ms-auto">
-              {/* <div className={`${styles["dropdown"]}`}>
-                <select name="one" className={`${styles["dropdown-select"]}`}>
-                  <option value="">Select…</option>
-                  <option value="1">Option #1</option>
-                  <option value="2">Option #2</option>
-                  <option value="3">Option #3</option>
-                </select>
-              </div> */}
-
-              {/* <div className={`${styles["custom-select"]}`}> */}
-
-              {/* <select name="one" className={`${styles["dropdownSelect"]}`}>
-                  <option className={`${styles["select-option"]}`} value="">
-                    Select…
-                  </option>
-                  <option className={`${styles["select-option"]}`} value="2">
-                    Option #2
-                  </option>
-                  <option className={`${styles["select-option"]}`} value="1">
-                    Option #1
-                  </option>
-                  <option className={`${styles["select-option"]}`} value="3">
-                    Option #3
-                  </option>
-                  <option className={`${styles["select-option"]}`} value="4">
-                    Option #3
-                    <hr />
-                  </option>
-                  <option
-                    className={` ${styles["select-option"]} ${styles["select-option-last-child"]}`}
-                    value="5"
-                  >
-                    Option #3
-                    <hr />
-                  </option>
-                </select> */}
-              {/* </div> */}
-
               <div className="btn-group">
-                {/* <Select
-              className={`${styles["custom-select"]}`}
-                value={{label:orderBy, value:orderBy}}
-                options={[...orderByNames.map(a=>{return{label:a, value:a}})]}
-                onChange={(e)=>setOrderBy(e.value)}/> */}
                 <CustomSelectComponentSelectFilter
                   className={` my-form-select-175 ${styles["my-input-text-form-box"]} ${styles["custom-combobox"]}`}
                   options={[
@@ -282,42 +240,47 @@ export const SearchProductPageComponent = () => {
                   />
                 ))}
           </div>
-          <div className="col-12">
-            <img src={banner} style={{ width: "100%" }} />
+          <div className="w-100">
+            {products &&
+              products.map &&
+              products.length > SEPARATED_COUNT &&
+              products
+                .slice(SEPARATED_COUNT, products.length)
+                .map((a) => (
+                  <MiniCardProductANDTableProductComponent
+                    key={a.id}
+                    id={a.id}
+                    isFavorite={isFavoriteProduct}
+                    title={a.title}
+                    description={a.shortDescription}
+                    minPrice={a.minPrice}
+                    countOfPharmacies={a.count}
+                    manufacturer={a.manufacturer}
+                    imageUrl={a.pathToPhoto}
+                  />
+                ))}
+
+            <PaginationComponent
+              setContent={setProducts}
+              allowAppend={true}
+              getContent={async (page) => {
+                let res = await search(page);
+                if (res) return res.products;
+                return null;
+              }}
+              currentPage={page}
+              countOfPages={countOfPages}
+              page={page}
+              setPage={setPage}
+            />
           </div>
         </div>
-        {products &&
-          products.map &&
-          products.length > SEPARATED_COUNT &&
-          products
-            .slice(SEPARATED_COUNT, products.length)
-            .map((a) => (
-              <MiniCardProductANDTableProductComponent
-                key={a.id}
-                id={a.id}
-                isFavorite={isFavoriteProduct}
-                title={a.title}
-                description={a.shortDescription}
-                minPrice={a.minPrice}
-                countOfPharmacies={a.count}
-                manufacturer={a.manufacturer}
-                imageUrl={a.pathToPhoto}
-              />
-            ))}
+
+        <div className="col-12  mt-5 mb-5">
+          <img src={baner} style={{ width: "100%" }} />
+          {/* <img src={banner} style={{ width: "100%" }} /> */}
+        </div>
       </div>
-      <PaginationComponent
-        setContent={setProducts}
-        allowAppend={true}
-        getContent={async (page) => {
-          let res = await search(page);
-          if (res) return res.products;
-          return null;
-        }}
-        currentPage={page}
-        countOfPages={countOfPages}
-        page={page}
-        setPage={setPage}
-      />
     </>
   );
 };

@@ -1,28 +1,102 @@
-.map-container header,.map-container footer, .map-container header, .map-container main {
-    width: 50%!important;
-    max-width: 45%;
-    margin: 0;
-    padding: 0;
-}
 
 
-.map-container .navbar,.map-container .navbar *{
-    margin: 0!important;
-}
 
-#map{
-    top:0;
-    right:0;
-    max-width: 55%;
-    margin: 0!important;
-    padding: 0!important;
-    position: fixed !important;
-    width: 100%!important;
-    height: 100%!important;
-}
+@media (min-width: 768px) {
+    .map-container header,.map-container footer, .map-container header, .map-container main {
+        width: 50%!important;
+        max-width: 45%;
+        margin: 0;
+        padding: 0;
+    }
+    .map-container .navbar,.map-container .navbar *{
+        margin: 0!important;
+    }
+    
+    #map{
+        top:0;
+        right:0;
+        max-width: 55%;
+        margin: 0!important;
+        padding: 0!important;
+        position: fixed !important;
+        width: 100%!important;
+        height: 100%!important;
+    }
+    
+    .map-left{ 
+        height: 100%;
+        width: 100%;
+        margin: 0;
+    }
+    
+    }
+      
+      /* Для екранів менше, ніж md */
+      @media (max-width: 767px) {
+        .map-container header,.map-container footer, .map-container header, .map-container main {
+            width: 100%!important;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .map-container .navbar,.map-container .navbar *{
+            margin: 0!important;
+        }
+        
+        #map{
+            /* top:0; */
+            /* right:0; */
+            max-width: 100%;
+            margin: 46px 0  !important;
+            padding: 0 !important;
+            position: relative !important;
+            width: 100%!important;
+        border-radius: 24px !important;
+        border: 1px solid rgba(0, 122, 255, 1) !important;
+            /* height: 40%!important; */
+        }
+        
+        .map-left{ 
+            height: 100%;
+            width: 100%;
+            margin: 0;
+        }
+        
+        
+        /* .map-container header,.map-container footer, .map-container header, .map-container main {
+            width: 100%!important;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .map-container .navbar,.map-container .navbar *{
+            margin: 0!important;
+        } */
+        
+        /* .map-container header,.map-container footer, .map-container header, .map-container main {
+            width: 100%!important;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .map-container .navbar,.map-container .navbar *{
+            margin: 0!important;
+        }
 
-.map-left{ 
-    height: 100%;
-    width: 100%;
-    margin: 0;
-}
+        #map{
+            max-width: 100%;
+            margin: 46px 0  !important;
+            padding: 0 !important;
+            position: relative !important;
+            width: 100%!important;
+        border-radius: 24px !important;
+        border: 1px solid rgba(0, 122, 255, 1) !important;
+        }
+        
+        .map-left{ 
+            height: 100%;
+            width: 100%;
+            margin: 0;
+        } */
+            
+    }

@@ -1,5 +1,6 @@
 
 
+
      
 @media (max-width: 768.9px) {
     .btn-displplay{
@@ -118,3 +119,32 @@
       }
    */
   
+
+
+.dispaly-show{
+  display: none;
+}
+
+   .bordet-bottom{
+    border-bottom: 1px solid rgba(255, 149, 0, 1);
+    padding-bottom: 16px;
+   }
+.header-text{
+  color: rgba(14, 62, 117, 1); 
+  font-family: var(--standart-font);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 22.59px;
+  
+}
+
+
+   
+.opus-text{
+  color: rgba(28, 28, 28, 0.8); 
+  font-family: var(--standart-font);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17.57px;
+  
+}

@@ -15,12 +15,14 @@ export function CharacteristicComponent({ data }) {
   console.log(data);
   return (
     <div
-      className={`${styles["characteristic"]} d-flex justify-content-center w-100`}
+      className={`${styles["characteristic"]} d-flex   align-items-center  justify-content-center w-100`}
     >
-      <div className="container">
+      <div className="container p-3 d-flex align-content-start flex-wrap">
         <AcordeonTransformer id={1} />
         <AcordeonTransformer id={2} />
         <AcordeonTransformer id={3} />
+        <AcordeonTransformer id={4} />
+        <AcordeonTransformer  last="true" id={5} />
         {/* <div className='row h-100'>
                     {
                         data.slice(0, 7).map((a, index) => {
