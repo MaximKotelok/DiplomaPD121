@@ -28,13 +28,10 @@ namespace Services.PharmacyService
                     Pharmacy? pharmacy = _repository.Get(x => x.Id == id);
                     _repository.Remove(pharmacy);
                     _repository.SaveChanges();
-
-                    // Если все операции завершены успешно, фиксируем транзакцию
                     transaction.Commit();
                 }
                 catch (Exception ex)
                 {
-                    // В случае ошибки откатываем транзакцию
                     transaction.Rollback();
                     throw new Exception("Failed to delete pharmacy. Transaction rolled back.", ex);
                 }

@@ -36,7 +36,7 @@ namespace Services.BackgroundTaskService
 
                     DateTime currentDate = DateTime.UtcNow;
 
-                    HistoryDate? historyDate = repository.Get((d) => d.Date.Month == currentDate.Month);
+                    HistoryDate? historyDate = repository.Get((d) => d.Date.Month == currentDate.Month && d.Date.Year == currentDate.Year);
                     if (historyDate == null)
                     {
                         var allConcreteProducts = concreteProductService.GetAllConcreteProducts();
