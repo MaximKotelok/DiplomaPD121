@@ -120,6 +120,7 @@ export const ProductConcreatListComponents = () => {
   const [search, setSearch] = React.useState("");
   //const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [rows, setRows] = React.useState([]);
+  console.log(rows)
   const { pageParam } = useParams();
   useEffect(()=>{
     if(pageParam)
@@ -343,7 +344,7 @@ export const ProductConcreatListComponents = () => {
             <PaginationComponent 
               setContent={(a)=>setRows(a)}
               getContent={async (page)=>{
-                const newUrl = `/admin/productConcreatList/${page}`;
+                const newUrl = `/admin/concreteProductList/${page}`;
                 window.history.pushState({}, "", newUrl);
                 let res = await getConcreteProductsFromPharmacy(search, page);
                 if(res.status === Success){

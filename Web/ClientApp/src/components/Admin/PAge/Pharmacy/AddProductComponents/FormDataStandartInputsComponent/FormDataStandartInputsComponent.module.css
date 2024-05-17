@@ -16,3 +16,9 @@
 .card-search-box img{
     object-fit: cover;    
 }
+
+.border{
+    border-width: 1px!important;
+    border-color: #A7A7A7!important;
+    border-radius: 9px!important;
+}

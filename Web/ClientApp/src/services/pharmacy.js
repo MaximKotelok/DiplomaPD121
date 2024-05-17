@@ -5,11 +5,11 @@ export async function getPharmacyById(id){
     return await getFromServer(GetPharmacyById + `${id}`)
 }
 
-export async function GetProductByTitleFromPharmacy(title, pharmacyId, count = 6) {
-    return await getFromServer("Pharmacy/GetProductByTitle", {
-        title,
-        count,
-        pharmacyId
+export async function getProductByTitleFromPharmacy(pharmacyId, search) {
+    return await getFromServer(`Pharmacy/GetPharmacyProductByTitle`, {
+        id: pharmacyId,
+        search,
+        count: 5
     }, ClassHeader)
 }
 

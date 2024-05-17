@@ -13,6 +13,7 @@ namespace Services.ProductStatusService
 	{
 		IEnumerable<ProductStatus> GetAllStatuses(Expression<Func<ProductStatus, bool>>? filter = null, string? includeProperties = null);
 		ProductStatus GetProductStatusByName(string name);
+		ProductStatus GetProductStatusById(int id);
 		
 	}
 }

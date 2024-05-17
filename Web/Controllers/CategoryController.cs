@@ -366,6 +366,10 @@ namespace Web.Controllers
             }
             else
             {
+				if(postModel.Id.Value == postModel.ParentCategoryID)
+				{
+					throw new Exception("This category can't be parent category");
+				}
                 category.Id = postModel.Id.Value;
                 _service.UpdateCategory(category);
             }

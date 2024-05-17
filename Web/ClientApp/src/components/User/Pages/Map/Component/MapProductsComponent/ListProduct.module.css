@@ -1,0 +1,40 @@
+.product-title{
+    font-family: var(--standart-font);
+font-size: 22px;
+font-weight: 700;
+line-height: 30px;
+
+}
+
+.found-in{
+    font-family: var(--standart-font);
+font-size: 20px;
+font-weight: 500;
+line-height: 25px;
+
+}
+
+
+
+.btn-map-page{
+    /* width: 280px !important; */
+    border: 2px solid rgba(255, 149, 0, 1) ;
+    background-color:  rgba(255, 255, 255, 1) !important;
+    transition: background-color 0.3s, color 0.3s; /* Додайте перехід для кольору та фону */
+color: rgba(13, 30, 49, 1);
+font-family: var(--standart-font);
+font-size: 14px;
+font-weight: 500;
+line-height: 17.57px;
+text-align: center;
+
+}
+
+.btn-map-page:hover{
+    background-color: rgba(255, 149, 0, 0.2) !important;
+    color: rgba(13, 30, 49, 1);
+
+    opacity: 1;
+    transition: background-color 0.3s, color 0.3s; /* Додайте перехід для кольору та фону */
+
+}

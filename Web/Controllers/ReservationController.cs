@@ -220,13 +220,17 @@ namespace Web.Controllers
             if (reservationStatus == null)
                 return NoContent();
 
-            Reservation reservation = _reservationService.GetReservation(x => x.Id == statusViewModel.ReservationId && x.Pharmacy.UserID == user.Id, "Pharmacy");
+            Reservation reservation = _reservationService.GetReservation(x => x.Id == statusViewModel.ReservationId && x.Pharmacy.UserID == user.Id, "Pharmacy,ReservationItems,ReservationItems.ConcreteProduct");
+
             if (reservationStatus == null)
                 return NoContent();
             reservation.Status = reservationStatus;
             _reservationService.UpdateReservation(reservation);
 
-            await _emailService.SendBookingInfoForUser(reservation);
+            double total = reservation.ReservationItems.Sum(a => a.Quantity * a.ConcreteProduct.Price);
+
+            await _emailService.SendBookingInfoForUser(reservation.Email, reservationStatus.Status, $"{total.ToString("N2")} UAH");
+
             return Ok();
         }
 

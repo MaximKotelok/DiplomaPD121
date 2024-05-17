@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styles from "./UpsertManufactureComponent.module.css";
 
 import BtnWarningModal from "../../../Common/BtnWarningModal/BtnWarningModal";
@@ -11,9 +11,15 @@ import { ApiPath, StateInfos, Success } from "../../../../../utils/Constants";
 import { getManufacturerById, upsertManufacturer } from "../../../../../services/manufacture";
 import { getAllCountries } from "../../../../../services/country";
 import { toast } from "react-toastify";
+import { ManufacturerListPath, adminRoutePath } from "../../../../../utils/TablesPathes";
+import { checkFormParamsAreNotEmpty } from "../../../../../utils/Functions";
 
 
 export const UpsertManufactureComponent = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const { pathToManufacturerTable } = location.state || {pathToManufacturerTable: `${adminRoutePath}/${ManufacturerListPath}`};
 
     const { manufacturerId } = useParams();
 
@@ -100,6 +106,7 @@ export const UpsertManufactureComponent = () => {
 
         if (res.status === Success) {
             toast.success("Успіх")
+           navigate(pathToManufacturerTable)
         } else {
             toast.error("Помилка")
         }
@@ -166,7 +173,7 @@ export const UpsertManufactureComponent = () => {
 
                     <div className={`d-flex   justify-content-between `}>
                         <InpurtStandart
-                            placholder={"http://www.example.com"}
+                            placholder={"Львів, вул. Джерельна, 47"}
                             label={"Місто / Вулиця / Будинок"}
                             className={"me-3"}
                             onChange={handleInputChange}
@@ -178,7 +185,13 @@ export const UpsertManufactureComponent = () => {
 
                 <div className="d-flex justify-content-center">
                     <div>
-                        <BtnWarningModal onConfirm = {submit}/>
+                        <BtnWarningModal onCancel={()=>navigate(pathToManufacturerTable)} onConfirm={submit} openIf={()=>{
+                                    if(!checkFormParamsAreNotEmpty(formData, ["id"])){
+                                        toast.error("Не всі поля заповнені");
+                                        return false;
+                                    }
+                                    return true;
+                        }}/>
                     </div>
                 </div>
             </div>

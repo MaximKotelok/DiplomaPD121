@@ -45,6 +45,22 @@ namespace Web.Controllers
 			this._pharmaCompany = pharmaCompany;
 		}
 
+		[HttpGet("GetPharmacyProductByTitle")]
+		public IActionResult GetPharmacyProductByTitle(int? id, string? search, int? count)
+		{
+			var pharmacy = _pharmacyService.GetPharmacy(a=>a.Id == id, "ConcreteProducts,ConcreteProducts.Product");
+			if (pharmacy is not null)
+			{
+				var result = pharmacy.ConcreteProducts.Where(a => 
+				a.Quantity>0&&
+				(a.Product.Title.Contains(search) ||
+				a.Product.ShortDescription.Contains(search)))
+					.Take(count == null?3:count.Value);
+				return Ok(result);
+			}
+			return BadRequest("No pharmacy found");
+		}
+
 		[HttpGet("")]
 		public IActionResult GetAllPharmacies()
 		{
@@ -76,11 +92,11 @@ namespace Web.Controllers
 			int count = pharmaCompanies
 				.SelectMany(a => a.Pharmacies.Count() > 0 ?
 				(a.Pharmacies.Select(pharmacy =>
-					new PharmacyAdminCalculateModel { PharmaCompany = a, Pharmacy = pharmacy }))
-					:
-					new List<PharmacyAdminCalculateModel> { new PharmacyAdminCalculateModel { PharmaCompany = a, Pharmacy = null } }
-					).Prepend(
+					new PharmacyAdminCalculateModel { PharmaCompany = a, Pharmacy = pharmacy }).Prepend(
 						new PharmacyAdminCalculateModel { IsTmp = true })
+				) :
+					(new List<PharmacyAdminCalculateModel> { new PharmacyAdminCalculateModel { PharmaCompany = a, Pharmacy = null, IsTmp = true } })
+					)
 					.Where(a =>
 					{
 						if (a.IsTmp == true)
@@ -127,11 +143,10 @@ namespace Web.Controllers
 					new PharmacyAdminCalculateModel { PharmaCompany = a, Pharmacy = pharmacy }).Prepend(
 						new PharmacyAdminCalculateModel { IsTmp = true })
 				) :
-					(new List<PharmacyAdminCalculateModel> { new PharmacyAdminCalculateModel { PharmaCompany = a, Pharmacy = null } })
-					.Prepend(
-						new PharmacyAdminCalculateModel { IsTmp = true })
+					(new List<PharmacyAdminCalculateModel> { new PharmacyAdminCalculateModel { PharmaCompany = a, Pharmacy = null, IsTmp=true } })
 					).Where(a =>
 					{
+
 						if (a.IsTmp == true)
 						{
 							return true;
@@ -158,7 +173,7 @@ namespace Web.Controllers
 						}
 						return false;
 					})
-				.Where(a => a.IsTmp != true)
+				.Where(a => !(a.IsTmp == true && a.PharmaCompany == null))
 
 					.GroupBy(a => new
 					{
@@ -429,7 +444,7 @@ namespace Web.Controllers
 			var result = _pharmaCompany.GetPharmaCompany(a => a.UserID == user.Id);
 			try
 			{
-				if (roles.Contains(SD.Role_PharmaCompany))
+				if (!roles.Contains(SD.Role_Admin) && roles.Contains(SD.Role_PharmaCompany))
 				{
 
 					if (postModel.Id != null)

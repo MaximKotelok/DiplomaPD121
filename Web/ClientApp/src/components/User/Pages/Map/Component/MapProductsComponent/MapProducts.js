@@ -1,178 +1,241 @@
-﻿import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
-import { showLocation, setupLocation } from '../../../../../../utils/Location';
-import React, { useState, useEffect, useRef } from 'react';
-import { getCookie } from "../../../../../../utils/Cookies"
-import ListProducts from "../ListProductsComponent/ListProducts"
-import './MapProducts.css';
-import { getProductById } from '../../../../../../services/product';
-import { Coords, getListOfConcreteProductInYourCity } from '../../../../../../services/concreteProduct';
+﻿import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+import { showLocation, setupLocation } from "../../../../../../utils/Location";
+import React, { useState, useEffect, useRef } from "react";
+import { getCookie } from "../../../../../../utils/Cookies";
+import ListProducts from "../ListProductsComponent/ListProducts";
+import "./MapProducts.css";
+import styles from "./ListProduct.module.css";
+import { getProductById } from "../../../../../../services/product";
+import {
+  Coords,
+  getListOfConcreteProductInYourCity,
+} from "../../../../../../services/concreteProduct";
+import { NavigationDetailsComponent } from "../../../../Common/NavigationDetailsComponent/NavigationDetailsComponent";
+import ListProductItemComponent from "../ListProductItemComponent/ListProductItemComponent";
 
 const MapProducts = (props) => {
-    const [map, setMap] = useState(null);
-    const [selectedProduct, setSelectedProduct] = useState(null);
-    const [townProducts, setTownProducts] = useState(null);
-    const [mapMarkers, setMapMarkers] = useState({});
-    const [selectedMarker, setSelectedMarker] = useState(null);
-    const [city, setCity] = useState(getCookie("city"));
-    const [product, setProduct] = useState(null);
-    
-    const selectedProductPrice = useRef(null);
+  const [map, setMap] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [townProducts, setTownProducts] = useState(null);
+  const [mapMarkers, setMapMarkers] = useState({});
+  const [selectedMarker, setSelectedMarker] = useState(null);
+  const [city, setCity] = useState(getCookie("city"));
+  const [product, setProduct] = useState(null);
+  const [mapPage, setMapPage] = useState(false);
 
-    async function loadProduct() {
-        let product = (await getProductById(props.productId))
-        if (product.data.product)
-            setProduct(product.data.product);
-        else
-            setProduct(product.data);
-    };
+  const selectedProductPrice = useRef(null);
 
-    useEffect(() => {
-        loadProduct();
+  async function loadProduct() {
+    let product = await getProductById(props.productId);
+    if (product.data.product) setProduct(product.data.product);
+    else setProduct(product.data);
+  }
 
-        setupLocation().then(() => {
-            const myMap = L.map('map').setView([0, 0], 13);
+  useEffect(() => {
+    loadProduct();
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            }).addTo(myMap);
+    setupLocation().then(() => {
+      const myMap = L.map("map").setView([0, 0], 13);
 
-            
-            setCity(props.city);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(myMap);
 
-            setMap(myMap);
+      setCity(city);
 
+      setMap(myMap);
+    });
+  }, []);
 
-        });
-    }, []);
+  useEffect(() => {
+    if (city != null && map != null) {
+      showLocation(city, map);
+      setProductOfTown(city, map);
+    }
+  }, [map]);
 
-    useEffect(() => {
-        if (city != null && map != null) {
-            showLocation(city, map);
-            setProductOfTown(city, map);
-        }
+  const setProductOfTown = async (city, map) => {
+    let products = (
+      await getListOfConcreteProductInYourCity(city, props.productId)
+    ).data;
 
-    }, [map])
+    const markers = {};
+    products.forEach((element) => {
+      let defaultIcon = L.divIcon({
+        className: "map-icon-container",
+        html: `<div class="map-default-marker"><p>${Number(
+          element.price
+        ).toFixed(2)}</p></div>`,
+        iconSize: [30, 30],
+      });
 
+      const marker = L.marker(
+        [element.pharmacy.latitude, element.pharmacy.longitude],
+        { icon: defaultIcon }
+      )
+        .addTo(map)
+        .openPopup()
+        .on("click", getCurrentProduct);
 
-    const setProductOfTown = async (city, map) => {
+      markers[element.id] = marker;
+    });
+    setMapMarkers(markers);
+    setTownProducts(products);
+  };
 
-        let products = (await getListOfConcreteProductInYourCity(city, props.productId)).data;
+  const getCurrentProduct = async (e) => {
+    var clickedMarker = e.target;
 
-        const markers = {};
-        products.forEach((element) => {
-            let defaultIcon = L.divIcon({
-                className: 'map-icon-container',
-                html: `<div class="map-default-marker"><p>${Number(element.price).toFixed(2)}</p></div>`,
-                iconSize: [30, 30],
-            });
+    let product = (
+      await Coords(
+        clickedMarker._latlng.lat,
+        clickedMarker._latlng.lng,
+        props.productId
+      )
+    ).data;
 
-            const marker = L.marker([element.pharmacy.latitude, element.pharmacy.longitude], { icon: defaultIcon }).addTo(map)
-                .openPopup()
-                .on('click', getCurrentProduct);
+    let defaultIcon = L.divIcon({
+      className: "map-icon-container",
+      html: `<div class="map-default-marker"><p>${Number(
+        selectedProductPrice.current
+      ).toFixed(2)}</p></div>`,
+      iconSize: [30, 30],
+    });
 
-            markers[element.id] = marker;
-        });
-        setMapMarkers(markers);
-        setTownProducts(products);
+    var clickedIcon = L.divIcon({
+      className: "map-icon-container",
+      html: `<div class="map-selected-marker"><p>${Number(
+        product.price
+      ).toFixed(2)}</p></div>`,
+      iconSize: [30, 30],
+    });
 
+    setSelectedMarker((prevMarker) => {
+      if (prevMarker) {
+        prevMarker.setIcon(defaultIcon);
+      }
+      const selected = new L.LatLng(
+        clickedMarker._latlng.lat,
+        clickedMarker._latlng.lng
+      );
+
+      map.setView(selected, 100);
+      clickedMarker.setIcon(clickedIcon);
+
+      const markerElement = clickedMarker._icon;
+
+      if (markerElement) {
+        markerElement.style.zIndex = "999";
+      }
+
+      return clickedMarker;
+    });
+    selectedProductPrice.current = product.price;
+    console.log(selectedProductPrice);
+    setSelectedProduct(product);
+  };
+
+  const handleMapSelect = async (product) => {
+    const newMarker = mapMarkers[product.id];
+
+    var clickedIcon = L.divIcon({
+      className: "map-icon-container selected",
+      html: `<div class="map-selected-marker"><p>${Number(
+        product.price
+      ).toFixed(2)}</p></div>`,
+      iconSize: [30, 30],
+    });
+
+    if (selectedMarker) {
+      let defaultIcon = L.divIcon({
+        className: "map-icon-container",
+        html: `<div class="map-default-marker"><p>${Number(
+          selectedProductPrice.current
+        ).toFixed(2)}</p></div>`,
+        iconSize: [30, 30],
+      });
+      selectedMarker.setIcon(defaultIcon);
+      setSelectedMarker(null); // Clear selected marker to avoid conflicts
+      map.setView(
+        new L.LatLng(selectedMarker._latlng.lat, selectedMarker._latlng.lng)
+      );
     }
 
-    const getCurrentProduct = async (e) => {
-        
-        var clickedMarker = e.target;
+    // Set timeout to ensure the icon is updated before changing the view
+    setTimeout(() => {
+      map.setView(
+        new L.LatLng(newMarker._latlng.lat, newMarker._latlng.lng),
+        100
+      );
+      newMarker.setIcon(clickedIcon);
+      setSelectedMarker(newMarker);
+    }, 0);
+    selectedProductPrice.current = product.price;
+  };
 
-        let product = (await Coords(clickedMarker._latlng.lat, clickedMarker._latlng.lng, props.productId)).data;
+  const isValid = city && townProducts && product;
 
-        let defaultIcon = L.divIcon({
-            className: 'map-icon-container',
-            html: `<div class="map-default-marker"><p>${Number(selectedProductPrice.current).toFixed(2)}</p></div>`,
-            iconSize: [30, 30],
-        });
+  return (
+    <div>
+      {/* <div id="map" style={{ height: "400px" }}></div> */}
 
-        var clickedIcon = L.divIcon({
-            className: 'map-icon-container',
-            html: `<div class="map-selected-marker"><p>${Number(product.price).toFixed(2)}</p></div>`,
-            iconSize: [30, 30],
-        });
+      <div className="map-left  p-3">
+        <div className="mx-3">
+          {isValid && (
+            <div>
+              <p className={styles["product-title"]}>
+                {product.title} {product.shortDescription} ціна у {city}
+              </p>
+              <NavigationDetailsComponent id={product.id} />
+              {/* <div className="my-3">
+        <ChangeCityComponent city={city}/>
+    </div> */}
+              <p className={`${styles["found-in"]}`}>
+                Знайдено у {townProducts.length} аптеках
+              </p>
+            </div>
+          )}
 
+          {/* це кнопка яка повина бути на мапі, Данило порішай */}
+          {/* <button
+            className={`brn-form brn-primary-form mt-auto me-4 ${styles["btn-map-page"]}`}
+            onClick={() => { setMapPage(true)}}
+          >
+            Шукати на мапі
+          </button> */}
 
+          <div id="map" style={{ height: "240px" }}></div>
 
-        setSelectedMarker((prevMarker) => {
-            if (prevMarker) {
-                prevMarker.setIcon(defaultIcon);
-            }
-            const selected = new L.LatLng(clickedMarker._latlng.lat, clickedMarker._latlng.lng);
-
-            map.setView(selected, 100);
-            clickedMarker.setIcon(clickedIcon);
-
-            const markerElement = clickedMarker._icon;
-
-            if (markerElement) {
-                markerElement.style.zIndex = '999';
-            }
-
-
-            return clickedMarker;
-        });
-        selectedProductPrice.current=product.price;
-        console.log(selectedProductPrice)
-        setSelectedProduct(product);
-    }
-
-    const handleMapSelect = async (product) => {
-        
-        const newMarker = mapMarkers[product.id];
-        
-        var clickedIcon = L.divIcon({
-            className: 'map-icon-container selected',
-            html: `<div class="map-selected-marker"><p>${Number(product.price).toFixed(2)}</p></div>`,
-            iconSize: [30, 30],        
-
-        });
-
-
-        if (selectedMarker) {
-            let defaultIcon = L.divIcon({
-                className: 'map-icon-container',
-                html: `<div class="map-default-marker"><p>${Number(selectedProductPrice.current).toFixed(2)}</p></div>`,
-                iconSize: [30, 30],
-            });
-            selectedMarker.setIcon(defaultIcon);
-            setSelectedMarker(null);  // Clear selected marker to avoid conflicts
-            map.setView(new L.LatLng(selectedMarker._latlng.lat, selectedMarker._latlng.lng));
-        }
-
-        // Set timeout to ensure the icon is updated before changing the view
-        setTimeout(() => {
-            map.setView(new L.LatLng(newMarker._latlng.lat, newMarker._latlng.lng),100);
-            newMarker.setIcon(clickedIcon);
-            setSelectedMarker(newMarker);
-        }, 0);
-        selectedProductPrice.current = product.price;
-    };
-
-    return (
-        <div>
-
-
-            <div id="map" style={{ height: '400px' }}></div>
-            {city !== "" && townProducts != null && product != null ? (
-                <ListProducts 
-                    product={product}
-                    city={city}
-                    selectedProduct={selectedProduct}
-                    townProducts={townProducts}
-                    onProductClick={pharmacy => {
-                        setSelectedProduct(pharmacy);
-                    }}
-                    onMapSelect={handleMapSelect}
-                />
-            ) : (
-                <p>Loading...</p>
-            )}
+          {isValid &&
+            townProducts.map((product, index) => (
+              <ListProductItemComponent
+                key={index}
+                pharmacyId={product.pharmacy.id}
+                id={product.id}
+                isSelected={selectedProduct && selectedProduct.id == product.id}
+                price={product.price}
+                lon={product.pharmacy.longitude}
+                lat={product.pharmacy.latitude}
+                title={product.pharmacy.pharmaCompany.title}
+                productTitle={`${product.product.title} ${product.shortDescription}`}
+                address={product.pharmacy.address}
+                manufacturer={product.product.manufacturer.name}
+                timeClosed={product.pharmacy.closeTime}
+                timeOpen={product.pharmacy.openTime}
+                onClick={() => {
+                  //   onProductClick(product);
+                  setSelectedProduct(product);
+                  if (handleMapSelect) {
+                    handleMapSelect(product);
+                  }
+                }}
+              />
+            ))}
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 export default MapProducts;

@@ -12,7 +12,8 @@ import BtnWarningModal from "../../../../Common/BtnWarningModal/BtnWarningModal"
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import CustomImgComponent from "../../../../../Common/CustomImgComponent/CustomImgComponent";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import { checkFormParamsAreNotEmpty } from "../../../../../../utils/Functions";
 const VisuallyHiddenInput = styled("input")({
   clip: "rgba(229, 229, 234, 1)",
   clipPath: "inset(50%)",
@@ -44,8 +45,8 @@ const StyledButton = styled(Button)({
 });
 
 export const AddProductPharmacyComponent = () => {
-  const [imageSrc, setImageSrc] = useState(null);
   const { concreteProductId } = useParams();
+  const navigate = useNavigate();
   
   // const handleFileChange = (event) => {
   //   const file = event.target.files[0];
@@ -109,6 +110,7 @@ export const AddProductPharmacyComponent = () => {
     });
   };
   const onSubmit = async (e) => {
+
     let res = await addConcreteProductAsync({
       quantity: parseInt(data.quantity),
       price: parseInt(data.price),
@@ -117,6 +119,7 @@ export const AddProductPharmacyComponent = () => {
     });
     if (res.status === Success) {
       toast.success(`Операція пройшла успішно`);
+      navigate(-1); 
     } else {
       toast.error(`Помилка ${res.error.response.status}`);
     }
@@ -208,7 +211,19 @@ export const AddProductPharmacyComponent = () => {
 
         <div className="d-flex justify-content-center">
           <div>
-            <BtnWarningModal text={"а шо а нічо"} onConfirm={onSubmit} />
+            <BtnWarningModal onConfirm={onSubmit} onCancel={()=>navigate(-1)}
+            openIf={()=>{
+              if (!checkFormParamsAreNotEmpty({
+                quantity: parseInt(data.quantity),
+                price: parseInt(data.price),
+                productId: id
+              },[])) {
+                  toast.error("Не всі поля заповнені");
+                  return false;
+              }
+              return true;
+  }}
+            />
           </div>
         </div>
       </div>

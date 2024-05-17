@@ -1,19 +1,19 @@
 import "react-quill/dist/quill.snow.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
-
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
-  getPharmaComapnyAdmin,
-  getPharmaCompanyById,
-  upsertPharmaCompany,
-  upsertPharmaCompanyAdmin
+    getPharmaComapnyAdmin,
+    getPharmaCompanyById,
+    upsertPharmaCompany,
+    upsertPharmaCompanyAdmin
 } from "../../../../../../services/pharmaCompany";
 import {
-  StateInfos,
-  Success,
-  LayoutProviderValues,
-  ApiPath
+    StateInfos,
+    Success,
+    LayoutProviderValues,
+    ApiPath
 } from "../../../../../../utils/Constants";
 import { postPhotoToServer } from "../../../../../../services/photo";
 
@@ -26,6 +26,8 @@ import Button from "@mui/material/Button";
 import CustomImgComponent from "../../../../../Common/CustomImgComponent/CustomImgComponent";
 
 import { toast } from "react-toastify";
+import { PharmacyListPath, adminRoutePath } from "../../../../../../utils/TablesPathes";
+import { checkFormParamsAreNotEmpty, fillNullValues } from "../../../../../../utils/Functions";
 
 const VisuallyHiddenInput = styled("input")({
     clip: "rgba(229, 229, 234, 1)",
@@ -58,8 +60,13 @@ const StyledButton = styled(Button)({
 
 
 const UpsertPharmaCompanyComponent = () => {
-  const { onComponentMount, onComponentUnmount } = useContext(LayoutContext);
-  const { companyId } = useParams();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { pathToPharmacyTable } = location.state || { pathToPharmacyTable: `${adminRoutePath}/${PharmacyListPath}` };
+
+
+    const { onComponentMount, onComponentUnmount } = useContext(LayoutContext);
+    const { companyId } = useParams();
 
     const [IsActive, setIsActive] = useState(false);
     const [preview, setPreview] = useState(null);
@@ -84,71 +91,68 @@ const UpsertPharmaCompanyComponent = () => {
 
 
 
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "PageDown" || e.key === "PageUp") {
-        e.preventDefault();
-      }
-    };
-    document.addEventListener("keydown", handleKeyDown);
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === "PageDown" || e.key === "PageUp") {
+                e.preventDefault();
+            }
+        };
+        document.addEventListener("keydown", handleKeyDown);
 
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
-
-
-  useEffect(() => {
-      if (pharmaComapnyIdState) {
-          setIsActive(true);
-          setFormDataAttribute("id", pharmaComapnyIdState, setPharmaCompanyFormData, pharmaCompanyFormData);
-          setFormDataAttribute("pharmaCompanyId", pharmaComapnyIdState, setUserFormData, userFormData);
-      }
-  }, [pharmaComapnyIdState])
-
-  useEffect(() => {
-    if (companyId) onComponentMount(LayoutProviderValues.UPDATE);
-    else onComponentMount(LayoutProviderValues.ADD);
-  }, [onComponentMount, onComponentUnmount]);
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, []);
 
 
-  async function init() {
-    let tmpObject, tmpPharmCompanyAdminObject;
-
-    try {
-      if (companyId) {
-          tmpObject = await getPharmaCompanyById(companyId);
-          tmpPharmCompanyAdminObject = await getPharmaComapnyAdmin(companyId);
-          setPreview(tmpObject.data.pathToPhoto ? ApiPath + tmpObject.data.pathToPhoto : null);
-        if (tmpObject.status === Success && tmpPharmCompanyAdminObject.status === Success) {
-            setPharmaCompanyFormData(tmpObject.data);
-    
-            setPharmaComapnyIdState(tmpObject.data.id);
-            setUserFormData({...userFormData,       
-                username: tmpPharmCompanyAdminObject.data.username,
-                email: tmpPharmCompanyAdminObject.data.email,
-                password: ""
-            })
-        } else {
-          setStateInfo(StateInfos.ERROR);
+    useEffect(() => {
+        if (pharmaComapnyIdState) {
+            setIsActive(true);
+            setFormDataAttribute("id", pharmaComapnyIdState, setPharmaCompanyFormData, pharmaCompanyFormData);
+            setFormDataAttribute("pharmaCompanyId", pharmaComapnyIdState, setUserFormData, userFormData);
         }
-      }
-      setStateInfo(StateInfos.LOADED);
-    } catch (error) {
-      console.error("Error in init function:", error);
+    }, [pharmaComapnyIdState])
+
+    useEffect(() => {
+        if (companyId) onComponentMount(LayoutProviderValues.UPDATE);
+        else onComponentMount(LayoutProviderValues.ADD);
+    }, [onComponentMount, onComponentUnmount]);
+
+
+    async function init() {
+        let tmpObject, tmpPharmCompanyAdminObject;
+
+        try {
+            if (companyId) {
+                tmpObject = await getPharmaCompanyById(companyId);
+                tmpPharmCompanyAdminObject = await getPharmaComapnyAdmin(companyId);
+                setPreview(tmpObject.data.pathToPhoto ? ApiPath + tmpObject.data.pathToPhoto : null);
+                if (tmpObject.status === Success && tmpPharmCompanyAdminObject.status === Success) {
+                    setPharmaCompanyFormData(fillNullValues(pharmaCompanyFormData, tmpObject.data));
+                    setPharmaComapnyIdState(tmpObject.data.id);
+                    setUserFormData(
+                        fillNullValues(userFormData, { ...tmpPharmCompanyAdminObject.data, password: "" })
+                    )
+                } else {
+                    setStateInfo(StateInfos.ERROR);
+                }
+            }
+            setStateInfo(StateInfos.LOADED);
+        } catch (error) {
+            console.error("Error in init function:", error);
+        }
     }
-  }
 
-  useEffect(() => {
-    init();
-  }, []);
+    useEffect(() => {
+        init();
+    }, []);
 
-  const setFormDataAttribute = (name, value, setFormData, formData) => {
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+    const setFormDataAttribute = (name, value, setFormData, formData) => {
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
 
 
     const handleInputChange = (e, setFormData, formData) => {
@@ -171,7 +175,10 @@ const UpsertPharmaCompanyComponent = () => {
 
 
     const submitPharmaCompany = async () => {
-
+        if (!checkFormParamsAreNotEmpty(pharmaCompanyFormData, ['id', 'pathToPhoto'])) {
+            toast.error("Не всі поля заповнені");
+            return;
+        }
         let path = "";
         if (image) {
             if (pharmaCompanyFormData.pathToPhoto)
@@ -200,6 +207,10 @@ const UpsertPharmaCompanyComponent = () => {
         }
     };
     const submitPharmaCompanyAdmin = async () => {
+        if (!checkFormParamsAreNotEmpty(userFormData, [])) {
+            toast.error("Не всі поля заповнені");
+            return;
+        }
         let res = await upsertPharmaCompanyAdmin(userFormData);
         if (res.status === Success) {
             toast.success("Успіх!");
@@ -208,7 +219,7 @@ const UpsertPharmaCompanyComponent = () => {
         }
     };
 
-  if (stateInfo == StateInfos.LOADING) return <div>Loading</div>;
+    if (stateInfo == StateInfos.LOADING) return <div>Loading</div>;
 
     return (
 
@@ -247,7 +258,11 @@ const UpsertPharmaCompanyComponent = () => {
 
                         <div className={`d-flex  align-items-center`}>
                             <CustomImgComponent
-                                src={`${preview}`} alt="no photo" className={`${styles["img-product"]} mb-2`}/>
+                                style={{
+                                    height: "200px",
+                                    width: "200px"
+                                }}
+                                src={`${preview}`} alt="no photo" className={`${styles["img-product"]} mb-2`} />
                             <StyledButton
                                 component="label"
                                 role={undefined}
@@ -275,7 +290,7 @@ const UpsertPharmaCompanyComponent = () => {
 
                         <button
                             className={`brn-form brn-primary-form mt-auto ${styles["btn-abolition"]}`}
-                            type="submit"
+                            onClick={() => navigate(pathToPharmacyTable)}
                         >
                             Відмінити
                         </button>
@@ -342,7 +357,7 @@ const UpsertPharmaCompanyComponent = () => {
 
                         <button
                             className={`brn-form brn-primary-form mt-auto ${styles["btn-abolition"]}`}
-                            type="submit"
+                            onClick={() => navigate(pathToPharmacyTable)}
                         >
                             Відмінити
                         </button>
@@ -350,7 +365,7 @@ const UpsertPharmaCompanyComponent = () => {
                 </div>
             </div>
         </div>
-  );
+    );
 };
 
 export default UpsertPharmaCompanyComponent;

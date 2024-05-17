@@ -5,21 +5,25 @@ import styles from "./BtnEditStatusModal.module.css";
 import { CheckedBox } from "../../../../../Common/CheckedBoxComponent/CheckedBox";
 import { changeStatus } from "../../../../../../../services/product";
 import { Success } from "../../../../../../../utils/Constants";
-
-function BtnEditStatusModal({ id, statusId, statuses, changeStatusProduct }) {
+import { toast } from "react-toastify";
+function BtnEditStatusModal({ id, statusId, statuses, changeStatusProduct, email }) {
   const [show, setShow] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [changeStatusId, setChangeStatusId] = useState(statusId);
-  const handleRadioChange = () => {
-    setIsActive(!isActive);
+  const [description, setDescription] = useState("");
+  const handleRadioChange = (value) => {
+    setIsActive(value);
   };
 
   const updateStatus = async () => {
-    let res = await changeStatus(id, changeStatusId);
+    let res = await changeStatus(id, changeStatusId, isActive?description:"");
     if (res.status === Success) {
       let index = statuses.findIndex((a) => a.id === changeStatusId);
       changeStatusProduct(statuses[index]);
       setShow(false);
+      toast.success("Успіх!");
+    }else{
+      toast.error("Помика!");
     }
   };
   return (
@@ -51,15 +55,22 @@ function BtnEditStatusModal({ id, statusId, statuses, changeStatusProduct }) {
             className={`${styles["text-area-zayavka"]}`}
             rows={8}
             placeholder="Напишіть тут свій коментар..."
+            value={description}
+            onChange={(e)=>{
+              setDescription(e.target.value);
+              setIsActive(e.target.value != "");
+            }}
           />
           <p className={`${styles["text-data"]}`}>12/04/2024</p>
           <div className={`d-flex`}>
             <CheckedBox
+                            value={isActive}
+                            onChange={handleRadioChange}
               className={`${styles["text-email"]}`}
               text="Надіслати лист на"
             />
             <span className={` ps-1 pt-2 ${styles["text-email-dashed"]}`}>
-              gmail@gmail.com
+              {email}
             </span>
           </div>
           <div className="mt-3">

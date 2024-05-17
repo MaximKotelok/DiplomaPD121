@@ -71,12 +71,19 @@ namespace Web.Controllers
 
             if (result is not null)
             {
-                var token = await _repository.UserAuthentication.CreateTokenAsync();
-                return Ok(new { Token = token, User = result });
+                if (result.ErrorMessage is null)
+                {
+                    var token = await _repository.UserAuthentication.CreateTokenAsync();
+                    return Ok(new { Token = token, User = result });
+                }
+                else
+                {
+					return BadRequest(result.ErrorMessage);
+				}
             }
             else
             {
-                return BadRequest("Invalid credentials");
+                return BadRequest("Error");
             }
         }
         /* [Route("external-login")]

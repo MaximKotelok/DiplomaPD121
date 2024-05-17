@@ -42,6 +42,7 @@ width: 280px !important;
 
 }
 
+
 .btn-abolition:hover{
     background-color:  #e6f4fe !important;
     transition: background-color 0.3s, color 0.3s; /* Додайте перехід для кольору та фону */

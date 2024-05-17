@@ -45,7 +45,6 @@ const CustomSelectComponentSelectFilter = ({
   isDisabled = false,
 }) => {
   // Статичні опції
-
   return (
     <Select
       className={`react-select-container ${className}`}
@@ -54,7 +53,7 @@ const CustomSelectComponentSelectFilter = ({
       placeholder={placeholder}
       options={options}
       onChange={onChange}
-      // value={selectedOption}
+      value={options.find(a=>a.id==selectedId)}
       isDisabled={isDisabled}
       styles={colourStyles}
       theme={(theme) => ({

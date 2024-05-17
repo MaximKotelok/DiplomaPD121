@@ -22,6 +22,10 @@ export function groupBy(xs, key) {
   }, {});
 };
 
+export function checkFormParamsAreNotEmpty(form, ignoreParams) {
+  return Object.keys(form).every(a=>form[a] || ignoreParams.findIndex(b=>b==a) != -1);
+};
+
 export function toLocalString(str){
 
     const date = new Date(str);
@@ -64,6 +68,17 @@ export function addMinutes(timeString, addMinutes) {
 
   return updatedTimeString;
 
+}
+
+export function fillNullValues(originalObject, fillObject) {
+  const result = { ...originalObject };
+  for (const key in originalObject) {
+    if (!originalObject[key] && fillObject[key]) {
+      result[key] = fillObject[key];
+    }
+  }
+
+  return result;
 }
 
 
@@ -151,6 +166,17 @@ export async function initFavsProducts(setFavs) {
     else {
         setFavs(favs.split(','));
     }
+}
+
+export function formatDateForEmailSend(date) {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  const formattedDay = day < 10 ? '0' + day : day;
+  const formattedMonth = month < 10 ? '0' + month : month;
+
+  return `${formattedDay}/${formattedMonth}/${year}`;
 }
 
 /*export async function initFavsPharmacies(setFavs) {

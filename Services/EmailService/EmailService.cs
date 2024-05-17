@@ -42,7 +42,7 @@ namespace Services.EmailService
 
             return _emailSenderService.SendEmailAsync(email, "Підтвердження бронювання", message);
         }
-        public Task SendChangeProductStatus(string email, ProductDto productDto, string newStatus)
+        public Task SendChangeProductStatus(ProductDto productDto, string email, string name, string description, string newStatus)
         {
             string currentDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
@@ -52,11 +52,14 @@ namespace Services.EmailService
         <title>Зміна статусу продукту</title>
     </head>
     <body>
-        <p>Шановний виробнику,</p>
+        <p>Шановний {name},</p>
         
         <p>Статус вашого продукту {productDto.Name} з id {productDto.Id} був змінений. Новий статус: <strong>{newStatus}</strong>.</p>
         
         <p>Дата зміни статусу: <strong>{currentDate}</strong></p>
+        
+        <b>Додаткова інформація від Адміністратора: </b>
+        <p>{description}</p>
 
         <p>Дякуємо, що обрали наші послуги.</p>
 
@@ -92,7 +95,7 @@ namespace Services.EmailService
 
             return _emailSenderService.SendEmailAsync(email, "Підтвердження реєстрації", message);
         }
-        public Task SendBookingInfoForUser(Reservation reservation)
+        public Task SendBookingInfoForUser(string email, string status, string total)
         {
             string currentDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
@@ -104,7 +107,8 @@ namespace Services.EmailService
 <body>
     <p>Шановний користувачу,</p>
     
-    <p>Статус вашего замовлення змінився на {reservation.Status!.Status}.</p>
+    <p>Статус вашего замовлення змінився на {status}.</p>
+    <p>Загальна ціна продуктів {total}.</p>
     
     <p>Дата зміни: <strong>{currentDate}</strong></p>
     
@@ -115,12 +119,36 @@ namespace Services.EmailService
 </html>
 ";
 
-            return _emailSenderService.SendEmailAsync(reservation.Email!, "Підтвердження бронювання", message);
+            return _emailSenderService.SendEmailAsync(email, "Підтвердження бронювання", message);
         }
 
         private string GetConfirmationLink(string email)
         {
             return $"https://localhost:44411/confirm-email?email={Uri.EscapeDataString(email)}";
         }
-    }
+
+		public Task SendUserStatusUpdateInfo(string email, string name, string description, string newStatus)
+		{
+
+			
+			string message = $@"
+    <html>
+    <head>
+        <title>Сповіщення про зміну статусу вашого облікового запису</title>
+    </head>
+    <body>
+        <p>Шановний/Шановна {name}</p>
+        
+        <p>{description}</p>
+        
+        <b>Статус вашого облікового запису було змінено на {newStatus}</b>
+        
+
+        <p>З найкращими побажаннями, Адміністрація</p>
+    </body>
+    </html>
+";
+			return _emailSenderService.SendEmailAsync(email, "Сповіщення про зміну статусу вашого облікового запису", message);
+		}
+	}
 }

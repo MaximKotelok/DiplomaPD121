@@ -28,6 +28,10 @@ export const UpsertActiveSubstanceComponents = () => {
   
   async function submit(){
     let res = await updateActiveSubstance(id, formData.title, !formData.isNotActive);
+    if(!formData.title){
+      toast.error("Не всі поля заповнені");
+      return;
+    }
     if(res.status === Success){
       toast.success("Успіх");
       navigate(-1);

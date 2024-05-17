@@ -29,7 +29,7 @@ const AutoCompleteInput = ({ className, getData, onResultClick }) => {
     >
       <div
         className={`input-group ${
-          searchTerm === "" || !isFocused
+          searchTerm.length===0 || !isFocused
             ? styles["border-bottom-none"]
             : styles["border-bottom"]
         } ${styles["input-style-search"]} center ${
@@ -48,14 +48,14 @@ const AutoCompleteInput = ({ className, getData, onResultClick }) => {
         <input
           type="text"
           className="my-search-bar"
-          placeholder="Type to search..."
+          placeholder="Пошук..."
           value={searchTerm}
           onInput={handleChange}
         />
       </div>
 
       <div style={{ position: "relative", maxWidth: "621px" }}>
-        {searchTerm && isFocused && (
+        {searchTerm.length>0 && isFocused && (
           <ul className={`${styles["ul-class"]}`}>
             <hr style={{ margin: "0px" }} />
             <p className={`${styles["pidkazka"]}`}>За назвою товару</p>

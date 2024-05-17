@@ -311,6 +311,33 @@ namespace DataAccess.Migrations
                             ParentCategoryID = 3,
                             PathToPhoto = "/images/category/png/K.png",
                             Title = "Вітамін К"
+                        },
+                        new
+                        {
+                            Id = 921,
+                            CanHasProducts = false,
+                            IsRecomended = true,
+                            ParentCategoryID = 9,
+                            PathToRecomendedPhoto = "/images/category/recomemnded/1.png",
+                            Title = "Схуднення"
+                        },
+                        new
+                        {
+                            Id = 922,
+                            CanHasProducts = false,
+                            IsRecomended = true,
+                            ParentCategoryID = 2,
+                            PathToRecomendedPhoto = "/images/category/recomemnded/2.png",
+                            Title = "Від застуди та грипу"
+                        },
+                        new
+                        {
+                            Id = 923,
+                            CanHasProducts = false,
+                            IsRecomended = true,
+                            ParentCategoryID = 2,
+                            PathToRecomendedPhoto = "/images/category/recomemnded/3.png",
+                            Title = "Від стресу"
                         });
                 });
 
@@ -1000,14 +1027,15 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Index")
+                    b.Property<int?>("Index")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProductAttributeGroupID")
+                    b.Property<int?>("ProductAttributeGroupID")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -2274,7 +2302,7 @@ namespace DataAccess.Migrations
                             Id = 1,
                             BrandID = 3,
                             CategoryID = 6,
-                            Description = "...",
+                            Description = "<h1>Склад</h1><p>1</p><h1>Лікарська форма</h1><p>2</p><h1>Фармакотерапевтична група</h1><p>3</p><h1>Фармакологічні властивості</h1><p>4</p><h1>Показання</h1><p>5</p><h1>Протипоказання</h1><p>6</p><h1>Взаємодія з іншими лікарськими засобами та інші види взаємодії</h1><p>7</p><h1>Особливості щодо застосування</h1><p>8</p><h1>Спосіб застосування та дози</h1><p>9</p><h1>Передозування</h1><p>10</p><h1>Побічні ефекти</h1><p>11</p><h1>Термін придатності</h1><p>12</p><h1>Умови зберігання</h1><p>13</p><h1>Упаковка</h1><p>14</p><h1>Категорія відпуску</h1><p>15</p><h1>Виробник</h1><p>16</p><h1>Адреса</h1><p>17</p>",
                             ManufacturerID = 3,
                             PathToPhoto = "/images/product/Аскорбінка 1.webp",
                             ProductAttributeGroupID = 2,
@@ -2455,7 +2483,7 @@ namespace DataAccess.Migrations
                         .HasForeignKey("CategoryID");
 
                     b.HasOne("Domain.Models.Manufacturer", "Manufacturer")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("ManufacturerID");
 
                     b.HasOne("Domain.Models.ProductAttributeGroup", "ProductAttributeGroup")
@@ -2487,9 +2515,7 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("Domain.Models.ProductAttributeGroup", "ProductAttributeGroup")
                         .WithMany("AttributesInGroup")
-                        .HasForeignKey("ProductAttributeGroupID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductAttributeGroupID");
 
                     b.Navigation("ProductAttributeGroup");
                 });
@@ -2588,7 +2614,7 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.Models.ReservationItem", b =>
                 {
                     b.HasOne("Domain.Models.ConcreteProduct", "ConcreteProduct")
-                        .WithMany()
+                        .WithMany("ReservationItems")
                         .HasForeignKey("ConcreteProductID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2780,9 +2806,19 @@ namespace DataAccess.Migrations
                     b.Navigation("SubCategories");
                 });
 
+            modelBuilder.Entity("Domain.Models.ConcreteProduct", b =>
+                {
+                    b.Navigation("ReservationItems");
+                });
+
             modelBuilder.Entity("Domain.Models.HistoryDate", b =>
                 {
                     b.Navigation("PriceHistory");
+                });
+
+            modelBuilder.Entity("Domain.Models.Manufacturer", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Domain.Models.PharmaCompany", b =>

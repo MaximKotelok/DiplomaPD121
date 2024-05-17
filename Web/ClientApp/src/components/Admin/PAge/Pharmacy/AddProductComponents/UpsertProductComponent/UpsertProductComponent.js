@@ -3,7 +3,7 @@ import "react-quill/dist/quill.snow.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import ReactQuill from "react-quill";
 import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 
 import {
@@ -41,16 +41,20 @@ import {
   listDataTemplate,
   productTemplate,
 } from "./ProductTemplates";
-import { updateObj } from "../../../../../../utils/Functions";
+import { checkFormParamsAreNotEmpty, updateObj } from "../../../../../../utils/Functions";
 import LayoutContext from "../../../../../../layouts/LayoutContext";
 
 const UpsertProductComponent = () => {
+
+
   const { setAdditionalComponent, clearAdditionalComponent } =
     useContext(LayoutContext);
   const [stateInfo, setStateInfo] = useState(StateInfos.LOADING);
 
+  const navigate = useNavigate();
+
   const { productId } = useParams();
-  
+
 
   const [data, setData] = useState({
     descriptionName: "Опис",
@@ -90,14 +94,14 @@ const UpsertProductComponent = () => {
     });
     if (productId) {
       initAfterConfirm();
-      
-    }else{
+
+    } else {
       setStateInfo(StateInfos.CHOOSE_TYPE_AND_CATEGORY)
 
     }
   }
 
-  async function initAfterConfirm() {  
+  async function initAfterConfirm() {
     setCustomState(setData, "isHeaderDisabled", true);
     setCustomState(setData, "formData", {
       ...data.formData,
@@ -188,7 +192,7 @@ const UpsertProductComponent = () => {
       await getDataOrSetError(getAllBrands, async (value) => {
         setCustomState(setDataFromServer, "brands", value);
       });
-      if (stateInfo == StateInfos.LOADING) setStateInfo(StateInfos.LOADED);
+      if (stateInfo != StateInfos.ERROR) setStateInfo(StateInfos.LOADED);
     } catch (error) {
       console.error("Error in init function:", error);
       setStateInfo(StateInfos.ERROR);
@@ -214,7 +218,7 @@ const UpsertProductComponent = () => {
       />
     );
 
-    return ()=>{
+    return () => {
       setAdditionalComponent(null);
     }
   }, [dataFromServer]);
@@ -238,6 +242,17 @@ const UpsertProductComponent = () => {
 
   //#region submit
   const submit = async () => {
+    if (additionalAttribute) {
+      if (!additionalAttribute.every(attribute => checkFormParamsAreNotEmpty(attribute, []))) {
+        toast.error("Не всі додаткові поля заповнені");
+        return;
+      }
+    }
+    if (!checkFormParamsAreNotEmpty(data.formData, ["id", "pathToPhoto"])) {
+      toast.error("Не всі основні поля заповнені");
+      return;
+    }
+
     setDisableButtonState(true);
     let a = "";
     if (data.image) {
@@ -257,6 +272,7 @@ const UpsertProductComponent = () => {
     setDisableButtonState(false);
     if (res.status === Success) {
       toast.success(`Операція пройшла успішно`);
+      navigate(-1);
     } else {
       toast.error(`Помилка ${res.error.response.status}`);
     }
@@ -318,13 +334,13 @@ const UpsertProductComponent = () => {
   //#endregion
 
   if (stateInfo == StateInfos.LOADING)
-      return (<div className={`${styles["row-parent"]}`}>
-                <div className={`${styles["box-container"]} `}>Loading</div>
-              </div>);
+    return (<div className={`${styles["row-parent"]}`}>
+      <div className={`${styles["box-container"]} `}>Loading</div>
+    </div>);
   if (stateInfo == StateInfos.CHOOSE_TYPE_AND_CATEGORY)
-      return (<div className={`${styles["row-parent"]}`}>
-                <div className={`${styles["box-container"]} `}>Оберіть категорію і тип товару</div>
-              </div>);
+    return (<div className={`${styles["row-parent"]}`}>
+      <div className={`${styles["box-container"]} `}>Оберіть категорію і тип товару</div>
+    </div>);
 
   // <LayoutAdmin additionalHeader={
   //     <TypeAndCategoryComboboxComponent

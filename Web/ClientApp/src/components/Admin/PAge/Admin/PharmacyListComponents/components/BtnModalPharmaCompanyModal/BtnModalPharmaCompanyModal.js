@@ -23,21 +23,13 @@ function BtnModalPharmaCompanyModal({
   }, [show]);
 
   async function init() {
-    let res = await getReservation(id);
-    if (res.status === Success) {
-      setData(res.data);
-      console.log(res.data.status)
-      setChangeStatusId(res.data.status);
-    }
+    // let res = await getReservation(id);
+    // if (res.status === Success) {
+    //   setData(res.data);
+    //   setChangeStatusId(res.data.status);
+    // }
   }
 
-  async function updateStatus(){
-    let res = await setOrderStatus(id, changeStatusId);
-    if (res.status === Success) {      
-      changeStatus(changeStatusId);
-      setShow(false);
-    }
-  }
   return (
     <>
       <ImgBtn
@@ -67,12 +59,14 @@ function BtnModalPharmaCompanyModal({
         <div className={`d-flex`}>
             <Link 
               className="btn btn-primary" 
-              to={`/admin/UpdatePharmaCompany/${id}`}>
+              to={`/admin/UpdatePharmaCompany/${id}`}
+              state={{pathToPharmacyTable: window.location.pathname }}
+              >
                 Оновити
             </Link>
             <Link 
               className="btn btn-warning" 
-              to={`/admin/AddPharmacy/${id}`}>
+              to={`/admin/addPharmacy/${id}`}>
                 Додати аптеку
             </Link>
             <button className="btn btn-danger" onClick={async ()=>{

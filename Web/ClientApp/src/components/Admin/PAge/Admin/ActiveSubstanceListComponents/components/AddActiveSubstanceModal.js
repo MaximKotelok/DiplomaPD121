@@ -28,7 +28,7 @@ function AddActiveSubstanceModal() {
   async function submit(){
     if(!formData.title)
     {
-      toast.error("Заповніть всі поля!");
+      toast.error("Не всі поля заповнені");
       return;
     }
     setIsDisabled(true);

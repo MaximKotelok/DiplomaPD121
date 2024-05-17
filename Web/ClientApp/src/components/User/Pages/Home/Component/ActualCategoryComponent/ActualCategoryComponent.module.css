@@ -16,8 +16,8 @@
 .title{
     position: absolute;
     color:color;
-    bottom: 10px;
-    left: 25px;
+    bottom: 2px;
+    left: 10px;
     font-family: var(--standart-font);
 font-size: 17px;
 font-weight: 600;

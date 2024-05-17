@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 import styles from "./AddCategoryComponents.module.css";
 import { CSSTransition } from "react-transition-group";
@@ -13,8 +13,15 @@ import { ApiPath, StateInfos, Success } from "../../../../../utils/Constants";
 import { GetCategoryByIdForAdmin, upsertCategory, getAllCategories } from "../../../../../services/category";
 import { postPhotoToServer } from "../../../../../services/photo";
 import { toast } from "react-toastify";
+import { checkFormParamsAreNotEmpty } from "../../../../../utils/Functions";
+import { CategoryListPath, adminRoutePath } from "../../../../../utils/TablesPathes";
 
 export const AddCategoryComponents = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { pathToCategoryTable } = location.state || {pathToCategoryTable: `${adminRoutePath}/${CategoryListPath}`};
+
+
     const [image, setImage] = useState(null);
     const [recomendedImage, setRecomendedImage] = useState(null);
     const { categoryId } = useParams();
@@ -33,7 +40,6 @@ export const AddCategoryComponents = () => {
     const [dataFromServer, setDataFromServer] = useState({
         categories: [],
     });
-    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -134,7 +140,10 @@ export const AddCategoryComponents = () => {
     };
 
     const submit = async () => {
-        
+        if(!checkFormParamsAreNotEmpty(formData, ["id","isRecomended", "pathToRecomendedPhoto", "pathToPhoto"])){
+            toast.error("Не всі поля заповнені");
+            return;
+        }
         let path = image? await postCategoryPhoto("png", 
             image,
             formData.pathToPhoto?
@@ -155,7 +164,7 @@ export const AddCategoryComponents = () => {
 
         if (res.status === Success) {
             toast.success("Успіх");
-            navigate(-1);
+            navigate(pathToCategoryTable);
         } else {
             toast.error("Помилка")
         }
@@ -193,7 +202,7 @@ export const AddCategoryComponents = () => {
                                 selectedId={formData.parentCategoryID}
                                 className={` ms-1 my-form-select ${styles["my-input-text-form-box"]} ${styles["custom-combobox"]}`}
                                 name="parentCategoryID"
-                                placeholder="Фарма компанія"
+                                placeholder="Оберіть батьківську категорію"
                                 options={
                                     dataFromServer.categories &&
                                     dataFromServer.categories.map &&
@@ -254,7 +263,7 @@ export const AddCategoryComponents = () => {
                     <button
                         className={`brn-form brn-primary-form mt-auto ${styles["btn-abolition"]}`}
                         type="submit"
-                        onClick={() => navigate(-1)}
+                        onClick={() => navigate(pathToCategoryTable)}
                     >
                         Відмінити
                     </button>

@@ -9,6 +9,10 @@ export const CheckedBox = ({ text = "", onChange, value, name }) => {
         onChange(newChecked);
     };
 
+    useEffect(() => {
+        setChecked(value)
+    }, [value])
+
     return (
         <div className={`d-flex  pt-2 pb-0 `} >
             <div className={`${styles["orange-checkbox-container"]}`} role="button">

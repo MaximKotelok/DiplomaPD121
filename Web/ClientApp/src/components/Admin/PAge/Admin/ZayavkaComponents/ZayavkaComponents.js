@@ -184,6 +184,7 @@ export const ZayavkaComponents = () => {
                               </div>
                               <BtnEditStatusModal
                                 id={item.id}
+                                email={item.email}
                                 statusId={item.statusId}
                                 statuses={statuses}
                                 changeStatusProduct={(c) => {

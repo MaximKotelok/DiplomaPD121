@@ -31,7 +31,7 @@ namespace Web.Controllers
 		public IActionResult GetAllRequests(PageViewModel model)
 		{
 			var rawResult =
-				_productConfirmService.GetAllProductConfirm(includeProperties: "PharmaCompany,ProductStatus,Product,Product.Manufacturer,Product.Category");
+				_productConfirmService.GetAllProductConfirm(includeProperties: "PharmaCompany,PharmaCompany.User,ProductStatus,Product,Product.Manufacturer,Product.Category");
 
 
 			if (!model.Search.IsNullOrEmpty())
@@ -62,7 +62,8 @@ namespace Web.Controllers
 					Status = a.ProductStatus.Status!.ToString(),
 					StatusColor = a.ProductStatus.Color,
 					StatusId = a.ProductStatusID,
-					PharmaCompany = a.PharmaCompany.Title
+					PharmaCompany = a.PharmaCompany.Title,
+					Email = a.PharmaCompany.User != null? a.PharmaCompany.User.Email:""
 				}).GroupBy(a => a.PharmaCompany).Select(a => new { name = a.Key, data = a });
 				return Ok(new { data = result, countOfPages });
 			}

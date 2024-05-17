@@ -2,7 +2,8 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import stylesMiniCard from "./MiniCardProductANDTableProductComponent.module.css";
 import { Link } from "react-router-dom";
-import styles from "../../User/Pages/Category/Component/CategoryWithProductsComponent/CategoryWithSubCategoriesComponent.module.css";
+import styles from "../../User/Pages/Search/SearchProductPageComponent.module.css";
+// import styles from "../../User/Pages/Category/Component/CategoryWithProductsComponent/CategoryWithSubCategoriesComponent.module.css";
 import React, { useEffect, useState } from "react";
 import FavoriteProductButton from "../FavoriteProductButtonComponent/FavoriteProductButton.js";
 import { ApiPath } from "../../../utils/Constants.js";
@@ -17,6 +18,7 @@ const MiniCardProductANDTableProductComponent = ({
   description = "...",
   minPrice = 0.0,
   countOfPharmacies = 0,
+  manufacturer
 }) => {
   const [isFavoriteState, setIsFavoriteState] = useState(false);
   useEffect(() => {
@@ -51,32 +53,36 @@ const MiniCardProductANDTableProductComponent = ({
 
   return (
     <div
-      className={`${styles["products-row"]} m-1 ${stylesMiniCard["product-card"]}  `}
+      className={`${styles["products-row"]} m-1 ${stylesMiniCard["product-card"]}  position-relative `}
       // className={`${styles["products-row"]} m-1 ${stylesMiniCard["product-card"]} position-relative`}
     >
-      <Link to={`/product-details/${id}`} className={`text-decoration-none  `}>
+      <Link
+        to={`/product-details/${id}`}
+        style={{ width: "34%" }}
+        className={`text-decoration-none  `}
+      >
         <CustomImgComponent
           src={`${ApiPath}${imageUrl}`}
           style={{ width: "100%", height: "170px" }}
-          className={`${stylesMiniCard["product-image"]}`}
+          className={`${stylesMiniCard["product-image"]} ${styles["image"]}`}
           alt={title}
         />
       </Link>
       <div
-        className={`${stylesMiniCard["product-info"]} ${styles["content-info"]}`}
+        className={` mt-3 ${stylesMiniCard["product-info"]} ${styles["content-info"]}`}
       >
         <Link
           to={`/product-details/${id}`}
           className={`${stylesMiniCard["text-decoration-none"]}`}
         >
-          <p className={`${stylesMiniCard["product-title"]}`}>
+          <p className={`${stylesMiniCard["product-title"]} ${styles["default-height-if-table"]}`}>
             {title && minimizeText(title, 20)}
           </p>
-          <p className={`${stylesMiniCard["product-description"]}`}>
+          <p className={`${stylesMiniCard["product-description"]} ${styles["default-height-if-table"]}`}>
             {description && minimizeText(description, 57)}
           </p>
         </Link>
-        <p className={`${stylesMiniCard["product-opus"]}`}>dsfsdsfdsfdsfsdf</p>
+        <p className={`${stylesMiniCard["product-opus"]}`}>{manufacturer}</p>
         <p className={`${stylesMiniCard["product-count"]}`}>
           <span>
             <Galochka />
@@ -92,7 +98,7 @@ const MiniCardProductANDTableProductComponent = ({
         </p>
         <Link
           to={`/map/${id}`}
-          className={`btn brn-form_2 btn-primary mb-2 ${styles["btn-pr"]}`}
+          className={`btn brn-form_2 btn-primary  mb-2 ${styles["btn-pr"]}`}
         >
           Ціни в аптеках
         </Link>

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import styles from "./BtnWarningModal.module.css";
 
-function BtnWarningModal({ text = "Ви дійсно бажаєте це зробити...", onConfirm }) {
+function BtnWarningModal({ text = "Ви дійсно бажаєте це зробити...", onCancel, onConfirm, openIf }) {
   const [show, setShow] = useState(false);
 
   return (
@@ -10,14 +10,22 @@ function BtnWarningModal({ text = "Ви дійсно бажаєте це зро�
       <div className={`d-flex mt-auto`}>
         <button
           className={`brn-form brn-primary-form mt-auto me-4 ${styles["btn-save"]}`}
-          onClick={() => setShow(true)}
+          onClick={() => {
+            if(openIf)
+              {
+                if(!openIf()){
+                  return;
+                }
+              }
+            setShow(true)
+          }}
         >
           Зберегти
         </button>
 
         <button
           className={`brn-form brn-primary-form mt-auto ${styles["btn-abolition"]}`}
-          type="submit"
+          onClick={onCancel}
         >
           Відмінити
         </button>

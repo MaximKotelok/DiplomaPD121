@@ -14,11 +14,11 @@ export async function getAllUsers(page, search = "") {
     return await postToServer("User/getAllUsers", {itemsPerPage: itemsPerPageForAdmin, page: page, search: search});
 } 
 
-export async function banOrUnban(userId, status) {
+export async function banOrUnban(userId, status, description) {
     if(status)
-    return await postToServer(`User/ban/${userId}`);
+    return await postToServer(`User/ban/${userId}`, {description});
     else
-    return await postToServer(`User/unban/${userId}`);
+    return await postToServer(`User/unban/${userId}`, {description});
 } 
 
 export async function updateUser(data) {

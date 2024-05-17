@@ -36,42 +36,43 @@ import { Outlet, useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { removeToken } from "../../utils/Login";
 import { getMyInfo } from "../../services/user";
+import { ActiveSubstanceListPath, AttributeListPath, BrandListPath, CategoryListPath, ConcreteProductListPath, ManufacturerListPath, OrderListPath, PharmaCompanyPharmacyListPath, PharmacyListPath, ProductConfirmListPath, ProductListPath, UserListPath } from "../../utils/TablesPathes";
 
 const ListMenejment = [
   {
     text: "Атрибути",
-    link: "/admin/attributeList",
+    link: `/admin/${AttributeListPath}`,
   },
   {
     text: "Бренд",
-    link: "/admin/brandList",
+    link:  `/admin/${BrandListPath}`,
   },
   {
     text: "Виробник",
-    link: "/admin/manufactureList",
+    link:  `/admin/${ManufacturerListPath}`,
   },
   {
     text: "Діюча речовина",
-    link: "/admin/activeSubstanceList",
+    link:  `/admin/${ActiveSubstanceListPath}`,
   },
   {
     text: "Категорії",
-    link: "/admin/categoeyList",
+    link:  `/admin/${CategoryListPath}`,
   },
   {
     text: "Товар",
-    link: "/admin/productList",
+    link:  `/admin/${[ProductListPath]}`,
   },
 ];
 
 const ListMenejmentPharmacy = [
   {
     text: "Броні",
-    link: "/admin/orderList",
+    link:  `/admin/${OrderListPath}`,
   },
   {
     text: "Товар",
-    link: "/admin/productConcreatList",
+    link: `/admin/${ConcreteProductListPath}`,
   },
 ];
 
@@ -149,14 +150,14 @@ const LayoutAdmin = ({ children }) => {
               <ButtonSideMenuComponents
                 text="Заявки на підтвердження"
                 icon={Mail}
-                link="/admin/zayavkaList"
+                link={`/admin/${ProductConfirmListPath}`}
               />
             </li>
             <li className="sidebar-list-item">
               <ButtonSideMenuComponents
                 text="Аптеки"
                 icon={Pharmacy}
-                link="/admin/pharmacyList"
+                link={`/admin/${PharmacyListPath}`}
                 className="button-icon-pharmacy"
               />
             </li>
@@ -164,7 +165,7 @@ const LayoutAdmin = ({ children }) => {
               <ButtonSideMenuComponents
                 text="Користувачі"
                 icon={UsersSvg}
-                link="/admin/userList"
+                link={`/admin/${UserListPath}`}
               />
             </li>
 
@@ -256,7 +257,7 @@ const LayoutAdmin = ({ children }) => {
               <ButtonSideMenuComponents
                 text="Аптеки"
                 icon={Pharmacy}
-                link="/admin/pharmaCompany/pharmacyList"
+                link={`/admin/${PharmaCompanyPharmacyListPath}`}
                 className="button-icon-pharmacy"
               />
             </li>
