@@ -47,6 +47,12 @@ text-transform: uppercase;
     
 }
 
+.tb-pharmacy>*{
+    padding-top: 0!important;
+    padding-bottom: 0!important;
+    height: 60px;
+}
+
 .btn-edit{
 
     padding: 4px 8px;

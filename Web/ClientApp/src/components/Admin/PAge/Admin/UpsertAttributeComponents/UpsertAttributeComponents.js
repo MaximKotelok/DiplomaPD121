@@ -3,16 +3,22 @@ import styles from "./UpsertAttributeComponents.module.css";
 import { InpurtStandart } from "../../../Common/InpurtStandart/InpurtStandart";
 import { TextAreaStandart } from "../../../Common/TextAreaStandart/TextAreaStandart";
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { ApiPath, StateInfos, Success } from "../../../../../utils/Constants";
 import { getAttributeById, upsertAttribute } from "../../../../../services/attributes";
 import { getAllAttributeGroups } from "../../../../../services/attributeGroup";
 import CustomSelectComponent from "../../../../Common/CustomSelectComponent/CustomSelectComponent";
 import { toast } from "react-toastify";
 import { checkFormParamsAreNotEmpty } from "../../../../../utils/Functions";
+import { AttributeListPath, adminRoutePath } from "../../../../../utils/TablesPathes";
 
 
 export const UpsertAttributeComponents = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const { pathToAttributeTable } = location.state || {pathToAttributeTable: `${adminRoutePath}/${AttributeListPath}`};
+
     const { attributeId } = useParams();
     const [stateInfo, setStateInfo] = useState(StateInfos.LOADING);
     const [preview, setPreview] = useState(null);
@@ -91,9 +97,10 @@ export const UpsertAttributeComponents = () => {
         const res = await upsertAttribute(formData);
 
         if (res.status === Success) {
-            toast.success("Успіх")
+            toast.success("Успіх");
+            navigate(pathToAttributeTable);
         } else {
-            toast.error("Помилка")
+            toast.error("Помилка");
         }
     };
 
@@ -160,7 +167,7 @@ export const UpsertAttributeComponents = () => {
 
                     <button
                         className={`brn-form brn-primary-form mt-auto ${styles["btn-abolition"]}`}
-                        type="submit"
+                        onClick={()=>navigate(pathToAttributeTable)}
                     >
                         Відмінити
                     </button>

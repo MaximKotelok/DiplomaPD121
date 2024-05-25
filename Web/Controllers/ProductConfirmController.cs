@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Domain.Models.CalculateActionModels;
 using Domain.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +11,8 @@ using Services.CityService;
 using Services.ConcreteProductService;
 using Services.PharmacyCompanyService;
 using Services.ProductConfirmService;
+using Services.UserService;
+using System.Linq;
 using Utility;
 
 namespace Web.Controllers
@@ -19,55 +22,99 @@ namespace Web.Controllers
 	public class ProductConfirmController : ControllerBase
 	{
 		private readonly IProductConfirmService _productConfirmService;
+		private readonly IUserService _userService;
+		private readonly IPharmaCompanyService _pharmaCompanyService;
 
 
-		public ProductConfirmController(IProductConfirmService productConfirmService)
+		public ProductConfirmController(IProductConfirmService productConfirmService
+			, IUserService userService
+			, IPharmaCompanyService pharmaCompanyService)
 		{
 			this._productConfirmService = productConfirmService;
+			this._userService = userService;
+			this._pharmaCompanyService = pharmaCompanyService;
 		}
 
 		[HttpPost("")]
-		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_PharmaCompany)]
-		public IActionResult GetAllRequests(PageViewModel model)
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = $"{SD.Role_Admin},{SD.Role_PharmaCompany}")]
+		public async Task<IActionResult> GetAllRequests(PageViewModel model)
 		{
-			var rawResult =
-				_productConfirmService.GetAllProductConfirm(includeProperties: "PharmaCompany,PharmaCompany.User,ProductStatus,Product,Product.Manufacturer,Product.Category");
+			int page = model.Page != null ? model.Page.Value - 1 : 0;
+			int itemsPerPage = model.ItemsPerPage;
+			int skipCount = page * itemsPerPage;
 
-
-			if (!model.Search.IsNullOrEmpty())
-				rawResult =
-				rawResult.Where(a =>
+			var confirmsList = _productConfirmService.GetAllProductConfirm(includeProperties: "PharmaCompany,PharmaCompany.User,ProductStatus,Product,Product.Manufacturer,Product.Category")
+				.OrderBy(a=>a.CreationDate)
+				.GroupBy(a => a.PharmaCompany)
+				.SelectMany(a =>
+				a.Count() > 0 ?
+				a.Select(confirm => new ProductConfirmAdminCalculateModel
 				{
-					return a.Product.Title.StartsWith(model.Search) ||
-					a.CreationDate.ToString("yyyy/MM/dd").StartsWith(model.Search) ||
-					a.Product.Category.Title.StartsWith(model.Search) ||
-					a.Product.Manufacturer.Name.StartsWith(model.Search) ||
-					a.ProductStatus.Status.StartsWith(model.Search);
+					PharmaCompany = a.Key,
+					ProductConfirm = confirm
+				}).Prepend(new ProductConfirmAdminCalculateModel { PharmaCompany = a.Key, IsTmp = true }) :
+					new List<ProductConfirmAdminCalculateModel>
+					{
+					new ProductConfirmAdminCalculateModel
+					{
+						PharmaCompany = a.Key,
+						ProductConfirm = null,
+						IsTmp = true
+					}
 				});
-			if (rawResult is not null)
+
+
+			var user = await _userService.GetUserByName(User.Identity.Name);
+			if ((await _userService.GetRolesAsync(user.Id)).Contains(SD.Role_PharmaCompany))
 			{
-				rawResult = rawResult.Where(a => a.Product != null);
-				int countOfPages = model.GetCountOfPages(rawResult.Count());
-				int page = model.Page != null ? model.Page.Value - 1 : 0;
-				var result = rawResult.Skip(model.ItemsPerPage * page).Take(model.ItemsPerPage)
-					.OrderByDescending(a=>a.CreationDate)
-					.Select(a =>
-				new {
-					Id = a.Product!.Id,
-					Title = a.Product.Title,
-					PathToPhoto = a.Product.PathToPhoto,
-					Date = a.CreationDate.ToString("yyyy/MM/dd"),
-					Manufacturer = a.Product!.Manufacturer!.Name,
-					Category = a.Product.Category!.Title,
-					Status = a.ProductStatus.Status!.ToString(),
-					StatusColor = a.ProductStatus.Color,
-					StatusId = a.ProductStatusID,
-					PharmaCompany = a.PharmaCompany.Title,
-					Email = a.PharmaCompany.User != null? a.PharmaCompany.User.Email:""
-				}).GroupBy(a => a.PharmaCompany).Select(a => new { name = a.Key, data = a });
-				return Ok(new { data = result, countOfPages });
+				var pharmaCompany = _pharmaCompanyService.GetPharmaCompany(a => a.UserID == user.Id);
+				if (pharmaCompany == null)
+				{
+					return StatusCode(403);
+				}
+				confirmsList = confirmsList.Where(a => a.PharmaCompany.Id == pharmaCompany.Id);
 			}
-			return BadRequest("No records found");
+
+
+				confirmsList = confirmsList.Where(a =>
+					a.IsTmp == true ||
+					a.ProductConfirm.Product.Title.StartsWith(model.Search) ||
+					a.ProductConfirm.CreationDate.ToString("yyyy/MM/dd").StartsWith(model.Search) ||
+					a.ProductConfirm.Product.Category.Title.StartsWith(model.Search) ||
+					a.ProductConfirm.Product.Manufacturer.Name.StartsWith(model.Search) ||
+					a.ProductConfirm.ProductStatus.Status.StartsWith(model.Search)
+				);
+			
+
+			int totalPages = model.GetCountOfPages(confirmsList.Count());
+
+			var paginatedList = confirmsList.Skip(skipCount).Take(itemsPerPage).ToList();
+
+
+			var result = paginatedList
+			.GroupBy(a => a.PharmaCompany.Title)
+				.Select(a => new
+				{
+						name = a.Key,
+						data = a.Where(a => a.ProductConfirm != null).Select(b=> new{ 
+						Id = b.ProductConfirm.Product.Id,
+						Title = b.ProductConfirm.Product.Title,
+						PathToPhoto = b.ProductConfirm.Product.PathToPhoto,
+						Date = b.ProductConfirm.CreationDate.ToString("yyyy/MM/dd"),
+						Manufacturer = b.ProductConfirm.Product.Manufacturer.Name,
+						Category = b.ProductConfirm.Product.Category.Title,
+						Status = b.ProductConfirm.ProductStatus.Status,
+						StatusColor = b.ProductConfirm.ProductStatus.Color,
+						StatusId = b.ProductConfirm.ProductStatusID,
+						PharmaCompany = b.PharmaCompany.Title,
+						Email = b.PharmaCompany.User != null ? b.PharmaCompany.User.Email : ""
+					})
+				}).ToList();
+
+
+			return Ok(new { data = result, countOfPages = totalPages });
+
+
 		}
 	}
 }

@@ -140,58 +140,56 @@ export const ProductInspectionComponents = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {/* {rows.map((pharmacy, index) => ( */}
-                <React.Fragment>
-                  {/* <TableRow>
+              {rows.map((pharmacy, index) => (
+                  <React.Fragment>
+                    <TableRow>
                       <TableCell
                         colSpan={12}
                         className={`${styles["header-body-pharmacy"]}`}
                       >
                         {pharmacy.name}
                       </TableCell>
-                    </TableRow> */}
+                    </TableRow>
 
-                  {/* {pharmacy.data.map((item, itemIndex) => {
-                      return ( */}
-                  <TableRow
-                    className={`${styles["tb-pharmacy"]}`}
-                    // key={itemIndex}
-                  >
-                    <TableCell>
-                      <Link
-                      //  to={`/admin/detailProduct/${item.id}`}
-                      >
-                        <CustomImgComponent
-                          className={`${styles["img-product"]}`}
-                          // src={`${ApiPath}${item.pathToPhoto}`}
-                        />{" "}
-                        title
-                        {/* {item.title} */}
-                      </Link>
-                    </TableCell>
-                    <TableCell>
-                      category
-                      {/* {item.category} */}
-                    </TableCell>
-                    <TableCell>
-                      {/* {item.manufacturer} */}
-                      manufacturer
-                    </TableCell>
-                    <TableCell>
-                      {/* {item.date} */}
-                      date
-                    </TableCell>
-                    <TableCell>
-                      {/* {item.date} */}
-                      <div className={`${styles["span-status"]}`}>
-                        на перевірці
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                  {/* ); */}
-                  {/* })} */}
-                </React.Fragment>
-                {/* ))} */}
+                    {pharmacy.data.map((item, itemIndex) => {
+                      return (
+                        <TableRow
+                          className={`${styles["tb-pharmacy"]}`}
+                          key={itemIndex}
+                        >
+                          <TableCell>
+                            {/* <Link to={`/admin/detailProduct/${item.id}`}> */}
+                              <CustomImgComponent
+                                className={`${styles["img-product"]}`}
+                                src={`${ApiPath}${item.pathToPhoto}`}
+                              />{" "}
+                              {item.title}
+                            {/* </Link> */}
+                          </TableCell>
+                          <TableCell>{item.category}</TableCell>
+                          <TableCell>{item.manufacturer}</TableCell>
+                          <TableCell>{item.date}</TableCell>
+                          <TableCell>{item.date}</TableCell>
+                          <TableCell>
+                            <div
+                              className={`d-flex justify-content-between align-items-center`}
+                            >
+                              <div
+                                className={`
+                            ${styles["span-status-rozmir"]}
+                            `}
+                                style={{ backgroundColor: item.statusColor }}
+                              >
+                                {item.status}
+                              </div>
+                            
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </React.Fragment>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>

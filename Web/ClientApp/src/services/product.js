@@ -1,6 +1,6 @@
 import { UpsertProduct, GetProduct, ClassHeader, GetAllProductsFromIdArray, Success, GetSupInfoForProductInYourCity, GetTopOffers, GetProductForPharmacy, itemsPerPageForAdmin } from "../utils/Constants";
 import { getCookie } from "../utils/Cookies";
-import { postToServer, getFromServer, putToServer} from "../utils/Queries";
+import { postToServer, getFromServer, putToServer, deleteFromServer} from "../utils/Queries";
 import { postPhotoToServer } from "./photo";
 export async function getSupInfo(products){
     return await Promise.all(products.map(async a => {
@@ -141,6 +141,10 @@ export async function getProductForPharmacyById(productId) {
 
 export async function GetPriceHistory(productId) {
     return await getFromServer("Product/GetPriceHistory", { id: productId })
+}
+
+export async function deleteProduct(productId) {
+    return await deleteFromServer(`Product/${productId}`, {})
 }
 
 export async function getExistAttributeVariantsList(existAttributes){

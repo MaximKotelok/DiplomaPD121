@@ -14,7 +14,7 @@ import SearchComponent from "../../../../Common/SearchComponent/SearchComponent"
 import { NavLink, useParams } from "react-router-dom";
 import AddActiveSubstanceModal from "./components/AddActiveSubstanceModal";
 import { getActiveSubstancesCountOfPage, getActiveSubstancesPage, getAllActiveSubstances, updateActiveSubstanceStatus } from "../../../../../services/activeSubstance";
-import { Success } from "../../../../../utils/Constants";
+import { Success, itemsPerPageForAdmin } from "../../../../../utils/Constants";
 import  PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 import { toast } from "react-toastify";
 
@@ -27,7 +27,7 @@ const columns = [
 const useStyles = makeStyles({
   root: {
     width: "100%",
-  },
+  },    
   container: {
     // maxHeight: 400,
   },
@@ -40,7 +40,8 @@ export const ActiveSubstanceListComponents = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [countOfPages, setCountOfPages] = useState(0);
-  
+  const [emptyRowCount, setEmptyRowCount] = React.useState(0);
+
   const firstLoad = useRef(true);
   const classes = useStyles();
   useEffect(()=>{
@@ -56,6 +57,15 @@ export const ActiveSubstanceListComponents = () => {
       reload(1);
   },[search]);
 
+  useEffect(() => {
+
+    if (itemsPerPageForAdmin > rows.length) {
+        setEmptyRowCount(itemsPerPageForAdmin - rows.length)
+    } else {
+        setEmptyRowCount(0)
+
+    }
+  }, [rows])
 
 
   async function reload(page){
@@ -121,7 +131,7 @@ export const ActiveSubstanceListComponents = () => {
               <TableBody>
                 <React.Fragment key={1}>
                   {rows.map(item=>{
-                    return (<TableRow className={`${styles["tb-pharmacy"]}`} key={item.id}>
+                    return (<TableRow className={`${styles["tb-pharmacy"]} max-row-size`} key={item.id}>
                     <TableCell>
                       <span className={`${styles["text-table"]}`}>{item.title}</span>
                     </TableCell>
@@ -149,6 +159,13 @@ export const ActiveSubstanceListComponents = () => {
                   })}
                
                 </React.Fragment>
+                {Array.from(Array(emptyRowCount)).map((_, index) => (
+                                    <TableRow key={`empty-${index}`} className="max-row-size">
+                                        <TableCell colSpan={columns.length}>
+
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
                 {/* {rows.map((pharmacy, index) => (
                   <React.Fragment key={index}>
                     <TableRow>
@@ -185,6 +202,7 @@ export const ActiveSubstanceListComponents = () => {
                     })}
                   </React.Fragment>
                 ))} */}
+                
               </TableBody>
             </Table>
           </TableContainer>

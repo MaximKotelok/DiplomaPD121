@@ -12,7 +12,7 @@ import TableRow from "@material-ui/core/TableRow";
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
 import SearchComponent from "../../../../Common/SearchComponent/SearchComponent";
 import { Link, useParams } from "react-router-dom";
-import { ApiPath, STANDART_IMG, Success } from "../../../../../utils/Constants";
+import { ApiPath, STANDART_IMG, Success, itemsPerPageForAdmin } from "../../../../../utils/Constants";
 import { getAllAttributesForAdmin, deleteAttribute } from "../../../../../services/attributes";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 import { toast } from "react-toastify";
@@ -39,10 +39,20 @@ export const AttributeListComponents = () => {
     const [page, setPage] = React.useState(paramPage);
     const [countOfPages, setCountOfPages] = React.useState(1);
     const [rows, setRows] = React.useState([]);
+    const [emptyRowCount, setEmptyRowCount] = React.useState(0);
 
     useEffect(() => {
         init();
     }, []);
+    useEffect(() => {
+
+        if (itemsPerPageForAdmin > rows.length) {
+            setEmptyRowCount(itemsPerPageForAdmin - rows.length)
+        } else {
+            setEmptyRowCount(0)
+
+        }
+    }, [rows])
 
 
     async function init() {
@@ -118,7 +128,7 @@ export const AttributeListComponents = () => {
                             <TableBody>
                                 {rows.map((attibute, index) => (
                                     <React.Fragment key={index}>
-                                        <TableRow>
+                                        <TableRow className="max-row-size">
                                             <TableCell>
                                                 {" "}
                                                 <span className={`${styles["text-table"]}`}>{attibute.name}</span>
@@ -150,6 +160,13 @@ export const AttributeListComponents = () => {
                                             </TableCell>
                                         </TableRow>
                                     </React.Fragment>
+                                ))}
+                                {Array.from(Array(emptyRowCount)).map((_, index) => (
+                                    <TableRow key={`empty-${index}`} className="max-row-size">
+                                        <TableCell colSpan={columns.length}>
+
+                                        </TableCell>
+                                    </TableRow>
                                 ))}
                             </TableBody>
                         </Table>

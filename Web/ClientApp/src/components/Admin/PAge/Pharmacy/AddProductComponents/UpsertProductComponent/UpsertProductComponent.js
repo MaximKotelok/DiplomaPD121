@@ -272,7 +272,7 @@ const UpsertProductComponent = () => {
     setDisableButtonState(false);
     if (res.status === Success) {
       toast.success(`Операція пройшла успішно`);
-      navigate(-1);
+      navigate("/admin");
     } else {
       toast.error(`Помилка ${res.error.response.status}`);
     }

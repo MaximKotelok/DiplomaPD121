@@ -6,7 +6,11 @@ border-radius: 12px;
 height: 100%;
 }
 
-
+.tb-category>*{
+    padding-top: 0!important;
+    padding-bottom: 0!important;
+    height: 60px!important;
+}
 
 
 .row-parent{

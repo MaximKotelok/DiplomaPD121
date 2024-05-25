@@ -4,6 +4,10 @@ div[disabled] {
 
 }
 
+.max-row-size{
+    height: 58px!important;
+}
+
 .category-png-card:nth-child(odd) .category-png-backgroud {
     background-color: #007AFF26 !important;
 }

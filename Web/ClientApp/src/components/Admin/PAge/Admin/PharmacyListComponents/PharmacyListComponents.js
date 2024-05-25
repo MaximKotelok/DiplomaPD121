@@ -12,7 +12,7 @@ import TableRow from "@material-ui/core/TableRow";
 import SearchComponent from "../../../../Common/SearchComponent/SearchComponent";
 import { useEffect } from "react";
 import { getAllProductConfirm } from "../../../../../services/productConfirm";
-import { ApiPath, STANDART_IMG, Success } from "../../../../../utils/Constants";
+import { ApiPath, STANDART_IMG, Success, itemsPerPageForAdmin } from "../../../../../utils/Constants";
 import CustomImgComponent from "../../../../Common/CustomImgComponent/CustomImgComponent";
 import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
@@ -67,12 +67,29 @@ export const PharmacyListComponents = () => {
   const [countOfPages, setCountOfPages] = React.useState(1);
   const [rows, setRows] = React.useState([]);
   const [isDisplayOnlyCompanies, setIsDisplayOnlyCompanies] =
-    React.useState(false);
+  React.useState(false);
   const [search, setSearch] = React.useState("");
+  const [emptyRowCount, setEmptyRowCount] = React.useState(0);
+
+  useEffect(()=>{
+    let tmpRows = rows.flatMap(a => {
+      if(a.data && a.data.length>0){
+          return [null, ...a.data]
+      }else{
+        return [null]
+      } });
+    if(itemsPerPageForAdmin > tmpRows.length){
+      setEmptyRowCount(itemsPerPageForAdmin - tmpRows.length)
+    }else{
+      setEmptyRowCount(0)
+      
+    }
+  },[rows])
 
   useEffect(()=>{
     reload(parseInt(paramPage?paramPage:1), search, isDisplayOnlyCompanies);
   },[])
+
 
 
   async function reload(page, searchText, isDisplayOnlyCompanies){    
@@ -88,7 +105,6 @@ export const PharmacyListComponents = () => {
       }
   }
 
-  console.log(rows)
 
   return (
     <div className={`${styles["row-parent"]}`}>
@@ -146,7 +162,7 @@ export const PharmacyListComponents = () => {
               <TableBody>
                 {rows.map((pharmacy, index) => (
                   <React.Fragment key={index}>
-                    <TableRow>
+                    <TableRow className="max-row-size">
                       <TableCell
                         colSpan={3}
                         className={`${styles["header-body-pharmacy"]}`}
@@ -184,6 +200,13 @@ export const PharmacyListComponents = () => {
                     })}
                   </React.Fragment>
                 ))}
+                 {Array.from(Array(emptyRowCount)).map((_, index) => (
+                        <TableRow key={`empty-${index}`} className="max-row-size">
+                            <TableCell colSpan={columns.length}> 
+                            
+                            </TableCell>
+                        </TableRow>
+                    ))}
               </TableBody>
             </Table>
           </TableContainer>

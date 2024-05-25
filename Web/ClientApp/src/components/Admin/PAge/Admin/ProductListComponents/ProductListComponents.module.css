@@ -22,10 +22,40 @@ height: 100%;
     
     }
 
+    .my-btn-delete{
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 1);
+        font-family: var(--standart-font);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0.1599999964237213px;
+    background-color:  rgba(255, 59, 48, 1) !important;
+        padding: 6px 14px;
+        border-radius: 100px;
+        border:none !important;
+    }
+    
+    .my-btn-edit{
+        border:none !important;
+    
+        color: rgba(255, 255, 255, 1);
+        font-family: var(--standart-font);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0.1599999964237213px;
+    
+        background-color:  rgba(14, 62, 117, 1) !important;
+        padding: 6px 14px;
+        border-radius: 100px;
+    
+    text-transform: uppercase;
+    }
+
 
 .row-parent{
-    padding: 32px;;
-    height: 100%;
+    padding: 32px;
 }
 
 .text-row-table{
@@ -93,7 +123,7 @@ border-radius: 100px;
 border: 1px solid rgba(229, 229, 234, 1);
 }
 
-.tb-pharmacy:hover{
+.tb-product:hover{
     background: rgba(217, 235, 255, 0.5);
     
 }
@@ -120,4 +150,7 @@ background-color: rgba(255, 149, 0, 1);
 }
 .span-status-color3{
 background-color: rgba(52, 199, 89, 1);
+}
+.tb-product{
+    height: 72px!important;
 }

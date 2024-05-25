@@ -13,7 +13,7 @@ import TableRow from "@material-ui/core/TableRow";
 import SearchComponent from "../../../../Common/SearchComponent/SearchComponent";
 import { useEffect } from "react";
 import { getAllProductConfirm } from "../../../../../services/productConfirm";
-import { ApiPath, STANDART_IMG, Success } from "../../../../../utils/Constants";
+import { ApiPath, STANDART_IMG, Success, itemsPerPageForAdmin } from "../../../../../utils/Constants";
 import CustomImgComponent from "../../../../Common/CustomImgComponent/CustomImgComponent";
 import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
@@ -50,10 +50,21 @@ export const ManufactureListComponents = () => {
     const [page, setPage] = React.useState(paramPage);
     const [countOfPages, setCountOfPages] = React.useState(1);
     const [rows, setRows] = React.useState([]);
+    const [emptyRowCount, setEmptyRowCount] = React.useState(0);
 
     useEffect(() => {
         init();
     }, []);
+
+    useEffect(() => {
+
+        if (itemsPerPageForAdmin > rows.length) {
+            setEmptyRowCount(itemsPerPageForAdmin - rows.length)
+        } else {
+            setEmptyRowCount(0)
+
+        }
+    }, [rows])
 
     async function init() {
         let res = await getAllManufacturerForAdmin(page);
@@ -128,7 +139,7 @@ export const ManufactureListComponents = () => {
                             <TableBody>
                                 {rows.map((manufacturer, index) => (
                                     <React.Fragment key={index}>
-                                        <TableRow>
+                                        <TableRow className="max-row-size">
                                             <TableCell
                                                 className={`${styles["header-body-pharmacy"]}`}
                                             >
@@ -183,6 +194,13 @@ export const ManufactureListComponents = () => {
                                             </TableCell>
                                         </TableRow>
                                     </React.Fragment>
+                                ))}
+                                {Array.from(Array(emptyRowCount)).map((_, index) => (
+                                    <TableRow key={`empty-${index}`} className="max-row-size">
+                                        <TableCell colSpan={columns.length}>
+
+                                        </TableCell>
+                                    </TableRow>
                                 ))}
                             </TableBody>
                         </Table>

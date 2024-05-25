@@ -21,21 +21,19 @@ namespace Services.PharmacyService
 
         public void DeletePharmacy(int id)
         {
-            using (var transaction = _repository.BeginTransaction())
-            {
+            
                 try
                 {
                     Pharmacy? pharmacy = _repository.Get(x => x.Id == id);
                     _repository.Remove(pharmacy);
                     _repository.SaveChanges();
-                    transaction.Commit();
+
                 }
                 catch (Exception ex)
                 {
-                    transaction.Rollback();
                     throw new Exception("Failed to delete pharmacy. Transaction rolled back.", ex);
                 }
-            }
+            
         }
 
 

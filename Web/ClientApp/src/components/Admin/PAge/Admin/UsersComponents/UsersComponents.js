@@ -13,7 +13,7 @@ import TableRow from "@material-ui/core/TableRow";
 import SearchComponent from "../../../../Common/SearchComponent/SearchComponent";
 import { useEffect } from "react";
 import { getAllProductConfirm } from "../../../../../services/productConfirm";
-import { ApiPath, STANDART_IMG, Success } from "../../../../../utils/Constants";
+import { ApiPath, STANDART_IMG, Success, itemsPerPageForAdmin } from "../../../../../utils/Constants";
 import CustomImgComponent from "../../../../Common/CustomImgComponent/CustomImgComponent";
 import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
@@ -73,11 +73,21 @@ export const UsersComponents = () => {
   const classes = useStyles();
   const [page, setPage] = React.useState(1);
   const [countOfPages, setCountOfPages] = React.useState(1);
+  const [emptyRowCount, setEmptyRowCount] = React.useState(0);
   //const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [rows, setRows] = React.useState([]);
   useEffect(() => {
     init();
   }, []);
+
+  useEffect(()=>{
+
+    if(itemsPerPageForAdmin > rows.length){
+      setEmptyRowCount(itemsPerPageForAdmin - rows.length)
+    }else{
+      setEmptyRowCount(0)
+    }
+  },[rows])
 
   async function init() {
     let res = await getAllUsers(page);
@@ -150,7 +160,7 @@ export const UsersComponents = () => {
               <TableBody>
                 <React.Fragment>
                   {rows.map((row, index) => (
-                    <TableRow className={`${styles["tb-user"]}`} key={index}>
+                    <TableRow className={`${styles["tb-user"]} max-row-size`} key={index}>
                       <TableCell>
                         <CustomImgComponent
                           className={`${styles["img-product"]}`}
@@ -205,6 +215,13 @@ export const UsersComponents = () => {
                     </TableRow>
                   ))}
                 </React.Fragment>
+                {Array.from(Array(emptyRowCount)).map((_, index) => (
+                        <TableRow key={`empty-${index}`} className="max-row-size">
+                            <TableCell colSpan={columns.length}> 
+                            
+                            </TableCell>
+                        </TableRow>
+                    ))} 
               </TableBody>
             </Table>
           </TableContainer>

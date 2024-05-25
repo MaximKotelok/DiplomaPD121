@@ -34,9 +34,9 @@ namespace Repository.Data.Configs
 				new Category { Id = 18, Title = "Біотин", ParentCategoryID = 3, PathToPhoto = "/images/category/png/Biotin.png", CanHasProducts = true },
 				new Category { Id = 19, Title = "Вітамін D", ParentCategoryID = 3, PathToPhoto = "/images/category/png/D.png", CanHasProducts = true },
 				new Category { Id = 20, Title = "Вітамін К", ParentCategoryID = 3, PathToPhoto = "/images/category/png/K.png", CanHasProducts = true },
-				new Category { Id = 921, Title = "Схуднення", ParentCategoryID = 9, PathToRecomendedPhoto= "/images/category/recomemnded/1.png", IsRecomended = true },
-				new Category { Id = 922, Title = "Від застуди та грипу", ParentCategoryID = 2, PathToRecomendedPhoto= "/images/category/recomemnded/2.png", IsRecomended = true },
-				new Category { Id = 923, Title = "Від стресу", ParentCategoryID = 2, PathToRecomendedPhoto= "/images/category/recomemnded/3.png", IsRecomended = true }
+				new Category { Id = 921, Title = "Схуднення", ParentCategoryID = 9, PathToRecomendedPhoto= "/images/category/recomended/1.png", IsRecomended = true },
+				new Category { Id = 922, Title = "Від застуди та грипу", ParentCategoryID = 2, PathToRecomendedPhoto= "/images/category/recomended/2.png", IsRecomended = true },
+				new Category { Id = 923, Title = "Від стресу", ParentCategoryID = 2, PathToRecomendedPhoto= "/images/category/recomended/3.png", IsRecomended = true }
 				);
 
 		}

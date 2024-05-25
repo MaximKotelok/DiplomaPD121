@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   GetCategoryById,
@@ -26,6 +26,7 @@ import PaginationComponent from "../../../Common/PaginationComponent/PaginationC
 import CustomSelectComponentSelectFilter from "../../../Common/CustomSelectComponentSelectFilter/CustomSelectComponentSelectFilter";
 
 export const SearchProductPageComponent = () => {
+  const isInit = useRef(true);
   const [filters, setFilters] = useState({});
   const [searchByTitle, setSearchByTitle] = useState("");
   const [page, setPage] = useState(1);

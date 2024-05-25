@@ -14,12 +14,13 @@ import BtnEditStatusModal from "./components/BtnEditStatusModal/BtnEditStatusMod
 import SearchComponent from "../../../../Common/SearchComponent/SearchComponent";
 import { useEffect } from "react";
 import { getAllProductConfirm } from "../../../../../services/productConfirm";
-import { ApiPath, STANDART_IMG, Success } from "../../../../../utils/Constants";
+import { ApiPath, STANDART_IMG, Success, itemsPerPageForAdmin } from "../../../../../utils/Constants";
 import CustomImgComponent from "../../../../Common/CustomImgComponent/CustomImgComponent";
 import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { ProductConfirmListPath } from "../../../../../utils/TablesPathes";
 const columns = [
   { id: "position", label: "Позиція", minWidth: 170 },
   { id: "category", label: "Категорія", minWidth: 170 },
@@ -45,6 +46,7 @@ const columns = [
     // align: "right",
     format: (value) => value.toFixed(2),
   },
+  
 ];
 
 // function createData(name, code, population, size) {
@@ -68,6 +70,7 @@ export const ZayavkaComponents = () => {
   const [countOfPages, setCountOfPages] = React.useState(1);
   //const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [rows, setRows] = React.useState([]);
+  const [emptyRowCount, setEmptyRowCount] = React.useState(0);
   const [statuses, setStatuses] = React.useState([]);
 
   const handleChangePage = (event, newPage) => {
@@ -99,6 +102,21 @@ export const ZayavkaComponents = () => {
       setCountOfPages(res.data.countOfPages);
     }
   }
+
+  useEffect(()=>{
+    let tmpRows = rows.flatMap(a => {
+      if(a.data && a.data.length>0){
+          return [null, ...a.data]
+      }else{
+        return [null]
+      } });;
+    if(itemsPerPageForAdmin > tmpRows.length){
+      setEmptyRowCount(itemsPerPageForAdmin - tmpRows.length)
+    }else{
+      setEmptyRowCount(0)
+      
+    }
+  },[rows])
 
   return (
     <div className={`${styles["row-parent"]}`}>
@@ -154,7 +172,7 @@ export const ZayavkaComponents = () => {
                     {pharmacy.data.map((item, itemIndex) => {
                       return (
                         <TableRow
-                          className={`${styles["tb-pharmacy"]}`}
+                          className={`${styles["tb-pharmacy"]} max-row-size`}
                           key={itemIndex}
                         >
                           <TableCell>
@@ -168,7 +186,6 @@ export const ZayavkaComponents = () => {
                           </TableCell>
                           <TableCell>{item.category}</TableCell>
                           <TableCell>{item.manufacturer}</TableCell>
-                          <TableCell>{item.date}</TableCell>
                           <TableCell>{item.date}</TableCell>
                           <TableCell>
                             <div
@@ -224,6 +241,13 @@ export const ZayavkaComponents = () => {
                     })}
                   </React.Fragment>
                 ))}
+                 {Array.from(Array(emptyRowCount)).map((_, index) => (
+                        <TableRow key={`empty-${index}`} className="max-row-size">
+                            <TableCell colSpan={columns.length}> 
+                            
+                            </TableCell>
+                        </TableRow>
+                    ))}
               </TableBody>
             </Table>
           </TableContainer>
@@ -232,7 +256,7 @@ export const ZayavkaComponents = () => {
               setContent={(a) => setRows(a)}
               getContent={async (page) => {
                 let res = await getAllProductConfirm(page);
-                const newUrl = `/admin/zayavkaList/${page}`;
+                const newUrl = `/admin/${ProductConfirmListPath}/${page}`;
                 window.history.pushState({}, "", newUrl);
                 if (res.status === Success) {
                   return res.data.data;

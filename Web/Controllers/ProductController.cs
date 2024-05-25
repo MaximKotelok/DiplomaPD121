@@ -41,6 +41,7 @@ namespace Web.Controllers
 		private readonly IConcreteProductService _concreteProductService;
 		private readonly IProductStatusService _productStatusService;
 		private readonly IProductConfirmService _productConfirmService;
+		private readonly IPharmaCompanyService _pharmaCompanyService;
 		private readonly IReservationService _reservationService;
 		private readonly IUserService _userService;
 		private readonly IEmailService _emailService;
@@ -56,7 +57,8 @@ namespace Web.Controllers
 				IProductConfirmService productConfirmService,
 				IReservationService reservationService,
 				IUserService userService,
-				IEmailService emailService
+				IEmailService emailService,
+				IPharmaCompanyService pharmaCompanyService
 			)
 		{
 
@@ -71,6 +73,7 @@ namespace Web.Controllers
 			this._reservationService = reservationService;
 			this._userService = userService;
 			this._emailService = emailService;
+			this._pharmaCompanyService = pharmaCompanyService;
 		}
 
 		private IEnumerable<ProductProperty> _convertProperties(List<PropertyViewModel> properties)
@@ -279,7 +282,7 @@ namespace Web.Controllers
 					return true;
 				}
 				);
-			foreach(var item in res)
+			foreach (var item in res)
 			{
 				item.ProductConfirm = null;
 			}
@@ -458,57 +461,56 @@ namespace Web.Controllers
 		public IActionResult GetProductsAdmin([FromBody] PageViewModel model)
 		{
 			int page = model.Page != null ? model.Page.Value - 1 : 0;
-			bool isClearLast = false;
+			int itemsPerPage = model.ItemsPerPage;
+			int skipCount = page * itemsPerPage;
+
 
 			var products = _productService.GetAllProducts(includeProperties: "Category,Brand,Manufacturer")
+				.OrderByDescending(a=>a.Id)
 				.Where(a =>
-				{
-					return model.Search.IsNullOrEmpty()
+					string.IsNullOrEmpty(model.Search)
 					|| a.Category.Title.Contains(model.Search)
 					|| a.Title.Contains(model.Search)
 					|| a.Brand.Name.Contains(model.Search)
 					|| a.Manufacturer.Name.Contains(model.Search)
-					|| a.ShortDescription.Contains(model.Search);
-				})
-				.GroupBy(a => a.Category.Title)
-				.SelectMany(group => group.Select(a => new ProductAdminCalculateModel
+					|| a.ShortDescription.Contains(model.Search)
+				)
+				.OrderBy(a => a.Id)
+				.GroupBy(a => a.Category)
+				.SelectMany(group => group.Select(a => new ProductListAdminCalculateModel
 				{
-
-					CategoryId = a.Category.Id,
-					CategoryPathToPhoto = a.Category.PathToPhoto,
-					CategoryTitle = a.Category.Title,
-					Title = a.Title,
-					Brand = a.Brand.Name,
-					Manufacturer = a.Manufacturer.Name,
-					ShortDescription = a.ShortDescription,
-					PathToPhoto = a.PathToPhoto,
-				}).Prepend(new ProductAdminCalculateModel { IsTmp = true }))
-				.Skip(page * model.ItemsPerPage)
-				.TakeWhile((item, index) =>
+					Category = a.Category,
+					Product = a
+				}).Prepend(new ProductListAdminCalculateModel
 				{
-					if (index < model.ItemsPerPage || (isClearLast && index == model.ItemsPerPage))
-					{
-						if (index == model.ItemsPerPage - 1 && item.IsTmp == true)
-						{
-							isClearLast = true;
-						}
-						return true;
-					}
-					return false;
-				})
-				.Where(a => a.IsTmp != true)
-				.GroupBy(a => new { a.CategoryId, a.CategoryTitle, a.CategoryPathToPhoto })
-				.Select(a => new { a.Key.CategoryTitle, a.Key.CategoryPathToPhoto, data = a.ToList() })
+					Category = group.Key,
+					IsTmp = true
+				}))
+				.Skip(skipCount)
+				.Take(itemsPerPage)
 				.ToList();
 
-			if (isClearLast)
-			{
-				products.Last().data.Clear();
-			}
+			var result = products.GroupBy(a => a.Category)
+				.Select(a => new
+				{
+					CategoryId = a.Key.Id,
+					CategoryTitle = a.Key.Title,
+					CategoryPathToPhoto = a.Key.PathToPhoto,
+					data = a.Where(b => b.Product != null).Select(b => new
+					{
+						Id = b.Product.Id,
+						Title = b.Product.Title,
+						Brand = b.Product.Brand.Name,
+						Manufacturer = b.Product.Manufacturer.Name,
+						ShortDescription = b.Product.ShortDescription,
+						PathToPhoto = b.Product.PathToPhoto
+					}).ToList()
+				}).ToList();
 
-			return Ok(products);
+			return Ok(result);
 
 		}
+
 
 		[HttpGet("")]
 		public IActionResult GetProductOffer(int count)
@@ -659,22 +661,31 @@ namespace Web.Controllers
 		//Update - admin
 		//Add - pharamacy & admin
 		[HttpPost("UpsertProduct")]
-		[Authorize(AuthenticationSchemes = "Bearer", Roles = $"{SD.Role_Admin},${SD.Role_Pharmacist}")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = $"{SD.Role_PharmaCompany},{SD.Role_Admin}")]
 		public async Task<IActionResult> UpsertProduct(PostProductViewModel postModel)
 		{
 			var user = await _userService.GetUserByName(User.Identity.Name);
-			if (postModel.Id != null && !(await _userService.GetRolesAsync(user.Id)).Contains(SD.Role_Admin))
+			var roles = await _userService.GetRolesAsync(user.Id);
+			if (postModel.Id != null && !roles.Contains(SD.Role_Admin))
 			{
 				return StatusCode(403);
+			}
+			if(roles.Contains(SD.Role_PharmaCompany)) {
+				var pharmaCompany = _pharmaCompanyService.GetPharmaCompany(a => a.UserID == user.Id);
+				if(pharmaCompany is null)
+				{
+					return StatusCode(403);
+				}
+				postModel.PharmaCompanyID = pharmaCompany.Id;
 			}
 			using var transaction = new TransactionScope();
 			try
 			{
 
 				if (postModel.ActiveSubstanceID is not null)
-					UpsertMedicine(postModel, (await _userService.GetRolesAsync(user.Id)).Contains(SD.Role_Admin));
+					UpsertMedicine(postModel, (roles).Contains(SD.Role_Admin));
 				else
-					UpsertProductEntity(postModel, (await _userService.GetRolesAsync(user.Id)).Contains(SD.Role_Admin));
+					UpsertProductEntity(postModel, (roles).Contains(SD.Role_Admin));
 
 				transaction.Complete();
 				return Ok("Data inserted");

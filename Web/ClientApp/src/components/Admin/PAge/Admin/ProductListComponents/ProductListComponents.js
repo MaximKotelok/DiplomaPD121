@@ -12,14 +12,17 @@ import TableRow from "@material-ui/core/TableRow";
 import SearchComponent from "../../../../Common/SearchComponent/SearchComponent";
 import { useEffect } from "react";
 import { getAllProductConfirm } from "../../../../../services/productConfirm";
-import { ApiPath, STANDART_IMG, Success } from "../../../../../utils/Constants";
+import { ApiPath, STANDART_IMG, Success, itemsPerPageForAdmin } from "../../../../../utils/Constants";
 import CustomImgComponent from "../../../../Common/CustomImgComponent/CustomImgComponent";
 import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
 import BtnEditSeriaModal from "./components/BtnEditSeriaModal/BtnEditSeriaModal";
-import { getCountOfPagesForProductsAdmin, getProductsAdmin } from "../../../../../services/product";
-import { Link } from "react-router-dom";
+import { deleteProduct, getCountOfPagesForProductsAdmin, getProductsAdmin } from "../../../../../services/product";
+import { Link, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { PharmaCompanyPharmacyListPath, PharmacyListPath, ProductListPath } from "../../../../../utils/TablesPathes";
+
 
 const columns = [
   { id: "position", label: "Позиція", minWidth: 230 },
@@ -34,6 +37,13 @@ const columns = [
   {
     id: "manafacture",
     label: "Виробник",
+    minWidth: 230,
+    editable: true,
+    // format: (value) => value.toLocaleString("en-US"),
+  },
+  {
+    id: "actions",
+    label: "Дії",
     minWidth: 230,
     editable: true,
     // format: (value) => value.toLocaleString("en-US"),
@@ -57,26 +67,45 @@ const useStyles = makeStyles({
 
 export const ProductListComponents = () => {
   const classes = useStyles();
+  
+  const { paramPage } = useParams();
   const [countOfPages, setCountOfPages] = React.useState(1);
   const [page, setPage] = React.useState(1);
   const [search, setSearch] = React.useState("");
   const [rows, setRows] = React.useState([]);
 
-  useEffect(()=>{
-    reload(1);
-  },[])
+  const [emptyRowCount, setEmptyRowCount] = React.useState(0);
 
-
-  async function reload(page, searchText){    
-    setPage(page);
-    let res = await getProductsAdmin(page, searchText?searchText:search);
-    let resCountOfPages = await getCountOfPagesForProductsAdmin(searchText?searchText:search);
-    if(res.status === Success && 
-      resCountOfPages.status === Success){
-        setCountOfPages(resCountOfPages.data);
-        setRows(res.data);
-        
+  useEffect(() => {
+    let tmpRows = rows.flatMap(a => {
+      if (a.data && a.data.length > 0) {
+        return [null, ...a.data]
+      } else {
+        return [null]
       }
+    });
+    if (itemsPerPageForAdmin > tmpRows.length) {
+      setEmptyRowCount(itemsPerPageForAdmin - tmpRows.length)
+    } else {
+      setEmptyRowCount(0)
+
+    }
+  }, [rows])
+  useEffect(() => {
+    reload(paramPage);
+  }, [])
+
+
+  async function reload(page, searchText) {
+    setPage(page);
+    let res = await getProductsAdmin(page, searchText ? searchText : search);
+    let resCountOfPages = await getCountOfPagesForProductsAdmin(searchText ? searchText : search);
+    if (res.status === Success &&
+      resCountOfPages.status === Success) {
+      setCountOfPages(resCountOfPages.data);
+      setRows(res.data);
+
+    }
   }
   // const handleChangePage = (event, newPage) => {
   //   setPage(newPage);
@@ -103,7 +132,7 @@ export const ProductListComponents = () => {
     <div className={`${styles["row-parent"]}`}>
       <div className={`${styles["box-container"]} row`}>
         <div className="col-6">
-          <SearchComponent callback={async (text)=>{
+          <SearchComponent callback={async (text) => {
             setSearch(text);
             await reload(1, text);
           }} />
@@ -161,14 +190,14 @@ export const ProductListComponents = () => {
                     {category.data.map((item, itemIndex) => {
                       return (
                         <TableRow
-                          className={`${styles["tb-pharmacy"]}`}
+                          className={`${styles["tb-product"]}`}
                           key={itemIndex}
                         >
                           <TableCell>
                             <span className={`${styles["text-row-table"]}`}>
                               <CustomImgComponent
                                 className={`${styles["img-product"]} `}
-                                 src={`${ApiPath}${item.pathToPhoto}`}
+                                src={`${ApiPath}${item.pathToPhoto}`}
                               />{" "}
                               {item.title}
                             </span>
@@ -188,7 +217,30 @@ export const ProductListComponents = () => {
                               {item.manufacturer}
                             </span>
                           </TableCell>
-
+                          <TableCell>
+                            <div className="d-flex  align-items-center justify-content-end">
+                              <Link
+                                className={`btn btn-primary ${styles["my-btn-edit"]} me-4`}
+                                to={`/admin/updateProduct/${item.id}`}
+                              >
+                                Оновити
+                              </Link>
+                              <button
+                                className={`btn btn-danger ${styles["my-btn-delete"]}`}
+                                onClick={async () => {
+                                  let res = await deleteProduct(item.id);
+                                  if (res.status === Success) {
+                                      //toast.success("Успіх!");
+                                      window.location.reload();
+                                  } else {
+                                      toast.error("Помилка");
+                                  }
+                                }}
+                              >
+                                Видалити
+                              </button>
+                            </div>
+                          </TableCell>
                           {/* <TableCell> */}
                           {/* <div className="d-flex align-items-center"> */}
                           {/* <BtnEditSeriaModal /> */}
@@ -271,15 +323,26 @@ export const ProductListComponents = () => {
                     )})}
                   </React.Fragment>
                 ))} */}
+
+                {Array.from(Array(emptyRowCount)).map((_, index) => (
+                  <TableRow key={`empty-${index}`} className={`${styles["tb-product"]}`}>
+                    <TableCell colSpan={columns.length}>
+
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
           <div className={`d-flex justify-content-end align-items-center`}>
-            <PaginationComponent 
-              setContent={(a)=>setRows(a)}
-              getContent={async (page)=>{
+            <PaginationComponent
+              setContent={(a) => setRows(a)}
+              getContent={async (page) => {
                 let res = await getProductsAdmin(page, search);
-                if(res.status === Success){
+                
+                const newUrl = `/admin/${ProductListPath}/${page}`;
+                window.history.pushState({}, "", newUrl);
+                if (res.status === Success) {
                   return res.data;
                 }
               }}
@@ -287,7 +350,7 @@ export const ProductListComponents = () => {
               page={page}
               setPage={setPage}
               countOfPages={countOfPages}
-              /> 
+            />
           </div>
         </Paper>
       </div>

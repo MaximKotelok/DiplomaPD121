@@ -48,14 +48,14 @@ namespace Web.Controllers
 		[HttpGet("GetPharmacyProductByTitle")]
 		public IActionResult GetPharmacyProductByTitle(int? id, string? search, int? count)
 		{
-			var pharmacy = _pharmacyService.GetPharmacy(a=>a.Id == id, "ConcreteProducts,ConcreteProducts.Product");
+			var pharmacy = _pharmacyService.GetPharmacy(a => a.Id == id, "ConcreteProducts,ConcreteProducts.Product");
 			if (pharmacy is not null)
 			{
-				var result = pharmacy.ConcreteProducts.Where(a => 
-				a.Quantity>0&&
+				var result = pharmacy.ConcreteProducts.Where(a =>
+				a.Quantity > 0 &&
 				(a.Product.Title.Contains(search) ||
 				a.Product.ShortDescription.Contains(search)))
-					.Take(count == null?3:count.Value);
+					.Take(count == null ? 3 : count.Value);
 				return Ok(result);
 			}
 			return BadRequest("No pharmacy found");
@@ -112,7 +112,7 @@ namespace Web.Controllers
 							(a.Pharmacy.User != null && a.Pharmacy.User.Email.Contains(model.Search)
 						);
 					}).Count();
-			
+
 
 
 			return Ok(model.GetCountOfPages(count));
@@ -123,85 +123,88 @@ namespace Web.Controllers
 		public IActionResult GetPharmaciesForAdmin(PagePharmacyViewModel model)
 		{
 			int page = model.Page != null ? model.Page.Value - 1 : 0;
-			int skipCount = page * model.ItemsPerPage;
-			bool isClearLast = false;
+			int itemsPerPage = model.ItemsPerPage;
+			int skipCount = page * itemsPerPage;
 
-			var pharmaCompanies = _pharmaCompany.GetAllPharmaCompanies(includeProperties: "Pharmacies,Pharmacies.User");
+			var pharmaCompanies = _pharmaCompany.GetAllPharmaCompanies(includeProperties: "Pharmacies,Pharmacies.User").ToList();
 
-			if (model.IsDisplayOnlyCompanies != null && model.IsDisplayOnlyCompanies.Value) //Очищуємо аптеки якщо треба відобразити лише фарма компанії
+			if (model.IsDisplayOnlyCompanies != null && model.IsDisplayOnlyCompanies.Value)
 			{
 				pharmaCompanies = pharmaCompanies.Select(a =>
 				{
 					a.Pharmacies = new List<Pharmacy>();
 					return a;
-				});
+				}).ToList();
 			}
 
-			var result = pharmaCompanies
-				.SelectMany(a => a.Pharmacies.Count() > 0 ?
-				(a.Pharmacies.Select(pharmacy =>
-					new PharmacyAdminCalculateModel { PharmaCompany = a, Pharmacy = pharmacy }).Prepend(
-						new PharmacyAdminCalculateModel { IsTmp = true })
-				) :
-					(new List<PharmacyAdminCalculateModel> { new PharmacyAdminCalculateModel { PharmaCompany = a, Pharmacy = null, IsTmp=true } })
-					).Where(a =>
-					{
-
-						if (a.IsTmp == true)
-						{
-							return true;
-						}
-						else if (a.Pharmacy == null)
-							return a.PharmaCompany!.Title!.Contains(model!.Search!);
-						else
-							return a.PharmaCompany!.Title!.Contains(model!.Search!) ||
-							a.Pharmacy.Id.ToString().Contains(model.Search!) ||
-							a.Pharmacy.Address.Contains(model.Search) ||
-							(a.Pharmacy.User != null && a.Pharmacy.User.Email.Contains(model.Search)
-						);
-					})
-					.Skip(skipCount)
-					.TakeWhile((item, index) => {
-
-						if (index < model.ItemsPerPage || (isClearLast && index == model.ItemsPerPage))
-						{
-							if (index == model.ItemsPerPage - 1 && item.IsTmp == true)
-							{
-								isClearLast = true;
-							}
-							return true;
-						}
-						return false;
-					})
-				.Where(a => !(a.IsTmp == true && a.PharmaCompany == null))
-
-					.GroupBy(a => new
-					{
-						id = a.PharmaCompany.Id,
-						name = a.PharmaCompany.Title,
-						pathToPhoto = a.PharmaCompany.PathToPhoto
-					}).Select(a => new
-					{
-						a.Key.id,
-						a.Key.name,
-						a.Key.pathToPhoto,
-						data = a.Where(a => a.Pharmacy != null).Select(a => new
-						{
-							pharmacy = a.Pharmacy
-						,
-							pharmacist = a.Pharmacy.User != null
-						? a.Pharmacy.User.Email : null
-						}).ToList()
-					}).ToList();
-			if (isClearLast)
+			// Розплющення структури і додавання тимчасових елементів для компаній
+			var pharmaciesList = pharmaCompanies.SelectMany(a =>
+				a.Pharmacies.Count() > 0 ?
+				a.Pharmacies.Select(pharmacy => new PharmacyAdminCalculateModel
+				{
+					PharmaCompany = a,
+					Pharmacy = pharmacy
+				}).Prepend(new PharmacyAdminCalculateModel { PharmaCompany = a, IsTmp = true }) :
+				new List<PharmacyAdminCalculateModel>
+				{
+			new PharmacyAdminCalculateModel
 			{
-				result.Last().data.Clear();
+				PharmaCompany = a,
+				Pharmacy = null,
+				IsTmp = true
 			}
-			
+				}).ToList();
+
+			// Застосування фільтра пошуку
+			var filteredList = pharmaciesList;
+
+
+			if (!model.Search.IsNullOrEmpty())
+			{
+
+				filteredList = filteredList.Where(a =>
+						(a.Pharmacy == null ?
+							a.PharmaCompany.Title.IndexOf(model.Search, StringComparison.OrdinalIgnoreCase) >= 0 :
+							a.PharmaCompany.Title.IndexOf(model.Search, StringComparison.OrdinalIgnoreCase) >= 0 ||
+							a.Pharmacy.Id.ToString().IndexOf(model.Search, StringComparison.OrdinalIgnoreCase) >= 0 ||
+							a.Pharmacy.Address.IndexOf(model.Search, StringComparison.OrdinalIgnoreCase) >= 0 ||
+							(a.Pharmacy.User != null && a.Pharmacy.User.Email.IndexOf(model.Search, StringComparison.OrdinalIgnoreCase) >= 0)))
+					.ToList();
+			}
+
+			// Пагінація
+			var paginatedList = filteredList.Skip(skipCount).Take(itemsPerPage).ToList();
+
+			// Групування по фармацевтичних компаніях і формування результату
+			var result = paginatedList
+				.GroupBy(a => new
+				{
+					id = a.PharmaCompany?.Id ?? 0,
+					name = a.PharmaCompany?.Title ?? string.Empty,
+					pathToPhoto = a.PharmaCompany?.PathToPhoto ?? string.Empty
+				})
+				.Select(a => new
+				{
+					id = a.Key.id,
+					name = a.Key.name,
+					pathToPhoto = a.Key.pathToPhoto,
+					data = a.Where(a => a.Pharmacy != null).Select(a => new
+					{
+						pharmacy = a.Pharmacy,
+						pharmacist = a.Pharmacy?.User?.Email ?? string.Empty
+					}).ToList()
+				}).ToList();
 
 			return Ok(result);
-
 		}
+
+
+
+
+
+
+
+
 		/*[HttpPost("GetAllPharmaciesForAdmin")]
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
 		public IActionResult GetAllPharmaciesForAdmin(PagePharmacyViewModel model)

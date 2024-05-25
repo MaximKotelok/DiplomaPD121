@@ -23,7 +23,7 @@ namespace Web.Controllers
 		}
 
 		[HttpGet("GetGroupsForProductAdd")]
-		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_PharmaCompany)]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = $"{SD.Role_PharmaCompany},{SD.Role_Admin}")]
 		public IActionResult GetGroupsForProductAdd()
 		{
 			var result = _service.GetAllProductAttributeGroups(a=> 
