@@ -16,7 +16,9 @@ import CircleCard from "../../../Common/CircleCardComponent/CircleCard";
 import CustomList from "./Component/CustomListComponent/CustomList";
 import AccordionComponnent from "../../../Common/AccordionQuestionComponent/accordionComponent";
 import MiniProductCardComponent from "../../../Common/MiniProductCardComponent/MiniProductCardComponent";
-import homePageImg from "../../../../assets/images/BANNER.png";
+import homePageImg from "../../../../assets/images/baner-home/head-banner.png";
+import twoSmallBanner from "../../../../assets/images/baner-home/bottom-small-photo.png";
+import smallBanner from "../../../../assets/images/baner-home/banner-small.png";
 import AdaptiveContainerComponent from "../../../Common/AdaptiveContainerComponent/AdaptiveContainerComponent";
 import "./Home.css";
 import {
@@ -35,8 +37,13 @@ import {
 } from "../../../../services/product";
 import { getCountBrands } from "../../../../services/brand";
 import { getFavs } from "../../../../services/favProducts";
-import { initFavsProducts, isFavoriteProduct } from "../../../../utils/Functions";
+import {
+  initFavsProducts,
+  isFavoriteProduct,
+} from "../../../../utils/Functions";
 import ActualCategoryComponent from "./Component/ActualCategoryComponent/ActualCategoryComponent";
+import useWindowSize from "../Profile/UseWindowSize.js";
+
 export const Home = () => {
   var displayName = Home.name;
 
@@ -92,7 +99,6 @@ export const Home = () => {
     setBrands(await getCountBrands(7));
   }
   async function initRecentlyViewed() {
-
     let ids = getRecentlyViewedProductsIds();
     if (ids.length == 0) return;
 
@@ -118,36 +124,47 @@ export const Home = () => {
     setCity(presenceCookie);
   }
 
+  // ширина екрану
+
+  const { width } = useWindowSize();
+  const isMobile = width <= 768;
+
   // Макс поправ карточки і каруселі!!!!!!!!!!!!!!!!!!!!!!-!!!!!!!!!!!!!!!!!!!!!!!!!
   return (
     <>
-      <div className="row">
-        <img src={homePageImg} />
+      <div className="row ">
+        <img src={homePageImg} className="img-w-h-100" />
         <div>
-          <div className="div-under-home-img">
+          <div className="div-under-home-img ">
             <div className="div-under-home-img-child"></div>
           </div>
         </div>
-        <div className="row">
-          <div className="col-4">
-            <CustomList data={categories.data} />
-            {/* <MoreLink link="." /> */}
-          </div>
-
-          <div className="col-8">
+        <div className="row ">
+          {!isMobile && (
+            <div className="col-md-4 col-12">
+              <CustomList data={categories.data} />
+              {/* <MoreLink link="." /> */}
+            </div>
+          )}
+          <div className="col-md-8 col-12">
             <div className="row mt-2" style={{ margin: 0, padding: 0 }}>
-
-            <h3 className="text-title mb-3">Актуальні категорії</h3>
-              <AdaptiveContainerComponent xlDisplayCount={3} lgDisplayCount={2} mdDisplayCount={1} isInMiddleIfNotFull={false}
-              className="p-0"
+              <h3 className="text-title mb-3">Актуальні категорії</h3>
+              <AdaptiveContainerComponent
+                xlDisplayCount={3}
+                lgDisplayCount={2}
+                mdDisplayCount={1}
+                isInMiddleIfNotFull={false}
+                className="p-0"
               >
-                {
-                  recommendedCategory.map(a => 
-                  <ActualCategoryComponent id={a.id} title={a.title} pathToRecomendedPhoto={a.pathToRecomendedPhoto} className="mx-1"/>
-                )
-                }
+                {recommendedCategory.map((a) => (
+                  <ActualCategoryComponent
+                    id={a.id}
+                    title={a.title}
+                    pathToRecomendedPhoto={a.pathToRecomendedPhoto}
+                    className="mx-1"
+                  />
+                ))}
               </AdaptiveContainerComponent>
-
             </div>
             <div className="row mt-5" style={{ margin: 0, padding: 0 }}>
               {recently && recently.map && (
@@ -177,58 +194,66 @@ export const Home = () => {
           <div className="d-flex justify-content-between mb-3">
             <h3 className="text-title ">Бренд</h3>
           </div>
-          <AdaptiveContainerComponent xxlDisplayCount={5} xlDisplayCount={3} lgDisplayCount={2} isInMiddleIfNotFull={false} className="flex-container d-flex flex-wrap"
-              >
-
+          <AdaptiveContainerComponent
+            xxlDisplayCount={5}
+            xlDisplayCount={3}
+            lgDisplayCount={2}
+            isInMiddleIfNotFull={false}
+            className="flex-container d-flex flex-wrap"
+          >
             {brands.data && brands.data.map
               ? brands.data.map((a) => {
-                return (
-                  <CircleCard
-                    key={a.id}
-                    id={a.id}
-                    text={a.name}
-                    imageUrl={`${ApiPath}${a.pathToPhoto}`}
-                  />
-                );
-              })
+                  return (
+                    <CircleCard
+                      key={a.id}
+                      id={a.id}
+                      text={a.name}
+                      imageUrl={`${ApiPath}${a.pathToPhoto}`}
+                    />
+                  );
+                })
               : new Array(7).fill(null).map((_, index) => {
-                return <CircleCard key={index} text="Name" />;
-              })}
+                  return <CircleCard key={index} text="Name" />;
+                })}
           </AdaptiveContainerComponent>
         </div>
-        {topOffers && topOffers.map &&
-          (<div className="col-12 mt-5">
+        {topOffers && topOffers.map && (
+          <div className="col-12 mt-5">
             <div className="d-flex justify-content-between">
               <h3 className="text-title mb-4">Популярні товари</h3>
               <MoreLink link="." />
             </div>
 
-
             <div className="d-flex justify-content-start">
-              {
-                topOffers.map((a, index) => <PopularButtonComponnent text={a.title} key={index} onClick={() => setSelectedTopOfferIndex(index)} />)
-              }
-
+              {topOffers.map((a, index) => (
+                <PopularButtonComponnent
+                  text={a.title}
+                  key={index}
+                  onClick={() => setSelectedTopOfferIndex(index)}
+                />
+              ))}
             </div>
-            <CarouselListComponent xlDisplayCount={5} xxlDisplayCount={6}>
-              {topOffers[selectedTopOfferIndex].data.map((a, index) => (<MiniProductCardComponent
-                key={index}
-                isFavorite={isCustomFavorite}
-                id={a.id}
-                title={a.title}
-                description={a.shortDescription}
-                minPrice={a.minPrice}
-                countOfPharmacies={a.count}
-                manufacturer={a.manufacturer}
-                imageUrl={a.pathToPhoto}
-
-              />))}
+            <CarouselListComponent mdDisplayCount={2} xlDisplayCount={5} xxlDisplayCount={6}>
+              {topOffers[selectedTopOfferIndex].data.map((a, index) => (
+                <MiniProductCardComponent
+                  key={index}
+                  isFavorite={isCustomFavorite}
+                  id={a.id}
+                  title={a.title}
+                  description={a.shortDescription}
+                  minPrice={a.minPrice}
+                  countOfPharmacies={a.count}
+                  manufacturer={a.manufacturer}
+                  imageUrl={a.pathToPhoto}
+                />
+              ))}
             </CarouselListComponent>
-          </div>)
-        }
-        <div className="col-12 baner-bottom mt-5"></div>
+          </div>
+        )}
+        <div className="col-12 baner-bottom  mt-5">
+          <img src={smallBanner} className="img-w-h-100" />
+        </div>
       </div>
-
 
       {pngCards && pngCards.map && (
         <div className="col-12 mt-5">
@@ -277,7 +302,11 @@ export const Home = () => {
           />
         </div>
 
-        <div className="col-12 col-md-6"></div>
+        {!isMobile && (
+          <div className="col-12 col-md-6">
+            <img src={twoSmallBanner} className="img-w-h-100" />
+          </div>
+        )}
       </div>
     </>
   );

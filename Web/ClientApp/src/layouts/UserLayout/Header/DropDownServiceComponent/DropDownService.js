@@ -6,7 +6,7 @@ import SearchIcon from "./tabler-icon-list-search.svg";
 import AlertIcon from "./tabler-icon-alert-triangle.svg";
 import { ReactComponent as ServiceIcon } from "./ServiceIcon.svg";
 
-export const DropDownService = ({className}) => {
+export const DropDownService = ({ className }) => {
   return (
     <div className={`dropdown ${className}`}>
       <button
@@ -33,7 +33,11 @@ export const DropDownService = ({className}) => {
           <BlockMenu iconPath={SearchIcon} text="Пошук по діючій речовині" />
         </div> */}
         <div className={``}>
-          <BlockMenu iconPath={AlertIcon} text="Браковані серії" />
+          <BlockMenu
+            iconPath={AlertIcon}
+            hrf="/DefectiveSeries"
+            text="Браковані серії"
+          />
         </div>
       </div>
     </div>

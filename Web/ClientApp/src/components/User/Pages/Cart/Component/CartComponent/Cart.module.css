@@ -15,3 +15,12 @@ margin-bottom: 44px;}
     margin-top: 0px;
     margin-bottom: 30px;}
 }
+
+.text-pust{
+    color: rgba(13, 30, 49, 1);
+font-family: var(--standart-fon);
+font-size: 16px;
+font-weight: 700;
+line-height: 20.08px;
+text-align: left;
+}

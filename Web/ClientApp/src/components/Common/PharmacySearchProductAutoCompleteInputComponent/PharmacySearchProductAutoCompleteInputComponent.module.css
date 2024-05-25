@@ -34,6 +34,7 @@ padding: 6px 18px;
     margin: 0;
 
  }
+ 
  .my-w-100{
    width: 100% !important;
  }
@@ -44,6 +45,8 @@ padding: 6px 18px;
    padding: 4px 6px!important;
    
 }
+
+
 .text-grn{
 font-family: var(--standart-font);
 font-size: 16px;

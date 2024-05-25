@@ -6,6 +6,7 @@ import "./CarouselListComponent.css";
 import Carousel from "nuka-carousel";
 
 import { isWidthDown } from "../../../../utils/Functions";
+import { useRef } from "react";
 
 const CarouselListComponent = ({
   children,
@@ -35,11 +36,10 @@ const CarouselListComponent = ({
     updateSize();
     return () => window.removeEventListener("resize", updateSize);
   }, []);
-
   return (
     <>
       <h3 className="text-title mb-3">{title}</h3>
-      <Carousel cellAlign="left" slidesToShow={count}>
+      <Carousel  cellAlign="left" slidesToShow={count}>
         {children}
       </Carousel>
     </>
