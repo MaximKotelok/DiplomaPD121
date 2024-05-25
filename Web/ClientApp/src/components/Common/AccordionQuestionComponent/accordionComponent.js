@@ -9,7 +9,8 @@ import { ReactComponent as MinusVictorina } from "../../../assets/images/minusVi
 const AccordionComponent = ({
   id = "1",
   title = "text",
-header="Загаловок"
+  header = "Загаловок",
+  buttonLocation = "justify-content-end",
 }) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [isOpen, setIsOpen] = useState(false);
@@ -22,7 +23,6 @@ header="Загаловок"
   const handleMouseLeave = () => {
     setIsHovered(false);
   };
-
 
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
@@ -54,7 +54,9 @@ header="Загаловок"
           } ${isOpen ? styles["collapsed"] : ""} `}
           style={{ width: "100%" }}
         >
-          <div className="col-1 d-flex align-items-center justify-content-end p-0">
+          <div
+            className={`col-1 d-flex align-items-center justify-content-center p-0 ${styles["ps-my-s-10"]} `}
+          >
             <LogoSvb className="" />
           </div>
 
@@ -78,13 +80,13 @@ header="Загаловок"
               style={{ padding: "0" }}
             >
               <hr className={`${styles["hr-cordeon"]}`} />
-              <p className={`${styles["text-body-victorina"]}`}>
-            {title}
-              </p>
+              <p className={`${styles["text-body-victorina"]}`}>{title}</p>
             </div>
           </div>
 
-          <div className="col-1 d-flex align-items-center justify-content-end p-0">
+          <div
+            className={`col-1 d-flex align-items-center ${buttonLocation} p-0`}
+          >
             <button
               onClick={toggleAccordion}
               data-bs-target={id}
