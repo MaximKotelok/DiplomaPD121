@@ -6,6 +6,7 @@ import LayoutProvider from "../LayoutProvider";
 import LayoutContext from "../LayoutContext";
 // import SideBarComponnents from "./pages/Admin/components/SideBar/SideBarComponnents";
 import LayoutAdmin from "../AdminLayout/LayoutAdmin";
+import styles from "./Layout.module.css";
 import { Element } from "react-scroll";
 import { LayoutProviderValues } from "../../utils/Constants";
 import { ToastContainer } from "react-toastify";
@@ -19,6 +20,7 @@ export class Layout extends Component {
 
   state = {
     isMobile: false,
+    isWideScreen: window.innerWidth > 1200,
   };
 
   componentDidMount() {
@@ -27,16 +29,19 @@ export class Layout extends Component {
 
     // Add an event listener to check screen width on window resize
     window.addEventListener("resize", this.checkScreenWidth);
+    window.addEventListener("resize", this.handleResize);
   }
 
   componentWillUnmount() {
     // Remove the event listener when the component is unmounted
     window.removeEventListener("resize", this.checkScreenWidth);
+    window.removeEventListener("resize", this.handleResize);
   }
 
   // Function to check screen width and update the state
   checkScreenWidth = () => {
     this.setState({ isMobile: window.innerWidth <= 767 });
+    this.setState({ isWideScreen: window.innerWidth > 1200 });
   };
 
   render() {
@@ -49,10 +54,26 @@ export class Layout extends Component {
         }
       >
         {this.state.isMobile ? <NavMenuPhone /> : <NavMenu />}
-        <Container tag="main">
+        {/* <div className={`${this.state.isWideScreen && "container" }`} tag="main">
+          <Outlet />
+        </div> */}
+        <Container
+          className={
+            this.context.stateComponentMounted === LayoutProviderValues.MAP
+              ? ""
+              : !this.state.isWideScreen && styles["my-class-container"]
+          }
+          tag="main"
+        >
           <Outlet />
         </Container>
-        <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
+        <ToastContainer
+          position="bottom-right"
+          autoClose={3000}
+          hideProgressBar
+        />
+
+        
         <FooterComponent />
 
         {this.state.isMobile && <MenuBottomPhone />}

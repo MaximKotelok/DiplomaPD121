@@ -16,10 +16,15 @@ import { getRecentlyViewedProductsIds } from "../../../../../../utils/SessionSto
 import { getProductsFromIdsArray } from "../../../../../../services/product";
 import MiniProductCardComponent2 from "../../../../../Common/MiniProductCardComponent2/MiniProductCardComponent2";
 import MiniProductCardComponent from "../../../../../Common/MiniProductCardComponent/MiniProductCardComponent";
+import useWindowSize from "../../../Profile/UseWindowSize";
 
 const CartComponent = () => {
   const dispatch = useDispatch();
   const { cart, loader } = useSelector((state) => state.cart);
+
+  const { width } = useWindowSize();
+  const isMobile = width <= 1200;
+
 
   const [recently, setRecently] = useState([]);
   const [favs, setFavs] = useState([]);
@@ -98,10 +103,11 @@ const CartComponent = () => {
     // <div className={`${styles["my-10"]} container text-center d-flex flex-column align-items-center`}>
 
     // </div>
-    <div>
+    <div className={`${!isMobile ? "container " : styles["my-container"]}`}>
+    {/* <div className={`${!isMobile ? "container " : styles["my-container"]}`}> */}
       <h2 className={` ${styles["head-text"]} `}>Кошик</h2>
 
-      <div className="container">
+      <div>
         {/* Якщо є дані */}
        {cart && cart.length>0 ? cart.map((a) => {
           return <CardCartContainerComponent data={a} />;

@@ -36,6 +36,7 @@ export class NavMenu extends Component {
     this.toggleNavbar = this.toggleNavbar.bind(this);
     this.state = {
       collapsed: true,
+      isWideScreen: window.innerWidth > 1200,
     };
   }
 
@@ -45,48 +46,63 @@ export class NavMenu extends Component {
     });
   }
 
+  handleResize = () => {
+    this.setState({ isWideScreen: window.innerWidth > 1200 });
+  };
+
+  componentDidMount() {
+    window.addEventListener("resize", this.handleResize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.handleResize);
+  }
   render() {
     return (
       <header>
         <Navbar
-          className="custom-navbar border-bottom box-shadow mb-3"
-          container
+          className=" custom-navbar border-bottom box-shadow mb-3  d-flex justify-content-center"
+          // container={true}
+          // container={this.state.isWideScreen ? false : true}
+          container={false}
           light
         >
-          <div className="inner-custom-navbar navbar-nav flex-grow">
-            <NavbarBrand className="logo" tag={Link} to="/">
-              <Logo height={40} fill="black" className="logo-pharma" />
-            </NavbarBrand>
+          <div className={` ${this.state.isWideScreen ? "" : "container"}`}>
+            <div className="inner-custom-navbar navbar-nav flex-grow">
+              <NavbarBrand className="logo" tag={Link} to="/">
+                <Logo height={40} fill="black" className="logo-pharma" />
+              </NavbarBrand>
 
-            <div className="catalogue">
-              <DropDown iconPath={CatalogIcon} />
+              <div className="catalogue">
+                <DropDown iconPath={CatalogIcon} />
+              </div>
+
+              <DropDownService className="services" />
+
+              <div className="geo me-2">
+                <DropDownLocation iconPath={GeoIcon} text="Геолокація" />
+              </div>
+
+              <AutoCompleteInput
+                className="searchbar"
+                getData={(title) => GetProductByTitle(title)}
+                onResultClick={(id) => {
+                  window.location.href = `/product-details/${id}`;
+                }}
+              />
+
+              <NavLink tag={Link} className="cart nav-link-my" to="/cart">
+                <IconButtonNoText iconPath={CartIcon} />
+              </NavLink>
+
+              <NavLink
+                tag={Link}
+                className="profile nav-link-my"
+                to={checkIsAuth() ? "/profile" : "/auth"}
+              >
+                <IconButtonNoText iconPath={ProfileIcon} />
+              </NavLink>
             </div>
-            
-            <DropDownService className="services" />
-
-            <div className="geo me-2">
-              <DropDownLocation iconPath={GeoIcon} text="Геолокація" />
-            </div>
-
-            <AutoCompleteInput
-              className="searchbar"
-              getData={(title) => GetProductByTitle(title)}
-              onResultClick={(id) => {
-                window.location.href = `/product-details/${id}`;
-              }}
-            />
-
-            <NavLink tag={Link} className="cart nav-link-my" to="/cart">
-              <IconButtonNoText iconPath={CartIcon} />
-            </NavLink>
-
-            <NavLink
-              tag={Link}
-              className="profile nav-link-my"
-              to={checkIsAuth() ? "/profile" : "/auth"}
-            >
-              <IconButtonNoText iconPath={ProfileIcon} />
-            </NavLink>
           </div>
         </Navbar>
       </header>

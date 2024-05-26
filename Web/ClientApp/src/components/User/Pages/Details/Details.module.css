@@ -11,3 +11,14 @@
     margin-bottom: 12px;
     color: rgba(28, 28, 28, 0.8);
 }
+
+@media screen and (max-width: 991.8px) {
+    .responsive-component {
+        display: none !important;
+      }
+}
+
+
+  .img-w-h-100{
+    width: 240px;
+  }

@@ -127,9 +127,12 @@ export const Reservation = () => {
 
   if (loader == StateInfos.LOADING) return "Loading...";
   return (
-    <div className={`row ${styles["global-text"]}`}>
+    <div
+      className={`row ${styles["global-text"]}  ${styles["my-container"]}  pe-xl-0 ps-xl-0 `}
+    >
       <h2 className={` ${styles["head-text"]}`}>Бронювання</h2>
-      <div className={`col-md-8`}>
+
+      <div className={`col-md-12 col-xl-8 `}>
         {!isAuth && (
           <div className={`${styles["div-form"]} ${styles["div-block"]}`}>
             <div className={`mb-4`}>
@@ -207,7 +210,7 @@ export const Reservation = () => {
         </div>
       </div>
 
-      <div className={`col-md-4  mb-5`}>
+      <div className={`col-md-12  col-xl-4 mb-5`}>
         <div className={` ${styles["div-block"]} ${styles["div-pidsum"]}`}>
           <h3 className={`${styles["text-pidsum"]} mb-5`}>Підсумок</h3>
           <div>
@@ -224,6 +227,7 @@ export const Reservation = () => {
               );
             })}
           </div>
+
           <div className={`d-flex mb-2   justify-content-between`}>
             <h6 className={`text-zag-sum`}>Загальна сума: </h6>
             <h5 className={`number-text`}>
@@ -234,7 +238,10 @@ export const Reservation = () => {
               <span>грн</span>{" "}
             </h5>
           </div>
-          <button className={`brn-form brn-primary-form mb-3 ${styles["btn-hover-order"]} `} onClick={submit}>
+          <button
+            className={`brn-form brn-primary-form mb-3 ${styles["btn-hover-order"]} `}
+            onClick={submit}
+          >
             Забронювати
           </button>
         </div>

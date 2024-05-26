@@ -26,6 +26,8 @@ import {
 } from "../../../../services/product";
 import MedicineTableComponent from "./Component/MedicineTableComponent/MedicineTableComponent";
 import PriceHistoryComponent from "./Component/PriceHistoryComponent/PriceHistoryComponent";
+import bannerBottom from "../../../../assets/images/details/banner-bottom.png";
+import useWindowSize from "../Profile/UseWindowSize";
 
 export const Details = () => {
   const { id } = useParams();
@@ -113,6 +115,7 @@ export const Details = () => {
   if (loader != StateInfos.LOADED) {
     return <div>Loading...</div>;
   }
+
   return (
     <div>
       <DescriptionCategoryPathComponent data={product.pathToCategory} />
@@ -132,6 +135,7 @@ export const Details = () => {
           {product.description}
         </Description>
       </div>
+
       <hr />
 
       {product.medicineTable && (
@@ -153,21 +157,30 @@ export const Details = () => {
         <p className={`${styles["section-title"]}`} id="questions">
           Часті питання
         </p>
-        <div className="col-12 col-md-6">
+        <div className="col-12 col-md-12 col-lg-6">
+          <AccordionComponent />
+          <AccordionComponent />
           <AccordionComponent />
         </div>
-        {priceHistory && priceHistory.length > 0 && (
-          <div className="row" style={{ padding: "0" }}>
-            <p className={`${styles["section-title"]}`} id="characteristic">
-              Середня ціна по Україні
-            </p>
-            <div className="col-12">
-              <PriceHistoryComponent history={priceHistory} />
-            </div>
-          </div>
-        )}
 
-        <div className="col-12 col-md-6"></div>
+        <div
+          className={` col-lg-6 ${styles["responsive-component"]} d-flex justify-content-end`}
+        >
+          <img src={bannerBottom} className={`${styles["img-w-h-240"]}`} />
+        </div>
+
+        <div>
+          {priceHistory && priceHistory.length > 0 && (
+            <div className="row" style={{ padding: "0" }}>
+              <p className={`${styles["section-title"]}`} id="characteristic">
+                Середня ціна по Україні
+              </p>
+              <div className="col-12">
+                <PriceHistoryComponent history={priceHistory} />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -34,15 +34,27 @@ padding: 6px 18px;
     margin: 0;
 
  }
+ @media only screen and (min-width: 1200px) {
 
- .product-back-serach-bar {
-   max-width: 621px!important;
-   width: 41vw!important;
-   padding: 4px 6px!important;
-   
+   .product-back-serach-bar {
+      /* max-width: 621px!important;
+      width: 41vw!important; */
+      width: 100%!important;
+      min-width: 41vw!important;
+      padding: 4px 6px!important;
+   }
+    
 }
 
-
+@media only screen and (max-width: 900px) {
+   .product-back-serach-bar {
+      /* max-width: 621px!important; */
+      width: 100%!important;
+      padding: 4px 6px!important;
+      
+   }
+}
+   
  .li-class{
     list-style-type: none;
     padding: 8px;
