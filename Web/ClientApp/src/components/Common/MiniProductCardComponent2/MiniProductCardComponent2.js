@@ -16,6 +16,7 @@ const MiniProductCardComponent2 = ({
   minPrice = 0.0,
   onChangeFavorite,
   isFavorite,
+  className
 }) => {
   const [isFavoriteState, setIsFavoriteState] = useState(false);
   useEffect(() => {
@@ -37,7 +38,7 @@ const MiniProductCardComponent2 = ({
   }
 
   return (
-    <div className="col-6  col-md-4 col-xl-3 p-1 pb-5 d-inline-block">
+    <div className={`col-6  col-md-4 col-xl-3 p-1 pb-5 d-inline-block ${className}`}>
       <div className="mt-2 product-card d-inline-block">
         <div className="position-relative">
           <FavoriteButton

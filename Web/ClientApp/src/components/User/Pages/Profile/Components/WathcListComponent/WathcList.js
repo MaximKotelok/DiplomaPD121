@@ -35,7 +35,7 @@ const WathcList = () => {
   }
 
   function isCustomFavorite(id) {
-    return isFavoriteProduct(id, favs);
+    return isFavoriteProduct(id);
   }
 
   return (

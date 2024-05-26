@@ -77,11 +77,16 @@ namespace Web.Controllers
 			};
 
             _reservationService.InsertReservation(reservation);
-            return Ok();
+
+			double total = reservation.ReservationItems.Sum(a => a.Quantity * a.ConcreteProduct.Price);
+
+			await _emailService.SendBookingInfoForUser(reservation.Email, _reservationStatusService.GetAllReservationStatuses(a => a.Status == SD.ReservationStatusWaiting).FirstOrDefault().Status, $"{total.ToString("N2")} UAH");
+
+			return Ok();
         }
 
         [HttpPost("Reserve")]
-        public IActionResult Reserve(ReservationPostViewModel model)
+        public async Task<IActionResult> Reserve(ReservationPostViewModel model)
         {
 
 			var products = model
@@ -113,7 +118,11 @@ namespace Web.Controllers
 				StatusID = _reservationStatusService.GetAllReservationStatuses(a=>a.Status==SD.ReservationStatusWaiting).FirstOrDefault().Id
 			};
 			_reservationService.InsertReservation(reservation);
-            return Ok();
+			double total = reservation.ReservationItems.Sum(a => a.Quantity * a.ConcreteProduct.Price);
+
+			await _emailService.SendBookingInfoForUser(reservation.Email, _reservationStatusService.GetAllReservationStatuses(a => a.Status == SD.ReservationStatusWaiting).FirstOrDefault().Status, $"{total.ToString("N2")} UAH");
+
+			return Ok();
         }
 
         [HttpGet("GetReservations")]

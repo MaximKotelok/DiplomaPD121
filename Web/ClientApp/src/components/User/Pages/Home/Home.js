@@ -43,6 +43,7 @@ import {
 } from "../../../../utils/Functions";
 import ActualCategoryComponent from "./Component/ActualCategoryComponent/ActualCategoryComponent";
 import useWindowSize from "../Profile/UseWindowSize.js";
+import CarouselListWithoutNavsComponent from "../../Common/CarouselListWithoutNavsComponent/CarouselListWithoutNavsComponent.js";
 
 export const Home = () => {
   var displayName = Home.name;
@@ -221,17 +222,23 @@ export const Home = () => {
           <div className="col-12 mt-5">
             <div className="d-flex justify-content-between">
               <h3 className="text-title mb-4">Популярні товари</h3>
-              <MoreLink link="." />
             </div>
 
             <div className="d-flex justify-content-start">
+              <CarouselListWithoutNavsComponent
+              className="container-fluid"
+               mdDisplayCount={2} xlDisplayCount={3} xxlDisplayCount={3}
+              >
+
               {topOffers.map((a, index) => (
                 <PopularButtonComponnent
-                  text={a.title}
-                  key={index}
-                  onClick={() => setSelectedTopOfferIndex(index)}
+                className="col-xl-12 col-sm-6"
+                text={a.title}
+                key={index}
+                onClick={() => setSelectedTopOfferIndex(index)}
                 />
               ))}
+              </CarouselListWithoutNavsComponent>
             </div>
             <CarouselListComponent mdDisplayCount={2} xlDisplayCount={5} xxlDisplayCount={6}>
               {topOffers[selectedTopOfferIndex].data.map((a, index) => (

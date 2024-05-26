@@ -11,10 +11,35 @@ import CardCartContainerComponent from "../CardCartContainerComponent/CardCartCo
 import styles from "./Cart.module.css";
 import AccordionComponent from "../../../../../Common/AccordionQuestionComponent/accordionComponent";
 import CarouselListComponent from "../../../../Common/CarouselListComponent/CarouselListComponent";
+import { initFavsProducts, isFavoriteProduct } from "../../../../../../utils/Functions";
+import { getRecentlyViewedProductsIds } from "../../../../../../utils/SessionStorage";
+import { getProductsFromIdsArray } from "../../../../../../services/product";
+import MiniProductCardComponent2 from "../../../../../Common/MiniProductCardComponent2/MiniProductCardComponent2";
+import MiniProductCardComponent from "../../../../../Common/MiniProductCardComponent/MiniProductCardComponent";
 
 const CartComponent = () => {
   const dispatch = useDispatch();
   const { cart, loader } = useSelector((state) => state.cart);
+
+  const [recently, setRecently] = useState([]);
+  const [favs, setFavs] = useState([]);
+
+  useEffect(() => {
+    initFavsProducts(setFavs);
+    initRecentlyViewed();
+  }, []);
+
+  async function initRecentlyViewed() {
+    let ids = getRecentlyViewedProductsIds();
+    if (ids.length == 0) return;
+
+    setRecently(await getProductsFromIdsArray(ids));
+  }
+
+  function isCustomFavorite(id) {
+    return isFavoriteProduct(id);
+  }
+
   useEffect(() => {
     init();
   }, [dispatch]);
@@ -78,12 +103,11 @@ const CartComponent = () => {
 
       <div className="container">
         {/* Якщо є дані */}
-        {/* {cart.map((a) => {
+       {cart && cart.length>0 ? cart.map((a) => {
           return <CardCartContainerComponent data={a} />;
-        })} */}
-
-        {/* Якщо даних не маж */}
-        <div>
+        }):
+        (<div>
+           <div>
           <h4 className={` ${styles["text-pust"]} mb-4 `}>Кошик порожній</h4>
 
           <AccordionComponent
@@ -100,27 +124,37 @@ const CartComponent = () => {
           />
         </div>
 
+          {recently && recently.length > 0 &&
         <div style={{ marginBottom: "80px" }}>
           <h4 className={` ${styles["text-pust"]} mt-5 mb-4 `}>
             Нещодавно переглянуті товари
           </h4>
-          {/* 
-          <CarouselListComponent xlDisplayCount={5} xxlDisplayCount={6}>
-              {topOffers[selectedTopOfferIndex].data.map((a, index) => (<MiniProductCardComponent
-                key={index}
-                isFavorite={isCustomFavorite}
-                id={a.id}
-                title={a.title}
-                description={a.shortDescription}
-                minPrice={a.minPrice}
-                countOfPharmacies={a.count}
-                manufacturer={a.manufacturer}
-                imageUrl={a.pathToPhoto}
+            <CarouselListComponent xlDisplayCount={5} xxlDisplayCount={6}>
+              {
+                recently.map((a) => (
+                  <MiniProductCardComponent
 
-              />))}
-            </CarouselListComponent> */}
+                    key={a.id}
+                    id={a.id}
+                    title={a.title}
+                    description={a.shortDescription}
+                    minPrice={a.minPrice}
+                    countOfPharmacies={a.count}
+                    manufacturer={a.manufacturer}
+                    imageUrl={a.pathToPhoto}
+                    isFavorite={isCustomFavorite}
+                  />
+
+                )
+                )
+
+              }
+            </CarouselListComponent>
         </div>
-      </div>
+    }
+      </div>)
+  }
+  </div>
     </div>
   );
 };

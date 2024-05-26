@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ReactComponent as ArrowRight } from "./arrow-right.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import searchIcon from "../../../assets/images/header-icons/search-icon.svg"; // Замініть шлях імпорту на ваш шлях до зображення
 import styles from "./AutoCompleteInput.module.css";
@@ -10,7 +10,7 @@ const AutoCompleteInput = ({ className, getData, onResultClick }) => {
   const [dataFromServer, setDataFromServer] = useState([]);
   const [searchTerm, setSearchTerm] = useState([]);
   const [isFocused, setIsFocused] = useState(false);
-
+  const navigate = useNavigate();
   const handleChange = async (event) => {
     setSearchTerm(event.target.value);
     if (event.target.value !== "") {
@@ -51,6 +51,12 @@ const AutoCompleteInput = ({ className, getData, onResultClick }) => {
           placeholder="Пошук..."
           value={searchTerm}
           onInput={handleChange}
+          onKeyUp={(e)=>{
+            if (e.keyCode === 13){
+              navigate(`/Search/ByTitle/${searchTerm}`);
+              setSearchTerm("");
+            }
+          }}
         />
       </div>
 

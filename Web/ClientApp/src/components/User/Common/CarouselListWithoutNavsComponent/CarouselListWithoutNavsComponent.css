@@ -1,0 +1,50 @@
+.caption{
+    font-weight: 700;
+    font-size: 32px;
+    font-family: var(--standart-font);
+    margin: 4px;
+}
+
+
+
+.slider-container button:disabled {
+    display: none!important;
+}
+
+.slider-container .slider-control-centerright button,
+.slider-container .slider-control-centerleft button {
+    background-color: transparent!important;
+    color: transparent!important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    font-size: 0px;
+    cursor: pointer;    
+    position: relative!important;
+    line-height: 0;
+    background-repeat: no-repeat!important;    
+    background-position: center!important;
+    background-size: 30px!important;
+    position: absolute!important;
+    
+    top: -30px!important;
+}
+
+
+.slider-container .slider-control-centerright button {
+    right: 0!important;    
+    background-image: url("../../../../assets/images/arrow-right-short.svg")!important;
+    
+}
+
+.slider-container .slider-control-centerleft button {
+    right: 66px;
+    background-image: url("../../../../assets/images/arrow-left-short.svg")!important;
+}
+
+
+/* .paging-item {
+    fill:blue !important; Можна перефарбувати індикатори 
+} */

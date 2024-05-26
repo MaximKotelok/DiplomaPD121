@@ -158,6 +158,55 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
+		[HttpGet("GetByIdForUpdate")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
+		public IActionResult GetByIdForUpdate(int id)
+		{
+			Product product = _productService!.GetProduct(a => a.Id == id, includeProperties: "Properties,Properties,Properties.Attribute,ProductConfirm,ProductConfirm.ProductStatus")!;
+
+			if (product is not null && (product.ProductConfirm == null || product!.ProductConfirm!.ProductStatus!.Status!.Equals(SD.ProductStatusConfirmed)))
+			{
+				ProductViewModel productView = new ProductViewModel
+				{
+					Id = product.Id,
+					CategoryID = product.CategoryID,
+					Title = product.Title,
+					ShortDescription = product.ShortDescription,
+					ProductAttributeGroupID = product.ProductAttributeGroupID,
+					ManufacturerID = product.ManufacturerID,
+					BrandID = product.BrandID,
+					Description = product.Description,
+					PathToPhoto = product.PathToPhoto,
+					Properties = product.Properties!.Select(a => new PropertyViewModel { Value = a.Value, Id = a.Attribute!.Id, Name = a.Attribute.Name }).ToList()
+
+				};
+
+
+				product = _medicineService.GetMedicine(a => a.Id == id, includeProperties: "ActiveSubstance")!;
+				if (product is not null)
+				{
+					
+					return Ok(new
+					{
+						Product=productView,
+						ActiveSubstanceID = ((Medicine)product).ActiveSubstance!.Id,
+						AdultsId = ((Medicine)product).AdultsID,
+						ChildrenId = ((Medicine)product).ChildrenID,
+						PregnantId = ((Medicine)product).PregnantID,
+						NursingMothersId = ((Medicine)product).NursingMothersID,
+						AllergiesId = ((Medicine)product).AllergiesID,
+						DiabeticsId = ((Medicine)product).DiabeticsID,
+						DriversId = ((Medicine)product).DriversID
+					});
+				}
+
+				return Ok(productView);
+			}
+
+
+			return BadRequest("No records found");
+		}
+
 		[HttpGet("GetProductByIdForAdmins")]
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
 		public IActionResult GetProductByIdForAdmins(int id)
@@ -403,7 +452,7 @@ namespace Web.Controllers
 					{
 						if (model.Title != null)
 						{
-							return a.Title!.StartsWith(model.Title);
+							return a.Title!.IndexOf(model.Title, StringComparison.OrdinalIgnoreCase) >= 0;
 						}
 						return true;
 					}
@@ -417,7 +466,7 @@ namespace Web.Controllers
 					{
 						if (model.Title != null)
 						{
-							return a.Title!.StartsWith(model.Title);
+							return a.Title!.IndexOf(model.Title, StringComparison.OrdinalIgnoreCase) >= 0;
 						}
 						return true;
 					}
@@ -735,7 +784,8 @@ namespace Web.Controllers
 				{
 					PharmacompanyID = postModel.PharmaCompanyID,
 					ProductStatusID = _productStatusService.GetProductStatusByName(SD.ProductStatusUnderConsideration).Id,
-					CreationDate = DateTime.Now
+					CreationDate = DateTime.Now, 
+					Product=medicine
 				};
 				medicine.ProductConfirm = productConfirm;
 
@@ -800,7 +850,8 @@ namespace Web.Controllers
 				{
 					PharmacompanyID = postModel.PharmaCompanyID,
 					ProductStatusID = _productStatusService.GetProductStatusByName(SD.ProductStatusUnderConsideration).Id,
-					CreationDate = DateTime.Now
+					CreationDate = DateTime.Now,
+					Product = product
 				};
 				product.ProductConfirm = productConfirm;
 			}

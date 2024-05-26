@@ -10,6 +10,7 @@ import {
   upsertProduct,
   getProductById,
   getExistAttributeVariantsList,
+  getProductByIdForUpdate,
 } from "../../../../../../services/product";
 import { postPhotoToServer } from "../../../../../../services/photo";
 import { getAllTypes, getGroupById } from "../../../../../../services/group";
@@ -112,8 +113,9 @@ const UpsertProductComponent = () => {
     try {
       if (productId) {
         await getDataOrSetError(
-          async () => await getProductById(productId),
+          async () => await getProductByIdForUpdate(productId),
           async (value) => {
+
             tmpObject = {
               ...value,
               ...(value.product || {}),
@@ -145,7 +147,6 @@ const UpsertProductComponent = () => {
           let tmpMainAttributes = await getExistAttributeVariantsList(
             value.existAttributes
           );
-
           let newData = { ...data.formData };
           if (!productId) {
             newData = { ...newData, description: value.description };
@@ -168,6 +169,8 @@ const UpsertProductComponent = () => {
           if (tmpObject) {
             setCategory(tmpObject.categoryID);
             setType(tmpObject.productAttributeGroupID);
+            console.log(newData)
+            console.log(tmpObject)
             newData = fillNullValues(newData, tmpObject);
           }
 
@@ -175,13 +178,17 @@ const UpsertProductComponent = () => {
           if (value.descriptionName) {
             setCustomState(setData, "descriptionName", value.descriptionName);
           }
-          if (value.attributesInGroup && value.attributesInGroup.length)
+
+          if (value.attributesInGroup && value.attributesInGroup.length){
+
             setCustomState(
               setDataFromServer,
               "attributes",
               value.attributesInGroup
             );
-          else setCustomState(setDataFromServer, "attributes", []);
+          }
+          else
+          { setCustomState(setDataFromServer, "attributes", [])};
         }
       );
 
@@ -198,7 +205,6 @@ const UpsertProductComponent = () => {
       setStateInfo(StateInfos.ERROR);
     }
   }
-
   useEffect(() => {
     if (category && type && !data.isHeaderDisabled) {
       initAfterConfirm();

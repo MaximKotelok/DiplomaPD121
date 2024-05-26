@@ -220,7 +220,7 @@ export const ProductListComponents = () => {
                           <TableCell>
                             <div className="d-flex  align-items-center justify-content-end">
                               <Link
-                                className={`btn btn-primary ${styles["my-btn-edit"]} me-4`}
+                                className={`btn btn-primary ${styles["my-btn-edit"]} me-1`}
                                 to={`/admin/updateProduct/${item.id}`}
                               >
                                 Оновити
