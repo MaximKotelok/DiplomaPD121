@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import searchIcon from "../../../assets/images/header-icons/search-icon.svg"; // Замініть шлях імпорту на ваш шлях до зображення
 import styles from "./AutoCompleteInput.module.css";
 import { ApiPath, Success } from "../../../utils/Constants";
+import CustomImgComponent from "../CustomImgComponent/CustomImgComponent";
 
 const AutoCompleteInput = ({ className, getData, onResultClick }) => {
   const [dataFromServer, setDataFromServer] = useState([]);
@@ -60,7 +61,7 @@ const AutoCompleteInput = ({ className, getData, onResultClick }) => {
         />
       </div>
 
-      <div style={{ position: "relative", maxWidth: "621px" }}>
+      <div style={{ position: "relative", maxWidth: "100%" }}>
         {searchTerm.length > 0 && isFocused && (
           <ul className={`${styles["ul-class"]}`}>
             <hr style={{ margin: "0px" }} />
@@ -78,7 +79,7 @@ const AutoCompleteInput = ({ className, getData, onResultClick }) => {
                   }}
                 >
                   <div className="d-flex">
-                    <img
+                    <CustomImgComponent
                       style={{ width: "40px", height: "40px" }}
                       src={`${ApiPath}${option.pathToPhoto}`}
                     />

@@ -9,6 +9,7 @@ import IconButton from "../../../../components/Common/IconButtonComponent/IconBu
 import DropDownLocation from "../DropDownLocationComponent/DropDownLocation";
 import { NavbarBrand } from "reactstrap";
 import AutoCompleteInput from "../../../../components/Common/AutoCompleteInputComponent/AutoCompleteInput ";
+import { GetProductByTitle } from "../../../../services/product";
 const NavMenuPhone = () => {
   return (
     <header className={` pb-3 pt-3 mb-3 ${styles["custom-navbar"]}`}>
@@ -27,7 +28,7 @@ const NavMenuPhone = () => {
         <div className={`d-flex mt-3 `}>
           <AutoCompleteInput
             className={`${styles["searchbar"]}`}
-            // getData={(title) => GetProductByTitle(title)}
+            getData={(title) =>  GetProductByTitle(title)}
             onResultClick={(id) => {
               window.location.href = `/product-details/${id}`;
             }}

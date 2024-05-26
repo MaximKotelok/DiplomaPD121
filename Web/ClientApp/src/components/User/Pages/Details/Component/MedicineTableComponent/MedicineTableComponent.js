@@ -28,7 +28,6 @@ const MedicineTableComponent = ({ data }) => {
   }
 
   function getPermission(id) {
-    console.log(permissions);
     return permissions.find((a) => a.id === id);
   }
 
