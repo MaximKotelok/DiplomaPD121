@@ -1,3 +1,5 @@
+
+
 .description-navigation-item{
     font-family: var(--standart-font);
     font-size: 16px;
@@ -16,14 +18,18 @@
     color: #FF9500;
 }
 
-.description-navigation{
+.description-navigation {
     margin-bottom: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-content: space-between;
-    max-height: 212px;
-    flex-wrap: wrap;
-    text-align: left;
 
-}
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 3 columns for large screens */
+    gap: 6px 16px; /* Adjust the gap between items if needed */
+  }
+  
+  .description-navigation-item {
+    display: flex;
+    align-items: center;
+    white-space: nowrap; /* Prevent line breaks */
+    overflow: hidden; /* Hide overflow text */
+    text-overflow: ellipsis; /* Add ellipsis to truncated text */
+  }

@@ -11,10 +11,15 @@ import CardCartContainerComponent from "../CardCartContainerComponent/CardCartCo
 import styles from "./Cart.module.css";
 import AccordionComponent from "../../../../../Common/AccordionQuestionComponent/accordionComponent";
 import CarouselListComponent from "../../../../Common/CarouselListComponent/CarouselListComponent";
+import useWindowSize from "../../../Profile/UseWindowSize";
 
 const CartComponent = () => {
   const dispatch = useDispatch();
   const { cart, loader } = useSelector((state) => state.cart);
+
+  const { width } = useWindowSize();
+  const isMobile = width <= 1200;
+
   useEffect(() => {
     init();
   }, [dispatch]);
@@ -73,17 +78,18 @@ const CartComponent = () => {
     // <div className={`${styles["my-10"]} container text-center d-flex flex-column align-items-center`}>
 
     // </div>
-    <div>
+    <div className={`${!isMobile ? "container " : styles["my-container"]}`}>
+    {/* <div className={`${!isMobile ? "container " : styles["my-container"]}`}> */}
       <h2 className={` ${styles["head-text"]} `}>Кошик</h2>
 
-      <div className="container">
+      <div>
         {/* Якщо є дані */}
-        {/* {cart.map((a) => {
+        {cart.map((a) => {
           return <CardCartContainerComponent data={a} />;
-        })} */}
+        })}
 
         {/* Якщо даних не маж */}
-        <div>
+        {/* <div>
           <h4 className={` ${styles["text-pust"]} mb-4 `}>Кошик порожній</h4>
 
           <AccordionComponent
@@ -104,7 +110,7 @@ const CartComponent = () => {
           <h4 className={` ${styles["text-pust"]} mt-5 mb-4 `}>
             Нещодавно переглянуті товари
           </h4>
-          {/* 
+          
           <CarouselListComponent xlDisplayCount={5} xxlDisplayCount={6}>
               {topOffers[selectedTopOfferIndex].data.map((a, index) => (<MiniProductCardComponent
                 key={index}
@@ -118,8 +124,8 @@ const CartComponent = () => {
                 imageUrl={a.pathToPhoto}
 
               />))}
-            </CarouselListComponent> */}
-        </div>
+            </CarouselListComponent>
+        </div> */}
       </div>
     </div>
   );

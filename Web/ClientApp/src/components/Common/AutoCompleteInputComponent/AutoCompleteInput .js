@@ -29,12 +29,12 @@ const AutoCompleteInput = ({ className, getData, onResultClick }) => {
     >
       <div
         className={`input-group ${
-          searchTerm.length===0 || !isFocused
+          searchTerm.length === 0 || !isFocused
             ? styles["border-bottom-none"]
             : styles["border-bottom"]
-        } ${styles["input-style-search"]} center ${
-          styles["product-back-serach-bar"]
-        } back-serach-bar `}
+        } ${styles["input-style-search"]} center 
+        
+        ${styles["product-back-serach-bar"]}    back-serach-bar `}
       >
         <Link to={`/Search/ByTitle/${searchTerm}`} className="btn social-btn">
           <img
@@ -55,7 +55,7 @@ const AutoCompleteInput = ({ className, getData, onResultClick }) => {
       </div>
 
       <div style={{ position: "relative", maxWidth: "621px" }}>
-        {searchTerm.length>0 && isFocused && (
+        {searchTerm.length > 0 && isFocused && (
           <ul className={`${styles["ul-class"]}`}>
             <hr style={{ margin: "0px" }} />
             <p className={`${styles["pidkazka"]}`}>За назвою товару</p>
@@ -65,9 +65,9 @@ const AutoCompleteInput = ({ className, getData, onResultClick }) => {
                   key={index}
                   style={{}}
                   className={`${styles["li-class"]} d-flex justify-content-between  align-items-center`}
-                      onClick={() => {
-                          onResultClick(option.id);
-                    
+                  onClick={() => {
+                    onResultClick(option.id);
+
                     setSearchTerm("");
                   }}
                 >

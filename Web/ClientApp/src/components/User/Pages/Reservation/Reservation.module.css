@@ -146,3 +146,16 @@ line-height: 30px;
     background-color:  #0097ff !important;
     transition: background-color 0.3s, color 0.3s;
 }
+
+@media screen and (max-width: 767px) {
+    .my-container {
+        padding: 0 !important;
+    }
+}
+
+/* Коли екран більший або дорівнює 768px, але менший за 1200px */
+@media screen and (min-width: 768px) and (max-width: 1199px) {
+    .my-container {
+        padding: 0 48px !important;
+    }
+}

@@ -1,11 +1,9 @@
-.map-container .capsula-container {
+/* .map-container .capsula-container {
     display: none !important;
 }
 
 .map-container .section-4 {
 
-    /* display: flex !important; */
-    /* flex-direction: row !important; */
     width: 100% !important;
     margin-bottom: 20px !important;
     margin: 0 !important;
@@ -27,4 +25,25 @@
 .map-container .section-4 h5 {
     margin-right: 20px;
     align-self: center !important;
+} */
+
+/* 
+.map-container .section-4 {
+
+    /display: flex !important;
+    /flex-direction: row !important;
+    width: 100% !important;
+    margin-bottom: 20px !important;
+    margin: 0 !important;
+} */
+
+.map-container .capsula-container {
+    display: none !important;
 }
+
+
+@media (min-width: 1200px) {
+    .my-ms-2 {
+      margin-left: 12px !important;
+    }
+  }

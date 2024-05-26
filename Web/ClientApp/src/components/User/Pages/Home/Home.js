@@ -18,6 +18,8 @@ import AccordionComponnent from "../../../Common/AccordionQuestionComponent/acco
 import MiniProductCardComponent from "../../../Common/MiniProductCardComponent/MiniProductCardComponent";
 import homePageImg from "../../../../assets/images/baner-home/head-banner.png";
 import twoSmallBanner from "../../../../assets/images/baner-home/bottom-small-photo.png";
+import bannerLastSmall from "../../../../assets/images/baner-home/banner-last-small.png";
+import bannerStartSmall from "../../../../assets/images/baner-home/banner-start-small.png";
 import smallBanner from "../../../../assets/images/baner-home/banner-small.png";
 import AdaptiveContainerComponent from "../../../Common/AdaptiveContainerComponent/AdaptiveContainerComponent";
 import "./Home.css";
@@ -127,13 +129,18 @@ export const Home = () => {
   // ширина екрану
 
   const { width } = useWindowSize();
-  const isMobile = width <= 768;
+  const isMobile = width <= 991.2;
+
+  const isMobiletwo = width <= 768;
 
   // Макс поправ карточки і каруселі!!!!!!!!!!!!!!!!!!!!!!-!!!!!!!!!!!!!!!!!!!!!!!!!
   return (
     <>
       <div className="row ">
-        <img src={homePageImg} className="img-w-h-100" />
+        <img
+          src={isMobiletwo ? bannerStartSmall : homePageImg}
+          className="img-w-h-100"
+        />
         <div>
           <div className="div-under-home-img ">
             <div className="div-under-home-img-child"></div>
@@ -146,13 +153,13 @@ export const Home = () => {
               {/* <MoreLink link="." /> */}
             </div>
           )}
-          <div className="col-md-8 col-12">
+          <div className=" col-lg-8 col-md-12 col-12">
             <div className="row mt-2" style={{ margin: 0, padding: 0 }}>
               <h3 className="text-title mb-3">Актуальні категорії</h3>
               <AdaptiveContainerComponent
                 xlDisplayCount={3}
-                lgDisplayCount={2}
-                mdDisplayCount={1}
+                lgDisplayCount={3}
+                mdDisplayCount={2}
                 isInMiddleIfNotFull={false}
                 className="p-0"
               >
@@ -233,7 +240,11 @@ export const Home = () => {
                 />
               ))}
             </div>
-            <CarouselListComponent mdDisplayCount={2} xlDisplayCount={5} xxlDisplayCount={6}>
+            <CarouselListComponent
+              mdDisplayCount={2}
+              xlDisplayCount={5}
+              xxlDisplayCount={6}
+            >
               {topOffers[selectedTopOfferIndex].data.map((a, index) => (
                 <MiniProductCardComponent
                   key={index}
@@ -251,7 +262,10 @@ export const Home = () => {
           </div>
         )}
         <div className="col-12 baner-bottom  mt-5">
-          <img src={smallBanner} className="img-w-h-100" />
+          <img
+            src={isMobiletwo ? bannerLastSmall : smallBanner}
+            className="img-w-h-100"
+          />
         </div>
       </div>
 
@@ -279,7 +293,7 @@ export const Home = () => {
       )}
 
       <div className="row mt-5 mb-4" style={{ margin: 0, padding: 0 }}>
-        <div className="col-12 col-md-6">
+        <div className="col-12 col-md-12 col-lg-6">
           <AccordionComponnent
             id="1"
             title="Ви можете вибрати аптеку на сторінці оформлення замовлення, за умови, що товари з вашого замовлення є в наявності в цій аптеці."

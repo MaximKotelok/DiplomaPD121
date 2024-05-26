@@ -9,5 +9,10 @@
 
   .custom-navbar * {
     font-family: var(--standart-font);
-    color: white !important;
+    /* color: white !important; */
+  }
+
+  .searchbar{
+    width: 100%!important;
+    max-width: 100%!important;
   }

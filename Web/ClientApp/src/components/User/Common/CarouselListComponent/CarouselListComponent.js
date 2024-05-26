@@ -10,8 +10,8 @@ import { useRef } from "react";
 
 const CarouselListComponent = ({
   children,
-  mdDisplayCount = 1,
-  lgDisplayCount = 2,
+  mdDisplayCount = 2,
+  lgDisplayCount = 3,
   xlDisplayCount = 3,
   xxlDisplayCount = 4,
   title,

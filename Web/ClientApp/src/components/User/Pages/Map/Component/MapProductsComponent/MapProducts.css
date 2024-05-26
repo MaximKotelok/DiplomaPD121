@@ -46,3 +46,25 @@
 
 
 
+
+
+#container {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 1199px) {
+  #container {
+      flex-direction: column-reverse;
+  }
+}
+
+@media (max-width: 767px) {
+  #container {
+      flex-direction: column;
+  }
+
+  .map {
+      order: -1;
+  }
+}

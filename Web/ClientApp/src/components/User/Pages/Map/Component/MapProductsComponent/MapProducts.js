@@ -205,34 +205,40 @@ const MapProducts = (props) => {
           >
             Шукати на мапі
           </button> */}
+          <div id="container">
+            <div id="map" style={{ height: "240px" }}></div>
 
-          <div id="map" style={{ height: "240px" }}></div>
-
-          {isValid &&
-            townProducts.map((product, index) => (
-              <ListProductItemComponent
-                key={index}
-                pharmacyId={product.pharmacy.id}
-                id={product.id}
-                isSelected={selectedProduct && selectedProduct.id == product.id}
-                price={product.price}
-                lon={product.pharmacy.longitude}
-                lat={product.pharmacy.latitude}
-                title={product.pharmacy.pharmaCompany.title}
-                productTitle={`${product.product.title} ${product.shortDescription}`}
-                address={product.pharmacy.address}
-                manufacturer={product.product.manufacturer.name}
-                timeClosed={product.pharmacy.closeTime}
-                timeOpen={product.pharmacy.openTime}
-                onClick={() => {
-                  //   onProductClick(product);
-                  setSelectedProduct(product);
-                  if (handleMapSelect) {
-                    handleMapSelect(product);
+            {isValid &&
+              townProducts.map((product, index) => (
+                <ListProductItemComponent
+                  key={index}
+                  pharmacyId={product.pharmacy.id}
+                  id={product.id}
+                  isSelected={
+                    selectedProduct && selectedProduct.id == product.id
                   }
-                }}
-              />
-            ))}
+                  price={product.price}
+                  lon={product.pharmacy.longitude}
+                  lat={product.pharmacy.latitude}
+                  title={product.pharmacy.pharmaCompany.title}
+                  productTitle={`${product.product.title} ${product.shortDescription}`}
+                  address={product.pharmacy.address}
+                  manufacturer={product.product.manufacturer.name}
+                  timeClosed={product.pharmacy.closeTime}
+                  timeOpen={product.pharmacy.openTime}
+                  onClick={() => {
+                    //   onProductClick(product);
+                    setSelectedProduct(product);
+                    if (handleMapSelect) {
+                      handleMapSelect(product);
+                    }
+                  }}
+                />
+              ))}
+          </div>
+
+
+          
         </div>
       </div>
     </div>
