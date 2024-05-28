@@ -13,7 +13,8 @@ namespace Domain.Models
 	public class ProductAttribute:BaseEntity
 	{
 		[Required]
-		public string? Name { get; set; }
+		public string? Name { get; set; }	
+		public string? PathToPhoto { get; set; }
 		[Required]
 		public int? Index { get; set; }
 		public int? ProductAttributeGroupID { get; set; }

@@ -88,6 +88,8 @@ const MapProducts = (props) => {
   const getCurrentProduct = async (e) => {
     var clickedMarker = e.target;
 
+    
+
     let product = (
       await Coords(
         clickedMarker._latlng.lat,
@@ -95,6 +97,16 @@ const MapProducts = (props) => {
         props.productId
       )
     ).data;
+
+
+    if (product) {
+      setSelectedProduct(product);
+
+      let elem = document.getElementById(`product${product.id}`);
+      if (elem) {
+        elem.scrollIntoView({ behavior: "smooth" });
+      }
+    }
 
     let defaultIcon = L.divIcon({
       className: "map-icon-container",

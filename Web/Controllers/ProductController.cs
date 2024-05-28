@@ -38,6 +38,7 @@ namespace Web.Controllers
 		private readonly IAttributeService _attributeService;
 		private readonly IPropertyService _propertyService;
 		private readonly ICityService _cityService;
+		private readonly ICategoryService _categoryService;
 		private readonly IConcreteProductService _concreteProductService;
 		private readonly IProductStatusService _productStatusService;
 		private readonly IProductConfirmService _productConfirmService;
@@ -58,7 +59,8 @@ namespace Web.Controllers
 				IReservationService reservationService,
 				IUserService userService,
 				IEmailService emailService,
-				IPharmaCompanyService pharmaCompanyService
+				IPharmaCompanyService pharmaCompanyService,
+				ICategoryService categoryService
 			)
 		{
 
@@ -74,6 +76,7 @@ namespace Web.Controllers
 			this._userService = userService;
 			this._emailService = emailService;
 			this._pharmaCompanyService = pharmaCompanyService;
+			this._categoryService = categoryService;
 		}
 
 		private IEnumerable<ProductProperty> _convertProperties(List<PropertyViewModel> properties)
@@ -124,7 +127,7 @@ namespace Web.Controllers
 					BrandID = product.BrandID,
 					Description = product.Description,
 					PathToPhoto = product.PathToPhoto,
-					Properties = product.Properties!.Select(a => new PropertyViewModel { Value = a.Value, Id = a.Attribute!.Id, Name = a.Attribute.Name }).ToList()
+					Properties = product.Properties!.Select(a => new PropertyViewModel { Value = a.Value, Id = a.Attribute!.Id, Name = a.Attribute.Name, PathToPhoto=a.Attribute.PathToPhoto }).ToList()
 
 				};
 
@@ -713,6 +716,10 @@ namespace Web.Controllers
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = $"{SD.Role_PharmaCompany},{SD.Role_Admin}")]
 		public async Task<IActionResult> UpsertProduct(PostProductViewModel postModel)
 		{
+			if (_categoryService.GetCategory(a => a.Id == postModel.CategoryID).CanHasProducts != true)
+			{
+				throw new Exception($"Parent category can has only category");
+			}
 			var user = await _userService.GetUserByName(User.Identity.Name);
 			var roles = await _userService.GetRolesAsync(user.Id);
 			if (postModel.Id != null && !roles.Contains(SD.Role_Admin))

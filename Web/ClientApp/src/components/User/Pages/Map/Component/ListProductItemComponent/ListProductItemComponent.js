@@ -45,6 +45,7 @@ const ListProductItemComponent = ({
 
   return (
     <div
+    id={`product${id}`}
       onClick={onClick}
       className={`${styles["card"]} ${isSelected && styles["active"]}`}
     >

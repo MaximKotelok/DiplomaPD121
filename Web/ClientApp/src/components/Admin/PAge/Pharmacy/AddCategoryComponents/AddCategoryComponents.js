@@ -10,7 +10,7 @@ import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
 import CustomSelectComponent from "../../../../Common/CustomSelectComponent/CustomSelectComponent";
 
 import { ApiPath, StateInfos, Success } from "../../../../../utils/Constants";
-import { GetCategoryByIdForAdmin, upsertCategory, getAllCategories } from "../../../../../services/category";
+import { GetCategoryByIdForAdmin, upsertCategory, getAllCategories, getAllCategoriesCanHasCategories } from "../../../../../services/category";
 import { postPhotoToServer } from "../../../../../services/photo";
 import { toast } from "react-toastify";
 import { checkFormParamsAreNotEmpty } from "../../../../../utils/Functions";
@@ -36,6 +36,7 @@ export const AddCategoryComponents = () => {
         isRecomended: undefined,
         pathToPhoto: undefined,
         pathToRecomendedPhoto: undefined,
+        сanHasProducts: true
     });
     const [dataFromServer, setDataFromServer] = useState({
         categories: [],
@@ -61,8 +62,6 @@ export const AddCategoryComponents = () => {
         try {
             if (categoryId) {
                 tmpObject = await GetCategoryByIdForAdmin(parseInt(categoryId));
-
-
                 if (tmpObject.status === Success) {
                     tmpObject = {
                         id: categoryId,
@@ -70,7 +69,8 @@ export const AddCategoryComponents = () => {
                         parentCategoryID: tmpObject.data.parentCategoryID,
                         isRecomended: tmpObject.data.isRecomended,
                         pathToPhoto: tmpObject.data.pathToPhoto,
-                        pathToRecomendedPhoto: tmpObject.data.pathToRecomendedPhoto
+                        pathToRecomendedPhoto: tmpObject.data.pathToRecomendedPhoto,
+                        canHasProducts: tmpObject.data.canHasProducts
                     }
                     setFormData(tmpObject);
                 }
@@ -78,7 +78,7 @@ export const AddCategoryComponents = () => {
                 setRecomendedPreview(tmpObject.pathToRecomendedPhoto ? ApiPath + tmpObject.pathToRecomendedPhoto : null);
             }
 
-            tmpCategories = await getAllCategories();
+            tmpCategories = await getAllCategoriesCanHasCategories();
 
             if (tmpCategories.status === Success) {
                 setDataFromServer({
@@ -138,9 +138,8 @@ export const AddCategoryComponents = () => {
         else
             setRecomendedImage(file);
     };
-
     const submit = async () => {
-        if(!checkFormParamsAreNotEmpty(formData, ["id","isRecomended", "pathToRecomendedPhoto", "pathToPhoto"])){
+        if(!checkFormParamsAreNotEmpty(formData, ["id","canHasProducts","isRecomended", "pathToRecomendedPhoto", "pathToPhoto"])){
             toast.error("Не всі поля заповнені");
             return;
         }
@@ -248,6 +247,24 @@ export const AddCategoryComponents = () => {
                             >
                                 <SelectPhoto text={`Фото для “Актуальних категорій”`} handleImageChange={(e) => { handleImageChange(e, true) }} pathToPhoto={formData.pathToRecomendedPhoto} />
                             </CSSTransition>
+                        </div>
+
+                        <div className="d-flex align-items-center justify-content-between">
+                            <CheckedBox
+                                onChange={(a) => { setFormDataAttribute("canHasProducts", !a) }}
+                                name="canHasProducts"
+                                value={!formData.canHasProducts}
+                                text="Чи містить тільки категорії?"
+                            />
+                        </div>
+                        
+                        <div className="d-flex align-items-center justify-content-between">
+                            <CheckedBox
+                                onChange={(a) => { setFormDataAttribute("canHasProducts", a) }}
+                                name="canHasProducts"
+                                value={formData.canHasProducts}
+                                text="Чи містить тільки продукти?"
+                            />
                         </div>
                     </div>
                 </div>

@@ -12,6 +12,7 @@ namespace Domain.Models.ViewModels
         public string? Title { get; set; }
         public int? ParentCategoryID { get; set; }
         public bool? IsRecomended { get; set; }
+        public bool? CanHasProducts { get; set; }
         public string? PathToPhoto { get; set; }
         public string? PathToRecomendedPhoto { get; set; }
 

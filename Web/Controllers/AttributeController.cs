@@ -105,6 +105,7 @@ namespace Web.Controllers
                 Name = postModel.Name,
                 Index = postModel.Index,
                 ProductAttributeGroupID = postModel.ProductAttributeGroupID,
+                PathToPhoto = postModel.PathToPhoto
             };
 
 

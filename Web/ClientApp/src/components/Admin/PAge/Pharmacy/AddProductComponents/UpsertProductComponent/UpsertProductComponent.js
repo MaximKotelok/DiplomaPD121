@@ -34,6 +34,7 @@ import FormDataStandartInputsComponent from "../FormDataStandartInputsComponent/
 
 import {
   getAllCategories,
+  getAllCategoriesCanHasProducts,
   getFirstNCategoryByTitle,
 } from "../../../../../../services/category";
 import TypeAndCategoryComboboxComponent from "../TypeAndCategoryComboboxComponent/TypeAndCategoryComboboxComponent";
@@ -87,7 +88,8 @@ const UpsertProductComponent = () => {
 
   async function init() {
     setCustomState(setData, "isHeaderDisabled", false);
-    await getDataOrSetError(getAllCategories, async (value) => {
+    await getDataOrSetError(getAllCategoriesCanHasProducts, async (value) => {
+      console.log(value)
       setCustomState(setDataFromServer, "categories", value);
     });
     await getDataOrSetError(getAllTypes, async (value) => {

@@ -150,13 +150,13 @@ namespace Web.Controllers
 		public IActionResult IsCategoryHasProducts(int? id)
 		{
 			
-			var result = _service.GetCategory(x => x.Id == id, "Products");
+			var result = _service.GetCategory(x => x.Id == id);
 
 			if (result is not null)
 			{
 				
 
-				return Ok(result.Products.Count() != 0);
+				return Ok(result.CanHasProducts == true);
 			}
 			return BadRequest("No records found");
 		}
@@ -305,8 +305,32 @@ namespace Web.Controllers
             }
             return BadRequest("No records found");
         }
+		[HttpGet("GetAllCategoriesCanHasCategories")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = $"{SD.Role_PharmaCompany},{SD.Role_Admin}")]
+		public IActionResult GetAllCategoriesCanHasCategories()
+        {
+			var result = _service.GetAllCategories(a => a.CanHasProducts == null || !a.CanHasProducts.Value);
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
 
-        [HttpGet("PathToCategory")]
+		[HttpGet("GetAllCategoriesCanHasProducts")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = $"{SD.Role_PharmaCompany},{SD.Role_Admin}")]
+		public IActionResult GetAllCategoriesCanHasProducts()
+		{
+			var result = _service.GetAllCategories( a => a.CanHasProducts == true);
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
+
+
+		[HttpGet("PathToCategory")]
 		public IActionResult GetCategoryPath(int id)
 		{
 			List<Category> path = new List<Category>();
@@ -344,7 +368,7 @@ namespace Web.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest($"Failed to upsert product. Error: {ex.Message}");
+                return BadRequest($"Failed to upsert category. Error: {ex.Message}");
             }
         }
 
@@ -357,20 +381,41 @@ namespace Web.Controllers
                 IsRecomended = postModel.IsRecomended,
                 PathToPhoto = postModel.PathToPhoto,
                 PathToRecomendedPhoto = postModel.PathToRecomendedPhoto,
-            };
+				CanHasProducts = postModel.CanHasProducts
+			};
+			
+			if(_service.GetCategory(a => a.Id == postModel.ParentCategoryID).CanHasProducts == true)
+			{
+				throw new Exception($"Parent category can has only products");
+			}
 
-
-            if (postModel.Id == null)
-            {
-                _service.InsertCategory(category);
-            }
-            else
-            {
-				if(postModel.Id.Value == postModel.ParentCategoryID)
+			if (postModel.Id == null)
+			{
+				_service.InsertCategory(category);
+			}
+			else
+			{
+				if (postModel.Id.Value == postModel.ParentCategoryID)
 				{
 					throw new Exception("This category can't be parent category");
 				}
-                category.Id = postModel.Id.Value;
+				if (postModel.CanHasProducts != null && postModel.CanHasProducts.Value)
+				{
+                    foreach (var item in _service.GetAllCategories(a => a.ParentCategoryID == postModel.Id))
+                    {
+						_service.DeleteCategory(item.Id);
+                    }
+				}
+				else
+				{
+					foreach (var item in _productService.GetAllProducts(a=>a.CategoryID == postModel.Id))
+					{
+		
+						_productService.DeleteProduct(item.Id);
+			
+					}
+				}
+				category.Id = postModel.Id.Value;
                 _service.UpdateCategory(category);
             }
         }
