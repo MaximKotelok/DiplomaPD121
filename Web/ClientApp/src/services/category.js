@@ -2,6 +2,15 @@ import { ClassHeader, GetCategoriesForProductAdd, GetMainCategories, PathToCateg
 import { getFromServer, postToServer, deleteFromServer } from "../utils/Queries";
 import { getSupInfo } from "./product";
 
+
+export async function getAllCategoriesCanHasCategories() {
+    return await getFromServer("Category/GetAllCategoriesCanHasCategories")
+} 
+
+export async function getAllCategoriesCanHasProducts() {
+    return await getFromServer("Category/GetAllCategoriesCanHasProducts")
+} 
+
 export async function getAllCategories() {
     return await getFromServer(GetCategoriesForProductAdd)
 } 

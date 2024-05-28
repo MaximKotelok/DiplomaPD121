@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import styles from "./AcordeonTransformer.module.css";
 import photo from "./tabler-icon-tag.svg";
 import { ReactComponent as Arrow } from "./mingcute_arrow-up-line.svg";
+import { Link } from "react-router-dom";
 
-export const AcordeonTransformer = ({ last = false }) => {
+export const AcordeonTransformer = ({ img, text, link, last = false }) => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const [isOpen, setIsOpen] = useState(windowWidth <= 767.9 ? false : true);
@@ -31,7 +32,7 @@ export const AcordeonTransformer = ({ last = false }) => {
   }, []);
 
   return (
-    <div
+    <Link to={link}
       className={`d-flex align-items-center   mt-3 mb-3 ${
         !last && !isOpen && styles["bordet-bottom"]
       }`}
@@ -41,22 +42,21 @@ export const AcordeonTransformer = ({ last = false }) => {
         maxWidth: isOpen ? "300px" : "unset",
       }}
     >
-      <img src={photo} alt="photo" />
+      <img src={img} alt="photo" style={{width:"32px", height:"32px"}}/>
       <div className="ms-3">
         <h4
           className={`${styles["opus-text"]} ${
             !isOpen && styles["dispaly-show"]
           }`}
         >
-          opus
         </h4>
-        <h3 className={`${styles["header-text"]}`}>Header</h3>
+        <h3 className={`${styles["header-text"]}`}>{text}</h3>
       </div>
 
       <div className={`ms-auto  ${isOpen && styles["dispaly-show"]} `}>
         <Arrow />
       </div>
-    </div>
+    </Link>
 
     // <div
     //   className={`${styles["parent-side-accardion"]} ${

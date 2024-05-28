@@ -68,8 +68,8 @@ export const Home = () => {
       let pngCards = await getFirstNItemsOfBottomCategoryById(id, count);
       setPngCards(pngCards.data.result);
     } else {
-      let pngCards = await getFirstNItemsOfBottomCategoryById("PNG", count);
-
+        let pngCards = await getFirstNItemBottomCategory("png", count);
+        
       setRecomendedRandomCategory("PNG", pngCards.data.id);
       setPngCards(pngCards.data.result);
     }

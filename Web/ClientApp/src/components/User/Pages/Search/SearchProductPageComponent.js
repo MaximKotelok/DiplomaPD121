@@ -26,7 +26,7 @@ import PaginationComponent from "../../../Common/PaginationComponent/PaginationC
 import CustomSelectComponentSelectFilter from "../../../Common/CustomSelectComponentSelectFilter/CustomSelectComponentSelectFilter";
 
 export const SearchProductPageComponent = () => {
-  const isInit = useRef(true);
+  const isInit = useRef(false);
   const [filters, setFilters] = useState({});
   const [searchByTitle, setSearchByTitle] = useState("");
   const [page, setPage] = useState(1);
@@ -95,7 +95,8 @@ export const SearchProductPageComponent = () => {
   }, [orderByNames]);
   
   useEffect(() => {
-    updateSearch();
+    if(isInit.current)
+      updateSearch();
   }, [filters,searchByTitle]);
 
   async function updateSearch() {
@@ -124,6 +125,7 @@ export const SearchProductPageComponent = () => {
   ]);
 
   async function init() {
+    isInit.current = false;
     let res = await Search(
       title,
       categoryId ? [categoryId] : null,
@@ -156,8 +158,10 @@ export const SearchProductPageComponent = () => {
         }
       }
       setLoader(StateInfos.LOADED);
+      isInit.current = true;
       return;
     }
+    isInit.current = true;
     setLoader(StateInfos.ERROR);
   }
 

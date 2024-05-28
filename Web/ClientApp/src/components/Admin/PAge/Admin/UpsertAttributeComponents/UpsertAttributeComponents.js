@@ -11,6 +11,8 @@ import CustomSelectComponent from "../../../../Common/CustomSelectComponent/Cust
 import { toast } from "react-toastify";
 import { checkFormParamsAreNotEmpty } from "../../../../../utils/Functions";
 import { AttributeListPath, adminRoutePath } from "../../../../../utils/TablesPathes";
+import { SelectPhoto } from "../../Pharmacy/AddCategoryComponents/components/SelectPhoto/SelectPhoto";
+import { postPhotoToServer } from "../../../../../services/photo";
 
 
 export const UpsertAttributeComponents = () => {
@@ -20,6 +22,7 @@ export const UpsertAttributeComponents = () => {
     const { pathToAttributeTable } = location.state || {pathToAttributeTable: `${adminRoutePath}/${AttributeListPath}`};
 
     const { attributeId } = useParams();
+    const [image, setImage] = useState(null);
     const [stateInfo, setStateInfo] = useState(StateInfos.LOADING);
     const [preview, setPreview] = useState(null);
     const [formData, setFormData] = useState({
@@ -27,6 +30,7 @@ export const UpsertAttributeComponents = () => {
         name: undefined,
         index: undefined,
         productAttributeGroupID: undefined,
+        pathToPhoto: undefined,
     });
 
     const [dataFromServer, setDataFromServer] = useState({
@@ -34,7 +38,9 @@ export const UpsertAttributeComponents = () => {
     });
 
     const titleText = attributeId ? "Редагування атрибуту" : "Додавання атрибуту";
-
+    const handleImageChange = (file) => {
+        setImage(file);
+    };
 
     async function init() {
         let tmpObject, tmpGroups;
@@ -50,6 +56,7 @@ export const UpsertAttributeComponents = () => {
                         name: tmpObject.data.name,
                         index: tmpObject.data.index,
                         productAttributeGroupID: tmpObject.data.productAttributeGroupID,
+                        pathToPhoto: tmpObject.data.pathToPhoto
                     }
                     setFormData(tmpObject);
                 }
@@ -87,9 +94,28 @@ export const UpsertAttributeComponents = () => {
     const handleInputChange = (e) => {
         setFormDataAttribute(e.target.name, e.target.value);
     };
-
     const submit = async () => {
-        if(!checkFormParamsAreNotEmpty(formData, ["id"])){
+        let path = "";
+        if (image) {
+            if (formData.pathToPhoto)
+                path = await postPhotoToServer(
+                    "Photo/Update",
+                    formData.pathToPhoto.replace(/[\/\\]images[\/\\]/g, ""),
+                    image
+                );
+
+            else path = await postPhotoToServer("Photo/Add", "attribute", image);
+            if (path.status === Success) {
+                path = `/images/attribute/${path.data}`;
+            }
+        } else if (formData.pathToPhoto) {
+            path = formData.pathToPhoto;
+        }
+
+        formData["pathToPhoto"] = path;
+
+
+        if(!checkFormParamsAreNotEmpty(formData, ["id", "pathToPhoto"])){
             toast.error("Не всі поля заповнені");
             return;
         }
@@ -154,6 +180,7 @@ export const UpsertAttributeComponents = () => {
                             }}
 
                         />
+                         <SelectPhoto text={`Фото атрибуту`} handleImageChange={(e) => { handleImageChange(e) }} pathToPhoto={formData.pathToPhoto} />
                     </div>
                 </div>
 

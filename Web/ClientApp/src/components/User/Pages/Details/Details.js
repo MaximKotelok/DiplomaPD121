@@ -28,7 +28,8 @@ import {
 import MedicineTableComponent from "./Component/MedicineTableComponent/MedicineTableComponent";
 import PriceHistoryComponent from "./Component/PriceHistoryComponent/PriceHistoryComponent";
 import bannerBottom from "../../../../assets/images/details/banner-bottom.png";
-import useWindowSize from "../Profile/UseWindowSize";
+import activeSubstanceImg from "../../../../assets/images/details/activeSubstance.png";
+import categoryImg from "../../../../assets/images/details/category.png";
 
 export const Details = () => {
   const { id } = useParams();
@@ -77,6 +78,7 @@ export const Details = () => {
         product.properties.unshift({
           name: "Діюча Речовина",
           value: res.data.activeSubstance,
+          pathToPhoto: activeSubstanceImg
         });
         product.medicineTable = res.data.medicineTable;
       } else {
@@ -94,6 +96,7 @@ export const Details = () => {
         product.properties.unshift({
           name: "Категорія",
           value: path.data.slice(-1)[0].title,
+          pathToPhoto: categoryImg
         });
         setProduct(product);
 
@@ -129,7 +132,7 @@ export const Details = () => {
 
       <div className="row">
         <p className={`${styles["section-title"]}`}>Характеристики</p>
-        <CharacteristicComponent data={product.properties} />
+        <CharacteristicComponent data={product.properties} isHistoryExist={priceHistory && priceHistory.length > 0}/>
       </div>
 
       <div className="row" id="instruction">
@@ -176,7 +179,7 @@ export const Details = () => {
 
         <div>
           {priceHistory && priceHistory.length > 0 && (
-            <div className="row" style={{ padding: "0" }}>
+            <div className="row" style={{ padding: "0" }} id="stats">
               <p className={`${styles["section-title"]}`} id="characteristic">
                 Середня ціна по Україні
               </p>

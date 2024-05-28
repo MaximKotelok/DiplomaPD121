@@ -96,7 +96,8 @@ const ProductFilterComponent = ({
                         remove={() => handleFilterChange(attributeName, a.value, false)} />
                 });
 
-            })}
+            })
+            }
 
             <SearchComponent value={searchByTitle} callback={setSearchByTitle} className={styles["search"]} />
 
