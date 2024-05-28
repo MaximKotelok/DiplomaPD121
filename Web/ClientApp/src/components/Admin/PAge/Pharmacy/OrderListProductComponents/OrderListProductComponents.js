@@ -15,7 +15,7 @@ import CustomImgComponent from "../../../../Common/CustomImgComponent/CustomImgC
 import BtnEditStatusModalOrderList from "./components/BtnEditStatusModalOrderList/BtnEditStatusModalOrderList";
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
 import { getAllReservationsStatuses, getPharmacyReservations } from "../../../../../services/reservation";
-import { Success } from "../../../../../utils/Constants";
+import { Success, itemsPerPageForAdmin } from "../../../../../utils/Constants";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 
 const columns = [
@@ -62,6 +62,19 @@ export const OrderListProductComponents = () => {
   //const [rowsPerPage, setRowsPerPage] = React.useState(10);
   // const [rows, setRows] = React.useState([]);
   const [statuses, setStatuses] = React.useState([]);
+  const [search, setSearch] = React.useState("");
+
+  const [emptyRowCount, setEmptyRowCount] = React.useState(0);
+  useEffect(() => {
+
+    if (itemsPerPageForAdmin > rows.length) {
+        setEmptyRowCount(itemsPerPageForAdmin - rows.length)
+    } else {
+        setEmptyRowCount(0)
+
+    }
+  },[rows]
+  )
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -81,13 +94,22 @@ export const OrderListProductComponents = () => {
       setStatuses(resReservationStatuses.data);
     }
   }
-  console.log(rows)
+  async function refresh(page, search){
+    let res = await getPharmacyReservations(page,search);
+    if(res.status === Success){
+      setPage(page)
+      setRows(res.data.data)
+    }
+  }
 
   return (
     <div className={`${styles["row-parent"]}`}>
       <div className={`${styles["box-container"]} `}>
         <div className="col-6">
-          <SearchComponent />
+          <SearchComponent  callback={async (text)=>{
+              setSearch(text);
+              await refresh(1, text);
+          }}/>
         </div>
 
         <div className="col-6"></div>
@@ -156,6 +178,13 @@ export const OrderListProductComponents = () => {
                     </TableRow>
                   ))}
                 </React.Fragment>
+                {Array.from(Array(emptyRowCount)).map((_, index) => (
+                                    <TableRow key={`empty-${index}`} className="max-row-size">
+                                        <TableCell colSpan={columns.length}>
+
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
               </TableBody>
             </Table>
           </TableContainer>
@@ -163,7 +192,7 @@ export const OrderListProductComponents = () => {
             <PaginationComponent
               setContent={(a)=>setRows(a)}
               getContent={async (page)=>{
-                let res = await getPharmacyReservations(page);
+                let res = await getPharmacyReservations(page, search);
                 if(res.status === Success){
                   return res.data.data;
                 }

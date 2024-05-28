@@ -134,11 +134,7 @@ namespace Web.Controllers
 			   }).Prepend(new ProductAdminCalculateModel { IsTmp = true }));
 			return Ok(model.GetCountOfPages(result.Count()));
 
-			if (result is not null)
-			{
-				return Ok(model.GetCountOfPages(result.Count()));
-			}
-			return BadRequest("No records found");
+
 		}
 
 		[HttpPost("GetConcreteProductsFromPharmacy")]

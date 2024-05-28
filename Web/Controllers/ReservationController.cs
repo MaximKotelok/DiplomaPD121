@@ -3,6 +3,7 @@ using Domain.Models.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Services.AttributeService;
 using Services.CityService;
 using Services.ConcreteProductService;
@@ -154,14 +155,10 @@ namespace Web.Controllers
 		public async Task<IActionResult> GetPharmacyReservations(PageViewModel model)
 		{            
 			User user = await _userService.GetUserByName(User.Identity.Name);
-            
-			var reservations = _reservationService.GetAllReservations(a => 
-                a.Pharmacy.UserID == user.Id, "Pharmacy,User,ReservationItems,ReservationItems.ConcreteProduct"
-			).OrderByDescending(a => a.ReservedTime); 
 
-            int countOfPages = model.GetCountOfPages(reservations.Count());
-            int page = model.Page != null?model.Page.Value -1: 0;
-            var data = reservations.Skip(model.ItemsPerPage * page).Take(model.ItemsPerPage).Select(reservation =>
+            var reservations = _reservationService.GetAllReservations(a =>
+                a.Pharmacy.UserID == user.Id, "Pharmacy,User,ReservationItems,ReservationItems.ConcreteProduct"
+            ).OrderByDescending(a => a.ReservedTime).Select(reservation =>
             {
                 return new
                 {
@@ -170,12 +167,21 @@ namespace Web.Controllers
                     FullName =
                         ((reservation.User != null && reservation.User.FirstName != null && reservation.User.LastName != null) ?
                             $"{reservation.User.FirstName} {reservation.User.LastName}" :
-                            reservation.User != null? reservation.User.UserName : reservation.Email),
+                            reservation.User != null ? reservation.User.UserName : reservation.Email),
                     PhoneNumber = reservation.Phone,
                     PriceAndCount = $"{reservation.ReservationItems.Sum(a => a.ConcreteProduct.Price * a.Quantity)}({reservation.ReservationItems.Sum(a => a.Quantity)}шт)",
                     Status = reservation.StatusID
                 };
-            });
+            }).Where(a => model.Search.IsNullOrEmpty() ||
+            a.ReservedTime.StartsWith(model.Search) ||
+            (a.FullName != null && a.FullName.Contains(model.Search, StringComparison.OrdinalIgnoreCase)) ||
+            (a.PhoneNumber != null && a.PhoneNumber.Contains(model.Search, StringComparison.OrdinalIgnoreCase))
+
+            );
+
+			int countOfPages = model.GetCountOfPages(reservations.Count());
+            int page = model.Page != null?model.Page.Value -1: 0;
+            var data = reservations.Skip(model.ItemsPerPage * page).Take(model.ItemsPerPage);
 
 			return Ok(new { data, countOfPages });
 
@@ -229,7 +235,26 @@ namespace Web.Controllers
             if (reservationStatus == null)
                 return NoContent();
 
-            Reservation reservation = _reservationService.GetReservation(x => x.Id == statusViewModel.ReservationId && x.Pharmacy.UserID == user.Id, "Pharmacy,ReservationItems,ReservationItems.ConcreteProduct");
+            Reservation reservation = _reservationService.GetReservation(x => x.Id == statusViewModel.ReservationId && x.Pharmacy.UserID == user.Id, "Pharmacy,ReservationItems,ReservationItems.ConcreteProduct,Status");
+
+            if(reservationStatus.Status == SD.ReservationStatusFinished && reservation.Status.Status != SD.ReservationStatusFinished)
+            {
+                foreach (var item in reservation.ReservationItems)
+                {
+                    var newCount = item.ConcreteProduct.Quantity >= item.Quantity ? item.ConcreteProduct.Quantity - item.Quantity : 0;
+                    item.ConcreteProduct.Quantity = newCount;
+                    _concreteProductService.UpdateConcreteProduct(item.ConcreteProduct);
+				}
+            }
+            else if (reservationStatus.Status != SD.ReservationStatusFinished && reservation.Status.Status == SD.ReservationStatusFinished)
+			{
+				foreach (var item in reservation.ReservationItems)
+				{
+					var newCount =  item.ConcreteProduct.Quantity + item.Quantity;
+					item.ConcreteProduct.Quantity = newCount;
+					_concreteProductService.UpdateConcreteProduct(item.ConcreteProduct);
+				}
+			}
 
             if (reservationStatus == null)
                 return NoContent();

@@ -12,7 +12,7 @@ import TableRow from "@material-ui/core/TableRow";
 import SearchComponent from "../../../../Common/SearchComponent/SearchComponent";
 import { useEffect } from "react";
 import { getAllProductConfirm } from "../../../../../services/productConfirm";
-import { ApiPath, STANDART_IMG, Success } from "../../../../../utils/Constants";
+import { ApiPath, STANDART_IMG, Success, itemsPerPageForAdmin } from "../../../../../utils/Constants";
 import CustomImgComponent from "../../../../Common/CustomImgComponent/CustomImgComponent";
 import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
@@ -120,7 +120,25 @@ export const ProductConcreatListComponents = () => {
   const [search, setSearch] = React.useState("");
   //const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [rows, setRows] = React.useState([]);
-  console.log(rows)
+  
+  const [emptyRowCount, setEmptyRowCount] = React.useState(0);
+
+  useEffect(() => {
+    let tmpRows = rows.flatMap(a => {
+      if (a.data && a.data.length > 0) {
+        return [null, ...a.data]
+      } else {
+        return [null]
+      }
+    });
+    if (itemsPerPageForAdmin> tmpRows.length) {
+      setEmptyRowCount(itemsPerPageForAdmin - tmpRows.length)
+    } else {
+      setEmptyRowCount(0)
+
+    }
+  }, [rows])
+
   const { pageParam } = useParams();
   useEffect(()=>{
     if(pageParam)
@@ -263,7 +281,15 @@ export const ProductConcreatListComponents = () => {
                         </TableRow>
                       );
                     })}
+                    {Array.from(Array(emptyRowCount)).map((_, index) => (
+                        <TableRow key={`empty-${index}`} className="max-row-size">
+                            <TableCell colSpan={columns.length}>
+
+                            </TableCell>
+                        </TableRow>
+                      ))}
                   </React.Fragment>
+                      
                 ))}
 
                 {/* {rows.map((pharmacy, index) => (

@@ -10,11 +10,14 @@ import { useRef } from "react";
 
 const CarouselListComponent = ({
   children,
+  className,
+  style,
   mdDisplayCount = 2,
   lgDisplayCount = 3,
   xlDisplayCount = 3,
   xxlDisplayCount = 4,
   title,
+  disableNavElements = false
 }) => {
   const [count, setCount] = useState(1);
   useLayoutEffect(() => {
@@ -36,13 +39,33 @@ const CarouselListComponent = ({
     updateSize();
     return () => window.removeEventListener("resize", updateSize);
   }, []);
+  if(!disableNavElements)
   return (
-    <>
+    <div className={className}
+    style={style}>
       <h3 className="text-title mb-3">{title}</h3>
       <Carousel  cellAlign="left" slidesToShow={count}>
         {children}
       </Carousel>
-    </>
+      </div>
+  );
+else
+  return (
+    <div className={className}
+    style={style}>
+      <h3 className="text-title mb-3">{title}</h3>
+      <Carousel 
+      renderCenterLeftControls={({ previousSlide }) => (
+        null
+      )}
+      renderCenterRightControls={({ nextSlide }) => (
+        null
+      )}
+      renderBottomCenterControls={false}
+      cellAlign="left" slidesToShow={count}>
+        {children}
+      </Carousel>
+    </div>
   );
 };
 

@@ -4,6 +4,10 @@ div[disabled] {
 
 }
 
+.w-90{
+    width: 90%!important;
+}
+
 .max-row-size{
     height: 58px!important;
 }

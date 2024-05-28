@@ -608,6 +608,7 @@ namespace Web.Controllers
 			var result = _productService
 				.GetAllProducts(includeProperties: "Manufacturer,ConcreteProducts,ConcreteProducts.ReservationItems,ConcreteProducts.ReservationItems.Reservation,ConcreteProducts.ReservationItems.Reservation.Status,Category,ProductConfirm,ProductConfirm.ProductStatus")
 				.Where(a => (a.ProductConfirm == null || a!.ProductConfirm!.ProductStatus!.Status!.Equals(SD.ProductStatusConfirmed)))
+				.Where(a=> a.Category.Title.Length<20) //Задовгі погано відображаются
 				.Select(a => new HomeProductViewModel
 				{
 					Id = a.Id,
@@ -624,7 +625,7 @@ namespace Web.Controllers
 				}).OrderByDescending(a => a.Popularity)
 				.GroupBy(a => a.CategoryName)
 				.OrderByDescending(a => a.Sum(a => a.Popularity))
-				.Take(3).Select(a => new
+				.Take(5).Select(a => new
 				{
 					title = a.Key,
 					data = a.Take(count)

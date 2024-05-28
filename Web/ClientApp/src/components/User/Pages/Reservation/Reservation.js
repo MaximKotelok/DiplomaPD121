@@ -1,6 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
 import { checkIsAuth } from "../../../../services/user";
-import { useParams } from "react-router-dom";
+import { useNavigate, useNavigation, useParams } from "react-router-dom";
 
 import { changeCountInCart, getCart } from "../../../../services/cartService";
 
@@ -30,6 +30,7 @@ export const Reservation = () => {
   const [productFormData, setProductFormData] = useState({});
   const [userFormData, setUserFormData] = useState({ phone: "", email: "" });
   const [isAuth, setIsAuth] = useState(null);
+  const navigate = useNavigate();
 
   const [loader, setLoader] = useState(StateInfos.LOADING);
 
@@ -120,6 +121,7 @@ export const Reservation = () => {
     }
     if (res) {
       toast.success("Успіх");
+      navigate("/");
     } else {
       toast.error("Помилка");
     }

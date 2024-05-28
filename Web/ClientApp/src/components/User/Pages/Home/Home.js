@@ -234,12 +234,11 @@ export const Home = () => {
             <div className="d-flex justify-content-start">
               <CarouselListWithoutNavsComponent
               className="container-fluid"
-               mdDisplayCount={1.5} xlDisplayCount={3} xxlDisplayCount={3}
+               mdDisplayCount={2.5} xlDisplayCount={3} xxlDisplayCount={5}
               >
 
               {topOffers.map((a, index) => (
                 <PopularButtonComponnent
-                className="col-xl-12 col-sm-6"
                 text={a.title}
                 key={index}
                 onClick={() => setSelectedTopOfferIndex(index)}
@@ -251,6 +250,7 @@ export const Home = () => {
               mdDisplayCount={2}
               xlDisplayCount={5}
               xxlDisplayCount={6}
+              disableNavElements={true}
             >
               {topOffers[selectedTopOfferIndex].data.map((a, index) => (
                 <MiniProductCardComponent

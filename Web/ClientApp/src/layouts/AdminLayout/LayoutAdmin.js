@@ -289,7 +289,6 @@ const LayoutAdmin = ({ children }) => {
           {layoutContext.additonalComponent}
 
           <div className="app-content-header ms-auto">
-            <BadgeComponennt />
             <AvatarComponennt userInfo={userInfo} />
           </div>
         </div>

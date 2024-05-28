@@ -23,10 +23,11 @@ export async function postReservation(concreteProducts, phone, email, pharmacyId
     return false;
 } 
 
-export async function getPharmacyReservations(page) {
+export async function getPharmacyReservations(page, search="") {
     let res = await postToServer("Reservation/GetPharmacyReservations", 
     {
         itemsPerPage: itemsPerPageForAdmin,
+        search: search,
         page:page
     }, ClassHeader);
     return res;

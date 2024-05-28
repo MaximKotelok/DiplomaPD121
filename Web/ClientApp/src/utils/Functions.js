@@ -21,6 +21,15 @@ export function groupBy(xs, key) {
     return rv;
   }, {});
 };
+export function minimizeText(text, maxSymbols) {
+  if (text) {
+      if (text.length <= maxSymbols) {
+          return text;
+      }
+      return text.slice(0, maxSymbols) + '...';
+  }
+  return "";
+}
 
 export function checkFormParamsAreNotEmpty(form, ignoreParams) {
   return Object.keys(form).every(a=>form[a] || ignoreParams.findIndex(b=>b==a) != -1);

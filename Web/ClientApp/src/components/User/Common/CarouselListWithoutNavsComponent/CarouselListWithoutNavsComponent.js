@@ -16,7 +16,7 @@ const CarouselListWithoutNavsComponent = ({
   xxlDisplayCount = 4,
   title,
   style,
-  className
+  className,
 }) => {
   const [count, setCount] = useState(1);
   useLayoutEffect(() => {
@@ -39,7 +39,7 @@ const CarouselListWithoutNavsComponent = ({
     return () => window.removeEventListener("resize", updateSize);
   }, []);
   return (
-    <div clasName={className}
+    <div className={className}
     style={style}>
       <h3 className="text-title mb-3">{title}</h3>
       <Carousel 
