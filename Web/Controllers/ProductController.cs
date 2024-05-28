@@ -588,9 +588,8 @@ namespace Web.Controllers
 		[HttpGet("GetProductByTitle")]
 		public IActionResult GetProductByTitle(string title, int count)
 		{
-			var lowerTitle = title.ToLower();
 			var result = _productService
-				.GetAllProducts(a => a.Title.ToLower().Contains(lowerTitle), "ProductConfirm,ProductConfirm.ProductStatus").Take(count)
+				.GetAllProducts(a => a.Title.StartsWith(title), "ProductConfirm,ProductConfirm.ProductStatus").Take(count)
 				.Where(a => (a.ProductConfirm == null || a!.ProductConfirm!.ProductStatus!.Status!.Equals(SD.ProductStatusConfirmed)));
 			if (result is not null)
 			{
@@ -673,22 +672,6 @@ namespace Web.Controllers
 					a => a.ProductID == productId
 					&&
 					a.Pharmacy!.CityID == city.Id, "Pharmacy");
-
-				return Ok(result);
-			}
-			return BadRequest("No records found");
-		}
-
-		[HttpGet("GetCountInPharmacies")]
-		public IActionResult GetCountInPharmacies(int productId, string cityName)
-		{
-			var city = _cityService.GetCity(a => a.NameCity == cityName);
-			if (city is not null)
-			{
-				var result = _concreteProductService.GetAllConcreteProducts(
-					a => a.ProductID == productId
-					&&
-					a.Pharmacy!.CityID == city.Id, "Pharmacy").Count();
 
 				return Ok(result);
 			}
