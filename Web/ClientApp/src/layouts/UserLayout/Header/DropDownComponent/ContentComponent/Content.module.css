@@ -13,3 +13,11 @@
     line-height: 18px;
     color: black;
 }
+
+.block{
+    min-height: 180px;
+}
+
+.show-more *{
+    color: #007AFF;
+}

@@ -2,12 +2,19 @@
 import L from "leaflet";
 import { showLocation, setupLocation } from "../../../../../../utils/Location";
 import { getFromServer } from "../../../../../../utils/Queries";
-import React, { useState, useEffect } from "react";
-import { getCookie } from "../../../../../../utils/Cookies";
+import React, { useState, useEffect, useRef } from "react";
+import { getCookie, setCookie } from "../../../../../../utils/Cookies";
 import ListPharmacies from "../ListPharmaciesComponent/ListPharmacies";
 import "./MapPharmacies.css";
+import { getPharmacyCity } from "../../../../../../services/pharmacy";
+import { useParams } from "react-router";
+import { Success } from "../../../../../../utils/Constants";
+import { redirect404 } from "../../../../../../utils/Functions";
 
 const MapPharmacies = (props) => {
+  const { pharmacyId } = useParams();
+  const [init,setInit] = useState(false);
+
   const [map, setMap] = useState(null);
   const [selectedPharmacy, setSelectedPharmacy] = useState(null);
   const [townPharmacy, setTownPharmacy] = useState([]);
@@ -15,6 +22,8 @@ const MapPharmacies = (props) => {
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [city, setCity] = useState(getCookie("city"));
 
+
+  
   let defaultIcon = L.icon({
     iconUrl: "/images/icons/marker-icon.png",
     iconSize: [35, 40],
@@ -26,7 +35,29 @@ const MapPharmacies = (props) => {
     iconAnchor: [17, 45],
   });
 
+  useEffect(()=>{
+    setInit(false);
+    async function checkCity(){
+       let res = await getPharmacyCity(pharmacyId);
+       if(res.status === Success){
+        setCookie("city", res.data);
+        setCity(res.data);
+       }else{
+        redirect404();
+       }
+       setInit(true);
+    }
+    if(!pharmacyId){
+      setInit(true);
+    }
+    else{
+      checkCity();
+    }
+    
+  },[pharmacyId]);
+
   useEffect(() => {
+    if(init) {
     setupLocation().then(() => {
       const myMap = L.map("map").setView([0, 0], 13);
 
@@ -35,11 +66,12 @@ const MapPharmacies = (props) => {
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(myMap);
 
-      setCity(props.city);
+      setCity(getCookie("city"));
 
       setMap(myMap);
     });
-  }, []);
+  }
+  }, [init]);
 
   useEffect(() => {
     if (city != null && map != null) {

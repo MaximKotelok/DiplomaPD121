@@ -24,7 +24,7 @@ export async function GetCategoryByIdForAdmin(id) {
 }
 
 export async function GetByIdForMenu(id) {
-    return await getFromServer("Category/GetByIdForMenu", {id:id})
+    return await getFromServer("Category/GetByIdForMenu", {id:id, count: 4})
 } 
 
 export async function GetProductsFromCategory(id, count) {

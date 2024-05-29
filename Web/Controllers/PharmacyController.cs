@@ -420,6 +420,18 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
+		[HttpGet("GetPharmacyCity/{pharmacyId}")]
+		public IActionResult GetPharmacyCity(int pharmacyId)
+		{
+			var result = _pharmacyService.GetPharmacy(a => a.Id==pharmacyId, "City");
+
+			if (result is not null)
+			{
+				return Ok(result.City.NameCity);
+			}
+			return BadRequest("No records found");
+		}
+
 		[HttpGet("GetListOfPharmacyInYourCityByCompany/{cityName}/{companyId}")]
 		public IActionResult GetListOfPharmacyInYourCity(string cityName, int companyId)
 		{

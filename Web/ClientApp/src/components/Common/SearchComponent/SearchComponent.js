@@ -11,7 +11,7 @@ const SearchComponent = ({value, className,onClick, callback}) => {
             </button>
             <input 
             value={value}
-            onChange={(e)=>{callback(e.target.value);}}
+            onKeyUp={(e)=>{callback(e.target.value);}}
             type="text" className="my-search-bar" placeholder="Пошук..." aria-label="Example text with button addon" aria-describedby="button-addon1" />
         </div>
     );

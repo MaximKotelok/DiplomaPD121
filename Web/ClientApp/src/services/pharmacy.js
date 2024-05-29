@@ -4,6 +4,9 @@ import { postToServer, getFromServer, deleteFromServer } from "../utils/Queries"
 export async function getPharmacyById(id){
     return await getFromServer(GetPharmacyById + `${id}`)
 }
+export async function getPharmacyCity(id){
+    return await getFromServer(`Pharmacy/GetPharmacyCity/${id}`)
+}
 
 export async function getProductByTitleFromPharmacy(pharmacyId, search) {
     return await getFromServer(`Pharmacy/GetPharmacyProductByTitle`, {

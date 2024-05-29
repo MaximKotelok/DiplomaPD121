@@ -12,7 +12,7 @@ import TableRow from "@material-ui/core/TableRow";
 import SearchComponent from "../../../../Common/SearchComponent/SearchComponent";
 import { useEffect } from "react";
 import { getAllProductConfirm } from "../../../../../services/productConfirm";
-import { ApiPath, STANDART_IMG, Success } from "../../../../../utils/Constants";
+import { ApiPath, STANDART_IMG, Success, itemsPerPageForAdmin } from "../../../../../utils/Constants";
 import CustomImgComponent from "../../../../Common/CustomImgComponent/CustomImgComponent";
 import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
@@ -68,10 +68,22 @@ export const PharmacyListForPharmaCompanyComponent = () => {
   const [isDisplayOnlyCompanies, setIsDisplayOnlyCompanies] =
     React.useState(false);
   const [search, setSearch] = React.useState("");
+  const [emptyRowCount, setEmptyRowCount] = React.useState(0);
 
   useEffect(() => {
-    init();
+      init();
   }, []);
+
+  useEffect(() => {
+
+      if (itemsPerPageForAdmin > rows.length) {
+          setEmptyRowCount(itemsPerPageForAdmin - rows.length)
+      } else {
+          setEmptyRowCount(0)
+
+      }
+  }, [rows])
+
 
   async function reloadData() {
     let page = 1;
@@ -192,7 +204,13 @@ export const PharmacyListForPharmaCompanyComponent = () => {
                       );
                     })}
                   </React.Fragment>
-                
+                  {Array.from(Array(emptyRowCount)).map((_, index) => (
+                                    <TableRow key={`empty-${index}`} className="max-row-size">
+                                        <TableCell colSpan={columns.length}>
+
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
               </TableBody>
             </Table>
           </TableContainer>

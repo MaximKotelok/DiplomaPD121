@@ -106,6 +106,7 @@ export const ManufactureListComponents = () => {
                         <Link
                             to="/admin/AddManufacturer"
                             className={`btn btn-primary ${styles["add-button"]}`}
+                            state={{pathToManufacturerTable: window.location.pathname }}
                         >
                             Додати
                         </Link>
@@ -173,6 +174,7 @@ export const ManufactureListComponents = () => {
                                                     <Link
                                                         className={`btn btn-primary ${styles["my-btn-edit"]} me-4`}
                                                         to={`/admin/UpdateManufacturer/${manufacturer.id}`}
+                                                        state={{pathToManufacturerTable: window.location.pathname }}
                                                     >
                                                         Оновити
                                                     </Link>

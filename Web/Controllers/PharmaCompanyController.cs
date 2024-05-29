@@ -156,21 +156,27 @@ namespace Web.Controllers
 
         private async Task<int> UpsertCompanyEntity(PostPharmaCompanyViewModel postModel)
         {
-            var pharmaCompany = new PharmaCompany
-            {
-                Description = postModel.Description,
-                Title = postModel.Title,
-                PathToPhoto = postModel.PathToPhoto
-            };
 
             if (postModel.Id == null)
             {
-                _service.InsertPharmaCompany(pharmaCompany);
+				var pharmaCompany = new PharmaCompany
+				{
+					Description = postModel.Description,
+					Title = postModel.Title,
+					PathToPhoto = postModel.PathToPhoto
+				};
+
+				_service.InsertPharmaCompany(pharmaCompany);
                 return pharmaCompany.Id;
             }
             else
             {
-                pharmaCompany.Id = postModel.Id.Value;
+                var pharmaCompany = _service.GetPharmaCompany(a => a.Id == postModel.Id.Value);
+                
+                pharmaCompany.Description = postModel.Description;
+                pharmaCompany.Title = postModel.Title;
+                pharmaCompany.PathToPhoto = postModel.PathToPhoto;
+                    
                 _service.UpdatePharmaCompany(pharmaCompany);
                 return postModel.Id.Value;
             }

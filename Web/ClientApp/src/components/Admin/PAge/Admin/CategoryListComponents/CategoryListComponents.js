@@ -96,6 +96,7 @@ export const CategoryListComponents = () => {
                     <div className="col-6 d-flex align-items-center justify-content-end ">
                         <Link
                             to="/admin/addCategory"
+                            state={{pathToCategoryTable: window.location.pathname }}
                             className={`btn btn-primary ${styles["add-button"]}`}
                         >
                             Додати
@@ -156,6 +157,7 @@ export const CategoryListComponents = () => {
                                                 <div className="d-flex  align-items-center justify-content-end">
                                                     <Link
                                                         className={`btn btn-primary ${styles["my-btn-edit"]} me-4`}
+                                                        state={{pathToCategoryTable: window.location.pathname }}
                                                         to={`/admin/updateCategory/${category.id}`}
                                                     >
                                                         Оновити

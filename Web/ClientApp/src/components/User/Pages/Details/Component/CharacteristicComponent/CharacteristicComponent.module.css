@@ -38,4 +38,5 @@ margin-bottom: 12px;
 
 .characteristic-card{
     width: 180px;
+    min-height:64px;
 }

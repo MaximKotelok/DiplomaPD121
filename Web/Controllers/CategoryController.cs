@@ -114,11 +114,16 @@ namespace Web.Controllers
         }
 
         [HttpGet("GetByIdForMenu")]
-		public IActionResult GetByIdForMenu(int? id)
+		public IActionResult GetByIdForMenu(int? id, int count)
 		{
 			var result = _service.GetCategory(x => x.Id == id, "SubCategories,SubCategories.SubCategories");
+			result.SubCategories = result.SubCategories.Take(6);
 
-			if (result is not null)
+			foreach (var item in result.SubCategories)
+            {
+				item.SubCategories = item.SubCategories.Take(count);
+            }
+            if (result is not null)
 			{
 				return Ok(result);
 			}
@@ -290,6 +295,7 @@ namespace Web.Controllers
             var result = _service.GetAllCategories(a =>
 			a.ParentCategoryID != null && a.ParentCategoryID != catalogue!.Id
 			)
+			.OrderByDescending(a=>a.Id)
 			.Where(a =>
 			{
 				return

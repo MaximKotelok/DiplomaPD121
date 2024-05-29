@@ -19,6 +19,7 @@ import { CategoryListPath, adminRoutePath } from "../../../../../utils/TablesPat
 export const AddCategoryComponents = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    
     const { pathToCategoryTable } = location.state || {pathToCategoryTable: `${adminRoutePath}/${CategoryListPath}`};
 
 

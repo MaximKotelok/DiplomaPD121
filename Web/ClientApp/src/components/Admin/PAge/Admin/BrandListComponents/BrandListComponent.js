@@ -105,6 +105,7 @@ export const BrandListComponent = () => {
                     <div className="col-6 d-flex align-items-center justify-content-end ">
                         <Link
                             to="/admin/addBrand"
+                            state={{pathToBrandTable: window.location.pathname }}
                             className={`btn btn-primary ${styles["add-button"]}`}
                         >
                             Додати
@@ -164,6 +165,7 @@ export const BrandListComponent = () => {
                                                     <Link
                                                         className={`btn btn-primary ${styles["my-btn-edit"]} me-4`}
                                                         to={`/admin/UpdateBrand/${brand.id}`}
+                                                        state={{pathToBrandTable: window.location.pathname }}
                                                     >
                                                         Оновити
                                                     </Link>

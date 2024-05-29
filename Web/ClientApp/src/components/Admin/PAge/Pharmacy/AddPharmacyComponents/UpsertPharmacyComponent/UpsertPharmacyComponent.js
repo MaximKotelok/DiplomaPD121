@@ -166,8 +166,7 @@ export const UpsertPharmacyComponent = () => {
 
   const submitPharmacy = async () => {
     
-    if(!checkFormParamsAreNotEmpty(pharmacyFormData, ['id'])){
-      console.log(pharmacyFormData)
+    if(!checkFormParamsAreNotEmpty(pharmacyFormData, ['id','pharmaCompanyID'])){
       toast.error("Не всі поля заповнені");
       return;
   }
