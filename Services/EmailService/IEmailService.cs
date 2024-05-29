@@ -13,7 +13,7 @@ namespace Services.EmailService
         Task SendBookingInfo(string email, ProductDto productDto);
         Task SendChangeProductStatus(ProductDto productDto, string email, string name, string description, string newStatus);
 		Task SendUserStatusUpdateInfo(string email, string name, string description, string newStatus);
-        Task<bool> SendConfirmationMail(string email);
+        Task<bool> SendConfirmationMail(string email, string secret);
         Task SendBookingInfoForUser(string email, string status, string total);
 
     }

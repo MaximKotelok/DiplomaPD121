@@ -17,6 +17,7 @@ namespace Domain.Models
             FavPharmacies = new List<Pharmacy>();
         }   
 
+        public string? RegistrationSecret { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? PathToPhoto { get; set; }

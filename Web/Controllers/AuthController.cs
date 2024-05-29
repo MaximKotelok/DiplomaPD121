@@ -52,10 +52,16 @@ namespace Web.Controllers
                 return BadRequest("Username is required.");
             if (userRegistration.Roles.IsNullOrEmpty())
                 userRegistration.Roles = new List<string> { SD.Role_Customer };
-            var userResult = await _repository.UserAuthentication.RegisterUserAsync(userRegistration);
+			Guid g = Guid.NewGuid();
+			string GuidString = Convert.ToBase64String(g.ToByteArray());
+			GuidString = GuidString.Replace("=", "");
+			GuidString = GuidString.Replace("+", "");
+            userRegistration.Secret = GuidString;
+
+			var userResult = await _repository.UserAuthentication.RegisterUserAsync(userRegistration);
             if (userResult.Succeeded)
             {
-                bool emailSent = await _emailService.SendConfirmationMail(userRegistration.Email);
+                bool emailSent = await _emailService.SendConfirmationMail(userRegistration.Email, userRegistration.Secret);
                 return emailSent
                     ? StatusCode(201, "User registered successfully.")
                     : StatusCode(500, "Failed to send confirmation email.");
@@ -102,9 +108,9 @@ namespace Web.Controllers
              }
          }*/
         [HttpGet("confirm")]
-        public async Task<IActionResult> ConfirmEmailAsync([FromQuery] string email)
+        public async Task<IActionResult> ConfirmEmailAsync([FromQuery] string secret, [FromQuery] string email)
         {
-            return await _repository.UserAuthentication.ConfirmEmailAsync(email)
+            return await _repository.UserAuthentication.ConfirmEmailAsync(secret, email)
                 ? Ok("Mail successfully confirmed")
                 : BadRequest("Failed to confirm mail");
         }

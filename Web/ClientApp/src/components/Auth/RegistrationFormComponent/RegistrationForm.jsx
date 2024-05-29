@@ -25,13 +25,13 @@ const RegistrationForm = () => {
         e.preventDefault();
 
         if (formData.password !== formData.confirmPassword) {
-            Swal.fire('Error!', 'Passwords do not match.', 'error');
+            Swal.fire('Error!', 'Паролі не збігаються.', 'error');
             return;
         }
 
         try {
             const response = await axios.post('https://localhost:7133/api/userauthentication/register', formData);
-            Swal.fire('Success!', response.data, 'success');
+            Swal.fire('Success!', "Підтвердьте вашу електронну пошту для завершення реєстрації.", 'success');
         } catch (error) {
             //setErrors(error.response?.data || {}); // Add this line
             Swal.fire('Error!', error.response?.data[0] || 'An error occurred during registration.', 'error');

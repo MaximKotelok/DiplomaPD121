@@ -70,7 +70,7 @@ namespace Services.EmailService
 
             return _emailSenderService.SendEmailAsync(email, "Зміна статусу продукту", message);
         }
-        public Task<bool> SendConfirmationMail(string email)
+        public Task<bool> SendConfirmationMail(string email, string secret)
         {
             string currentDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
@@ -82,7 +82,7 @@ namespace Services.EmailService
     <body>       
         <p>Дякуємо за реєстрацію в нашому сервісі. Для підтвердження реєстрації, будь ласка, перейдіть за посиланням нижче:</p>
         
-        <p><a href=""{GetConfirmationLink(email)}"">Підтвердити реєстрацію</a></p>
+        <p><a href=""{GetConfirmationLink(email, secret)}"">Підтвердити реєстрацію</a></p>
         
         <p>Дата реєстрації: <strong>{currentDate}</strong></p>
 
@@ -122,9 +122,9 @@ namespace Services.EmailService
             return _emailSenderService.SendEmailAsync(email, "Підтвердження бронювання", message);
         }
 
-        private string GetConfirmationLink(string email)
+        private string GetConfirmationLink(string email, string secret)
         {
-            return $"https://localhost:44411/confirm-email?email={Uri.EscapeDataString(email)}";
+            return $"https://localhost:44411/auth/login?email={Uri.EscapeDataString(email)}&secret={Uri.EscapeDataString(secret)}";
         }
 
 		public Task SendUserStatusUpdateInfo(string email, string name, string description, string newStatus)

@@ -36,6 +36,7 @@ namespace Repository.Repository.Services
         public async Task<IdentityResult> RegisterUserAsync(UserRegistrationDto userRegistration)
         {
             var user = _mapper.Map<User>(userRegistration);
+            user.RegistrationSecret = userRegistration.Secret;
 
             if (userRegistration.Roles == null)
                 userRegistration.Roles = new List<string> { SD.Role_Customer };
@@ -88,11 +89,11 @@ namespace Repository.Repository.Services
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
         }
 
-        public async Task<bool> ConfirmEmailAsync(string email)
+        public async Task<bool> ConfirmEmailAsync(string secret, string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
 
-            if (user != null)
+            if (user != null && user.RegistrationSecret == secret)
             {
                 user.EmailConfirmed = true;
                 var result = await _userManager.UpdateAsync(user);

@@ -7,10 +7,12 @@ import BtnSocialComponenent from "./components/BtnSocialComponenent/BtnSocialCom
 import google from "../../assets/images/google.svg";
 import faceboo from "../../assets/images/Facebook.svg";
 import authPage from "../../assets/images/authPage.png";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { NavLink, Outlet } from "react-router-dom";
 import { checkIsAuth } from "../../services/user";
-import { EXT_FACEBOOK, EXT_GOOGLE } from "../../utils/Constants";
+import { ApiPath, EXT_FACEBOOK, EXT_GOOGLE } from "../../utils/Constants";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 var active = ({ isActive }) =>
   isActive
@@ -20,11 +22,34 @@ var active = ({ isActive }) =>
 const AuthPageComponent = () => {
   const navigate = useNavigate();
 
+  const location = useLocation();
+
+  const queryParams = new URLSearchParams(location.search);
+  let email = queryParams.get("email");
+  let secret = queryParams.get("secret");
+  console.log(email)
+  console.log(secret)
   useEffect(() => {
     if (checkIsAuth()) {
       navigate("/profile");
     }
   }, []);
+
+  useEffect(() => {
+    const confirmEmail = async () => {
+        try {
+            const response = await axios.get(`${ApiPath}/userauthentication/confirm?email=${email}&secret=${secret}`);
+            Swal.fire('Success!', response.data, 'success');
+        } catch (error) {
+            Swal.fire('Error!', error.response?.data || 'An error occurred mail comfirmation.', 'error');
+        }
+
+    };
+    if(email && secret){
+      confirmEmail();
+    }
+
+  },[email, secret]);
 
   return (
     <div

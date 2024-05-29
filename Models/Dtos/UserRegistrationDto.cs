@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Domain.Dto
@@ -17,6 +18,8 @@ namespace Domain.Dto
         public string? Password { get; set; }
         [Required(ErrorMessage = "Email is required")]
         public string? Email { get; set; }
+        [JsonIgnore]
+        public string? Secret { get; set; }
         public string? PhoneNumber { get; set; }
         public List<string>? Roles { get; set; }
     }

@@ -15,7 +15,7 @@ const MenuBottomPhone = () => {
         <BtnPhoneMenuBottom to="/" text="Головна" iconPath={TablerHome} />
         <BtnPhoneMenuBottom to="/category/1" text="Каталог" iconPath={TablerCategory} />
         <BtnPhoneMenuBottom to="/cart" text="Кошик" iconPath={Cart} />
-        <BtnPhoneMenuBottom to="/auth" text="Профіль" iconPath={Account} />
+        <BtnPhoneMenuBottom to="/profile" text="Профіль" iconPath={Account} />
       </div>
     </div>
   );
