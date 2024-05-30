@@ -51,7 +51,6 @@ const AuthPageComponent = () => {
 
   },[email, secret]);
 
-  const location = useLocation();
   const path = location.pathname;
 
   const activeAuth = ({ isActive }) =>
