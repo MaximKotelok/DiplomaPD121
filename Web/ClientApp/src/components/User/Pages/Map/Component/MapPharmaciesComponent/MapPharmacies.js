@@ -6,6 +6,8 @@ import React, { useState, useEffect } from "react";
 import { getCookie } from "../../../../../../utils/Cookies";
 import ListPharmacies from "../ListPharmaciesComponent/ListPharmacies";
 import "./MapPharmacies.css";
+import Lottie from "lottie-react";
+import groovyWalkAnimation from "../../../../../../assets/images/LouderAnimation/LouderCapsule.json";
 
 const MapPharmacies = (props) => {
   const [map, setMap] = useState(null);
@@ -160,6 +162,7 @@ const MapPharmacies = (props) => {
     // </div>
     <div id="container">
       <div id="map" class="map"></div>
+
       {city !== "" && townPharmacy != null ? (
         <ListPharmacies
           city={city}
@@ -185,7 +188,9 @@ const MapPharmacies = (props) => {
           }}
         />
       ) : (
-        <p>Loading...</p>
+        <div>
+          <Lottie animationData={groovyWalkAnimation} loop={true} />
+        </div>
       )}
     </div>
   );

@@ -17,7 +17,6 @@ function BtnPharmacyModal({id}) {
   },[show]);
 
   async function init(){
-    console.log(id)
     let res = await getPharmacyById(id);
     if(res.status === Success){
       setPharmacy(res.data);

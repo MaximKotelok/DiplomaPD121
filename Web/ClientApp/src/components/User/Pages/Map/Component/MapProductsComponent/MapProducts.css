@@ -4,14 +4,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 15px;
     transform: translate(-50%, -10px);
-    background-color: white;
-    width: 70px;
-    height: 28px;
-    border-radius: 10px;
+    background-color: #FF9500;
+    width: 60px;
+    height: 43px;
+    border-radius: 8px;
     border: #FF9500 1px solid;
     margin: 0;
+
+
+  
   }
 
   .map-selected-marker *, .map-default-marker *{
@@ -31,19 +33,44 @@
     position: absolute;
     
     left: 50%;
+    top: 54%;
     transform: translate(-50%, 13px) rotateZ(45deg);
-    
-    background-color: white;
+    border-radius: 0 0 3px 0px;
+    background-color: #FF9500;
     border-width: 1px;
     border-style: solid;
     border-color: transparent #FF9500 #FF9500 transparent;
   }
-  
-.map-selected-marker, .map-selected-marker::before {
+
+  .map-selected-marker::after, .map-default-marker::after {
+    content: '';
+    position: absolute;
+    width: 8px; /* Ширина круга */
+    height: 8px; /* Висота круга */
+    border-radius: 50%; /* Робить елемент круглим */
     background-color: #FF9500;
-    color: white;
+    left: 50%;
+    top: 62%;
+    transform: translate(-50%, 25px); /* Зміщення круга під ромб */
 }
 
+.map-selected-marker, .map-selected-marker::before ,.map-selected-marker::after {
+    background-color: rgba(0, 122, 255, 1);
+    /* background-color: #FF9500; */
+    border-color: transparent rgba(0, 122, 255, 1) rgba(0, 122, 255, 1) transparent;
+   
+
+}
+
+.map-market-text{
+  color: rgba(255, 255, 255, 1) !important;
+  font-family: var(--standart-font) !important;
+
+font-size: 14px !important;
+font-weight: 700;
+line-height: 17.57px;
+text-align: center;
+}
 
 
 

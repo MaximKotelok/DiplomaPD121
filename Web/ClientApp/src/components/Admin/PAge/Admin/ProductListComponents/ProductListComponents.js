@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./ProductListComponents.module.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -12,17 +12,37 @@ import TableRow from "@material-ui/core/TableRow";
 import SearchComponent from "../../../../Common/SearchComponent/SearchComponent";
 import { useEffect } from "react";
 import { getAllProductConfirm } from "../../../../../services/productConfirm";
-import { ApiPath, STANDART_IMG, Success, itemsPerPageForAdmin } from "../../../../../utils/Constants";
+import {
+  ApiPath,
+  STANDART_IMG,
+  Success,
+  itemsPerPageForAdmin,
+} from "../../../../../utils/Constants";
 import CustomImgComponent from "../../../../Common/CustomImgComponent/CustomImgComponent";
 import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
 import BtnEditSeriaModal from "./components/BtnEditSeriaModal/BtnEditSeriaModal";
-import { deleteProduct, getCountOfPagesForProductsAdmin, getProductsAdmin } from "../../../../../services/product";
+import {
+  deleteProduct,
+  getCountOfPagesForProductsAdmin,
+  getProductsAdmin,
+} from "../../../../../services/product";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { PharmaCompanyPharmacyListPath, PharmacyListPath, ProductListPath } from "../../../../../utils/TablesPathes";
+import {
+  PharmaCompanyPharmacyListPath,
+  PharmacyListPath,
+  ProductListPath,
+} from "../../../../../utils/TablesPathes";
 
+import IconButton from "@material-ui/core/IconButton";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import Menu from "@material-ui/core/Menu";
+import MenuIcon from "@material-ui/icons/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import ModalTostarStatusModal from "../../../Common/ModalTostarStatus/ModalTostarStatusModal";
 
 const columns = [
   { id: "position", label: "Позиція", minWidth: 230 },
@@ -44,11 +64,10 @@ const columns = [
   {
     id: "actions",
     label: "Дії",
-    minWidth: 230,
+    minWidth: 180,
     editable: true,
     // format: (value) => value.toLocaleString("en-US"),
   },
-
 ];
 
 // function createData(name, code, population, size) {
@@ -67,46 +86,74 @@ const useStyles = makeStyles({
 
 export const ProductListComponents = () => {
   const classes = useStyles();
-  
+
   const { paramPage } = useParams();
   const [countOfPages, setCountOfPages] = React.useState(1);
   const [page, setPage] = React.useState(1);
   const [search, setSearch] = React.useState("");
   const [rows, setRows] = React.useState([]);
 
+  const [show, setShow] = useState(false);
+  const [statusId, setStatusId] = useState(1);
+  const [textMessage, setTextMessage] = useState("Помилка!!!");
+
+  const handleShowModal = (id, textMessageFunc) => {
+    setTextMessage(textMessageFunc);
+    setStatusId(id);
+    setShow(false); // Reset to false first
+    setTimeout(() => {
+      setShow(true);
+    }, 0); // Use a timeout to ensure the state change is registered
+  };
+
   const [emptyRowCount, setEmptyRowCount] = React.useState(0);
 
   useEffect(() => {
-    let tmpRows = rows.flatMap(a => {
+    let tmpRows = rows.flatMap((a) => {
       if (a.data && a.data.length > 0) {
-        return [null, ...a.data]
+        return [null, ...a.data];
       } else {
-        return [null]
+        return [null];
       }
     });
     if (itemsPerPageForAdmin > tmpRows.length) {
-      setEmptyRowCount(itemsPerPageForAdmin - tmpRows.length)
+      setEmptyRowCount(itemsPerPageForAdmin - tmpRows.length);
     } else {
-      setEmptyRowCount(0)
-
+      setEmptyRowCount(0);
     }
-  }, [rows])
+  }, [rows]);
   useEffect(() => {
     reload(paramPage);
-  }, [])
-
+  }, []);
 
   async function reload(page, searchText) {
     setPage(page);
     let res = await getProductsAdmin(page, searchText ? searchText : search);
-    let resCountOfPages = await getCountOfPagesForProductsAdmin(searchText ? searchText : search);
-    if (res.status === Success &&
-      resCountOfPages.status === Success) {
+    let resCountOfPages = await getCountOfPagesForProductsAdmin(
+      searchText ? searchText : search
+    );
+    if (res.status === Success && resCountOfPages.status === Success) {
       setCountOfPages(resCountOfPages.data);
       setRows(res.data);
-
     }
   }
+
+  const [authProduct, setAuthProduct] = React.useState(true);
+  const [anchorElProduct, setAnchorElProduct] = React.useState(null);
+  const openProduct = Boolean(anchorElProduct);
+
+  const handleChangeProduct = (event) => {
+    setAuthProduct(event.target.checked);
+  };
+
+  const handleMenuProduct = (event) => {
+    setAnchorElProduct(event.currentTarget);
+  };
+
+  const handleCloseProduct = () => {
+    setAnchorElProduct(null);
+  };
+
   // const handleChangePage = (event, newPage) => {
   //   setPage(newPage);
   // };
@@ -130,24 +177,31 @@ export const ProductListComponents = () => {
 
   return (
     <div className={`${styles["row-parent"]}`}>
+      <ModalTostarStatusModal
+        show={show}
+        text={textMessage}
+        id={statusId}
+        onClose={() => setShow(false)}
+      />
       <div className={`${styles["box-container"]} row`}>
         <div className="col-6">
-          <SearchComponent callback={async (text) => {
-            setSearch(text);
-            await reload(1, text);
-          }} />
+          <SearchComponent
+            callback={async (text) => {
+              setSearch(text);
+              await reload(1, text);
+            }}
+          />
         </div>
 
-        <div className="col-6">
-          {/* <CheckedBox text="Показувати лише фарма-компанії?" /> */}
-          <div className="col-2">
-            <Link
-              to="/admin/AddProduct"
-              className={`btn btn-primary ${styles["add-button"]}`}
-            >
-              Додати
-            </Link>
-          </div>
+        {/* <CheckedBox text="Показувати лише фарма-компанії?" /> */}
+
+        <div className="col-6 d-flex align-items-center justify-content-end ">
+          <Link
+            to="/admin/AddProduct"
+            className={`btn btn-primary ${styles["add-button"]}`}
+          >
+            Додати
+          </Link>
         </div>
 
         <Paper className={classes.root}>
@@ -218,7 +272,68 @@ export const ProductListComponents = () => {
                             </span>
                           </TableCell>
                           <TableCell>
-                            <div className="d-flex  align-items-center justify-content-end">
+                            <div className="d-flex justify-content-end pe-3">
+                              {/* {item.pharmacist ? item.pharmacist : "НЕМАЄ"} */}
+                              {/* <BtnEditPharmacyModal id={item.pharmacy.id} /> */}
+                              <div>
+                                <IconButton
+                                  aria-label="account of current user"
+                                  aria-controls="menu-appbar"
+                                  aria-haspopup="true"
+                                  onClick={handleMenuProduct}
+                                  color="inherit"
+                                >
+                                  {/* <MoreVertIcon /> */}
+                                  <MoreVertIcon
+                                    style={{ color: "rgba(122, 122, 122, 1)" }}
+                                  />
+                                </IconButton>
+                                <Menu
+                                  id="menu-appbar"
+                                  anchorEl={anchorElProduct}
+                                  anchorOrigin={{
+                                    vertical: "top",
+                                    horizontal: "right",
+                                  }}
+                                  keepMounted
+                                  transformOrigin={{
+                                    vertical: "top",
+                                    horizontal: "right",
+                                  }}
+                                  open={openProduct}
+                                  onClose={handleCloseProduct}
+                                >
+                                  <MenuItem onClick={handleCloseProduct}>
+                                    <Link
+                                      className="btn btn-primary w-100"
+                                      to={`/admin/updateProduct/${item.id}`}
+                                    >
+                                      Оновити
+                                    </Link>
+                                  </MenuItem>
+                                  <MenuItem onClick={handleCloseProduct}>
+                                    <button
+                                      className="btn btn-danger w-100"
+                                      onClick={async () => {
+                                        let res = await deleteProduct(item.id);
+                                        if (res.status === Success) {
+                                          //toast.success("Успіх!");
+                                          handleShowModal(1, "Успіх!");
+
+                                          window.location.reload();
+                                        } else {
+                                          handleShowModal(2, "Помилка!");
+                                        }
+                                      }}
+                                    >
+                                      Видалити
+                                    </button>
+                                  </MenuItem>
+                                </Menu>
+                              </div>
+                            </div>
+
+                            {/* <div className="d-flex  align-items-center justify-content-end">
                               <Link
                                 className={`btn btn-primary ${styles["my-btn-edit"]} me-1`}
                                 to={`/admin/updateProduct/${item.id}`}
@@ -230,22 +345,17 @@ export const ProductListComponents = () => {
                                 onClick={async () => {
                                   let res = await deleteProduct(item.id);
                                   if (res.status === Success) {
-                                      //toast.success("Успіх!");
-                                      window.location.reload();
+                                    //toast.success("Успіх!");
+                                    window.location.reload();
                                   } else {
-                                      toast.error("Помилка");
+                                    toast.error("Помилка");
                                   }
                                 }}
                               >
                                 Видалити
                               </button>
-                            </div>
+                            </div> */}
                           </TableCell>
-                          {/* <TableCell> */}
-                          {/* <div className="d-flex align-items-center"> */}
-                          {/* <BtnEditSeriaModal /> */}
-                          {/* </div> */}
-                          {/* </TableCell> */}
                         </TableRow>
                       );
                     })}
@@ -325,10 +435,11 @@ export const ProductListComponents = () => {
                 ))} */}
 
                 {Array.from(Array(emptyRowCount)).map((_, index) => (
-                  <TableRow key={`empty-${index}`} className={`${styles["tb-product"]}`}>
-                    <TableCell colSpan={columns.length}>
-
-                    </TableCell>
+                  <TableRow
+                    key={`empty-${index}`}
+                    className={`${styles["tb-product"]}`}
+                  >
+                    <TableCell colSpan={columns.length}></TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -339,7 +450,7 @@ export const ProductListComponents = () => {
               setContent={(a) => setRows(a)}
               getContent={async (page) => {
                 let res = await getProductsAdmin(page, search);
-                
+
                 const newUrl = `/admin/${ProductListPath}/${page}`;
                 window.history.pushState({}, "", newUrl);
                 if (res.status === Success) {

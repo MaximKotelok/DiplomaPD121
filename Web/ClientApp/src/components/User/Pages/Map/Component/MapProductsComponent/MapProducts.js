@@ -65,7 +65,7 @@ const MapProducts = (props) => {
     products.forEach((element) => {
       let defaultIcon = L.divIcon({
         className: "map-icon-container",
-        html: `<div class="map-default-marker"><p>${Number(
+        html: `<div class="map-default-marker"><p class="map-market-text">${Number(
           element.price
         ).toFixed(2)}</p></div>`,
         iconSize: [30, 30],
@@ -110,7 +110,7 @@ const MapProducts = (props) => {
 
     let defaultIcon = L.divIcon({
       className: "map-icon-container",
-      html: `<div class="map-default-marker"><p>${Number(
+      html: `<div class="map-default-marker"><p class="map-market-text">${Number(
         selectedProductPrice.current
       ).toFixed(2)}</p></div>`,
       iconSize: [30, 30],
@@ -118,7 +118,7 @@ const MapProducts = (props) => {
 
     var clickedIcon = L.divIcon({
       className: "map-icon-container",
-      html: `<div class="map-selected-marker"><p>${Number(
+      html: `<div class="map-selected-marker"><p class="map-market-text">${Number(
         product.price
       ).toFixed(2)}</p></div>`,
       iconSize: [30, 30],
@@ -154,7 +154,7 @@ const MapProducts = (props) => {
 
     var clickedIcon = L.divIcon({
       className: "map-icon-container selected",
-      html: `<div class="map-selected-marker"><p>${Number(
+      html: `<div class="map-selected-marker"><p class="map-market-text">${Number(
         product.price
       ).toFixed(2)}</p></div>`,
       iconSize: [30, 30],
@@ -163,7 +163,7 @@ const MapProducts = (props) => {
     if (selectedMarker) {
       let defaultIcon = L.divIcon({
         className: "map-icon-container",
-        html: `<div class="map-default-marker"><p>${Number(
+        html: `<div class="map-default-marker"><p class="map-market-text">${Number(
           selectedProductPrice.current
         ).toFixed(2)}</p></div>`,
         iconSize: [30, 30],

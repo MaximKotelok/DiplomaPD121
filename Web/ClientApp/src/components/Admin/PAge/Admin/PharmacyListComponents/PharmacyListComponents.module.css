@@ -30,7 +30,9 @@ width: 100%;
 
 }
 
-
+.btn-color{
+color: white !important;
+}
 
 .head-table{
     border-bottom: 1px solid rgba(13, 30, 49, 1);

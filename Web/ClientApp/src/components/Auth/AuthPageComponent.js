@@ -26,6 +26,14 @@ const AuthPageComponent = () => {
     }
   }, []);
 
+  const location = useLocation();
+  const path = location.pathname;
+
+  const activeAuth = ({ isActive }) =>
+    isActive || path === "/auth"
+      ? ` ms-3 ${styles["navigation-h"]} ${styles["navigation-h-active"]}`
+      : ` ms-3 ${styles["navigation-h"]}`;
+
   return (
     <div
       className="row d-flex align-items-center "
@@ -33,7 +41,7 @@ const AuthPageComponent = () => {
     >
       <div className="col-12 col-md-12 col-lg-5  p-5 pt-2">
         <div className="mb-4 d-flex justify-content-center">
-          <NavLink to="/auth/login" className={active}>
+          <NavLink to="/auth/login" className={activeAuth}>
             Вхід
           </NavLink>
 
@@ -64,8 +72,16 @@ const AuthPageComponent = () => {
 
         <div className="mr-2 ">
           <div className="mb-3">
-            <BtnSocialComponenent icon={google} text={"Вхід через Google"} href={EXT_GOOGLE}/>
-            <BtnSocialComponenent icon={faceboo} text={"Вхід через Facebook"} href={EXT_FACEBOOK}/>
+            <BtnSocialComponenent
+              icon={google}
+              text={"Вхід через Google"}
+              href={EXT_GOOGLE}
+            />
+            <BtnSocialComponenent
+              icon={faceboo}
+              text={"Вхід через Facebook"}
+              href={EXT_FACEBOOK}
+            />
           </div>
           <div>
             <a href="#" className={`${styles["login-ugota-text"]} `}>
@@ -75,7 +91,7 @@ const AuthPageComponent = () => {
         </div>
       </div>
 
-      <div className="col-12 col-md-12 col-lg-7  ">
+      <div className="col-12 col-md-12 col-lg-7  mb-5 mt-0 mt-lg-5 ">
         <div style={{ maxWidth: "100%" }}>
           <img src={authPage} style={{ width: "100%", height: "auto" }} />
         </div>

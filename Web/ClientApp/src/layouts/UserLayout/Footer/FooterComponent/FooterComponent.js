@@ -13,7 +13,7 @@ const FooterComponent = () => {
   const location = useLocation();
   const { width } = useWindowSize();
 
-  const isNotMapPath = location.pathname !== "/map";
+  const isNotMapPath = !location.pathname.startsWith("/map");
   const isMobile = width <= 1199;
   const isMobile2 = width <= 768;
 
@@ -21,7 +21,6 @@ const FooterComponent = () => {
     ? "col-12 col-md-3 col-lg-3 mb-3 div-acordeon"
     : "col-12 col-md-3 col-lg-3 col-xl-4 mb-3 div-acordeon";
 
-    
   const classAddaptationSocial = isNotMapPath
     ? "col-12 col-md-3 col-lg-3 pb-4"
     : "col-12 col-md-3 col-lg-3 col-xl-12 pb-4";
@@ -38,7 +37,7 @@ const FooterComponent = () => {
             <AccordionQuestionAdaptationComponent
               header="Користувачам"
               ulList={[
-                { text: "Аптеки поблизу", href: "/", target: "" },
+                { text: "Аптеки поблизу", href: "/map", target: "" },
                 { text: "Розширений пошук", href: "/", target: "" },
                 { text: "Браковані серії", href: "/", target: "" },
                 { text: "Доставка і оплата", href: "/", target: "" },
