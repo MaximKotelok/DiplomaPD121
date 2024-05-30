@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./BrandListComponents.module.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -27,6 +27,7 @@ import {
     useParams,
 } from "react-router-dom";
 import { toast } from "react-toastify";
+import ModalTostarStatusModal from "../../../Common/ModalTostarStatus/ModalTostarStatusModal";
 
 const columns = [
     { id: "name", last: false, label: "Бренд", width: 1100 },
@@ -50,6 +51,20 @@ export const BrandListComponent = () => {
     const [countOfPages, setCountOfPages] = React.useState(1);
     const [rows, setRows] = React.useState([]);
     const [emptyRowCount, setEmptyRowCount] = React.useState(0);
+
+    const [show, setShow] = useState(false);
+    const [statusId, setStatusId] = useState(1);
+    const [textMessage, setTextMessage] = useState("Помилка!!!");
+  
+    const handleShowModal = (id, textMessageFunc) => {
+      setTextMessage(textMessageFunc);
+      setStatusId(id);
+      setShow(false); // Reset to false first
+      setTimeout(() => {
+        setShow(true);
+      }, 0); // Use a timeout to ensure the state change is registered
+    };
+  
 
     useEffect(() => {
         init();
@@ -85,6 +100,12 @@ export const BrandListComponent = () => {
 
     return (
         <div className={`${styles["row-parent"]}`}>
+                <ModalTostarStatusModal
+        show={show}
+        text={textMessage}
+        id={statusId}
+        onClose={() => setShow(false)}
+      />
             <div className={`${styles["box-container"]} `}>
                 <div className="row">
                     <div className="col-6">
@@ -174,9 +195,12 @@ export const BrandListComponent = () => {
                                                         onClick={async () => {
                                                             let res = await deleteBrand(brand.id);
                                                             if (res.status === Success) {
+                                                                handleShowModal(1,"Успіх!")
+                                                                
                                                                 window.location.reload();
-                                                            } else {
-                                                                toast.error("Помилка");
+                                                            } else {                                                                
+                                                                handleShowModal(2,"Помилка!")
+                                                                
                                                             }
                                                         }}
                                                     >

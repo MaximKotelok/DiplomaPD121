@@ -234,7 +234,7 @@ export const Home = () => {
             <div className="d-flex justify-content-start">
               <CarouselListWithoutNavsComponent
               className="container-fluid"
-               mdDisplayCount={2.5} xlDisplayCount={3} xxlDisplayCount={5}
+               mdDisplayCount={2} xlDisplayCount={3} xxlDisplayCount={3}
               >
 
               {topOffers.map((a, index) => (

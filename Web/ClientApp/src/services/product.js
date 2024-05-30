@@ -135,9 +135,6 @@ export async function getCountProducts(count) {
 export async function getProductById(productId) {
     return await getFromServer(GetProduct, { id: productId })
 }
-export async function getCountInPharmaciesForProduct(productId) {
-    return await getFromServer("Product/GetCountInPharmacies", { productId: productId, cityName: getCookie("city") })
-}
 export async function getProductByIdForUpdate(productId) {
     return await getFromServer("Product/GetByIdForUpdate", { id: productId })
 }

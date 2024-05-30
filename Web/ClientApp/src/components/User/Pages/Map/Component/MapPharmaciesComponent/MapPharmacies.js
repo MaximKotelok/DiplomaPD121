@@ -10,6 +10,8 @@ import { getPharmacyCity } from "../../../../../../services/pharmacy";
 import { useParams } from "react-router";
 import { Success } from "../../../../../../utils/Constants";
 import { redirect404 } from "../../../../../../utils/Functions";
+import Lottie from "lottie-react";
+import groovyWalkAnimation from "../../../../../../assets/images/LouderAnimation/LouderCapsule.json";
 
 const MapPharmacies = (props) => {
   const { pharmacyId } = useParams();
@@ -192,6 +194,7 @@ const MapPharmacies = (props) => {
     // </div>
     <div id="container">
       <div id="map" class="map"></div>
+
       {city !== "" && townPharmacy != null ? (
         <ListPharmacies
           city={city}
@@ -217,7 +220,9 @@ const MapPharmacies = (props) => {
           }}
         />
       ) : (
-        <p>Loading...</p>
+        <div>
+          <Lottie animationData={groovyWalkAnimation} loop={true} />
+        </div>
       )}
     </div>
   );

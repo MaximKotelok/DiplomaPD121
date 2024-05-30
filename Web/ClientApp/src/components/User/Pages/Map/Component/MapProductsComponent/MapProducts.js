@@ -13,8 +13,6 @@ import {
 } from "../../../../../../services/concreteProduct";
 import { NavigationDetailsComponent } from "../../../../Common/NavigationDetailsComponent/NavigationDetailsComponent";
 import ListProductItemComponent from "../ListProductItemComponent/ListProductItemComponent";
-import useWindowSize from "../../../Profile/UseWindowSize";
-import CarouselListWithoutNavsComponent from "../../../../Common/CarouselListWithoutNavsComponent/CarouselListWithoutNavsComponent";
 
 const MapProducts = (props) => {
   const [map, setMap] = useState(null);
@@ -24,8 +22,7 @@ const MapProducts = (props) => {
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [city, setCity] = useState(getCookie("city"));
   const [product, setProduct] = useState(null);
-  const { width } = useWindowSize();
-  const isIpad = width <= 1200 && width >=768;
+  const [mapPage, setMapPage] = useState(false);
 
   const selectedProductPrice = useRef(null);
 
@@ -68,7 +65,7 @@ const MapProducts = (props) => {
     products.forEach((element) => {
       let defaultIcon = L.divIcon({
         className: "map-icon-container",
-        html: `<div class="map-default-marker"><p>${Number(
+        html: `<div class="map-default-marker"><p class="map-market-text">${Number(
           element.price
         ).toFixed(2)}</p></div>`,
         iconSize: [30, 30],
@@ -113,7 +110,7 @@ const MapProducts = (props) => {
 
     let defaultIcon = L.divIcon({
       className: "map-icon-container",
-      html: `<div class="map-default-marker"><p>${Number(
+      html: `<div class="map-default-marker"><p class="map-market-text">${Number(
         selectedProductPrice.current
       ).toFixed(2)}</p></div>`,
       iconSize: [30, 30],
@@ -121,7 +118,7 @@ const MapProducts = (props) => {
 
     var clickedIcon = L.divIcon({
       className: "map-icon-container",
-      html: `<div class="map-selected-marker"><p>${Number(
+      html: `<div class="map-selected-marker"><p class="map-market-text">${Number(
         product.price
       ).toFixed(2)}</p></div>`,
       iconSize: [30, 30],
@@ -157,7 +154,7 @@ const MapProducts = (props) => {
 
     var clickedIcon = L.divIcon({
       className: "map-icon-container selected",
-      html: `<div class="map-selected-marker"><p>${Number(
+      html: `<div class="map-selected-marker"><p class="map-market-text">${Number(
         product.price
       ).toFixed(2)}</p></div>`,
       iconSize: [30, 30],
@@ -166,7 +163,7 @@ const MapProducts = (props) => {
     if (selectedMarker) {
       let defaultIcon = L.divIcon({
         className: "map-icon-container",
-        html: `<div class="map-default-marker"><p>${Number(
+        html: `<div class="map-default-marker"><p class="map-market-text">${Number(
           selectedProductPrice.current
         ).toFixed(2)}</p></div>`,
         iconSize: [30, 30],
@@ -191,7 +188,7 @@ const MapProducts = (props) => {
   };
 
   const isValid = city && townProducts && product;
-console.log(townProducts)
+
   return (
     <div>
       {/* <div id="map" style={{ height: "400px" }}></div> */}
@@ -223,13 +220,9 @@ console.log(townProducts)
           <div id="container">
             <div id="map" style={{ height: "240px" }}></div>
 
-            {isValid && (isIpad?
-            (<CarouselListWithoutNavsComponent 
-              mdDisplayCount={1.2} xlDisplayCount={1.5}
-            >
-               {townProducts.map((product, index) => (
+            {isValid &&
+              townProducts.map((product, index) => (
                 <ListProductItemComponent
-                className="me-2"
                   key={index}
                   pharmacyId={product.pharmacy.id}
                   id={product.id}
@@ -240,7 +233,7 @@ console.log(townProducts)
                   lon={product.pharmacy.longitude}
                   lat={product.pharmacy.latitude}
                   title={product.pharmacy.pharmaCompany.title}
-                  productTitle={`${product.product.title} ${product.product.shortDescription}`}
+                  productTitle={`${product.product.title} ${product.shortDescription}`}
                   address={product.pharmacy.address}
                   manufacturer={product.product.manufacturer.name}
                   timeClosed={product.pharmacy.closeTime}
@@ -254,35 +247,6 @@ console.log(townProducts)
                   }}
                 />
               ))}
-              </CarouselListWithoutNavsComponent>
-              )
-            :
-              townProducts.map((product, index) => (
-                <ListProductItemComponent
-                  key={index}
-                  pharmacyId={product.pharmacy.id}
-                  id={product.id}
-                  isSelected={
-                    selectedProduct && selectedProduct.id == product.id
-                  }
-                  price={product.price}
-                  lon={product.pharmacy.longitude}
-                  lat={product.pharmacy.latitude}
-                  title={product.pharmacy.pharmaCompany.title}
-                  productTitle={`${product.product.title} ${product.product.shortDescription}`}
-                  address={product.pharmacy.address}
-                  manufacturer={product.product.manufacturer.name}
-                  timeClosed={product.pharmacy.closeTime}
-                  timeOpen={product.pharmacy.openTime}
-                  onClick={() => {
-                    //   onProductClick(product);
-                    setSelectedProduct(product);
-                    if (handleMapSelect) {
-                      handleMapSelect(product);
-                    }
-                  }}
-                />
-              )))}
           </div>
 
 

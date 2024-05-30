@@ -21,7 +21,6 @@ import { getCookie } from "../../../../utils/Cookies";
 import { getPathToCategory } from "../../../../services/category";
 import {
   GetPriceHistory,
-  getCountInPharmaciesForProduct,
   getMinAndMaxPrice,
   getProductById,
 } from "../../../../services/product";
@@ -34,7 +33,6 @@ import categoryImg from "../../../../assets/images/details/category.png";
 export const Details = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
-  const [countInPharmacies, setCountInPharmacies] = useState(0);
   const [loader, setLoader] = useState(StateInfos.LOADING);
   const [priceHistory, setPriceHistory] = useState([]);
 
@@ -69,9 +67,7 @@ export const Details = () => {
 
   async function init() {
     const res = await getProductById(id);
-    const resCount = await getCountInPharmaciesForProduct(id);
-    if (res.status === Success && resCount.status === Success) {
-      setCountInPharmacies(resCount.data);
+    if (res.status === Success) {
       let product;
       if (res.data.product) {
         product = res.data.product;
@@ -111,7 +107,6 @@ export const Details = () => {
     } else {
       setLoader(StateInfos.ERROR);
     }
-    
   }
 
   useEffect(() => {
@@ -128,7 +123,7 @@ export const Details = () => {
     <div>
       <DescriptionCategoryPathComponent data={product.pathToCategory} />
 
-      <HeadOfDetailsComponent product={product} countInPharmacies={countInPharmacies}/>
+      <HeadOfDetailsComponent product={product} />
 
       <div className="row">
         <p className={`${styles["section-title"]}`}>Характеристики</p>

@@ -11,7 +11,7 @@ import { isFavoriteProduct } from "../../../../../../utils/Functions";
 // import setupAccordion from "./AccordionSideMenuJQ";
 // import $ from "jquery";
 
-const HeadOfDetailsComponent = ({ product, countInPharmacies }) => {
+const HeadOfDetailsComponent = ({ product }) => {
   const [isFavoriteState, setIsFavoriteState] = useState(false);
   useEffect(() => {
     if (product.id) setIsFavoriteState(isFavoriteProduct(product.id));
@@ -52,7 +52,7 @@ const HeadOfDetailsComponent = ({ product, countInPharmacies }) => {
               {product.title + " " + product.shortDescription}
             </p>
             <p className={styles["product-details-in-pharmacies"]}>
-              в {countInPharmacies} аптеках
+              в 406 аптеках
             </p>
             <hr className={`${styles["panel-navigation-sm"]}`} />
           </div>

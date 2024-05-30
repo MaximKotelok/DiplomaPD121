@@ -1,0 +1,31 @@
+.text-style-modal-status{
+    color: rgba(0, 122, 255, 1);
+    font-family: var(--standart-font);
+font-size: 22px;
+font-weight: 600;
+/* line-height: 15.06px; */
+text-align: center !important;
+
+}
+
+.text-color-modal-status-delet{
+    color: #dc3545 !important;
+/* line-height: 15.06px; */
+
+}
+
+.svg-gif-animation svg{
+    /* width: 500px; */
+    /* height: 500px; */
+position: absolute;
+left: 0px;
+top: -40px
+}
+
+.svg-gif-animation-delet svg{
+    width: 160px !important;
+    /* height: 500px; */
+position: absolute;
+left: 80px;
+top: -40px
+}

@@ -13,10 +13,16 @@ import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
 import SearchComponent from "../../../../Common/SearchComponent/SearchComponent";
 import { NavLink, useParams } from "react-router-dom";
 import AddActiveSubstanceModal from "./components/AddActiveSubstanceModal";
-import { getActiveSubstancesCountOfPage, getActiveSubstancesPage, getAllActiveSubstances, updateActiveSubstanceStatus } from "../../../../../services/activeSubstance";
+import {
+  getActiveSubstancesCountOfPage,
+  getActiveSubstancesPage,
+  getAllActiveSubstances,
+  updateActiveSubstanceStatus,
+} from "../../../../../services/activeSubstance";
 import { Success, itemsPerPageForAdmin } from "../../../../../utils/Constants";
-import  PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
+import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 import { toast } from "react-toastify";
+import ModalTostarStatusModal from "../../../Common/ModalTostarStatus/ModalTostarStatusModal";
 
 const columns = [
   { id: "name", last: false, label: "Назва", width: 1100 },
@@ -27,14 +33,14 @@ const columns = [
 const useStyles = makeStyles({
   root: {
     width: "100%",
-  },    
+  },
   container: {
     // maxHeight: 400,
   },
 });
 
 export const ActiveSubstanceListComponents = () => {
-  const {paramPage}=useParams();
+  const { paramPage } = useParams();
 
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(1);
@@ -42,57 +48,64 @@ export const ActiveSubstanceListComponents = () => {
   const [countOfPages, setCountOfPages] = useState(0);
   const [emptyRowCount, setEmptyRowCount] = React.useState(0);
 
+  const [show, setShow] = useState(false);
+  const [statusId, setStatusId] = useState(1);
+  const [textMessage, setTextMessage] = useState("Помилка!!!");
+
+  const handleShowModal = (id, textMessageFunc) => {
+    setTextMessage(textMessageFunc);
+    setStatusId(id);
+    setShow(false); // Reset to false first
+    setTimeout(() => {
+      setShow(true);
+    }, 0); // Use a timeout to ensure the state change is registered
+  };
+
   const firstLoad = useRef(true);
   const classes = useStyles();
-  useEffect(()=>{
-    if(paramPage)
-      reload(parseInt(paramPage));
-    else
-      reload(page);
-
-  },[]);
-  
-  useEffect(()=>{
-    if(!firstLoad.current)
-      reload(1);
-  },[search]);
+  useEffect(() => {
+    if (paramPage) reload(parseInt(paramPage));
+    else reload(page);
+  }, []);
 
   useEffect(() => {
+    if (!firstLoad.current) reload(1);
+  }, [search]);
 
+  useEffect(() => {
     if (itemsPerPageForAdmin > rows.length) {
-        setEmptyRowCount(itemsPerPageForAdmin - rows.length)
+      setEmptyRowCount(itemsPerPageForAdmin - rows.length);
     } else {
-        setEmptyRowCount(0)
-
+      setEmptyRowCount(0);
     }
-  }, [rows])
+  }, [rows]);
 
-
-  async function reload(page){
+  async function reload(page) {
     setPage(page);
     const countOfPagesRes = await getActiveSubstancesCountOfPage("");
     const res = await getAllActiveSubstances(page, search);
 
-    if(
-      countOfPagesRes.status === Success &&
-      res.status === Success
-    ){
+    if (countOfPagesRes.status === Success && res.status === Success) {
       setCountOfPages(countOfPagesRes.data);
-      setRows(res.data)
+      setRows(res.data);
     }
-    if(firstLoad.current )
-    firstLoad.current = false;
+    if (firstLoad.current) firstLoad.current = false;
   }
 
   return (
     <div className={`${styles["row-parent"]}`}>
+      <ModalTostarStatusModal
+        show={show}
+        text={textMessage}
+        id={statusId}
+        onClose={() => setShow(false)}
+      />
       <div className={`${styles["box-container"]} `}>
         <div className="row">
           <div className="col-6">
             <SearchComponent
               callback={async (text) => {
                 setSearch(text);
-                
               }}
             />
           </div>
@@ -130,42 +143,56 @@ export const ActiveSubstanceListComponents = () => {
               </TableHead>
               <TableBody>
                 <React.Fragment key={1}>
-                  {rows.map(item=>{
-                    return (<TableRow className={`${styles["tb-pharmacy"]} max-row-size`} key={item.id}>
-                    <TableCell>
-                      <span className={`${styles["text-table"]}`}>{item.title}</span>
-                    </TableCell>
-                    <TableCell>
-                      <span className={`${styles["text-number"]}`}>{item.countOfMedicines}</span>
-                    </TableCell>
-                    <TableCell className="d-flex align-items-center justify-content-between">
-                      <CheckedBox value={!(item.isActive)} text="Неактивний" onChange={async(value)=>{
-                        let res = await updateActiveSubstanceStatus(item.id, !value);
-                        if(res.status === Success){
-                          toast.success("Успіх")
-                          return;
-                        }
-                        toast.error("Помилка")
-                      }} />
-
-                      <NavLink
-                        to={`/admin/activeSubstance/${item.id}`}
-                        className={`${styles["btn-edit"]}`}
+                  {rows.map((item) => {
+                    return (
+                      <TableRow
+                        className={`${styles["tb-pharmacy"]} max-row-size`}
+                        key={item.id}
                       >
-                        оновити
-                      </NavLink>
-                    </TableCell>
-                  </TableRow>)
+                        <TableCell>
+                          <span className={`${styles["text-table"]}`}>
+                            {item.title}
+                          </span>
+                        </TableCell>
+                        <TableCell>
+                          <span className={`${styles["text-number"]}`}>
+                            {item.countOfMedicines}
+                          </span>
+                        </TableCell>
+                        <TableCell className="d-flex align-items-center justify-content-between">
+                          <CheckedBox
+                            value={!item.isActive}
+                            text="Неактивний"
+                            onChange={async (value) => {
+                              let res = await updateActiveSubstanceStatus(
+                                item.id,
+                                !value
+                              );
+                              if (res.status === Success) {
+                                handleShowModal(1, "Успіх!");
+
+                                return;
+                              }
+                              handleShowModal(2, "Помилка!");
+                            }}
+                          />
+
+                          <NavLink
+                            to={`/admin/activeSubstance/${item.id}`}
+                            className={`${styles["btn-edit"]}`}
+                          >
+                            оновити
+                          </NavLink>
+                        </TableCell>
+                      </TableRow>
+                    );
                   })}
-               
                 </React.Fragment>
                 {Array.from(Array(emptyRowCount)).map((_, index) => (
-                                    <TableRow key={`empty-${index}`} className="max-row-size">
-                                        <TableCell colSpan={columns.length}>
-
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
+                  <TableRow key={`empty-${index}`} className="max-row-size">
+                    <TableCell colSpan={columns.length}></TableCell>
+                  </TableRow>
+                ))}
                 {/* {rows.map((pharmacy, index) => (
                   <React.Fragment key={index}>
                     <TableRow>
@@ -202,18 +229,17 @@ export const ActiveSubstanceListComponents = () => {
                     })}
                   </React.Fragment>
                 ))} */}
-                
               </TableBody>
             </Table>
           </TableContainer>
           <div className={`d-flex justify-content-end align-items-center`}>
-             <PaginationComponent
-              setContent={(a)=>setRows(a)}
-              getContent={async (page)=>{
+            <PaginationComponent
+              setContent={(a) => setRows(a)}
+              getContent={async (page) => {
                 const newUrl = `/admin/activeSubstanceList/${page}`;
-                window.history.pushState({}, '', newUrl);
+                window.history.pushState({}, "", newUrl);
                 let res = await getAllActiveSubstances(page, search);
-                if(res.status === Success){
+                if (res.status === Success) {
                   return res.data;
                 }
               }}
@@ -221,7 +247,7 @@ export const ActiveSubstanceListComponents = () => {
               page={page}
               setPage={setPage}
               countOfPages={countOfPages}
-              /> 
+            />
           </div>
         </Paper>
       </div>
