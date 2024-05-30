@@ -8,7 +8,7 @@ const ProductFilterItemComponent = ({ state, setState, name, count }) => {
             <label className={`${styles["orange-checkbox-container"]}`}>{name}
                 <input type="checkbox" checked={state} onChange={e=>setState(e.target.value)}/>
                 <span className={`${styles["checkmark"]}`}></span>
-                <p>+{count}</p>
+                {/* <p>+{count}</p> */}
             </label>
             {/* {
             state?

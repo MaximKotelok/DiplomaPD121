@@ -62,10 +62,10 @@ const WathcList = () => {
         {recently.length} результата по запиту
       </h6>
 
-      <div className=" pe-2 ps-2 mb-3 d-flex align-items-center justify-content-between ">
+      {/* <div className=" pe-2 ps-2 mb-3 d-flex align-items-center justify-content-between ">
         <FilterData />
         <Filter />
-      </div>
+      </div> */}
 
       <div>
         {/* Якщо історія не пуста  */}

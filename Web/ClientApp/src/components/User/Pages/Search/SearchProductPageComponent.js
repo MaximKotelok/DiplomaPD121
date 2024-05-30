@@ -194,12 +194,12 @@ export const SearchProductPageComponent = () => {
 
         <div className="col-8">
           <div className="d-flex align-items-center">
-            <div className={` ${styles["btn-nav-menu-active"]}`}>
+            {/* <div className={` ${styles["btn-nav-menu-active"]}`}>
               Список товарі
             </div>
             <div className={`me-4 ms-4 ${styles["btn-nav-menu"]}`}>
               Ціни в аптеках
-            </div>
+            </div> */}
             <div className="ms-auto">
               <div className="btn-group">
                 <CustomSelectComponentSelectFilter

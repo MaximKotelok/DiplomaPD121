@@ -70,6 +70,12 @@ export async function GetProductByTitle(title, count = 6) {
         count
     }, ClassHeader)
 } 
+export async function GetProductByTitleForPharmacy(title, count = 6) {
+    return await getFromServer("Product/GetProductByTitleForPharmacy", {
+        title,
+        count
+    }, ClassHeader)
+} 
 
 export async function Search(title = null, categories = null, brands = null, activeSubstanceId, properties = null,page=1, orderBy=null) {
     let res = await postToServer("Product/Search", {

@@ -281,16 +281,17 @@ export const ProductConcreatListComponents = () => {
                         </TableRow>
                       );
                     })}
-                    {Array.from(Array(emptyRowCount)).map((_, index) => (
+                    </React.Fragment>
+                      
+                ))}
+                {Array.from(Array(emptyRowCount)).map((_, index) => (
                         <TableRow key={`empty-${index}`} className="max-row-size">
                             <TableCell colSpan={columns.length}>
 
                             </TableCell>
                         </TableRow>
                       ))}
-                  </React.Fragment>
-                      
-                ))}
+                  
 
                 {/* {rows.map((pharmacy, index) => (
                   <React.Fragment key={index}>

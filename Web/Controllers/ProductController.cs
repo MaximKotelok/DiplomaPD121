@@ -16,6 +16,7 @@ using Services.ConcreteProductService;
 using Services.EmailService;
 using Services.MedicineService;
 using Services.PharmacyCompanyService;
+using Services.PharmacyService;
 using Services.ProductConfirmService;
 using Services.ProductStatusService;
 using Services.PropertyService;
@@ -43,6 +44,7 @@ namespace Web.Controllers
 		private readonly IProductStatusService _productStatusService;
 		private readonly IProductConfirmService _productConfirmService;
 		private readonly IPharmaCompanyService _pharmaCompanyService;
+		private readonly IPharmacyService _pharmacyService;
 		private readonly IReservationService _reservationService;
 		private readonly IUserService _userService;
 		private readonly IEmailService _emailService;
@@ -60,7 +62,8 @@ namespace Web.Controllers
 				IUserService userService,
 				IEmailService emailService,
 				IPharmaCompanyService pharmaCompanyService,
-				ICategoryService categoryService
+				ICategoryService categoryService,
+				IPharmacyService pharmacyService
 			)
 		{
 
@@ -76,6 +79,7 @@ namespace Web.Controllers
 			this._userService = userService;
 			this._emailService = emailService;
 			this._pharmaCompanyService = pharmaCompanyService;
+			this._pharmacyService = pharmacyService;
 			this._categoryService = categoryService;
 		}
 
@@ -601,7 +605,33 @@ namespace Web.Controllers
 			}
 			return BadRequest("No records found");
 		}
+		[HttpGet("GetProductByTitleForPharmacy")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Pharmacist)]
 
+		public async Task<IActionResult> GetProductByTitleForPharmacy(string title, int count)
+		{
+			var user = await _userService.GetUserByName(User.Identity.Name);
+			var pharmacy = _pharmacyService.GetPharmacy(a => a.UserID == user.Id, "ConcreteProducts");
+			if(pharmacy is null)
+			{
+				return BadRequest("Pharmacy for your user was not found");
+			}
+
+			var productsIds = pharmacy.ConcreteProducts.Select(a => a.ProductID);
+
+			var lowerTitle = title.ToLower();
+			var result = _productService
+				.GetAllProducts(a => a.Title.ToLower()
+					.Contains(lowerTitle) && 
+					!productsIds.Contains(a.Id), 
+					"ProductConfirm,ProductConfirm.ProductStatus").Take(count)
+				.Where(a => (a.ProductConfirm == null || a!.ProductConfirm!.ProductStatus!.Status!.Equals(SD.ProductStatusConfirmed)));
+			if (result is not null)
+			{
+				return Ok(result);
+			}
+			return BadRequest("No records found");
+		}
 		[HttpGet("GetTopOffers")]
 		public IActionResult GetTopOffers(int count)
 		{

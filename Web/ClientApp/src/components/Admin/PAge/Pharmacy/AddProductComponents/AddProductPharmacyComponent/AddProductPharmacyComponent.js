@@ -3,6 +3,7 @@ import styles from "./AddProductPharmacyComponent.module.css";
 import AutoCompleteInput from "../../../../../Common/AutoCompleteInputComponent/AutoCompleteInput ";
 import {
   GetProductByTitle,
+  GetProductByTitleForPharmacy,
   getProductForPharmacyById,
 } from "../../../../../../services/product";
 import { ApiPath, Success } from "../../../../../../utils/Constants";
@@ -134,7 +135,7 @@ export const AddProductPharmacyComponent = () => {
           </h6>
           <AutoCompleteInput
             className="searchbar"
-            getData={(title) => GetProductByTitle(title)}
+            getData={(title) => GetProductByTitleForPharmacy(title)}
             onResultClick={(id) => {
               setId(id);
             }}

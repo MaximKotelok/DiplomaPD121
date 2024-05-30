@@ -15,11 +15,13 @@ const LoginForm = () => {
 
     const location = useLocation();
  
-    const [from, setFrom] = useState();
+    const [from, setFrom] = useState("");
   
     useEffect(() => {
       const urlParams = new URLSearchParams(window.location.search);
-      setFrom(urlParams.get("from"));
+      const from = urlParams.get("from");
+      if(from && !from.startsWith("/auth"))
+        setFrom(urlParams.get("from"));
     }, [location]);
   
   
