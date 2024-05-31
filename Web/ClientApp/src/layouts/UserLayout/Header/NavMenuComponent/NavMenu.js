@@ -98,7 +98,7 @@ export class NavMenu extends Component {
               <NavLink
                 tag={Link}
                 className="profile nav-link-my"
-                to={"/profile" }
+                to={"/profile"}
               >
                 <IconButtonNoText iconPath={ProfileIcon} />
               </NavLink>

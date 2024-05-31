@@ -138,20 +138,33 @@ export const ProductListComponents = () => {
     }
   }
 
-  const [authProduct, setAuthProduct] = React.useState(true);
-  const [anchorElProduct, setAnchorElProduct] = React.useState(null);
-  const openProduct = Boolean(anchorElProduct);
+  // const [authProduct, setAuthProduct] = React.useState(true);
+  // const [anchorElProduct, setAnchorElProduct] = React.useState(null);
+  // const openProduct = Boolean(anchorElProduct);
 
-  const handleChangeProduct = (event) => {
-    setAuthProduct(event.target.checked);
+  // const handleChangeProduct = (event) => {
+  //   setAuthProduct(event.target.checked);
+  // };
+
+  // const handleMenuProduct = (event) => {
+  //   setAnchorElProduct(event.currentTarget);
+  // };
+
+  // const handleCloseProduct = () => {
+  //   setAnchorElProduct(null);
+  // };
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(null);
+
+  const handleMenuOpen = (event, index) => {
+    setAnchorEl(event.currentTarget);
+    setActiveIndex(index);
   };
 
-  const handleMenuProduct = (event) => {
-    setAnchorElProduct(event.currentTarget);
-  };
-
-  const handleCloseProduct = () => {
-    setAnchorElProduct(null);
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setActiveIndex(null);
   };
 
   // const handleChangePage = (event, newPage) => {
@@ -248,13 +261,15 @@ export const ProductListComponents = () => {
                           key={itemIndex}
                         >
                           <TableCell>
-                            <span className={`${styles["text-row-table"]}`}>
+                            <div
+                              className={`d-flex align-items-center ${styles["text-row-table"]}`}
+                            >
                               <CustomImgComponent
                                 className={`${styles["img-product"]} `}
                                 src={`${ApiPath}${item.pathToPhoto}`}
                               />{" "}
-                              {item.title}
-                            </span>
+                              <div>{item.title}</div>
+                            </div>
                           </TableCell>
                           <TableCell>
                             <span className={`${styles["text-row-table"]}`}>
@@ -264,6 +279,8 @@ export const ProductListComponents = () => {
                           <TableCell>
                             <span className={`${styles["text-row-table"]}`}>
                               {item.brand}
+
+                              {item.id}
                             </span>
                           </TableCell>
                           <TableCell>
@@ -273,14 +290,14 @@ export const ProductListComponents = () => {
                           </TableCell>
                           <TableCell>
                             <div className="d-flex justify-content-end pe-3">
-                              {/* {item.pharmacist ? item.pharmacist : "НЕМАЄ"} */}
-                              {/* <BtnEditPharmacyModal id={item.pharmacy.id} /> */}
                               <div>
                                 <IconButton
                                   aria-label="account of current user"
                                   aria-controls="menu-appbar"
                                   aria-haspopup="true"
-                                  onClick={handleMenuProduct}
+                                  onClick={(event) =>
+                                    handleMenuOpen(event, item.id)
+                                  }
                                   color="inherit"
                                 >
                                   {/* <MoreVertIcon /> */}
@@ -290,7 +307,7 @@ export const ProductListComponents = () => {
                                 </IconButton>
                                 <Menu
                                   id="menu-appbar"
-                                  anchorEl={anchorElProduct}
+                                  anchorEl={anchorEl}
                                   anchorOrigin={{
                                     vertical: "top",
                                     horizontal: "right",
@@ -300,10 +317,12 @@ export const ProductListComponents = () => {
                                     vertical: "top",
                                     horizontal: "right",
                                   }}
-                                  open={openProduct}
-                                  onClose={handleCloseProduct}
+                                  open={
+                                    Boolean(anchorEl) && activeIndex === item.id
+                                  }
+                                  onClose={handleMenuClose}
                                 >
-                                  <MenuItem onClick={handleCloseProduct}>
+                                  <MenuItem onClick={handleMenuClose}>
                                     <Link
                                       className="btn btn-primary w-100"
                                       to={`/admin/updateProduct/${item.id}`}
@@ -311,7 +330,7 @@ export const ProductListComponents = () => {
                                       Оновити
                                     </Link>
                                   </MenuItem>
-                                  <MenuItem onClick={handleCloseProduct}>
+                                  <MenuItem onClick={handleMenuClose}>
                                     <button
                                       className="btn btn-danger w-100"
                                       onClick={async () => {
