@@ -44,6 +44,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import ModalTostarStatusModal from "../../../Common/ModalTostarStatus/ModalTostarStatusModal";
 
+import categoryEmpty from "../../../../../assets/images/category/category-empty-img.png"
+import defaultImage from "../../../../../assets/images/product-card/defaultImg.png"
+
 const columns = [
   { id: "position", label: "Позиція", minWidth: 230 },
   {
@@ -260,6 +263,7 @@ export const ProductListComponents = () => {
                         <CustomImgComponent
                           className={`${styles["img-category"]} ms-3`}
                           src={`${ApiPath}${category.categoryPathToPhoto}`}
+                          defaultSrc={categoryEmpty}
                         />{" "}
                         {category.categoryTitle}
                       </TableCell>
@@ -278,6 +282,7 @@ export const ProductListComponents = () => {
                               <CustomImgComponent
                                 className={`${styles["img-product"]} `}
                                 src={`${ApiPath}${item.pathToPhoto}`}
+                                defaultSrc={defaultImage}
                               />{" "}
                               <div>{item.title}</div>
                             </div>

@@ -37,6 +37,7 @@ namespace Domain.Models
 		public Series? Series { get; set; }
         public int? ProductConfirmID { get; set; }
 		[ForeignKey(nameof(ProductConfirmID))]
+		[JsonIgnore]
         public ProductConfirm? ProductConfirm { get; set; }
 		public int? ProductAttributeGroupID { get; set; }
 		[ForeignKey(nameof(ProductAttributeGroupID))]

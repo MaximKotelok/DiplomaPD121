@@ -18,9 +18,16 @@ import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
 import { Link, useParams } from "react-router-dom";
-import { getConcreteProductsFromPharmacy, getCountOfPagesForConcreteProductsFromPharmacy } from "../../../../../services/concreteProduct";
+import { deleteConcreteProduct, getConcreteProductsFromPharmacy, getCountOfPagesForConcreteProductsFromPharmacy } from "../../../../../services/concreteProduct";
 import BtnConcreteProductModal from "./components/BtnEditStatusModal/BtnConcreteProductModal";
 
+import categoryEmpty from "../../../../../assets/images/category/category-empty-img.png"
+import defaultImage from "../../../../../assets/images/product-card/defaultImg.png"
+import { IconButton, Menu, MenuItem } from "@material-ui/core";
+
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+
+import { toast } from "react-toastify";
 const columns = [
   { id: "position", label: "Позиція", minWidth: 200 },
   { id: "brend", label: "Бренд", minWidth: 200 },
@@ -120,8 +127,22 @@ export const ProductConcreatListComponents = () => {
   const [search, setSearch] = React.useState("");
   //const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [rows, setRows] = React.useState([]);
-  
+
   const [emptyRowCount, setEmptyRowCount] = React.useState(0);
+
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [activeIndex, setActiveIndex] = React.useState(null);
+
+  const handleMenuOpen = (event, index) => {
+    setAnchorEl(event.currentTarget);
+    setActiveIndex(index);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setActiveIndex(null);
+  };
 
   useEffect(() => {
     let tmpRows = rows.flatMap(a => {
@@ -131,7 +152,7 @@ export const ProductConcreatListComponents = () => {
         return [null]
       }
     });
-    if (itemsPerPageForAdmin> tmpRows.length) {
+    if (itemsPerPageForAdmin > tmpRows.length) {
       setEmptyRowCount(itemsPerPageForAdmin - tmpRows.length)
     } else {
       setEmptyRowCount(0)
@@ -140,18 +161,18 @@ export const ProductConcreatListComponents = () => {
   }, [rows])
 
   const { pageParam } = useParams();
-  useEffect(()=>{
-    if(pageParam)
+  useEffect(() => {
+    if (pageParam)
       refresh(parseInt(pageParam));
-      else
+    else
       refresh(1)
-  },[])
+  }, [])
 
-  async function refresh(page, searchText){
+  async function refresh(page, searchText) {
     setPage(page);
-    let resCount = await getCountOfPagesForConcreteProductsFromPharmacy(searchText == "" || search?searchText:search);
-    let res = await getConcreteProductsFromPharmacy(searchText == "" || search?searchText:search,page);
-    if(res.status === Success && resCount.status === Success){
+    let resCount = await getCountOfPagesForConcreteProductsFromPharmacy(searchText == "" || search ? searchText : search);
+    let res = await getConcreteProductsFromPharmacy(searchText == "" || search ? searchText : search, page);
+    if (res.status === Success && resCount.status === Success) {
       setCountOfPages(resCount.data);
       setRows(res.data);
     }
@@ -182,10 +203,10 @@ export const ProductConcreatListComponents = () => {
     <div className={`${styles["row-parent"]}`}>
       <div className={`${styles["box-container"]} row`}>
         <div className="col-6">
-          <SearchComponent callback={async (text)=>{
-              setSearch(text);
-              await refresh(1, text);
-          }}/>
+          <SearchComponent callback={async (text) => {
+            setSearch(text);
+            await refresh(1, text);
+          }} />
         </div>
 
         <div className="col-6 d-flex justify-content-end  align-items-center">
@@ -229,6 +250,7 @@ export const ProductConcreatListComponents = () => {
                         <CustomImgComponent
                           className={`${styles["img-category"]} ms-3`}
                           src={`${ApiPath}${pharmacy.categoryPathToPhoto}`}
+                          defaultSrc={categoryEmpty}
                         />{" "}
                         {pharmacy.categoryTitle}
                       </TableCell>
@@ -245,6 +267,7 @@ export const ProductConcreatListComponents = () => {
                               <CustomImgComponent
                                 className={`${styles["img-product"]}`}
                                 src={`${ApiPath}${item.pathToPhoto}`}
+                                defaultSrc={defaultImage}
                               />{" "}
                               {item.title}
                             </span>
@@ -261,16 +284,66 @@ export const ProductConcreatListComponents = () => {
                           </TableCell>
                           <TableCell>
                             <span className={`${styles["text-row-table"]}`}>
-                            {item.price}
+                              {item.price}
                             </span>
                           </TableCell>
                           <TableCell>
-                          <div className="d-flex justify-content-between">
-                            <span className={`${styles["text-row-table"]}`}>
-                            {item.quantity}
-                              
-                            </span>
-                            <BtnConcreteProductModal id={item.id}/>
+                            <div className="d-flex justify-content-between align-items-center">
+                              <span className={`${styles["text-row-table"]}`}>
+                                {item.quantity}
+
+                              </span>
+                              <IconButton
+                                aria-label="account of current user"
+                                aria-controls="menu-appbar"
+                                aria-haspopup="true"
+                                onClick={(event) =>
+                                  handleMenuOpen(event, item.id)
+                                }
+                                color="inherit"
+                              >
+                                <MoreVertIcon
+                                  style={{ color: "rgba(122, 122, 122, 1)" }}
+                                />
+                              </IconButton>
+                              <Menu
+                                id="menu-appbar"
+                                anchorEl={anchorEl}
+                                anchorOrigin={{
+                                  vertical: "top",
+                                  horizontal: "right",
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                  vertical: "top",
+                                  horizontal: "right",
+                                }}
+                                open={
+                                  Boolean(anchorEl) && activeIndex === item.id
+                                }
+                                onClose={handleMenuClose}
+                              >
+                                <MenuItem onClick={handleMenuClose}>
+                                  <Link
+                                    className="btn btn-primary w-100"
+                                    to={`/admin/updateProductPharmacy/${item.id}`}>
+                                    Оновити
+                                  </Link>
+                                </MenuItem>
+                                <MenuItem onClick={handleMenuClose}>
+                                  <button className="btn btn-danger w-100" onClick={async () => {
+                                    let res = await deleteConcreteProduct(item.id);
+                                    if (res.status === Success) {
+                                      window.location.reload();
+                                    } else {
+                                      toast.error("Помилка");
+                                    }
+                                  }}>
+                                    Видалити
+                                  </button>
+                                </MenuItem>
+                              </Menu>
+
                             </div>
                           </TableCell>
                           {/* <TableCell> */}
@@ -281,17 +354,17 @@ export const ProductConcreatListComponents = () => {
                         </TableRow>
                       );
                     })}
-                    </React.Fragment>
-                      
+                  </React.Fragment>
+
                 ))}
                 {Array.from(Array(emptyRowCount)).map((_, index) => (
-                    <TableRow key={`empty-${index}`} className="max-row-size empty-row">
-                            <TableCell colSpan={columns.length}>
+                  <TableRow key={`empty-${index}`} className="max-row-size empty-row">
+                    <TableCell colSpan={columns.length}>
 
-                            </TableCell>
-                        </TableRow>
-                      ))}
-                  
+                    </TableCell>
+                  </TableRow>
+                ))}
+
 
                 {/* {rows.map((pharmacy, index) => (
                   <React.Fragment key={index}>
@@ -368,13 +441,13 @@ export const ProductConcreatListComponents = () => {
             </Table>
           </TableContainer>
           <div className={`d-flex justify-content-end align-items-center`}>
-            <PaginationComponent 
-              setContent={(a)=>setRows(a)}
-              getContent={async (page)=>{
+            <PaginationComponent
+              setContent={(a) => setRows(a)}
+              getContent={async (page) => {
                 const newUrl = `/admin/concreteProductList/${page}`;
                 window.history.pushState({}, "", newUrl);
                 let res = await getConcreteProductsFromPharmacy(search, page);
-                if(res.status === Success){
+                if (res.status === Success) {
                   return res.data;
                 }
               }}
@@ -382,7 +455,7 @@ export const ProductConcreatListComponents = () => {
               page={page}
               setPage={setPage}
               countOfPages={countOfPages}
-              /> 
+            />
           </div>
         </Paper>
       </div>

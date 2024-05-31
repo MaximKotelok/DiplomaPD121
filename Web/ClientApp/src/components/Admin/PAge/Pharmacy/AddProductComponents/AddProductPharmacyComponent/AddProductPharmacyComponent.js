@@ -15,6 +15,8 @@ import Button from "@mui/material/Button";
 import CustomImgComponent from "../../../../../Common/CustomImgComponent/CustomImgComponent";
 import { useNavigate, useParams } from "react-router";
 import { checkFormParamsAreNotEmpty } from "../../../../../../utils/Functions";
+
+import defaultImage from "../../../../../../assets/images/product-card/defaultImg.png"
 const VisuallyHiddenInput = styled("input")({
   clip: "rgba(229, 229, 234, 1)",
   clipPath: "inset(50%)",
@@ -114,7 +116,7 @@ export const AddProductPharmacyComponent = () => {
 
     let res = await addConcreteProductAsync({
       quantity: parseInt(data.quantity),
-      price: parseInt(data.price),
+      price: parseFloat(data.price),
       productId: id,
       id: concreteProductId
     });
@@ -134,6 +136,7 @@ export const AddProductPharmacyComponent = () => {
             Оберіть товар
           </h6>
           <AutoCompleteInput
+            isDisableNavigate ={true}
             className="searchbar"
             getData={(title) => GetProductByTitleForPharmacy(title)}
             onResultClick={(id) => {
@@ -155,6 +158,7 @@ export const AddProductPharmacyComponent = () => {
             <div className={`d-flex flex-column  justify-content-center `}>
               <CustomImgComponent
                 src={`${ApiPath}${product.pathToPhoto}`}
+                defaultSrc={defaultImage}
                 alt="no photo"
                 className={`${styles["img-product"]} mb-2`}
               />

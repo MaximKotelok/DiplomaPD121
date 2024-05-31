@@ -21,6 +21,8 @@ import PaginationComponent from "../../../../Common/PaginationComponent/Paginati
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { ProductConfirmListPath } from "../../../../../utils/TablesPathes";
+
+import defaultImage from "../../../../../assets/images/product-card/defaultImg.png"
 const columns = [
   { id: "position", label: "Позиція", minWidth: 170 },
   { id: "category", label: "Категорія", minWidth: 170 },
@@ -180,6 +182,7 @@ export const ZayavkaComponents = () => {
                               <CustomImgComponent
                                 className={`${styles["img-product"]}`}
                                 src={`${ApiPath}${item.pathToPhoto}`}
+                                defaultSrc={defaultImage}
                               />{" "}
                               {item.title}
                             </Link>

@@ -7,7 +7,9 @@ import styles from "./AutoCompleteInput.module.css";
 import { ApiPath, Success } from "../../../utils/Constants";
 import CustomImgComponent from "../CustomImgComponent/CustomImgComponent";
 
-const AutoCompleteInput = ({ className, getData, onResultClick }) => {
+import defaultImage from "../../../assets/images/product-card/defaultImg.png"
+
+const AutoCompleteInput = ({ className, getData, onResultClick, isDisableNavigate = false }) => {
   const [dataFromServer, setDataFromServer] = useState([]);
   const [searchTerm, setSearchTerm] = useState([]);
   const [isFocused, setIsFocused] = useState(false);
@@ -52,7 +54,7 @@ const AutoCompleteInput = ({ className, getData, onResultClick }) => {
         
         ${styles["product-back-serach-bar"]}    back-serach-bar `}
       >
-        <Link to={`/Search/ByTitle/${searchTerm}`} className="btn social-btn">
+        <Link to={isDisableNavigate?``:`/Search/ByTitle/${searchTerm}`} className="btn social-btn">
           <img
             src={searchIcon}
             width="28px"
@@ -68,7 +70,7 @@ const AutoCompleteInput = ({ className, getData, onResultClick }) => {
           value={searchTerm}
           onInput={handleChange}
           onKeyUp={(e)=>{
-            if (e.keyCode === 13){
+            if (e.keyCode === 13 && !isDisableNavigate){
               navigate(`/Search/ByTitle/${searchTerm}`);
               setSearchTerm("");
             }
@@ -97,6 +99,7 @@ const AutoCompleteInput = ({ className, getData, onResultClick }) => {
                     <CustomImgComponent
                       style={{ width: "40px", height: "40px" }}
                       src={`${ApiPath}${option.pathToPhoto}`}
+                      defaultSrc={defaultImage}
                     />
                     <div className="ms-3">
                       <h4 className={`${styles["text-head"]}`}>

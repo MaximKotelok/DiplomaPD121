@@ -8,6 +8,9 @@ import { ApiPath, Success } from "../../../utils/Constants";
 import CustomImgComponent from "../CustomImgComponent/CustomImgComponent";
 import { addToCart } from "../../../services/cartService";
 import { toast } from "react-toastify";
+
+
+import defaultImage from "../../../assets/images/product-card/defaultImg.png"
 const PharmacySearchProductAutoCompleteInputComponent = ({
   className,
   getData,
@@ -87,6 +90,7 @@ const PharmacySearchProductAutoCompleteInputComponent = ({
                 <CustomImgComponent
                   style={{ width: "60px", height: "60px" }}
                   src={`${ApiPath}${product.product.pathToPhoto}`}
+                  defaultSrc={defaultImage}
                   // src={`${ApiPath}${option.pathToPhoto}`}
                 />
                 <div className="ms-3 d-flex flex-column">

@@ -38,6 +38,8 @@ import {
 import { toast } from "react-toastify";
 import ModalTostarStatusModal from "../../../Common/ModalTostarStatus/ModalTostarStatusModal";
 
+import categoryEmpty from "../../../../../assets/images/category/category-empty-img.png"
+
 const columns = [
   { id: "name", last: false, label: "Категорія", width: 1100 },
   { id: "recomended", last: false, label: "Рекомендована", width: 1200 },
@@ -179,6 +181,7 @@ export const CategoryListComponents = () => {
                         <CustomImgComponent
                           className={`${styles["img-product"]}`}
                           src={`${ApiPath}${category.pathToPhoto}`}
+                          defaultSrc={categoryEmpty}
                         />{" "}
                         <span className={` ${styles["text-span-table"]}`}>
                           {category.title}

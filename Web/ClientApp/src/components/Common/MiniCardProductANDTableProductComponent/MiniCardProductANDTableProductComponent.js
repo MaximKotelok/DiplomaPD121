@@ -10,6 +10,7 @@ import { ApiPath } from "../../../utils/Constants.js";
 import CustomImgComponent from "../CustomImgComponent/CustomImgComponent.js";
 import { ReactComponent as Galochka } from "../../../assets/images/category/galochka.svg";
 import { isFavoriteProduct } from "../../../utils/Functions.js";
+import defaultImage from "../../../assets/images/product-card/defaultImg.png"
 
 const MiniCardProductANDTableProductComponent = ({
   id = 0,
@@ -63,6 +64,7 @@ const MiniCardProductANDTableProductComponent = ({
       >
         <CustomImgComponent
           src={`${ApiPath}${imageUrl}`}
+          defaultSrc={defaultImage}
           style={{ width: "100%", height: "170px" }}
           className={`${stylesMiniCard["product-image"]} ${styles["image"]}`}
           alt={title}

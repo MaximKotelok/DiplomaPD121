@@ -337,8 +337,11 @@ export const PharmacyListComponents = () => {
                           <TableCell>{item.pharmacy.address}</TableCell>
                           <TableCell>{`${item.pharmacy.openTime} - ${item.pharmacy.closeTime}`}</TableCell>
                           <TableCell>
-                            <div className="d-flex justify-content-end pe-3">
-                              {/* {item.pharmacist ? item.pharmacist : "НЕМАЄ"} */}
+                            <div className="d-flex align-items-center justify-content-end pe-3">
+                              <div className="text-left w-100">
+
+                                {item.pharmacist ? item.pharmacist : "НЕМАЄ"}
+                              </div>
                               {/* <BtnEditPharmacyModal id={item.pharmacy.id} /> */}
                               <div>
                                 <IconButton

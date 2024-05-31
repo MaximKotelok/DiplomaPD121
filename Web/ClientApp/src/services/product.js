@@ -69,13 +69,13 @@ export async function getMinAndMaxPrice(id) {
 } 
 
 export async function GetProductByTitle(title, count = 6) {
-    return await getFromServer("Product/GetProductByTitle", {
+    return await postToServer("Product/GetProductByTitle", {
         title,
         count
     }, ClassHeader)
 } 
 export async function GetProductByTitleForPharmacy(title, count = 6) {
-    return await getFromServer("Product/GetProductByTitleForPharmacy", {
+    return await postToServer("Product/GetProductByTitleForPharmacy", {
         title,
         count
     }, ClassHeader)

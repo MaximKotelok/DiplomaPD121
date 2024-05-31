@@ -20,6 +20,9 @@ import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
+
+import defaultImage from "../../../../../assets/images/product-card/defaultImg.png"
+
 const columns = [
   { id: "position", label: "Позиція", minWidth: 170 },
   { id: "category", label: "Категорія", minWidth: 170 },
@@ -179,6 +182,7 @@ export const ProductInspectionComponents = () => {
                               <CustomImgComponent
                                 className={`${styles["img-product"]}`}
                                 src={`${ApiPath}${item.pathToPhoto}`}
+                                defaultSrc={defaultImage}
                               />{" "}
                               {item.title}
                             {/* </Link> */}

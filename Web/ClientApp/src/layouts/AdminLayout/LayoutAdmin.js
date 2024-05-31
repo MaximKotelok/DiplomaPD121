@@ -139,13 +139,13 @@ const LayoutAdmin = ({ children }) => {
                 link="/admin/homePageAdmin"
               />
             </li>
-            <li className="sidebar-list-item active">
+            {/* <li className="sidebar-list-item active">
               <ButtonSideMenuComponents
                 text="Повідомлення"
                 icon={Messag}
                 link="/admin/supportChat"
               />
-            </li>
+            </li> */}
             <li className="sidebar-list-item active">
               <ButtonSideMenuComponents
                 text="Заявки на підтвердження"
@@ -176,13 +176,13 @@ const LayoutAdmin = ({ children }) => {
                 ListMenejment={ListMenejment}
               />
             </li>
-            <li className="sidebar-list-item">
+            {/* <li className="sidebar-list-item">
               <ButtonSideMenuComponents
                 text="Браковані серії"
                 icon={Defective}
                 link="/admin/defectiveSeriesList"
               />
-            </li>
+            </li> */}
           </>)}
 
 
@@ -195,13 +195,13 @@ const LayoutAdmin = ({ children }) => {
                 link="/admin/homePageAdmin"
               />
             </li>
-            <li className="sidebar-list-item active">
+            {/* <li className="sidebar-list-item active">
               <ButtonSideMenuComponents
                 text="Повідомлення"
                 icon={Messag}
                 link="/admin/supportChat"
               />
-            </li>
+            </li> */}
 
             <li className="sidebar-list-item">
               <AccordionSideMenuComponent
@@ -210,13 +210,13 @@ const LayoutAdmin = ({ children }) => {
                 ListMenejment={ListMenejmentPharmacy}
               />
             </li>
-            <li className="sidebar-list-item">
+            {/* <li className="sidebar-list-item">
               <ButtonSideMenuComponents
                 text="Браковані серії"
                 icon={Defective}
                 link="/admin/defectiveSeriesList"
               />
-            </li>
+            </li> */}
           </>
           )
           }
@@ -239,19 +239,19 @@ const LayoutAdmin = ({ children }) => {
             </li>
             <li className="sidebar-list-item">
               <ButtonSideMenuComponents
-                text="Товари"
+                text="Заявки"
                 icon={HomeIcon}
                 link="/admin/productInspection"
               />
             </li>
 
-            <li className="sidebar-list-item active">
+            {/* <li className="sidebar-list-item active">
               <ButtonSideMenuComponents
                 text="Повідомлення"
                 icon={Messag}
                 link="/admin/supportChat"
               />
-            </li>
+            </li> */}
 
             <li className="sidebar-list-item">
               <ButtonSideMenuComponents
@@ -261,13 +261,13 @@ const LayoutAdmin = ({ children }) => {
                 className="button-icon-pharmacy"
               />
             </li>
-            <li className="sidebar-list-item">
+            {/* <li className="sidebar-list-item">
               <ButtonSideMenuComponents
                 text="Браковані серії"
                 icon={Defective}
                 link="/admin/defectiveSeriesList"
               />
-            </li>
+            </li> */}
           </>
           )
           }

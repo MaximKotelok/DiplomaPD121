@@ -32,13 +32,13 @@ export const DropDownService = ({ className }) => {
         {/* <div className={`mb-3`}>
           <BlockMenu iconPath={SearchIcon} text="Пошук по діючій речовині" />
         </div> */}
-        <div className={``}>
+        {/* <div className={``}>
           <BlockMenu
             iconPath={AlertIcon}
             hrf="/DefectiveSeries"
             text="Браковані серії"
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );

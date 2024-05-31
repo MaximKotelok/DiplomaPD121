@@ -7,7 +7,7 @@ import React, {useEffect,useState} from 'react';
 import FavoriteButton from '../FavoriteProductButtonComponent/FavoriteProductButton.js'
 import { ApiPath } from '../../../utils/Constants.js';
 import CustomImgComponent from '../CustomImgComponent/CustomImgComponent.js';
-
+import defaultImage from "../../../assets/images/product-card/defaultImg.png"
 const MiniProductCardComponent =
     ({
         id = 0,
@@ -48,6 +48,7 @@ const MiniProductCardComponent =
                     <Link to={`/product-details/${id}`} className='text-decoration-none d-flex justify-content-center'>
                         <CustomImgComponent 
                         src={`${ApiPath}${imageUrl}`} 
+                        defaultSrc={defaultImage}
                         style={{ width: "156px", height: "142px" }}
                         className='product-image'
                         alt={title}

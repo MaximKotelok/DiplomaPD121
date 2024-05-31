@@ -592,23 +592,30 @@ namespace Web.Controllers
 			return BadRequest("No records found");
 		}
 
-		[HttpGet("GetProductByTitle")]
-		public IActionResult GetProductByTitle(string title, int count)
+		[HttpPost("GetProductByTitle")]
+		public IActionResult GetProductByTitle(TitleAndCountViewModel model)
 		{
-			var lowerTitle = title.ToLower();
+			var lowerTitle = model.Title.ToLower();
 			var result = _productService
-				.GetAllProducts(a => a.Title.ToLower().Contains(lowerTitle), "ProductConfirm,ProductConfirm.ProductStatus").Take(count)
-				.Where(a => (a.ProductConfirm == null || a!.ProductConfirm!.ProductStatus!.Status!.Equals(SD.ProductStatusConfirmed)));
-			if (result is not null)
+				.GetAllProducts(a => a.Title.ToLower().Contains(lowerTitle), "ProductConfirm,ProductConfirm.ProductStatus")				
+				;
+
+			var filteredRes = result.Where(a =>
+			a.ProductConfirm == null ||
+			(a.ProductConfirm.ProductStatus != null &&
+			 a.ProductConfirm.ProductStatus.Status != null &&
+			 a.ProductConfirm.ProductStatus.Status.Equals(SD.ProductStatusConfirmed))
+		).Take(model.Count.Value);
+			if (filteredRes.Any())
 			{
-				return Ok(result);
+				return Ok(filteredRes);
 			}
 			return BadRequest("No records found");
 		}
-		[HttpGet("GetProductByTitleForPharmacy")]
+		[HttpPost("GetProductByTitleForPharmacy")]
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Pharmacist)]
 
-		public async Task<IActionResult> GetProductByTitleForPharmacy(string title, int count)
+		public async Task<IActionResult> GetProductByTitleForPharmacy(TitleAndCountViewModel model)
 		{
 			var user = await _userService.GetUserByName(User.Identity.Name);
 			var pharmacy = _pharmacyService.GetPharmacy(a => a.UserID == user.Id, "ConcreteProducts");
@@ -619,13 +626,14 @@ namespace Web.Controllers
 
 			var productsIds = pharmacy.ConcreteProducts.Select(a => a.ProductID);
 
-			var lowerTitle = title.ToLower();
+			var lowerTitle = model.Title.ToLower();
 			var result = _productService
 				.GetAllProducts(a => a.Title.ToLower()
 					.Contains(lowerTitle) && 
 					!productsIds.Contains(a.Id), 
-					"ProductConfirm,ProductConfirm.ProductStatus").Take(count)
-				.Where(a => (a.ProductConfirm == null || a!.ProductConfirm!.ProductStatus!.Status!.Equals(SD.ProductStatusConfirmed)));
+					"ProductConfirm,ProductConfirm.ProductStatus")
+				.Where(a => (a.ProductConfirm == null || a!.ProductConfirm!.ProductStatus!.Status!.Equals(SD.ProductStatusConfirmed)))
+				.Take(model.Count.Value);
 			if (result is not null)
 			{
 				return Ok(result);
