@@ -93,8 +93,6 @@ export const PharmacyListComponents = () => {
 
   const [pharmacy, setPharmacy] = useState(null);
   const [auth, setAuth] = React.useState(true);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
   const [show, setShow] = useState(false);
   const [statusId, setStatusId] = useState(1);
   const [textMessage, setTextMessage] = useState("Помилка!!!");
@@ -108,32 +106,31 @@ export const PharmacyListComponents = () => {
     }, 0); // Use a timeout to ensure the state change is registered
   };
 
-  const handleChange = (event) => {
-    setAuth(event.target.checked);
-  };
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [activeIndexPharmaCompany, setActiveIndexPharmaCompany] =
+    useState(null);
 
-  const handleMenu = (event) => {
+  const handleMenuOpenPharmaCompany = (event, index) => {
     setAnchorEl(event.currentTarget);
+    setActiveIndexPharmaCompany(index);
   };
 
-  const handleClose = () => {
+  const handleMenuClosePharmaCompany = () => {
     setAnchorEl(null);
+    setActiveIndexPharmaCompany(null);
   };
 
-  const [authPharmacy, setAuthPharmacy] = React.useState(true);
-  const [anchorElPharmacy, setAnchorElPharmacy] = React.useState(null);
-  const openPharmacy = Boolean(anchorElPharmacy);
+  const [anchorEl2, setAnchorEl2] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(null);
 
-  const handleChangePharmacy = (event) => {
-    setAuthPharmacy(event.target.checked);
+  const handleMenuOpen = (event, index) => {
+    setAnchorEl2(event.currentTarget);
+    setActiveIndex(index);
   };
 
-  const handleMenuPharmacy = (event) => {
-    setAnchorElPharmacy(event.currentTarget);
-  };
-
-  const handleClosePharmacy = () => {
-    setAnchorElPharmacy(null);
+  const handleMenuClose = () => {
+    setAnchorEl2(null);
+    setActiveIndex(null);
   };
 
   useEffect(() => {
@@ -248,18 +245,18 @@ export const PharmacyListComponents = () => {
                         {pharmacy.name}
                       </TableCell>
                       <TableCell colSpan={1}>
+                        {/* <BtnModalPharmaCompanyModal id={pharmacy.id} /> */}
                         <div className="d-flex justify-content-end">
-                          {/* <BtnModalPharmaCompanyModal id={pharmacy.id} /> */}
-
                           <div>
                             <IconButton
                               aria-label="account of current user"
                               aria-controls="menu-appbar"
                               aria-haspopup="true"
-                              onClick={handleMenu}
+                              onClick={(event) =>
+                                handleMenuOpenPharmaCompany(event, index)
+                              }
                               color="inherit"
                             >
-                              {/* <MoreVertIcon /> */}
                               <MoreVertIcon
                                 style={{ color: "rgba(122, 122, 122, 1)" }}
                               />
@@ -276,10 +273,13 @@ export const PharmacyListComponents = () => {
                                 vertical: "top",
                                 horizontal: "right",
                               }}
-                              open={open}
-                              onClose={handleClose}
+                              open={
+                                Boolean(anchorEl) &&
+                                activeIndexPharmaCompany === index
+                              }
+                              onClose={handleMenuClosePharmaCompany}
                             >
-                              <MenuItem onClick={handleClose}>
+                              <MenuItem onClick={handleMenuClosePharmaCompany}>
                                 <Link
                                   className="btn btn-primary w-100"
                                   to={`/admin/UpdatePharmaCompany/${pharmacy.id}`}
@@ -291,7 +291,7 @@ export const PharmacyListComponents = () => {
                                   Оновити
                                 </Link>
                               </MenuItem>
-                              <MenuItem onClick={handleClose}>
+                              <MenuItem onClick={handleMenuClosePharmaCompany}>
                                 <Link
                                   className={`btn btn-warning w-100 ${styles["btn-color"]}`}
                                   to={`/admin/addPharmacy/${pharmacy.id}`}
@@ -299,7 +299,8 @@ export const PharmacyListComponents = () => {
                                   Додати аптеку
                                 </Link>
                               </MenuItem>
-                              <MenuItem onClick={handleClose}>
+
+                              <MenuItem onClick={handleMenuClosePharmaCompany}>
                                 <button
                                   className="btn btn-danger w-100"
                                   onClick={async () => {
@@ -308,15 +309,17 @@ export const PharmacyListComponents = () => {
                                     );
                                     if (res.status === Success) {
                                       window.location.reload();
-                                      handleShowModal(1,"Видалення аптеки пройшло успішно!")
+                                      handleShowModal(
+                                        1,
+                                        "Видалення аптеки пройшло успішно!"
+                                      );
+                                      window.location.reload();
                                     } else {
-                                      handleShowModal(2,"Виникла помилка!")
-
-                                      // toast.error("Помилка");
+                                      handleShowModal(2, "Виникла помилка!");
                                     }
                                   }}
                                 >
-                                  Видалити
+                                  Видалити 
                                 </button>
                               </MenuItem>
                             </Menu>
@@ -324,7 +327,6 @@ export const PharmacyListComponents = () => {
                         </div>
                       </TableCell>
                     </TableRow>
-
                     {pharmacy.data.map((item, itemIndex) => {
                       return (
                         <TableRow
@@ -343,17 +345,19 @@ export const PharmacyListComponents = () => {
                                   aria-label="account of current user"
                                   aria-controls="menu-appbar"
                                   aria-haspopup="true"
-                                  onClick={handleMenuPharmacy}
+                                  // onClick={handleMenuPharmacy}
+                                  onClick={(event) =>
+                                    handleMenuOpen(event, item.pharmacy.id)
+                                  }
                                   color="inherit"
                                 >
-                                  {/* <MoreVertIcon /> */}
                                   <MoreVertIcon
                                     style={{ color: "rgba(122, 122, 122, 1)" }}
                                   />
                                 </IconButton>
                                 <Menu
                                   id="menu-appbar"
-                                  anchorEl={anchorElPharmacy}
+                                  anchorEl={anchorEl2}
                                   anchorOrigin={{
                                     vertical: "top",
                                     horizontal: "right",
@@ -363,35 +367,35 @@ export const PharmacyListComponents = () => {
                                     vertical: "top",
                                     horizontal: "right",
                                   }}
-                                  open={openPharmacy}
-                                  onClose={handleClosePharmacy}
+                                  open={
+                                    Boolean(anchorEl2) &&
+                                    activeIndex === item.pharmacy.id
+                                  }
+                                  onClose={handleMenuClose}
                                 >
-                                  <MenuItem onClick={handleClosePharmacy}>
+                                  <MenuItem onClick={handleMenuClose}>
                                     <Link
                                       className="btn btn-primary w-100"
-                                      to={`/admin/UpdatePharmacy/${pharmacy.id}`}
+                                      to={`/admin/UpdatePharmacy/${item.pharmacy.id}`}
                                     >
                                       Оновити
                                     </Link>
                                   </MenuItem>
-                                  <MenuItem onClick={handleClosePharmacy}>
+                                  <MenuItem onClick={handleMenuClose}>
                                     <button
                                       className="btn btn-danger w-100"
                                       onClick={async () => {
                                         let res = await deletePharmacy(
-                                          pharmacy.id
+                                          item.pharmacy.id
                                         );
                                         if (res.status === Success) {
                                           handleShowModal(
                                             1,
                                             "Видалення аптеки пройшло успішно!"
                                           );
-
-                                          // window.location.reload();
+                                          window.location.reload();
                                         } else {
                                           handleShowModal(2, "Помилка!");
-
-                                          // toast.error("Помилка");
                                         }
                                       }}
                                     >

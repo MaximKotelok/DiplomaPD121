@@ -22,3 +22,19 @@
     width: 100%;
     z-index: 1000; 
   }
+
+
+  .text-bottom{
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 13px;
+    }
+
+    .navLink:hover svg path, 
+    .navLink-active svg path {
+      stroke: rgba(255, 149, 0, 1); /* Зміна кольору ліній SVG */
+    }
+
+  .navLink-active svg path{
+    stroke: rgba(255, 149, 0, 1); /* Зміна кольору ліній SVG */
+  }

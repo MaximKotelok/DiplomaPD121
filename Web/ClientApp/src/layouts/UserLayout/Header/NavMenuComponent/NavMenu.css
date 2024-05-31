@@ -23,6 +23,16 @@ html {
   margin: 0;
 }
 
+.navLink:hover svg path, 
+.navLink-active svg path {
+  stroke: rgba(255, 149, 0, 1); /* Зміна кольору ліній SVG */
+}
+
+.navLink-active svg path{
+stroke: rgba(255, 149, 0, 1); /* Зміна кольору ліній SVG */
+}
+
+
 
 .logo {
   grid-area: logo;
