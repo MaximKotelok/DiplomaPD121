@@ -22,6 +22,7 @@ const ListPharmaciesItemComponent = ({
   onClick,
   lon,
   lat,
+  className,
 }) => {
   let isOpen = isPharmacyOpen(timeOpen, timeClosed);
 
@@ -29,7 +30,7 @@ const ListPharmaciesItemComponent = ({
     <div
       id={`pharmacy${id}`}
       onClick={onClick}
-      className={`${styles["card"]} ${isSelected && styles["active"]}`}
+      className={`${styles["card"]} ${isSelected && styles["active"]} ${className}`}
     >
       <p className={`${styles["pharma-name"]}`}>
         {title} <i className={`bi bi-info-circle ${styles["info-icon"]}`}></i>
