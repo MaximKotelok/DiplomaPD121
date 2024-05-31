@@ -3,9 +3,11 @@ import { getCookie } from "../utils/Cookies";
 import { postToServer, getFromServer, putToServer, deleteFromServer} from "../utils/Queries";
 import { postPhotoToServer } from "./photo";
 export async function getSupInfo(products){
-    return await Promise.all(products.map(async a => {
-        var res = await getFromServer(GetSupInfoForProductInYourCity, { city: getCookie("city"), id: a.id });      
-        if (res.status === Success) {
+    if(products && products.map){
+
+        return await Promise.all(products.map(async a => {
+            var res = await getFromServer(GetSupInfoForProductInYourCity, { city: getCookie("city"), id: a.id });      
+            if (res.status === Success) {
           a.count = res.data.count;
           a.minPrice = res.data.minPrice;                    
         } else {
@@ -13,7 +15,9 @@ export async function getSupInfo(products){
         }
         return a;
         
-      }))
+    }))
+    }
+    return []; 
 }
 
 export async function upsertProduct(product, options) {

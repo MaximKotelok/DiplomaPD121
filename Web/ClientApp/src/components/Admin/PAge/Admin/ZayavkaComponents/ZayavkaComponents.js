@@ -242,7 +242,7 @@ export const ZayavkaComponents = () => {
                   </React.Fragment>
                 ))}
                  {Array.from(Array(emptyRowCount)).map((_, index) => (
-                        <TableRow key={`empty-${index}`} className="max-row-size">
+                     <TableRow key={`empty-${index}`} className="max-row-size empty-row">
                             <TableCell colSpan={columns.length}> 
                             
                             </TableCell>

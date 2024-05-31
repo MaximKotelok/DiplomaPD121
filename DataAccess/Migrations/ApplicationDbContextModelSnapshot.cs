@@ -39,7 +39,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ActiveSubstances", (string)null);
+                    b.ToTable("ActiveSubstances");
 
                     b.HasData(
                         new
@@ -93,7 +93,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("CountryBrandID");
 
-                    b.ToTable("Brands", (string)null);
+                    b.ToTable("Brands");
 
                     b.HasData(
                         new
@@ -154,7 +154,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ParentCategoryID");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
 
                     b.HasData(
                         new
@@ -363,7 +363,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Citys", (string)null);
+                    b.ToTable("Citys");
 
                     b.HasData(
                         new
@@ -429,7 +429,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("ConcreteProducts", (string)null);
+                    b.ToTable("ConcreteProducts");
 
                     b.HasData(
                         new
@@ -536,7 +536,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries", (string)null);
+                    b.ToTable("Countries");
 
                     b.HasData(
                         new
@@ -583,7 +583,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("DefectiveSeries", (string)null);
+                    b.ToTable("DefectiveSeries");
                 });
 
             modelBuilder.Entity("Domain.Models.HistoryDate", b =>
@@ -599,7 +599,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("HistoryDates", (string)null);
+                    b.ToTable("HistoryDates");
                 });
 
             modelBuilder.Entity("Domain.Models.Manufacturer", b =>
@@ -628,7 +628,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("CountryManufactureID");
 
-                    b.ToTable("Manufacturers", (string)null);
+                    b.ToTable("Manufacturers");
 
                     b.HasData(
                         new
@@ -674,7 +674,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PermissionTypes", (string)null);
+                    b.ToTable("PermissionTypes");
 
                     b.HasData(
                         new
@@ -730,7 +730,7 @@ namespace DataAccess.Migrations
                         .IsUnique()
                         .HasFilter("[UserID] IS NOT NULL");
 
-                    b.ToTable("PharmaCompanies", (string)null);
+                    b.ToTable("PharmaCompanies");
 
                     b.HasData(
                         new
@@ -802,7 +802,7 @@ namespace DataAccess.Migrations
                         .IsUnique()
                         .HasFilter("[UserID] IS NOT NULL");
 
-                    b.ToTable("Pharmacies", (string)null);
+                    b.ToTable("Pharmacies");
 
                     b.HasData(
                         new
@@ -914,7 +914,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("SeriesID");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
 
                     b.UseTptMappingStrategy();
 
@@ -1045,7 +1045,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ProductAttributeGroupID");
 
-                    b.ToTable("Attributes", (string)null);
+                    b.ToTable("Attributes");
 
                     b.HasData(
                         new
@@ -1400,7 +1400,7 @@ namespace DataAccess.Migrations
                     b.Property<string>("DescriptionName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("IsDisableShow")
+                    b.Property<bool?>("IsShowAll")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -1411,13 +1411,13 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductAttributeGroups", (string)null);
+                    b.ToTable("ProductAttributeGroups");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            IsDisableShow = true,
+                            IsShowAll = true,
                             Name = "Загальні"
                         },
                         new
@@ -1467,7 +1467,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ProductStatusID");
 
-                    b.ToTable("ProductConfirms", (string)null);
+                    b.ToTable("ProductConfirms");
                 });
 
             modelBuilder.Entity("Domain.Models.ProductExistAttribute", b =>
@@ -1494,7 +1494,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("GroupID");
 
-                    b.ToTable("ProductExistAttributes", (string)null);
+                    b.ToTable("ProductExistAttributes");
 
                     b.HasData(
                         new
@@ -1586,7 +1586,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductPriceHistory", (string)null);
+                    b.ToTable("ProductPriceHistory");
                 });
 
             modelBuilder.Entity("Domain.Models.ProductProperty", b =>
@@ -1605,7 +1605,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("AttributeID");
 
-                    b.ToTable("Properties", (string)null);
+                    b.ToTable("Properties");
 
                     b.HasData(
                         new
@@ -1758,7 +1758,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductStatuses", (string)null);
+                    b.ToTable("ProductStatuses");
 
                     b.HasData(
                         new
@@ -1819,7 +1819,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Reservations", (string)null);
+                    b.ToTable("Reservations");
                 });
 
             modelBuilder.Entity("Domain.Models.ReservationItem", b =>
@@ -1845,7 +1845,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ReservationID");
 
-                    b.ToTable("ReservationItems", (string)null);
+                    b.ToTable("ReservationItems");
                 });
 
             modelBuilder.Entity("Domain.Models.ReservationStatus", b =>
@@ -1867,7 +1867,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ReservationStatuses", (string)null);
+                    b.ToTable("ReservationStatuses");
 
                     b.HasData(
                         new
@@ -1917,7 +1917,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Series", (string)null);
+                    b.ToTable("Series");
 
                     b.HasData(
                         new
@@ -1946,7 +1946,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SimilarProductGroups", (string)null);
+                    b.ToTable("SimilarProductGroups");
 
                     b.HasData(
                         new
@@ -1983,7 +1983,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("SimilarProductGroupID");
 
-                    b.ToTable("SimilarProductItems", (string)null);
+                    b.ToTable("SimilarProductItems");
 
                     b.HasData(
                         new
@@ -2238,7 +2238,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("FavUsersId");
 
-                    b.ToTable("PharmacyUser", (string)null);
+                    b.ToTable("PharmacyUser");
                 });
 
             modelBuilder.Entity("ProductUser", b =>
@@ -2253,7 +2253,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("FavUsersId");
 
-                    b.ToTable("ProductUser", (string)null);
+                    b.ToTable("ProductUser");
                 });
 
             modelBuilder.Entity("Domain.Models.Medicine", b =>
@@ -2300,7 +2300,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("PregnantID");
 
-                    b.ToTable("Medicines", (string)null);
+                    b.ToTable("Medicines");
 
                     b.HasData(
                         new

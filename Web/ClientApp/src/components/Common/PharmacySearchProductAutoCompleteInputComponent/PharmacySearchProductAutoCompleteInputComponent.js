@@ -18,6 +18,7 @@ const PharmacySearchProductAutoCompleteInputComponent = ({
   const [isFocused, setIsFocused] = useState(false);
 
   const handleChange = async (event) => {
+    setIsFocused(true)
     setSearchTerm(event.target.value);
     if (event.target.value !== "") {
       let res = await getData(event.target.value);
@@ -30,11 +31,23 @@ const PharmacySearchProductAutoCompleteInputComponent = ({
     addToCart(pharmacyId, id);
     toast.success("Товар додано до кошика");
   };
+  useEffect(()=>{
+    const onClickOutside = (e) => {
+      if (e && e.target && e.target.className && e.target.className.includes && !e.target.className.includes("search-box")) {
+        setIsFocused(false);
+      }
+    };
+    window.addEventListener("click", onClickOutside);
+
+    return ()=>{
+      
+      window.removeEventListener("click", onClickOutside);
+    }
+
+  },[])
   return (
-    <div
-      className={`${className} w-100`}
-      onMouseEnter={() => setIsFocused(true)}
-      onMouseLeave={() => setIsFocused(false)}
+    <Link to=""
+      className={`${className} w-100 search-box`}
     >
       <div
         className={`  ${styles["my-w-100"]} input-group ${searchTerm.length == 0 || !isFocused
@@ -154,7 +167,7 @@ const PharmacySearchProductAutoCompleteInputComponent = ({
               </li>
             )} */}
 
-    </div >
+    </Link >
   );
 };
 

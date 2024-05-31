@@ -123,15 +123,26 @@ export const ProductListComponents = () => {
     }
   }, [rows]);
   useEffect(() => {
-    reload(paramPage);
+    reload(paramPage?parseInt(paramPage):1);
   }, []);
 
   async function reload(page, searchText) {
     setPage(page);
-    let res = await getProductsAdmin(page, searchText ? searchText : search);
+    let queryPage = page;
     let resCountOfPages = await getCountOfPagesForProductsAdmin(
       searchText ? searchText : search
     );
+
+    if(resCountOfPages.status === Success && resCountOfPages.data < queryPage){
+      queryPage = resCountOfPages.data;
+      setPage(resCountOfPages.data);
+    }else if(resCountOfPages.status === Success && 1 > queryPage){
+      queryPage = 1;
+      setPage(1);
+    }
+
+    let res = await getProductsAdmin(queryPage, searchText ? searchText : search);
+
     if (res.status === Success && resCountOfPages.status === Success) {
       setCountOfPages(resCountOfPages.data);
       setRows(res.data);
@@ -147,6 +158,7 @@ export const ProductListComponents = () => {
   };
 
   const handleMenuProduct = (event) => {
+    console.log(event)
     setAnchorElProduct(event.currentTarget);
   };
 
@@ -290,6 +302,7 @@ export const ProductListComponents = () => {
                                 </IconButton>
                                 <Menu
                                   id="menu-appbar"
+                                  key={`a${itemIndex}`}
                                   anchorEl={anchorElProduct}
                                   anchorOrigin={{
                                     vertical: "top",
@@ -437,7 +450,7 @@ export const ProductListComponents = () => {
                 {Array.from(Array(emptyRowCount)).map((_, index) => (
                   <TableRow
                     key={`empty-${index}`}
-                    className={`${styles["tb-product"]}`}
+                    className={`${styles["tb-product"]} empty-row`}
                   >
                     <TableCell colSpan={columns.length}></TableCell>
                   </TableRow>

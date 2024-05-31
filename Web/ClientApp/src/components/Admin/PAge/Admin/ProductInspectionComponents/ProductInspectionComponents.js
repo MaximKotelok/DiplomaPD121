@@ -14,7 +14,7 @@ import TableRow from "@material-ui/core/TableRow";
 import SearchComponent from "../../../../Common/SearchComponent/SearchComponent";
 import { useEffect } from "react";
 import { getAllProductConfirm } from "../../../../../services/productConfirm";
-import { ApiPath, STANDART_IMG, Success } from "../../../../../utils/Constants";
+import { ApiPath, STANDART_IMG, Success, itemsPerPageForAdmin } from "../../../../../utils/Constants";
 import CustomImgComponent from "../../../../Common/CustomImgComponent/CustomImgComponent";
 import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
@@ -45,6 +45,7 @@ const columns = [
     // align: "right",
     format: (value) => value.toFixed(2),
   },
+  
 ];
 
 // function createData(name, code, population, size) {
@@ -69,7 +70,23 @@ export const ProductInspectionComponents = () => {
   //const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [rows, setRows] = React.useState([]);
   const [statuses, setStatuses] = React.useState([]);
+  const [emptyRowCount, setEmptyRowCount] = React.useState(0);
 
+  useEffect(() => {
+    let tmpRows = rows.flatMap((a) => {
+      if (a.data && a.data.length > 0) {
+        return [null, ...a.data];
+      } else {
+        return [null];
+      }
+    });
+    if (itemsPerPageForAdmin > tmpRows.length) {
+      setEmptyRowCount(itemsPerPageForAdmin - tmpRows.length);
+    } else {
+      setEmptyRowCount(0);
+    }
+  }, [rows]);
+  
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -169,7 +186,6 @@ export const ProductInspectionComponents = () => {
                           <TableCell>{item.category}</TableCell>
                           <TableCell>{item.manufacturer}</TableCell>
                           <TableCell>{item.date}</TableCell>
-                          <TableCell>{item.date}</TableCell>
                           <TableCell>
                             <div
                               className={`d-flex justify-content-between align-items-center`}
@@ -189,6 +205,13 @@ export const ProductInspectionComponents = () => {
                       );
                     })}
                   </React.Fragment>
+                ))}
+                {Array.from(Array(emptyRowCount)).map((_, index) => (
+                  <TableRow
+                        key={`empty-${index}`} className="max-row-size empty-row"
+                  >
+                    <TableCell colSpan={columns.length}></TableCell>
+                  </TableRow>
                 ))}
               </TableBody>
             </Table>

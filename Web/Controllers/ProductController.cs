@@ -847,7 +847,25 @@ namespace Web.Controllers
 			else
 			{
 				medicine.Id = postModel.Id.Value;
-				_productService.UpdateProduct(medicine);
+				var newMedicine = _medicineService.GetMedicine(a => a.Id == medicine.Id);
+				newMedicine.Title = medicine.Title;
+				newMedicine.CategoryID = medicine.CategoryID;
+				newMedicine.PathToPhoto = medicine.PathToPhoto;
+				newMedicine.Description = medicine.Description;
+				newMedicine.ShortDescription = medicine.ShortDescription;
+				newMedicine.ManufacturerID = medicine.ManufacturerID;
+				newMedicine.BrandID = medicine.BrandID;
+				newMedicine.ActiveSubstanceID = medicine.ActiveSubstanceID;
+				newMedicine.Properties = medicine.Properties;
+				newMedicine.ProductAttributeGroupID = medicine.ProductAttributeGroupID;
+				newMedicine.AdultsID = medicine.AdultsID;
+				newMedicine.AllergiesID = medicine.AllergiesID;
+				newMedicine.ChildrenID = medicine.ChildrenID;
+				newMedicine.DiabeticsID = medicine.DiabeticsID;
+				newMedicine.DriversID = medicine.DriversID;
+				newMedicine.NursingMothersID = medicine.NursingMothersID;
+				newMedicine.PregnantID = medicine.PregnantID;
+				_productService.UpdateProduct(newMedicine);
 			}
 		}
 
@@ -900,7 +918,19 @@ namespace Web.Controllers
 			else
 			{
 				product.Id = postModel.Id.Value;
-				_productService.UpdateProduct(product);
+
+				var newProduct = _productService.GetProduct(a => a.Id == product.Id);
+				newProduct.Title = product.Title;
+				newProduct.ShortDescription = product.ShortDescription;
+				newProduct.CategoryID = product.CategoryID;
+				newProduct.ManufacturerID = product.ManufacturerID;
+				newProduct.BrandID = product.BrandID;
+				newProduct.PathToPhoto = product.PathToPhoto;
+				newProduct.Description = postModel.Description;
+				newProduct.Properties = product.Properties;
+				newProduct.ProductAttributeGroupID = product.ProductAttributeGroupID;
+
+				_productService.UpdateProduct(newProduct);
 			}
 		}
 

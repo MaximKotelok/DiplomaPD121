@@ -34,7 +34,7 @@ const MenuComponent = () => {
       </li>
 
       <li>
-        <NavLink to="selectedproducts" className={active}>
+        <NavLink to="myproducts" className={active}>
           <img className={styles["category-icon"]} src={favoriteProductsImg} />
           <a className={`label ${styles["link-text"]} `}> Збережені товари </a>
         </NavLink>

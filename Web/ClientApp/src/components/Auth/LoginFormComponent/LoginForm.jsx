@@ -3,13 +3,14 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import { setToken } from '../../../utils/Login';
 import styles from "../AuthPage.module.css";
-import  { useLocation, useNavigate } from 'react-router-dom'
+import  { useLocation, useNavigate, useOutletContext } from 'react-router-dom'
 import { toast } from "react-toastify";
 import { getFavs } from "../../../services/favProducts";
 import { initStorageFavs } from "../../../utils/Functions";
 
 const LoginForm = () => {
     
+    const [handleShowModal] = useOutletContext();
     const navigate = useNavigate();
 
 
@@ -56,10 +57,12 @@ const LoginForm = () => {
                 toast.success("Ви успішно зайшли на сайт!");
                 // Додайте необхідні дії після успішного входу, наприклад, перенаправлення на іншу сторінку
             } else {
-                Swal.fire('Error!', 'An error occurred during login.', 'error');
+                //Swal.fire('Error!', 'An error occurred during login.', 'error');
+                handleShowModal(2, 'Під час входу сталася помилка.');
             }
         } catch (error) {
-            Swal.fire('Error!', error.response?.data || 'An error occurred during login.', 'error');
+            //Swal.fire('Error!', error.response?.data || 'An error occurred during login.', 'error');
+            handleShowModal(2, error.response?.data || 'Під час входу сталася помилка.');
         }
     };
 

@@ -16,7 +16,7 @@
   
   }
 
-  .map-selected-marker *, .map-default-marker *{
+  .map-default-marker *, .map-selected-marker *{
     position: relative;
     z-index: 2;
     margin: 0;
@@ -26,7 +26,7 @@
     z-index: 999!important;
   }
 
-  .map-selected-marker::before, .map-default-marker::before {
+  .map-default-marker::before, .map-selected-marker::before {
     width: 12px;
     height: 12px;
     content: '';
@@ -42,7 +42,7 @@
     border-color: transparent #FF9500 #FF9500 transparent;
   }
 
-  .map-selected-marker::after, .map-default-marker::after {
+  .map-default-marker::after, .map-selected-marker::after {
     content: '';
     position: absolute;
     width: 8px; /* Ширина круга */
@@ -54,7 +54,7 @@
     transform: translate(-50%, 25px); /* Зміщення круга під ромб */
 }
 
-.map-selected-marker, .map-selected-marker::before ,.map-selected-marker::after {
+.map-default-marker, .map-default-marker::before ,.map-default-marker::after {
     background-color: rgba(0, 122, 255, 1);
     /* background-color: #FF9500; */
     border-color: transparent rgba(0, 122, 255, 1) rgba(0, 122, 255, 1) transparent;

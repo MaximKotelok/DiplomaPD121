@@ -190,7 +190,7 @@ export default class App extends Component {
             <Route path="profile/*" element={<Profile />}>
               <Route path="mypharmacies" element={<MyPharmacies />} />
               <Route path="minebookeds" element={<MineBookeds />} />
-              <Route path="selectedproducts" element={<SelectedProducts />} />
+              <Route path="myproducts" element={<SelectedProducts />} />
               <Route path="wathclist" element={<WathcList />} />
               <Route path="edit" element={<EditProfile />} />
             </Route>

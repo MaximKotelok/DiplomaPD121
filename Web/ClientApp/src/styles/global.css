@@ -4,8 +4,17 @@ div[disabled] {
 
 }
 
+
 .w-90{
     width: 90%!important;
+}
+
+.empty-row{
+    margin-bottom: 1px;
+}
+
+.empty-row>*{
+    border-bottom: 0px!important;
 }
 
 .max-row-size{

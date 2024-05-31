@@ -81,9 +81,20 @@ export const ActiveSubstanceListComponents = () => {
   }, [rows]);
 
   async function reload(page) {
+    let queryPage = page;
     setPage(page);
     const countOfPagesRes = await getActiveSubstancesCountOfPage("");
-    const res = await getAllActiveSubstances(page, search);
+    
+
+    if(countOfPagesRes.status === Success && countOfPagesRes.data < queryPage){
+      queryPage = countOfPagesRes.data;
+      setPage(countOfPagesRes.data);
+    }else if(countOfPagesRes.status === Success && 1 > queryPage){
+      queryPage = 1;
+      setPage(1);
+    }
+
+    const res = await getAllActiveSubstances(queryPage, search);
 
     if (countOfPagesRes.status === Success && res.status === Success) {
       setCountOfPages(countOfPagesRes.data);
@@ -146,7 +157,7 @@ export const ActiveSubstanceListComponents = () => {
                   {rows.map((item) => {
                     return (
                       <TableRow
-                        className={`${styles["tb-pharmacy"]} max-row-size`}
+                        className={`${styles["tb-pharmacy"]} max-row-size empty-row`}
                         key={item.id}
                       >
                         <TableCell>
@@ -189,7 +200,7 @@ export const ActiveSubstanceListComponents = () => {
                   })}
                 </React.Fragment>
                 {Array.from(Array(emptyRowCount)).map((_, index) => (
-                  <TableRow key={`empty-${index}`} className="max-row-size">
+                    <TableRow key={`empty-${index}`} className="max-row-size empty-row">
                     <TableCell colSpan={columns.length}></TableCell>
                   </TableRow>
                 ))}

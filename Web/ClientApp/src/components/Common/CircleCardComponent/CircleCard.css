@@ -10,6 +10,8 @@
     width: 140px; /* Розмір можна змінити за вашим вибором */
     height: 140px; /* Розмір можна змінити за вашим вибором */
     border-radius: 100px;
+    
+    border: 1px solid #F5F5F5;
     margin-bottom: 14px;
   }
   

@@ -71,7 +71,7 @@ export const PharmacyListForPharmaCompanyComponent = () => {
   const [emptyRowCount, setEmptyRowCount] = React.useState(0);
 
   useEffect(() => {
-      init();
+      init(parseInt(paramPage));
   }, []);
 
   useEffect(() => {
@@ -104,7 +104,7 @@ export const PharmacyListForPharmaCompanyComponent = () => {
     reloadData();
   }, [search, isDisplayOnlyCompanies]);
 
-  async function init() {
+  async function init(paramPage) {
     let res = await getAllPharmaciesForPharmaCompany(page, "");
     if (res.status === Success) {
       let page = paramPage ? paramPage : 1;
@@ -205,7 +205,7 @@ export const PharmacyListForPharmaCompanyComponent = () => {
                     })}
                   </React.Fragment>
                   {Array.from(Array(emptyRowCount)).map((_, index) => (
-                                    <TableRow key={`empty-${index}`} className="max-row-size">
+                      <TableRow key={`empty-${index}`} className="max-row-size empty-row">
                                         <TableCell colSpan={columns.length}>
 
                                         </TableCell>

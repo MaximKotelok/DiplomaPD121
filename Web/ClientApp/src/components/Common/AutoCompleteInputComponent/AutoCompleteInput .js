@@ -12,6 +12,7 @@ const AutoCompleteInput = ({ className, getData, onResultClick }) => {
   const [isFocused, setIsFocused] = useState(false);
   const navigate = useNavigate();
   const handleChange = async (event) => {
+    setIsFocused(true);
     setSearchTerm(event.target.value);
     if (event.target.value !== "") {
       let res = await getData(event.target.value);
@@ -21,11 +22,25 @@ const AutoCompleteInput = ({ className, getData, onResultClick }) => {
     }
   };
 
+
+  useEffect(()=>{
+    const onClickOutside = (e) => {
+      if (e && e.target && e.target.className && e.target.className.includes && !e.target.className.includes("search-box")) {
+        setIsFocused(false);
+      }
+    };
+    window.addEventListener("click", onClickOutside);
+
+    return ()=>{
+      
+      window.removeEventListener("click", onClickOutside);
+    }
+
+  },[])
+
   return (
     <div
-      className={className}
-      onMouseEnter={() => setIsFocused(true)}
-      onMouseLeave={() => setIsFocused(false)}
+      className={`${className} search-box`}
     >
       <div
         className={`input-group ${
@@ -60,7 +75,7 @@ const AutoCompleteInput = ({ className, getData, onResultClick }) => {
         />
       </div>
 
-      <div style={{ position: "relative", maxWidth: "621px" }}>
+      <div style={{ position: "relative" }}>
         {searchTerm.length > 0 && isFocused && (
           <ul className={`${styles["ul-class"]}`}>
             <hr style={{ margin: "0px" }} />

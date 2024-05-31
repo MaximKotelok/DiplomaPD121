@@ -66,12 +66,16 @@ export const Home = () => {
     const count = 5;
     if (id) {
       let pngCards = await getFirstNItemsOfBottomCategoryById(id, count);
-      setPngCards(pngCards.data.result);
+        if (pngCards.status === Success) {
+            setPngCards(pngCards.data.result);
+        }
     } else {
         let pngCards = await getFirstNItemBottomCategory("png", count);
-        
+        if (pngCards.status === Success) {
+
       setRecomendedRandomCategory("PNG", pngCards.data.id);
       setPngCards(pngCards.data.result);
+        }
     }
   }
 

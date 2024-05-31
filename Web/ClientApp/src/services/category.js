@@ -50,8 +50,15 @@ export async function getCountOfPagesAllCategoriesForAdmin(search) {
 
 
 export async function GetWithProducts(id, from, to, count) {
-    let data = await getFromServer("Category/GetWithProducts", {id: id, from: from, to: to, count: count})
-    
+    let data =  await getFromServer("Category/GetWithProducts", {id: id, from: from, to: to, count: count})
+
+    if(data.status === Success){
+
+        data.data = await Promise.all(data.data.map(async a=>{
+            return {...a, products: await getSupInfo(a.products)}
+        }))
+    }
+
     return data;
 } 
 export async function IsCategoryHasProducts(id) {

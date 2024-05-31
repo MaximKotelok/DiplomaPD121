@@ -89,12 +89,24 @@ export const CategoryListComponents = () => {
 
   async function refresh(page, searchText) {
     setPage(page);
+    let queryPage = page;
     let resCount = await getCountOfPagesAllCategoriesForAdmin(
       searchText == "" || search ? searchText : search
     );
+
+    if(resCount.status === Success && resCount.data<queryPage) {
+      queryPage = resCount.data;
+      setPage(resCount.data);
+    }else if(resCount.status === Success && queryPage<1){
+      queryPage = 1;
+      setPage(1);
+      
+    }
+
+    
     let res = await getAllCategoriesForAdmin(
       searchText == "" || search ? searchText : search,
-      page
+      queryPage
     );
     if (res.status === Success && resCount.status === Success) {
       setCountOfPages(resCount.data);
@@ -213,7 +225,7 @@ export const CategoryListComponents = () => {
                   </React.Fragment>
                 ))}
                 {Array.from(Array(emptyRowCount)).map((_, index) => (
-                  <TableRow key={`empty-${index}`} className="max-row-size">
+                    <TableRow key={`empty-${index}`} className="max-row-size empty-row">
                     <TableCell colSpan={columns.length}></TableCell>
                   </TableRow>
                 ))}

@@ -3,7 +3,10 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 import styles from "../AuthPage.module.css";
+import { useOutletContext } from 'react-router';
 const RegistrationForm = () => {
+    
+    const [handleShowModal] = useOutletContext();
     const [formData, setFormData] = useState({
         username: '',
         email: '',
@@ -25,16 +28,19 @@ const RegistrationForm = () => {
         e.preventDefault();
 
         if (formData.password !== formData.confirmPassword) {
-            Swal.fire('Error!', 'Паролі не збігаються.', 'error');
+            handleShowModal(2, 'Паролі не збігаються.');
+            //Swal.fire('Error!', 'Паролі не збігаються.', 'error');
             return;
         }
-
+        
         try {
             const response = await axios.post('https://localhost:7133/api/userauthentication/register', formData);
-            Swal.fire('Success!', "Підтвердьте вашу електронну пошту для завершення реєстрації.", 'success');
+            handleShowModal(1, 'Підтвердьте вашу електронну пошту для завершення реєстрації.');
+            //Swal.fire('Success!', "Підтвердьте вашу електронну пошту для завершення реєстрації.", 'success');
         } catch (error) {
+            handleShowModal(2, error.response?.data[0] || 'Під час реєстрації сталася помилка.');
             //setErrors(error.response?.data || {}); // Add this line
-            Swal.fire('Error!', error.response?.data[0] || 'An error occurred during registration.', 'error');
+            //Swal.fire('Error!', error.response?.data[0] || 'An error occurred during registration.', 'error');
         }
     };
 

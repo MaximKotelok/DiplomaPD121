@@ -44,7 +44,7 @@ namespace Web.Controllers
 			int skipCount = page * itemsPerPage;
 
 			var confirmsList = _productConfirmService.GetAllProductConfirm(includeProperties: "PharmaCompany,PharmaCompany.User,ProductStatus,Product,Product.Manufacturer,Product.Category")
-				.OrderBy(a=>a.CreationDate)
+				.OrderByDescending(a=>a.CreationDate)
 				.GroupBy(a => a.PharmaCompany)
 				.SelectMany(a =>
 				a.Count() > 0 ?

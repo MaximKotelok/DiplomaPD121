@@ -89,7 +89,6 @@ const UpsertProductComponent = () => {
   async function init() {
     setCustomState(setData, "isHeaderDisabled", false);
     await getDataOrSetError(getAllCategoriesCanHasProducts, async (value) => {
-      console.log(value)
       setCustomState(setDataFromServer, "categories", value);
     });
     await getDataOrSetError(getAllTypes, async (value) => {
@@ -171,8 +170,6 @@ const UpsertProductComponent = () => {
           if (tmpObject) {
             setCategory(tmpObject.categoryID);
             setType(tmpObject.productAttributeGroupID);
-            console.log(newData)
-            console.log(tmpObject)
             newData = fillNullValues(newData, tmpObject);
           }
 
@@ -180,7 +177,6 @@ const UpsertProductComponent = () => {
           if (value.descriptionName) {
             setCustomState(setData, "descriptionName", value.descriptionName);
           }
-
           if (value.attributesInGroup && value.attributesInGroup.length){
 
             setCustomState(

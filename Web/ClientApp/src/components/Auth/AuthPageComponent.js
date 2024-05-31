@@ -13,6 +13,7 @@ import { checkIsAuth } from "../../services/user";
 import { ApiPath, EXT_FACEBOOK, EXT_GOOGLE } from "../../utils/Constants";
 import Swal from "sweetalert2";
 import axios from "axios";
+import ModalTostarStatusModal from "../Admin/Common/ModalTostarStatus/ModalTostarStatusModal";
 
 var active = ({ isActive }) =>
   isActive
@@ -27,8 +28,20 @@ const AuthPageComponent = () => {
   const queryParams = new URLSearchParams(location.search);
   let email = queryParams.get("email");
   let secret = queryParams.get("secret");
-  console.log(email)
-  console.log(secret)
+  
+  const [show, setShow] = useState(false);
+  const [statusId, setStatusId] = useState(1);
+  const [textMessage, setTextMessage] = useState("Помилка!!!");
+
+  const handleShowModal = (id, textMessageFunc) => {
+    setTextMessage(textMessageFunc);
+    setStatusId(id);
+    setShow(false); // Reset to false first
+    setTimeout(() => {
+      setShow(true);
+    }, 0); // Use a timeout to ensure the state change is registered
+  };
+  
   useEffect(() => {
     if (checkIsAuth()) {
       navigate("/profile");
@@ -39,9 +52,11 @@ const AuthPageComponent = () => {
     const confirmEmail = async () => {
         try {
             const response = await axios.get(`${ApiPath}/userauthentication/confirm?email=${email}&secret=${secret}`);
-            Swal.fire('Success!', response.data, 'success');
-        } catch (error) {
-            Swal.fire('Error!', error.response?.data || 'An error occurred mail comfirmation.', 'error');
+            handleShowModal(1, response.data)
+            // Swal.fire('Success!', response.data, 'success');
+          } catch (error) {
+          handleShowModal(2, 'Помилка при спробі підтвердити ваш email.')
+       
         }
 
     };
@@ -63,6 +78,12 @@ const AuthPageComponent = () => {
       className="row d-flex align-items-center "
       style={{ justifyContent: "end", margin: "0 0 200px 0" }}
     >
+      <ModalTostarStatusModal
+        show={show}
+        text={textMessage}
+        id={statusId}
+        onClose={() => setShow(false)}
+      />
       <div className="col-12 col-md-12 col-lg-5  p-5 pt-2">
         <div className="mb-4 d-flex justify-content-center">
           <NavLink to="/auth/login" className={activeAuth}>
@@ -75,7 +96,7 @@ const AuthPageComponent = () => {
         </div>
 
         <div className="form-container">
-          <Outlet />
+          <Outlet context={[handleShowModal]} />
         </div>
 
         <div class="d-flex align-items-center justify-content-center mt-3 mb-3">
