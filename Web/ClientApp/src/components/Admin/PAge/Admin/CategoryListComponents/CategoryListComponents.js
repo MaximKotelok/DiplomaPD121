@@ -63,19 +63,6 @@ export const CategoryListComponents = () => {
   const [rows, setRows] = React.useState([]);
   const [search, setSearch] = React.useState("");
 
-  const [show, setShow] = useState(false);
-  const [statusId, setStatusId] = useState(1);
-  const [textMessage, setTextMessage] = useState("Помилка!!!");
-
-  const handleShowModal = (id, textMessageFunc) => {
-    setTextMessage(textMessageFunc);
-    setStatusId(id);
-    setShow(false); // Reset to false first
-    setTimeout(() => {
-      setShow(true);
-    }, 0); // Use a timeout to ensure the state change is registered
-  };
-
   const [emptyRowCount, setEmptyRowCount] = React.useState(0);
   useEffect(() => {
     if (itemsPerPageForAdmin > rows.length) {
@@ -118,12 +105,6 @@ export const CategoryListComponents = () => {
 
   return (
     <div className={`${styles["row-parent"]}`}>
-      <ModalTostarStatusModal
-        show={show}
-        text={textMessage}
-        id={statusId}
-        onClose={() => setShow(false)}
-      />
       <div className={`${styles["box-container"]} `}>
         <div className="row">
           <div className="col-6">
@@ -212,11 +193,11 @@ export const CategoryListComponents = () => {
                               let res = await deleteCategory(category.id);
                               if (res.status === Success) {
                                 //toast.success("Успіх!");
-                                handleShowModal(1, "Успіх!");
+                                toast.success("Успіх!");
 
                                 window.location.reload();
                               } else {
-                                handleShowModal(2, "Помилка!");
+                                toast.error("Помилка!");
                               }
                             }}
                           >

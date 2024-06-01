@@ -34,7 +34,6 @@ import {
     useParams,
 } from "react-router-dom";
 import { toast } from "react-toastify";
-import ModalTostarStatusModal from "../../../Common/ModalTostarStatus/ModalTostarStatusModal";
 
 const columns = [
     { id: "name", last: false, label: "Виробник", width: 1100 },
@@ -61,18 +60,6 @@ export const ManufactureListComponents = () => {
     const [rows, setRows] = React.useState([]);
     const [emptyRowCount, setEmptyRowCount] = React.useState(0);
 
-    const [show, setShow] = useState(false);
-    const [statusId, setStatusId] = useState(1);
-    const [textMessage, setTextMessage] = useState("Помилка!!!");
-
-    const handleShowModal = (id, textMessageFunc) => {
-        setTextMessage(textMessageFunc);
-        setStatusId(id);
-        setShow(false); // Reset to false first
-        setTimeout(() => {
-            setShow(true);
-        }, 0); // Use a timeout to ensure the state change is registered
-    };
 
     useEffect(() => {
         init();
@@ -105,12 +92,6 @@ export const ManufactureListComponents = () => {
 
     return (
         <div className={`${styles["row-parent"]}`}>
-            <ModalTostarStatusModal
-                show={show}
-                text={textMessage}
-                id={statusId}
-                onClose={() => setShow(false)}
-            />
             <div className={`${styles["box-container"]} `}>
                 <div className="row">
                     <div className="col-6">
@@ -212,10 +193,10 @@ export const ManufactureListComponents = () => {
                               );
                               if (res.status === Success) {
                                 //toast.success("Успіх!");
-                                handleShowModal(1, "Успіх!");
+                                toast.success("Успіх!");
                                 window.location.reload();
                               } else {
-                                handleShowModal(2, "Помилка!");
+                                toast.error("Помилка!");
                               }
                             }}
                           >

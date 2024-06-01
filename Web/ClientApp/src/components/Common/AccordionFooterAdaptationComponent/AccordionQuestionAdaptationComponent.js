@@ -40,7 +40,7 @@ const AccordionQuestionAdaptationComponent = ({
 
   return (
     <div
-      className={`${styles["parent-side-accardion"]} ${
+          className={`${styles["border-bottom"]} ${styles["parent-side-accardion"]} ${
         isOpen ? styles["parent-container-bg"] : ""
       }`}
     >

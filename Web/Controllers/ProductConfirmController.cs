@@ -78,11 +78,11 @@ namespace Web.Controllers
 
 				confirmsList = confirmsList.Where(a =>
 					a.IsTmp == true ||
-					a.ProductConfirm.Product.Title.StartsWith(model.Search) ||
-					a.ProductConfirm.CreationDate.ToString("yyyy/MM/dd").StartsWith(model.Search) ||
-					a.ProductConfirm.Product.Category.Title.StartsWith(model.Search) ||
-					a.ProductConfirm.Product.Manufacturer.Name.StartsWith(model.Search) ||
-					a.ProductConfirm.ProductStatus.Status.StartsWith(model.Search)
+					a.ProductConfirm.Product.Title.Contains(model.Search, StringComparison.OrdinalIgnoreCase) ||
+					a.ProductConfirm.CreationDate.ToString("yyyy/MM/dd").Contains(model.Search, StringComparison.OrdinalIgnoreCase) ||
+					a.ProductConfirm.Product.Category.Title.Contains(model.Search, StringComparison.OrdinalIgnoreCase) ||
+					a.ProductConfirm.Product.Manufacturer.Name.Contains(model.Search, StringComparison.OrdinalIgnoreCase) ||
+					a.ProductConfirm.ProductStatus.Status.Contains(model.Search, StringComparison.OrdinalIgnoreCase)
 				);
 			
 

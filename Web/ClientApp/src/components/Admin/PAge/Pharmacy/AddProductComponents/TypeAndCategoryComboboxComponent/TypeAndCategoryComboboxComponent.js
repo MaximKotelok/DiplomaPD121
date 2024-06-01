@@ -29,7 +29,6 @@ const TypeAndCategoryComboboxComponent = ({
           }}
           placeholder="Категорія товару"
           isSearchable={true}
-          isDisabled={isDisabled}
         />
       </div>
       <div className="col-6">

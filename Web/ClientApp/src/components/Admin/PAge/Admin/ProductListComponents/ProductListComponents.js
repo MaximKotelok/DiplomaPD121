@@ -100,14 +100,6 @@ export const ProductListComponents = () => {
   const [statusId, setStatusId] = useState(1);
   const [textMessage, setTextMessage] = useState("Помилка!!!");
 
-  const handleShowModal = (id, textMessageFunc) => {
-    setTextMessage(textMessageFunc);
-    setStatusId(id);
-    setShow(false); // Reset to false first
-    setTimeout(() => {
-      setShow(true);
-    }, 0); // Use a timeout to ensure the state change is registered
-  };
 
   const [emptyRowCount, setEmptyRowCount] = React.useState(0);
 
@@ -204,12 +196,6 @@ export const ProductListComponents = () => {
 
   return (
     <div className={`${styles["row-parent"]}`}>
-      <ModalTostarStatusModal
-        show={show}
-        text={textMessage}
-        id={statusId}
-        onClose={() => setShow(false)}
-      />
       <div className={`${styles["box-container"]} row`}>
         <div className="col-6">
           <SearchComponent
@@ -295,8 +281,6 @@ export const ProductListComponents = () => {
                           <TableCell>
                             <span className={`${styles["text-row-table"]}`}>
                               {item.brand}
-
-                              {item.id}
                             </span>
                           </TableCell>
                           <TableCell>
@@ -353,11 +337,11 @@ export const ProductListComponents = () => {
                                         let res = await deleteProduct(item.id);
                                         if (res.status === Success) {
                                           //toast.success("Успіх!");
-                                          handleShowModal(1, "Успіх!");
+                                          toast.success("Успіх!");
 
                                           window.location.reload();
                                         } else {
-                                          handleShowModal(2, "Помилка!");
+                                          toast.success("Помилка!");
                                         }
                                       }}
                                     >

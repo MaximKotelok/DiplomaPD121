@@ -145,7 +145,7 @@ export const ProductDetailsAdminComponents = () => {
           </div>
         </div>
 
-        <div className="d-flex justify-content-center mt-5">
+        {/* <div className="d-flex justify-content-center mt-5">
           <button
             className={` me-4 brn-form ${styles["card-btn-primary"]} ${styles["btn-details"]}  `}
           >
@@ -157,7 +157,7 @@ export const ProductDetailsAdminComponents = () => {
           >
             Вийти
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

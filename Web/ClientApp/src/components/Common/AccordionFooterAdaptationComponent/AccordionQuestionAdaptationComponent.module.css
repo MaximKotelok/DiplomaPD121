@@ -5,7 +5,11 @@
   .btn-displplay{
     display: none;
   }
-  
+
+    .border-bottom {
+        padding-bottom: 12px !important;
+        border-bottom: 2px solid rgba(255, 149, 0, 1) !important;
+    }
 }
 
 

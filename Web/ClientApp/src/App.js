@@ -161,23 +161,23 @@ export default class App extends Component {
             />
             <Route
               path="/Search/ByTitle/:title"
-              element={<SearchProductPageComponent />}
+              element={<SearchProductPageComponent  key="title" />}
             />
             <Route
               path="/Search/ByTitle/"
-              element={<SearchProductPageComponent />}
+              element={<SearchProductPageComponent  key="titleWithoutText" />}
             />
             <Route
               path="/Search/ByCategory/:categoryId"
-              element={<SearchProductPageComponent />}
+              element={<SearchProductPageComponent key="category" />}
             />
             <Route
               path="/Search/ByBrand/:brandId"
-              element={<SearchProductPageComponent />}
+              element={<SearchProductPageComponent key="brand" />}
             />
             <Route
               path="/Search/ByActiveSubstance/:activeSubstanceId"
-              element={<SearchProductPageComponent />}
+              element={<SearchProductPageComponent key="analogues" />}
             />
             <Route path="res" element={<Reservation />} />
             <Route path="auth/*" element={<AuthPageComponent />}>
@@ -218,6 +218,7 @@ export default class App extends Component {
 
             {/*USER*/}
             <Route path={UserListPath} element={<UsersComponents />} />
+            <Route path={`${UserListPath}/:paramPage`} element={<UsersComponents />} />
             <Route path="pharmacyUser" element={<UserPharmacy />} />
 
             {/*DEFECTIVE SERIES*/}

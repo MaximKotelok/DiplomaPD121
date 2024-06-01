@@ -21,6 +21,7 @@ import BtnEditStatusModalUser from "./components/BtnEditStatusModalUser/BtnEditS
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
 import { getAllUsers } from "../../../../../services/user";
 import DefaultUserPhoto from "../../../../../assets/images/user/user-photo-default.svg";
+import { useParams } from "react-router";
 
 const columns = [
   { id: "user", label: "Користувач", minWidth: 270 },
@@ -71,13 +72,14 @@ const useStyles = makeStyles({
 
 export const UsersComponents = () => {
   const classes = useStyles();
+  const { paramPage } = useParams();
   const [page, setPage] = React.useState(1);
   const [countOfPages, setCountOfPages] = React.useState(1);
   const [emptyRowCount, setEmptyRowCount] = React.useState(0);
   //const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [rows, setRows] = React.useState([]);
   useEffect(() => {
-    init();
+    init(paramPage);
   }, []);
 
   useEffect(()=>{
@@ -89,7 +91,9 @@ export const UsersComponents = () => {
     }
   },[rows])
 
-  async function init() {
+  async function init(paramPage) {
+    let page = paramPage ? parseInt(paramPage):1;
+    setPage(page)
     let res = await getAllUsers(page);
     if (res.status === Success) {
       setCountOfPages(res.data.countOfPages);
@@ -229,6 +233,8 @@ export const UsersComponents = () => {
             <PaginationComponent
               setContent={(a) => setRows(a)}
               getContent={async (page) => {
+                const newUrl = `/admin/userList/${page}`;
+                window.history.pushState({}, "", newUrl);
                 let res = await getAllUsers(page);
                 if (res.status === Success) {
                   return res.data.data;

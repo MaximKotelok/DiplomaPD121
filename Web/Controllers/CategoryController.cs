@@ -274,8 +274,8 @@ namespace Web.Controllers
 				rawResult = rawResult.Where(a =>
 				{
 					return
-					a.Id.ToString().Contains(model.Search) ||
-					a.Title.Contains(model.Search);
+					a.Id.ToString().Contains(model.Search, StringComparison.OrdinalIgnoreCase) ||
+					a.Title.Contains(model.Search, StringComparison.OrdinalIgnoreCase);
 				});
 			}
 			if (rawResult is not null)
@@ -299,8 +299,8 @@ namespace Web.Controllers
 			.Where(a =>
 			{
 				return
-				a.Id.ToString().Contains(model.Search) ||
-				a.Title.Contains(model.Search);
+				a.Id.ToString().Contains(model.Search, StringComparison.OrdinalIgnoreCase) ||
+				a.Title.Contains(model.Search, StringComparison.OrdinalIgnoreCase);
 			})
 			.Skip(model.ItemsPerPage * page).Take(model.ItemsPerPage)
 					.Select(a => a);

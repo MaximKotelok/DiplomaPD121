@@ -79,6 +79,7 @@ export const FileHeader = {
 
 export const StateInfos = {
     LOADING: 'loading',
+    LOADING_CONTENT: 'loading_content',
     ERROR: 'error',
     LOADED: 'LOADED',
     CHOOSE_TYPE_AND_CATEGORY: "choose-type-and-category"

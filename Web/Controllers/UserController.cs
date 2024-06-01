@@ -54,7 +54,7 @@ namespace Web.Controllers
 		
         [HttpPost("getAllUsers")]
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
-		public async Task<IActionResult> GetMyInfo(PageViewModel model)
+		public async Task<IActionResult> GetAllUsers(PageViewModel model)
 		{
 			var users = await _userService.GetAllUsers();
            
@@ -69,9 +69,9 @@ namespace Web.Controllers
                 {
                     return ((!a.FirstName.IsNullOrEmpty() && !a.LastName.IsNullOrEmpty()) ?
                     $"{a.FirstName} {a.LastName}" :
-                    a.UserName).StartsWith(model.Search) ||
-                    a.Email.StartsWith(model.Search) ||
-                    (a.PhoneNumber != null && a.PhoneNumber.StartsWith(model.Search));
+                    a.UserName).Contains(model.Search, StringComparison.OrdinalIgnoreCase) ||
+                    a.Email.Contains(model.Search, StringComparison.OrdinalIgnoreCase) ||
+                    (a.PhoneNumber != null && a.PhoneNumber.Contains(model.Search, StringComparison.OrdinalIgnoreCase));
                 });
 			}
 

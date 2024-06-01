@@ -355,23 +355,20 @@ namespace Web.Controllers
 				return products.OrderBy(a =>
 				{
 
-					if (a.PriceHistory.IsNullOrEmpty())
+					if (a.ConcreteProducts.IsNullOrEmpty())
 						return 0;
 					else
-						return a.PriceHistory
-										.GroupBy(a => a.HistoryDate.Date)
-										.OrderByDescending(a => a.Key).First().Average(a => a.Price);
+						return a.ConcreteProducts.Min(a => a.Price);
+										
 				});
 			else if (model.OrderBy == SD.ByPriceDesc)
 				return products.OrderByDescending(a =>
 				{
 
-					if (a.PriceHistory.IsNullOrEmpty())
+					if (a.ConcreteProducts.IsNullOrEmpty())
 						return 0;
 					else
-						return a.PriceHistory
-										.GroupBy(a => a.HistoryDate.Date)
-										.OrderByDescending(a => a.Key).First().Average(a => a.Price);
+						return a.ConcreteProducts.Min(a => a.Price);
 				});
 			else
 				return products;
@@ -454,7 +451,7 @@ namespace Web.Controllers
 			if (model.ActiveSubstanceId == null)
 			{
 
-				result = filter(orderBy(_productService.GetAllProducts(includeProperties: "Manufacturer,Properties,Properties.Attribute,Category,Brand,Category,PriceHistory,PriceHistory.HistoryDate,ProductConfirm,ProductConfirm.ProductStatus")
+				result = filter(orderBy(_productService.GetAllProducts(includeProperties: "Manufacturer,Properties,Properties.Attribute,Category,Brand,Category,ConcreteProducts,ProductConfirm,ProductConfirm.ProductStatus")
 					, model), model).Where(a =>
 					{
 						if (model.Title != null)
@@ -498,11 +495,11 @@ namespace Web.Controllers
 			   .Where(a =>
 			   {
 				   return model.Search.IsNullOrEmpty()
-				   || a.Category.Title.Contains(model.Search)
-				   || a.Title.Contains(model.Search)
-				   || a.Brand.Name.Contains(model.Search)
-				   || a.Manufacturer.Name.Contains(model.Search)
-				   || a.ShortDescription.Contains(model.Search);
+				   || a.Category.Title.Contains(model.Search, StringComparison.OrdinalIgnoreCase)
+				   || a.Title.Contains(model.Search, StringComparison.OrdinalIgnoreCase)
+				   || a.Brand.Name.Contains(model.Search, StringComparison.OrdinalIgnoreCase)
+				   || a.Manufacturer.Name.Contains(model.Search, StringComparison.OrdinalIgnoreCase)
+				   || a.ShortDescription.Contains(model.Search, StringComparison.OrdinalIgnoreCase);
 			   })
 				.GroupBy(a => a.Category.Title)
 			   .SelectMany(group => group.Select(a => new ProductAdminCalculateModel
@@ -525,11 +522,11 @@ namespace Web.Controllers
 				.OrderByDescending(a=>a.Id)
 				.Where(a =>
 					string.IsNullOrEmpty(model.Search)
-					|| a.Category.Title.Contains(model.Search)
-					|| a.Title.Contains(model.Search)
-					|| a.Brand.Name.Contains(model.Search)
-					|| a.Manufacturer.Name.Contains(model.Search)
-					|| a.ShortDescription.Contains(model.Search)
+					|| a.Category.Title.Contains(model.Search, StringComparison.OrdinalIgnoreCase)
+					|| a.Title.Contains(model.Search, StringComparison.OrdinalIgnoreCase)
+					|| a.Brand.Name.Contains(model.Search, StringComparison.OrdinalIgnoreCase)
+					|| a.Manufacturer.Name.Contains(model.Search, StringComparison.OrdinalIgnoreCase)
+					|| a.ShortDescription.Contains(model.Search, StringComparison.OrdinalIgnoreCase)
 				)
 				.OrderBy(a => a.Id)
 				.GroupBy(a => a.Category)
@@ -808,7 +805,7 @@ namespace Web.Controllers
 			}
 			finally
 			{
-				//transaction.Dispose();
+				transaction.Dispose();
 			}
 		}
 
@@ -872,7 +869,7 @@ namespace Web.Controllers
 			else
 			{
 				medicine.Id = postModel.Id.Value;
-				var newMedicine = _medicineService.GetMedicine(a => a.Id == medicine.Id);
+				var newMedicine = _medicineService.GetMedicine(a => a.Id == medicine.Id, "ProductConfirm");
 				newMedicine.Title = medicine.Title;
 				newMedicine.CategoryID = medicine.CategoryID;
 				newMedicine.PathToPhoto = medicine.PathToPhoto;
@@ -944,7 +941,7 @@ namespace Web.Controllers
 			{
 				product.Id = postModel.Id.Value;
 
-				var newProduct = _productService.GetProduct(a => a.Id == product.Id);
+				var newProduct = _productService.GetProduct(a => a.Id == product.Id, "ProductConfirm");
 				newProduct.Title = product.Title;
 				newProduct.ShortDescription = product.ShortDescription;
 				newProduct.CategoryID = product.CategoryID;
@@ -963,9 +960,27 @@ namespace Web.Controllers
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
 		public IActionResult DeleteProduct(int id)
 		{
+			using var transaction = new TransactionScope();
+			try
+			{
 
-			_propertyService.DeleteProperty(id);
-			_productService.DeleteProduct(id);
+				var confirm = _productService.GetProduct(a => a.Id == id, "ProductConfirm").ProductConfirm;
+				if (confirm is not null)
+				{
+					_productConfirmService.DeleteProductConfirm(confirm.Id);
+				}
+				_propertyService.DeleteProperty(id);
+				_productService.DeleteProduct(id);
+				transaction.Complete();
+			}
+			catch (Exception ex)
+			{
+				return BadRequest($"Failed to upsert product. Error: {ex.Message}");
+			}
+			finally
+			{
+				transaction.Dispose();
+			}
 			return Ok("Data Deleted");
 		}
 

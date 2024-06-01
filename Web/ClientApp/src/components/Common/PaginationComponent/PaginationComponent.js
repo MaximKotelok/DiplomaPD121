@@ -27,7 +27,7 @@ const PaginationComponent = ({ setContent, getContent, allowAppend, page=1, setP
         }   
     }
     async function prevPageClickHandle(){
-        if(page === 1)
+        if(page <= 1)
             return;
         let result = await getContent(page-1);
         if(result){
@@ -36,7 +36,7 @@ const PaginationComponent = ({ setContent, getContent, allowAppend, page=1, setP
         }   
     }
     async function nextPageClickHandle(){
-        if(page === countOfPages)
+        if(page >= countOfPages)
             return;
         let result = await getContent(page+1);
         if(result){
@@ -61,8 +61,8 @@ const PaginationComponent = ({ setContent, getContent, allowAppend, page=1, setP
                         {`${page} з ${countOfPages}`}
                     </span>
                     <div className={styles["disable-selection"]}>
-                        <img onClick={prevPageClickHandle} src={prevImg} role="button" className={(page === 1 ? `opacity-50 ${styles["disabled"]}`:"")}/>
-                        <img onClick={nextPageClickHandle} src={nextImg} role="button" className={(page === countOfPages ? `opacity-50 ${styles["disabled"]}`:"")}/>
+                        <img onClick={prevPageClickHandle} src={prevImg} role="button" className={(page <= 1 ? `opacity-50 ${styles["disabled"]}`:"")}/>
+                        <img onClick={nextPageClickHandle} src={nextImg} role="button" className={(page >= countOfPages ? `opacity-50 ${styles["disabled"]}`:"")}/>
                     </div>
                     </div>
             </div>

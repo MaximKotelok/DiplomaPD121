@@ -22,7 +22,6 @@ import {
 import { Success, itemsPerPageForAdmin } from "../../../../../utils/Constants";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 import { toast } from "react-toastify";
-import ModalTostarStatusModal from "../../../Common/ModalTostarStatus/ModalTostarStatusModal";
 
 const columns = [
   { id: "name", last: false, label: "Назва", width: 1100 },
@@ -48,18 +47,6 @@ export const ActiveSubstanceListComponents = () => {
   const [countOfPages, setCountOfPages] = useState(0);
   const [emptyRowCount, setEmptyRowCount] = React.useState(0);
 
-  const [show, setShow] = useState(false);
-  const [statusId, setStatusId] = useState(1);
-  const [textMessage, setTextMessage] = useState("Помилка!!!");
-
-  const handleShowModal = (id, textMessageFunc) => {
-    setTextMessage(textMessageFunc);
-    setStatusId(id);
-    setShow(false); // Reset to false first
-    setTimeout(() => {
-      setShow(true);
-    }, 0); // Use a timeout to ensure the state change is registered
-  };
 
   const firstLoad = useRef(true);
   const classes = useStyles();
@@ -105,12 +92,6 @@ export const ActiveSubstanceListComponents = () => {
 
   return (
     <div className={`${styles["row-parent"]}`}>
-      <ModalTostarStatusModal
-        show={show}
-        text={textMessage}
-        id={statusId}
-        onClose={() => setShow(false)}
-      />
       <div className={`${styles["box-container"]} `}>
         <div className="row">
           <div className="col-6">
@@ -180,11 +161,11 @@ export const ActiveSubstanceListComponents = () => {
                                 !value
                               );
                               if (res.status === Success) {
-                                handleShowModal(1, "Успіх!");
+                                  toast.success("Успіх");
 
                                 return;
                               }
-                              handleShowModal(2, "Помилка!");
+                                toast.success("Помилка");
                             }}
                           />
 

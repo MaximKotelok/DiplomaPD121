@@ -299,6 +299,8 @@ const UpsertPharmaCompanyComponent = () => {
             </div>
 
             <div
+            
+                 disabled={!IsActive}
                 className={` ${!IsActive ? styles["disable-block"] : ""}    ${styles["col-parent-right"]
                     } col-md 6`}
             >

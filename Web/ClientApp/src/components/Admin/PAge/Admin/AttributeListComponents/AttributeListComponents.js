@@ -24,7 +24,6 @@ import {
 } from "../../../../../services/attributes";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 import { toast } from "react-toastify";
-import ModalTostarStatusModal from "../../../Common/ModalTostarStatus/ModalTostarStatusModal";
 
 const columns = [
   { id: "name", last: false, label: "Назва", width: 1100 },
@@ -49,18 +48,6 @@ export const AttributeListComponents = () => {
   const [rows, setRows] = React.useState([]);
   const [emptyRowCount, setEmptyRowCount] = React.useState(0);
 
-  const [show, setShow] = useState(false);
-  const [statusId, setStatusId] = useState(1);
-  const [textMessage, setTextMessage] = useState("Помилка!!!");
-
-  const handleShowModal = (id, textMessageFunc) => {
-    setTextMessage(textMessageFunc);
-    setStatusId(id);
-    setShow(false); // Reset to false first
-    setTimeout(() => {
-      setShow(true);
-    }, 0); // Use a timeout to ensure the state change is registered
-  };
 
   useEffect(() => {
     init();
@@ -92,12 +79,6 @@ export const AttributeListComponents = () => {
 
   return (
     <div className={`${styles["row-parent"]}`}>
-      <ModalTostarStatusModal
-        show={show}
-        text={textMessage}
-        id={statusId}
-        onClose={() => setShow(false)}
-      />
       <div className={`${styles["box-container"]} `}>
         <div className="row">
           <div className="col-6">
@@ -115,7 +96,9 @@ export const AttributeListComponents = () => {
           </div>
 
           <div className="col-6 d-flex  align-items-center justify-content-end">
-            <Link to={"/admin/addAttribute"} className={`${styles["btn-add"]}`}>
+            <Link to={"/admin/addAttribute"}
+                state={{ pathToAttributeTable: window.location.pathname }}
+                className={`${styles["btn-add"]}`}>
               Додати
             </Link>
           </div>
@@ -165,6 +148,7 @@ export const AttributeListComponents = () => {
                       <TableCell className="d-flex align-items-center justify-content-end">
                         <Link
                           to={`/admin/updateAttribute/${attibute.id}`}
+                          state={{ pathToAttributeTable: window.location.pathname }}
                           className={`${styles["my-btn-edit"]} me-4`}
                         >
                           Оновити
@@ -174,11 +158,11 @@ export const AttributeListComponents = () => {
                           onClick={async () => {
                             let res = await deleteAttribute(attibute.id);
                             if (res.status === Success) {
-                              handleShowModal(1, "Успіх!");
+                              toast.success(1, "Успіх!");
 
                               window.location.reload();
                             } else {
-                              handleShowModal(2, "Помилка!");
+                              toast.error(2, "Помилка!");
                             }
                           }}
                         >

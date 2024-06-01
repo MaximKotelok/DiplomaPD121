@@ -121,13 +121,16 @@ namespace Web.Controllers
 			var pharmacy = _pharmacyService.GetPharmacy(a => a.UserID == user.Id);
 
 			var result = _concreteProductService.GetAllConcreteProducts(x =>
-				x.PharmacyID == pharmacy.Id &&
-				(
-					x.Product.Brand.Name.Contains(model.Search) ||
-					x.Product.Manufacturer.Name.Contains(model.Search) ||
-					x.Product.Category.Title.Contains(model.Search)
-				)
+				x.PharmacyID == pharmacy.Id
 			, "Product,Product.Brand,Product.Manufacturer,Product.Category")
+						.Where(x =>
+					x.Product.Brand.Name.Contains(model.Search, StringComparison.OrdinalIgnoreCase) ||
+					x.Product.Manufacturer.Name.Contains(model.Search, StringComparison.OrdinalIgnoreCase) ||
+					x.Product.Category.Title.Contains(model.Search, StringComparison.OrdinalIgnoreCase) ||
+					x.Product.Title.Contains(model.Search, StringComparison.OrdinalIgnoreCase) ||
+					x.Price.ToString().Contains(model.Search, StringComparison.OrdinalIgnoreCase) ||
+					x.Quantity.ToString().Contains(model.Search, StringComparison.OrdinalIgnoreCase)
+				)
 			.GroupBy(a => a.Product.Category.Title)
 			   .SelectMany(group => group.Select(a => new ProductAdminCalculateModel
 			   {
@@ -180,13 +183,17 @@ namespace Web.Controllers
 
 
 			var products = _concreteProductService.GetAllConcreteProducts(x =>
-				x.PharmacyID == pharmacy.Id &&
-				(
-					x.Product.Brand.Name.Contains(model.Search) ||
-					x.Product.Manufacturer.Name.Contains(model.Search) ||
-					x.Product.Category.Title.Contains(model.Search)
-				)
+				x.PharmacyID == pharmacy.Id
+
 			, "Product,Product.Brand,Product.Manufacturer,Product.Category")
+				.Where(x =>
+					x.Product.Brand.Name.Contains(model.Search, StringComparison.OrdinalIgnoreCase) ||
+					x.Product.Manufacturer.Name.Contains(model.Search, StringComparison.OrdinalIgnoreCase) ||
+					x.Product.Category.Title.Contains(model.Search, StringComparison.OrdinalIgnoreCase) ||
+					x.Product.Title.Contains(model.Search, StringComparison.OrdinalIgnoreCase) ||
+					x.Price.ToString().Contains(model.Search, StringComparison.OrdinalIgnoreCase) ||
+					x.Quantity.ToString().Contains(model.Search, StringComparison.OrdinalIgnoreCase)
+				)
 				.Select(a => new
 				{
 					a.Id,

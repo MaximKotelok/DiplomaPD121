@@ -45,7 +45,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 
 import { deletePharmaCompany } from "../../../../../services/pharmaCompany";
-import ModalTostarStatusModal from "../../../Common/ModalTostarStatus/ModalTostarStatusModal";
+import { toast } from "react-toastify";
 
 const columns = [
   { id: "pharmacy", label: "Аптека", minWidth: 170 },
@@ -90,21 +90,6 @@ export const PharmacyListComponents = () => {
     React.useState(false);
   const [search, setSearch] = React.useState("");
   const [emptyRowCount, setEmptyRowCount] = React.useState(0);
-
-  const [pharmacy, setPharmacy] = useState(null);
-  const [auth, setAuth] = React.useState(true);
-  const [show, setShow] = useState(false);
-  const [statusId, setStatusId] = useState(1);
-  const [textMessage, setTextMessage] = useState("Помилка!!!");
-
-  const handleShowModal = (id, textMessageFunc) => {
-    setTextMessage(textMessageFunc);
-    setStatusId(id);
-    setShow(false); // Reset to false first
-    setTimeout(() => {
-      setShow(true);
-    }, 0); // Use a timeout to ensure the state change is registered
-  };
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [activeIndexPharmaCompany, setActiveIndexPharmaCompany] =
@@ -165,18 +150,22 @@ export const PharmacyListComponents = () => {
     );
     if (res.status === Success && resCountOfPages.status === Success) {
       setCountOfPages(resCountOfPages.data);
+      if(resCountOfPages.data<page){
+        const newUrl = `/admin/pharmacyList/${resCountOfPages.data}`;
+        window.location.href = newUrl;
+      }
+      else if(page<1){
+        const newUrl = `/admin/pharmacyList/1`;
+        window.location.href = newUrl;
+      }
       setRows(res.data);
     }
+
+    
   }
 
   return (
     <div className={`${styles["row-parent"]}`}>
-      <ModalTostarStatusModal
-        show={show}
-        text={textMessage}
-        id={statusId}
-        onClose={() => setShow(false)}
-      />
 
       <div className={`${styles["box-container"]} `}>
         <div className="row">
@@ -309,13 +298,12 @@ export const PharmacyListComponents = () => {
                                     );
                                     if (res.status === Success) {
                                       window.location.reload();
-                                      handleShowModal(
-                                        1,
+                                      toast.success(
                                         "Видалення аптеки пройшло успішно!"
                                       );
                                       window.location.reload();
                                     } else {
-                                      handleShowModal(2, "Виникла помилка!");
+                                      toast.error("Виникла помилка!");
                                     }
                                   }}
                                 >
@@ -392,13 +380,12 @@ export const PharmacyListComponents = () => {
                                           item.pharmacy.id
                                         );
                                         if (res.status === Success) {
-                                          handleShowModal(
-                                            1,
+                                          toast.success(                                            
                                             "Видалення аптеки пройшло успішно!"
                                           );
                                           window.location.reload();
                                         } else {
-                                          handleShowModal(2, "Помилка!");
+                                          toast.error("Помилка!");
                                         }
                                       }}
                                     >

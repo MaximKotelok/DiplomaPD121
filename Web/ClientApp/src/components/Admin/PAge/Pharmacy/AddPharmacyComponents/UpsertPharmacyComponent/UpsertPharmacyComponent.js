@@ -394,7 +394,7 @@ export const UpsertPharmacyComponent = () => {
               placeholder="Введіть пароль"
               className={`input-text-form  mb-2 ${styles["my-input-text-form"]}`}
               label="Пароль"
-              type="password"
+              type="text"
               name="password"
               value={userFormData.password}
               onChange={(e) => {

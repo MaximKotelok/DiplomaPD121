@@ -45,8 +45,8 @@ namespace Web.Controllers
                 rawResult = rawResult.Where(a =>
                 {
                     return
-                    a.Id.ToString().StartsWith(model.Search) ||
-                    a.Name.StartsWith(model.Search);
+                    a.Id.ToString().Contains(model.Search, StringComparison.OrdinalIgnoreCase) ||
+                    a.Name.Contains(model.Search, StringComparison.OrdinalIgnoreCase);
                 });
             }
             if (rawResult is not null)
@@ -61,7 +61,7 @@ namespace Web.Controllers
         }
 
         [HttpGet("GetCountAttributes")]
-        public IActionResult GetRecomendedBrands(int count)
+        public IActionResult GetCountAttributes(int count)
         {
             var result = _service.GetAllAttributes().Take(count);
             if (result is not null)

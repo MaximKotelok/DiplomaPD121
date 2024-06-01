@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,7 +14,14 @@ namespace Repository.Data.Configs
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
-            builder.HasData(
+			builder
+			.HasOne(e => e.ProductConfirm)
+			.WithOne(e => e.Product)
+			.HasForeignKey<ProductConfirm>(e=>e.ProductID)
+			.IsRequired(false)
+			.OnDelete(DeleteBehavior.Cascade);
+
+			builder.HasData(
 				new Product { Id = 5, CategoryID = 15, Title = "Тонометр ProMedica Classic автоматичний", ShortDescription = "Медхауз Свіс ГмбХ, ТОВ", Description = "..", BrandID = 3, ManufacturerID = 3, SeriesID = 1, PathToPhoto = "/images/product/Тонометр.jpg", ProductAttributeGroupID = 4 },
 				new Product { Id = 6, CategoryID = 16, Title = "Глюкометр GluNeo Lite", ShortDescription = "Infopia Co. Ltd.", Description = "..", BrandID = 3, ManufacturerID = 3, SeriesID = 1, PathToPhoto = "/images/product/Глюкометр.jpg", ProductAttributeGroupID=4 }
 				);

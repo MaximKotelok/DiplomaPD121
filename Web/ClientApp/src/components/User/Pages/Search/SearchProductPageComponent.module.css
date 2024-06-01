@@ -15,6 +15,17 @@ text-align: center;
 
 }
 
+.empty-container{
+  height: 500px!important;  
+  color: #007AFF;
+  font-family: var(--standart-font);
+  font-weight: 500;
+  font-size: 30px;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
 .category-link-box{
   margin: 8px 0;
 }

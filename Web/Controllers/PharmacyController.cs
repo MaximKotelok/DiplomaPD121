@@ -301,9 +301,9 @@ namespace Web.Controllers
 			{
 				rawResult = rawResult.Where(a =>
 				{
-					return a.Id.ToString().Contains(model.Search) ||
-						a.Address.Contains(model.Search) ||
-						(a.User != null && a.User.Email.Contains(model.Search)
+					return a.Id.ToString().Contains(model.Search, StringComparison.OrdinalIgnoreCase) ||
+						a.Address.Contains(model.Search, StringComparison.OrdinalIgnoreCase) ||
+						(a.User != null && a.User.Email.Contains(model.Search, StringComparison.OrdinalIgnoreCase)
 					);
 				});
 
@@ -423,7 +423,7 @@ namespace Web.Controllers
 		[HttpGet("GetPharmacyCity/{pharmacyId}")]
 		public IActionResult GetPharmacyCity(int pharmacyId)
 		{
-			var result = _pharmacyService.GetPharmacy(a => a.Id==pharmacyId, "City");
+			var result = _pharmacyService.GetPharmacy(a => a.Id == pharmacyId, "City");
 
 			if (result is not null)
 			{
@@ -574,23 +574,45 @@ namespace Web.Controllers
 
 
 		[HttpDelete("DeletePharmacy/{id}")]
-		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
-		public IActionResult DeletePharmacy(int id)
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = $"{SD.Role_Admin},{SD.Role_PharmaCompany}")]
+		public async Task<IActionResult> DeletePharmacy(int id)
 		{
 			using var transaction = new TransactionScope();
+			try
+			{
 
-			var pharmacy = _pharmacyService.GetPharmacy(a => a.Id == id, "ConcreteProducts");
+			
+			var user = await _userService.GetUserByName(User.Identity.Name);
+
+
+			var pharmacy = _pharmacyService.GetPharmacy(a => a.Id == id, "ConcreteProducts,PharmaCompany");
 			if (pharmacy != null)
 			{
-				foreach (var item in pharmacy.ConcreteProducts)
+				if ((await _userService.GetRolesAsync(user.Id)).Contains(SD.Role_Admin) || pharmacy.PharmaCompany.UserID == user.Id)
 				{
-					_concreteProductService.DeleteConcreteProduct(item.Id);
+
+					foreach (var item in pharmacy.ConcreteProducts)
+					{
+						_concreteProductService.DeleteConcreteProduct(item.Id);
+					}
+					_pharmacyService.DeletePharmacy(id);
 				}
-				_pharmacyService.DeletePharmacy(id);
+				else
+				{
+					return Forbid();
+				}
 			}
 
 			transaction.Complete();
 			return Ok("Data Deleted");
+			}catch(Exception exp)
+			{
+				return BadRequest(exp.Message);
+			}
+			finally
+			{
+				transaction.Dispose();
+			}
 		}
 
 

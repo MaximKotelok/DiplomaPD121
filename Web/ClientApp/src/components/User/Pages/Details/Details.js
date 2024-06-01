@@ -30,6 +30,9 @@ import PriceHistoryComponent from "./Component/PriceHistoryComponent/PriceHistor
 import bannerBottom from "../../../../assets/images/details/banner-bottom.png";
 import activeSubstanceImg from "../../../../assets/images/details/activeSubstance.png";
 import categoryImg from "../../../../assets/images/details/category.png";
+import groovyWalkAnimation from "../../../../assets/images/LouderAnimation/LouderCapsule.json";
+import Lottie from "lottie-react";
+
 
 export const Details = () => {
   const { id } = useParams();
@@ -120,9 +123,10 @@ export const Details = () => {
     }
   }, [loader]);
 
-  if (loader != StateInfos.LOADED) {
-    return <div>Loading...</div>;
-  }
+   if (loader == StateInfos.LOADING) {
+    return <Lottie animationData={groovyWalkAnimation} loop={true} />;
+   }
+
 
   return (
     <div>

@@ -25,7 +25,7 @@ namespace Web.Controllers
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = SD.Role_Admin)]
 		public IActionResult GetActiveSubstancesCountOfPage(PageViewModel model)
         {
-			var result = _service.GetAllActiveSubstances().Where(a=> a.Title.Contains(model.Search));
+			var result = _service.GetAllActiveSubstances().Where(a=> a.Title.Contains(model.Search, StringComparison.OrdinalIgnoreCase));
 
             return Ok(model.GetCountOfPages(result.Count()));
 		}
@@ -35,7 +35,7 @@ namespace Web.Controllers
 		public IActionResult GetAllActiveSubstancesForAdmin(PageViewModel model)
         {
             int page = model.Page != null ? model.Page.Value - 1 : 0;
-            var result = _service.GetAllActiveSubstances(includeProperties: "Medicines").Where(a => a.Title.Contains(model.Search))
+            var result = _service.GetAllActiveSubstances(includeProperties: "Medicines").Where(a => a.Title.Contains(model.Search, StringComparison.OrdinalIgnoreCase))
 				.Skip(page*model.ItemsPerPage).Take(model.ItemsPerPage);
             if (result is not null)
             {

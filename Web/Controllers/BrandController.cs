@@ -58,8 +58,9 @@ namespace Web.Controllers
                 rawResult = rawResult.Where(a =>
                 {
                     return
-                    a.Id.ToString().StartsWith(model.Search) ||
-                    a.Name.StartsWith(model.Search);
+                    a.CountryBrand.Name.Contains(model.Search, StringComparison.OrdinalIgnoreCase) ||
+                    a.Id.ToString().Contains(model.Search, StringComparison.OrdinalIgnoreCase) ||
+                    a.Name.Contains(model.Search, StringComparison.OrdinalIgnoreCase);
                 });
             }
             if (rawResult is not null)

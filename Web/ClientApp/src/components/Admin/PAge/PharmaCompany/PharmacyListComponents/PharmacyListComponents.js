@@ -18,13 +18,17 @@ import { getAllStatuses } from "../../../../../services/productStatus";
 import PaginationComponent from "../../../../Common/PaginationComponent/PaginationComponent";
 import { CheckedBox } from "../../../Common/CheckedBoxComponent/CheckedBox";
 import BtnEditPharmacyModal from "./components/BtnEditStatusModal/BtnPharmacyModal";
-import { getAllPharmaciesForAdmin, getAllPharmaciesForPharmaCompany } from "../../../../../services/pharmacy";
+import { deletePharmacy, getAllPharmaciesForAdmin, getAllPharmaciesForPharmaCompany } from "../../../../../services/pharmacy";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 import {
   BrowserRouter as Router,
   Route,
   Link,
   useParams,
 } from "react-router-dom";
+import { PharmaCompanyPharmacyListPath } from "../../../../../utils/TablesPathes";
+import { IconButton, Menu, MenuItem } from "@material-ui/core";
+import { toast } from "react-toastify";
 
 const columns = [
   { id: "pharmacy", label: "Аптека", minWidth: 170 },
@@ -70,6 +74,21 @@ export const PharmacyListForPharmaCompanyComponent = () => {
   const [search, setSearch] = React.useState("");
   const [emptyRowCount, setEmptyRowCount] = React.useState(0);
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [activeIndex, setActiveIndex] =
+  React.useState(null);
+
+  const handleMenuOpen= (event, index) => {
+    setAnchorEl(event.currentTarget);
+    setActiveIndex(index);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setActiveIndex(null);
+  };
+
+
   useEffect(() => {
       init(parseInt(paramPage));
   }, []);
@@ -105,9 +124,10 @@ export const PharmacyListForPharmaCompanyComponent = () => {
   }, [search, isDisplayOnlyCompanies]);
 
   async function init(paramPage) {
+    let page = paramPage ? paramPage : 1;
+    setPage(page);
     let res = await getAllPharmaciesForPharmaCompany(page, "");
     if (res.status === Success) {
-      let page = paramPage ? paramPage : 1;
       if (page > res.data.countOfPages) {
         res = await getAllPharmaciesForPharmaCompany(res.data.countOfPages);
         page = res.data.countOfPages;
@@ -195,9 +215,67 @@ export const PharmacyListForPharmaCompanyComponent = () => {
                           <TableCell>{item.pharmacy.address}</TableCell>
                           <TableCell>{`${item.pharmacy.openTime} - ${item.pharmacy.closeTime}`}</TableCell>
                           <TableCell>
-                            <div className="d-flex justify-content-between">
+                            <div className="d-flex justify-content-between align-items-center">
                               {item.pharmacist ? item.pharmacist : "НЕМАЄ"}
-                              <BtnEditPharmacyModal id={item.pharmacy.id} />
+                              <IconButton
+                                  aria-label="account of current user"
+                                  aria-controls="menu-appbar"
+                                  aria-haspopup="true"
+                                  // onClick={handleMenuPharmacy}
+                                  onClick={(event) =>
+                                    handleMenuOpen(event, item.pharmacy.id)
+                                  }
+                                  color="inherit"
+                                >
+                                  <MoreVertIcon
+                                    style={{ color: "rgba(122, 122, 122, 1)" }}
+                                  />
+                                </IconButton>
+                              <Menu
+                                  id="menu-appbar"
+                                  anchorEl={anchorEl}
+                                  anchorOrigin={{
+                                    vertical: "top",
+                                    horizontal: "right",
+                                  }}
+                                  keepMounted
+                                  transformOrigin={{
+                                    vertical: "top",
+                                    horizontal: "right",
+                                  }}
+                                  open={
+                                    Boolean(anchorEl) &&
+                                    activeIndex === item.pharmacy.id
+                                  }
+                                  onClose={handleMenuClose}
+                                >
+                                  <MenuItem onClick={handleMenuClose}>
+                                    <Link
+                                      className="btn btn-primary w-100"
+                                      to={`/admin/UpdatePharmacy/${item.pharmacy.id}`}
+                                    >
+                                      Оновити
+                                    </Link>
+                                  </MenuItem>
+                                  <MenuItem onClick={handleMenuClose}>
+                                    <button
+                                      className="btn btn-danger w-100"
+                                      onClick={async () => {
+                                        let res = await deletePharmacy(
+                                          item.pharmacy.id
+                                        );
+                                        if (res.status === Success) {
+                                          toast.success("Видалення аптеки пройшло успішно!");
+                                          window.location.reload();
+                                        } else {
+                                          toast.error("Помилка");
+                                        }
+                                      }}
+                                    >
+                                      Видалити
+                                    </button>
+                                  </MenuItem>
+                                </Menu>
                             </div>
                           </TableCell>
                         </TableRow>
@@ -218,7 +296,7 @@ export const PharmacyListForPharmaCompanyComponent = () => {
             <PaginationComponent
               setContent={(a) => setRows(a)}
               getContent={async (page) => {
-                const newUrl = `/admin/pharmacyList/${page}`;
+                const newUrl = `/admin/${PharmaCompanyPharmacyListPath}/${page}`;
                 window.history.pushState({}, "", newUrl);
                 let res = await getAllPharmaciesForPharmaCompany(page);
                 if (res.status === Success) {

@@ -25,6 +25,9 @@ import { getActiveSubstance } from "../../../../services/activeSubstance";
 import PaginationComponent from "../../../Common/PaginationComponent/PaginationComponent";
 import CustomSelectComponentSelectFilter from "../../../Common/CustomSelectComponentSelectFilter/CustomSelectComponentSelectFilter";
 
+import groovyWalkAnimation from "../../../../assets/images/LouderAnimation/LouderCapsule.json";
+import Lottie from "lottie-react";
+
 export const SearchProductPageComponent = () => {
   const isInit = useRef(false);
   const [filters, setFilters] = useState({});
@@ -36,8 +39,8 @@ export const SearchProductPageComponent = () => {
     let clone = { ...filters };
     let categories = clone.categories
       ? Object.keys(clone.categories).map((a) =>
-          parseInt(clone.categories[a].value)
-        )
+        parseInt(clone.categories[a].value)
+      )
       : [];
     let brands = clone.brands
       ? Object.keys(clone.brands).map((a) => parseInt(clone.brands[a].value))
@@ -65,7 +68,7 @@ export const SearchProductPageComponent = () => {
         ...Object.keys(clone).map((a) => convertToServerModel(a, clone[a]))
       ),
       page,
-      sortBy?sortBy:orderBy
+      sortBy ? sortBy : orderBy
     );
     if (searchResult.status === Success) return searchResult.data;
     return null;
@@ -86,6 +89,8 @@ export const SearchProductPageComponent = () => {
   const [orderByNames, setOrderByNames] = useState([]);
   const [orderBy, setOrderBy] = useState(null);
 
+  const isFirstLoad = useRef(true);
+
   const handleGridTableClick = (boolean) => {
     setGridTalbeActive(boolean);
   };
@@ -93,24 +98,29 @@ export const SearchProductPageComponent = () => {
   useEffect(() => {
     if (orderByNames) setOrderBy(orderByNames[0]);
   }, [orderByNames]);
-  
+
   useEffect(() => {
-    if(isInit.current)
+    if (isInit.current)
       updateSearch();
-  }, [filters,searchByTitle]);
+  }, [filters, searchByTitle]);
 
   async function updateSearch() {
+    
+    setLoader(StateInfos.LOADING_CONTENT);
     let result = await search();
     if (result) {
-        setPage(1);
-        setCountOfPages(result.countOfPages);
-        setProducts(result.products);
+      setPage(1);
+      setCountOfPages(result.countOfPages);
+      setProducts(result.products);
+      setLoader(StateInfos.LOADED); 
     }
-}
+  }
 
-  async function refresh(sortBy){
+  async function refresh(sortBy) {
     setPage(1);
+    setLoader(StateInfos.LOADING_CONTENT);
     setProducts((await search(1, sortBy)).products);
+    setLoader(StateInfos.LOADED);
   }
 
   useEffect(() => {
@@ -166,7 +176,7 @@ export const SearchProductPageComponent = () => {
   }
 
   if (loader == StateInfos.LOADING) {
-    return <>Loading</>;
+    return <Lottie animationData={groovyWalkAnimation} loop={true} />;
   } else if (loader == StateInfos.ERROR) {
     return <>Error</>;
   }
@@ -207,10 +217,10 @@ export const SearchProductPageComponent = () => {
                   className={` my-form-select-175 ${styles["my-input-text-form-box"]} ${styles["custom-combobox"]}`}
                   options={[
                     ...orderByNames.map((a) => {
-                      return {id:a, label: a, value: a };
+                      return { id: a, label: a, value: a };
                     }),
                   ]}
-                  onChange={async(e)=>{
+                  onChange={async (e) => {
                     setOrderBy(e.value);
                     await refresh(e.value);
                   }}
@@ -223,9 +233,8 @@ export const SearchProductPageComponent = () => {
               style={{ height: " max-content" }}
             >
               <CardBtn
-                className={`  ${
-                  isGridTalbeActive ? styles["active"] : styles["no-active"]
-                }`}
+                className={`  ${isGridTalbeActive ? styles["active"] : styles["no-active"]
+                  }`}
               />
             </div>
             <div
@@ -234,37 +243,42 @@ export const SearchProductPageComponent = () => {
               т
             >
               <TableBtn
-                className={`   ${
-                  isGridTalbeActive ? styles["no-active"] : styles["active"]
-                }`}
+                className={`   ${isGridTalbeActive ? styles["no-active"] : styles["active"]
+                  }`}
               />
             </div>
           </div>
 
           <div
-            className={` ${styles["products-area-wrapper"]}  ${
-              isGridTalbeActive ? styles["gridView"] : styles["tableView"]
-            }`}
+            className={` ${styles["products-area-wrapper"]}  ${isGridTalbeActive ? styles["gridView"] : styles["tableView"]
+              }`}
           >
             {/* <MiniCardProductANDTableProductComponent id="1" /> */}
+            {
+              loader == StateInfos.LOADING_CONTENT ?
+                <Lottie className="align-self-center mx-auto" animationData={groovyWalkAnimation} loop={true} /> :
+                products &&
+                products.length>0 ?
+                products
+                  .map((a) => (
+                    <MiniCardProductANDTableProductComponent
+                      key={a.id}
+                      id={a.id}
+                      isFavorite={isFavoriteProduct}
+                      title={a.title}
+                      description={a.shortDescription}
+                      minPrice={a.minPrice}
+                      countOfPharmacies={a.count}
+                      manufacturer={a.manufacturer.name}
+                      imageUrl={a.pathToPhoto}
+                      manufacter={a.manufacter}
+                    />
+                  )):
+                  <div className={`w-100 d-flex justify-content-center align-items-center ${styles["empty-container"]}`}>
+                      Нічого не знайдено
+                  </div>
 
-            {products &&
-              products.map &&
-              products
-                .map((a) => (
-                  <MiniCardProductANDTableProductComponent
-                    key={a.id}
-                    id={a.id}
-                    isFavorite={isFavoriteProduct}
-                    title={a.title}
-                    description={a.shortDescription}
-                    minPrice={a.minPrice}
-                    countOfPharmacies={a.count}
-                    manufacturer={a.manufacturer.name}
-                    imageUrl={a.pathToPhoto}
-                    manufacter={a.manufacter}
-                  />
-                ))}
+            }
           </div>
           <div className="w-100">
 
