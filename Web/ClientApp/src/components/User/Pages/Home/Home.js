@@ -181,7 +181,8 @@ export const Home = () => {
             <div className="row mt-5" style={{ margin: 0, padding: 0 }}>
               {recently && recently.map && (
                 <div>
-                  <CarouselListComponent title="Нещодавно переглянуті товари">
+                                  <CarouselListComponent title="Нещодавно переглянуті товари"
+                                      mdDisplayCount={3}>
                     {recently.map((a) => (
                       <MiniProductCardComponent
                         key={a.id}
@@ -251,7 +252,7 @@ export const Home = () => {
               </CarouselListWithoutNavsComponent>
             </div>
             <CarouselListComponent
-              mdDisplayCount={2}
+              mdDisplayCount={3}
               xlDisplayCount={5}
               xxlDisplayCount={6}
               disableNavElements={true}

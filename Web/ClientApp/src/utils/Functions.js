@@ -170,7 +170,7 @@ export async function initFavsProducts(setFavs) {
     if (favs == null || favs == "undefined") {
         let favs = await getFavsProducts();
         localStorage.setItem(FavouriteProducts, favs);
-        setFavs(favs());
+        setFavs(favs);
      }
     else {
         setFavs(favs.split(','));
