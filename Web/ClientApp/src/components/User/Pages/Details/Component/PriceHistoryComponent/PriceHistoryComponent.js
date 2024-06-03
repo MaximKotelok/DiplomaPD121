@@ -62,7 +62,6 @@ const PriceHistoryComponent = ({history}) => {
                 <Legend />
                 <Bar dataKey="value" fill="#0E3E75" radius={[30, 30, 0, 0]} barSize={28}                    
                     onClick={(event, data) => {
-                        console.log(event)
                         handleBarClick(data)
                     }
                     

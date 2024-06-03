@@ -162,7 +162,6 @@ export const SearchProductPageComponent = () => {
         }
       } else if (activeSubstanceId) {
         let activeSubstanceResult = await getActiveSubstance(activeSubstanceId);
-        console.log(activeSubstanceResult);
         if (activeSubstanceResult.status === Success) {
           setPageName(`Діюча речовина: ${activeSubstanceResult.data.title}`);
         }

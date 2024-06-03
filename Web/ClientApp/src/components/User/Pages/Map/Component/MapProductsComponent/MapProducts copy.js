@@ -129,7 +129,6 @@ const MapProducts = (props) => {
       return clickedMarker;
     });
     selectedProductPrice.current = product.price;
-    console.log(selectedProductPrice);
     setSelectedProduct(product);
   };
 

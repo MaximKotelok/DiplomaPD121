@@ -148,7 +148,6 @@ const MapProducts = (props) => {
       return clickedMarker;
     });
     selectedProductPrice.current = product.price;
-    console.log(selectedProductPrice);
     setSelectedProduct(product);
   };
 
@@ -191,7 +190,6 @@ const MapProducts = (props) => {
   };
 
   const isValid = city && townProducts && product;
-console.log(townProducts)
   return (
     <div>
       {/* <div id="map" style={{ height: "400px" }}></div> */}
@@ -204,22 +202,13 @@ console.log(townProducts)
                 {product.title} {product.shortDescription} ціна у {city}
               </p>
               <NavigationDetailsComponent id={product.id} />
-              {/* <div className="my-3">
-        <ChangeCityComponent city={city}/>
-    </div> */}
               <p className={`${styles["found-in"]}`}>
                 Знайдено у {townProducts.length} аптеках
               </p>
             </div>
           )}
 
-          {/* це кнопка яка повина бути на мапі, Данило порішай */}
-          {/* <button
-            className={`brn-form brn-primary-form mt-auto me-4 ${styles["btn-map-page"]}`}
-            onClick={() => { setMapPage(true)}}
-          >
-            Шукати на мапі
-          </button> */}
+
           <div id="container">
             <div id="map" style={{ height: "240px" }}></div>
 

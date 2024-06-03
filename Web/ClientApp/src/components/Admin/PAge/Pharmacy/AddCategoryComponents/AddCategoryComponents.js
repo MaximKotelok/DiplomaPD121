@@ -231,7 +231,6 @@ export const AddCategoryComponents = () => {
                                 value={formData.isRecomended}
                                 text="Чи рекомендована категорія?"
                             />
-                            <ZnakOkloko />
                         </div>
 
                         <div className={styles.photoContainer}>

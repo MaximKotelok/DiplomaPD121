@@ -141,11 +141,11 @@ export const PharmacyListComponents = () => {
     setPage(page);
     let res = await getPharmaciesForAdmin(
       page,
-      searchText ? searchText : search,
+      searchText,
       isDisplayOnlyCompanies
     );
     let resCountOfPages = await getCountOfPagesPharmaciesForAdmin(
-      searchText ? searchText : search,
+      searchText,
       isDisplayOnlyCompanies
     );
     if (res.status === Success && resCountOfPages.status === Success) {

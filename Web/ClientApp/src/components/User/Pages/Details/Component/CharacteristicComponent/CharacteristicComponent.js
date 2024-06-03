@@ -70,7 +70,6 @@ export function CharacteristicComponent({ data, isHistoryExist }) {
             {
               (7 - data.length > 0 &&
                 (Array.apply(null, Array(7 - data.length))).map((a, index) => {
-                  console.log(index)
                   return (<div key={index} className='col-3'>
                     <div className='d-flex align-items-center justify-content-center'>
 

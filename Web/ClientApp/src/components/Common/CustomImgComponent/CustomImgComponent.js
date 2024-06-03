@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import STANDART_IMG from "../../../assets/images/StandartPhotoNotFound.svg";
 // import { STANDART_IMG } from "../../../utils/Constants";
 
+import placeholder from "../../../assets/images/placeholder.png";
 const CustomImgComponent = ({
   src,
   alt,
-  defaultSrc = STANDART_IMG,
+  defaultSrc = placeholder,
   className,
   style,
 }) => {

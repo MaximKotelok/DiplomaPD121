@@ -26,7 +26,6 @@ function BtnEditStatusModalOrderList({
     let res = await getReservation(id);
     if (res.status === Success) {
       setData(res.data);
-      console.log(res.data.status)
       setChangeStatusId(res.data.status);
     }
   }

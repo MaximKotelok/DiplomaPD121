@@ -162,8 +162,9 @@ function BtnEditStatusModal({ id, statusId, statuses, changeStatusProduct, email
             <div className="col-6 ps-2 pe-2">
               <button
                 className={`btn brn-form ${styles["card-btn-primary-500"]} w-100  `}
+                onClick={()=>setShow(false)}
               >
-                Продовжити підбір в цій аптеці
+                Відмінити
               </button>
             </div>
           </div>

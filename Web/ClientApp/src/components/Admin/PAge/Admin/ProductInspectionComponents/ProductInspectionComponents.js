@@ -104,8 +104,6 @@ export const ProductInspectionComponents = () => {
     if (res.status === Success && statusesRes.status === Success) {
       //console.log(res);
       let page = paramPage ? parseInt(paramPage) : 1;
-      console.log(page);
-      console.log(res.data.countOfPages);
       if (page > res.data.countOfPages) {
         res = await getAllProductConfirm(res.data.countOfPages);
         page = res.data.countOfPages;

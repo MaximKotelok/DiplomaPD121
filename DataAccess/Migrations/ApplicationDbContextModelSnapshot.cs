@@ -39,7 +39,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ActiveSubstances");
+                    b.ToTable("ActiveSubstances", (string)null);
 
                     b.HasData(
                         new
@@ -93,7 +93,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("CountryBrandID");
 
-                    b.ToTable("Brands");
+                    b.ToTable("Brands", (string)null);
 
                     b.HasData(
                         new
@@ -154,7 +154,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ParentCategoryID");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -363,7 +363,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Citys");
+                    b.ToTable("Citys", (string)null);
 
                     b.HasData(
                         new
@@ -429,7 +429,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("ConcreteProducts");
+                    b.ToTable("ConcreteProducts", (string)null);
 
                     b.HasData(
                         new
@@ -536,7 +536,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Countries", (string)null);
 
                     b.HasData(
                         new
@@ -583,7 +583,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("DefectiveSeries");
+                    b.ToTable("DefectiveSeries", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.HistoryDate", b =>
@@ -599,7 +599,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("HistoryDates");
+                    b.ToTable("HistoryDates", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.Manufacturer", b =>
@@ -628,7 +628,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("CountryManufactureID");
 
-                    b.ToTable("Manufacturers");
+                    b.ToTable("Manufacturers", (string)null);
 
                     b.HasData(
                         new
@@ -674,7 +674,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PermissionTypes");
+                    b.ToTable("PermissionTypes", (string)null);
 
                     b.HasData(
                         new
@@ -730,7 +730,7 @@ namespace DataAccess.Migrations
                         .IsUnique()
                         .HasFilter("[UserID] IS NOT NULL");
 
-                    b.ToTable("PharmaCompanies");
+                    b.ToTable("PharmaCompanies", (string)null);
 
                     b.HasData(
                         new
@@ -802,7 +802,7 @@ namespace DataAccess.Migrations
                         .IsUnique()
                         .HasFilter("[UserID] IS NOT NULL");
 
-                    b.ToTable("Pharmacies");
+                    b.ToTable("Pharmacies", (string)null);
 
                     b.HasData(
                         new
@@ -907,7 +907,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("SeriesID");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
 
                     b.UseTptMappingStrategy();
 
@@ -1038,7 +1038,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ProductAttributeGroupID");
 
-                    b.ToTable("Attributes");
+                    b.ToTable("Attributes", (string)null);
 
                     b.HasData(
                         new
@@ -1404,7 +1404,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductAttributeGroups");
+                    b.ToTable("ProductAttributeGroups", (string)null);
 
                     b.HasData(
                         new
@@ -1464,7 +1464,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ProductStatusID");
 
-                    b.ToTable("ProductConfirms");
+                    b.ToTable("ProductConfirms", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.ProductExistAttribute", b =>
@@ -1491,7 +1491,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("GroupID");
 
-                    b.ToTable("ProductExistAttributes");
+                    b.ToTable("ProductExistAttributes", (string)null);
 
                     b.HasData(
                         new
@@ -1583,7 +1583,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductPriceHistory");
+                    b.ToTable("ProductPriceHistory", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.ProductProperty", b =>
@@ -1602,7 +1602,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("AttributeID");
 
-                    b.ToTable("Properties");
+                    b.ToTable("Properties", (string)null);
 
                     b.HasData(
                         new
@@ -1755,7 +1755,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductStatuses");
+                    b.ToTable("ProductStatuses", (string)null);
 
                     b.HasData(
                         new
@@ -1816,7 +1816,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Reservations");
+                    b.ToTable("Reservations", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.ReservationItem", b =>
@@ -1842,7 +1842,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ReservationID");
 
-                    b.ToTable("ReservationItems");
+                    b.ToTable("ReservationItems", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.ReservationStatus", b =>
@@ -1864,7 +1864,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ReservationStatuses");
+                    b.ToTable("ReservationStatuses", (string)null);
 
                     b.HasData(
                         new
@@ -1914,7 +1914,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Series");
+                    b.ToTable("Series", (string)null);
 
                     b.HasData(
                         new
@@ -1943,7 +1943,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SimilarProductGroups");
+                    b.ToTable("SimilarProductGroups", (string)null);
 
                     b.HasData(
                         new
@@ -1980,7 +1980,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("SimilarProductGroupID");
 
-                    b.ToTable("SimilarProductItems");
+                    b.ToTable("SimilarProductItems", (string)null);
 
                     b.HasData(
                         new
@@ -2235,7 +2235,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("FavUsersId");
 
-                    b.ToTable("PharmacyUser");
+                    b.ToTable("PharmacyUser", (string)null);
                 });
 
             modelBuilder.Entity("ProductUser", b =>
@@ -2250,7 +2250,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("FavUsersId");
 
-                    b.ToTable("ProductUser");
+                    b.ToTable("ProductUser", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.Medicine", b =>
@@ -2297,7 +2297,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("PregnantID");
 
-                    b.ToTable("Medicines");
+                    b.ToTable("Medicines", (string)null);
 
                     b.HasData(
                         new

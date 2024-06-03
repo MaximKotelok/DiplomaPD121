@@ -52,7 +52,7 @@ namespace Web.Controllers
             if (rawResult is not null)
             {
                 int page = model.Page != null ? model.Page.Value - 1 : 0;
-                var result = rawResult.Skip(model.ItemsPerPage * page).Take(model.ItemsPerPage)
+                var result = rawResult.OrderByDescending(a => a.Id).Skip(model.ItemsPerPage * page).Take(model.ItemsPerPage)
                     .Select(a => a);
                 int countOfPages = model.GetCountOfPages(rawResult.Count());
                 return Ok(new { data = result, countOfPages });

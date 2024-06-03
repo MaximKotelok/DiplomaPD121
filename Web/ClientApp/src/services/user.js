@@ -9,6 +9,9 @@ export function checkIsAuth() {
 export async function getMyInfo() {
     return await getFromServer("User/getMyInfo");
 } 
+export async function getMyInfoForAdmin() {
+    return await getFromServer("User/getMyInfoForAdmin");
+} 
 
 export async function getAllUsers(page, search = "") {
     return await postToServer("User/getAllUsers", {itemsPerPage: itemsPerPageForAdmin, page: page, search: search});

@@ -158,11 +158,11 @@ export const AttributeListComponents = () => {
                           onClick={async () => {
                             let res = await deleteAttribute(attibute.id);
                             if (res.status === Success) {
-                              toast.success(1, "Успіх!");
+                              toast.success("Успіх!");
 
                               window.location.reload();
                             } else {
-                              toast.error(2, "Помилка!");
+                              toast.error("Помилка!");
                             }
                           }}
                         >

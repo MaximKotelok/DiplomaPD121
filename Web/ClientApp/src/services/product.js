@@ -32,18 +32,7 @@ export async function getTopOffer() {
         count: 10
     }, ClassHeader);
     if(res.status === Success){
-        console.log({
-            status: res.status,
-            data: await Promise.all(res.data.map(a=>
-            {
-                return{
-                    title: a.title,
-                    data: getSupInfo(a.data)
-                }
-            })
-        )
-        
-    })
+      
         return {
             status: res.status,
             data: await Promise.all(res.data.map(async a=>

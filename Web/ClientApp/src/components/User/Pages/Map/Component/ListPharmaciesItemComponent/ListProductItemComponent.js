@@ -33,7 +33,10 @@ const ListPharmaciesItemComponent = ({
       className={`${styles["card"]} ${isSelected && styles["active"]} ${className}`}
     >
       <p className={`${styles["pharma-name"]}`}>
-        {title} <i className={`bi bi-info-circle ${styles["info-icon"]}`}></i>
+        {`${title} `}
+        <Link
+          to={`/PharmacyInfo/${id}`}
+        > <i className={`bi bi-info-circle ${styles["info-icon"]}`}></i></Link>
       </p>
       <div className="my-2">
         <Link

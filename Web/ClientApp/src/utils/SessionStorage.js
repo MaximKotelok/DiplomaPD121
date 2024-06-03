@@ -43,7 +43,6 @@ export const getRecomendedRandomCategory = (type) => {
 }
 
 export const setRecomendedRandomCategory = (type,id) => {     
-    console.log(`${type}RecomendedRandomCategoryId`)
     if(id)
         saveObjectToSession(`${type}RecomendedRandomCategoryId`,id);
     else 

@@ -35,7 +35,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 
 import "react-toastify/dist/ReactToastify.css";
 import { removeToken } from "../../utils/Login";
-import { getMyInfo } from "../../services/user";
+import { getMyInfo, getMyInfoForAdmin } from "../../services/user";
 import { ActiveSubstanceListPath, AttributeListPath, BrandListPath, CategoryListPath, ConcreteProductListPath, ManufacturerListPath, OrderListPath, PharmaCompanyPharmacyListPath, PharmacyListPath, ProductConfirmListPath, ProductListPath, UserListPath } from "../../utils/TablesPathes";
 
 const ListMenejment = [
@@ -94,7 +94,7 @@ const LayoutAdmin = ({ children }) => {
 
   async function init() {
     let userInfoFromServer = {};
-    let res = await getMyInfo();
+    let res = await getMyInfoForAdmin();
     if (res.status == Success) {
       if (res.data.firstName && res.data.lastName) {
         userInfoFromServer.name = `${res.data.firstName} ${res.data.lastName}`;

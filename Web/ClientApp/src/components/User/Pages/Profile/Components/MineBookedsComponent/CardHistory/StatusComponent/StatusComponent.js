@@ -3,7 +3,6 @@ import styles from "./Status.module.css";
 import { ApiPath, PhotoPath } from "../../../../../../../../utils/Constants";
 
 const StatusComponent = ({ color, pathToPhoto, text }) => {
-  console.log(ApiPath+"/"+pathToPhoto)
   return (
     <div
       className="d-flex align-items-center "

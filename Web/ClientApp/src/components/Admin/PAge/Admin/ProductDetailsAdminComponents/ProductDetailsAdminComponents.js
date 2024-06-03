@@ -40,7 +40,6 @@ export const ProductDetailsAdminComponents = () => {
       data.push({ id: id, name: contentsOfB[i], content: subContent[i] });
     }
     setDescription(data)
-    console.log(data)
     return true;
   }
 
@@ -66,7 +65,6 @@ export const ProductDetailsAdminComponents = () => {
             index: 10
           }
         }))]
-        console.log(shortDescription)
 
 
 
@@ -91,7 +89,6 @@ export const ProductDetailsAdminComponents = () => {
 
       setShortDescription(shortDescription.sort(a => a.index));
       setProduct(product);
-      console.log(product)
       if(initDescription(product.description,"h1")){
         
         

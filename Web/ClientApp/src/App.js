@@ -119,7 +119,7 @@ export default class App extends Component {
           window.location.replace(`/auth/login?from=/${currentLocation}`);
         }
         if (error.response && error.response.status === 403) {
-          //window.location.replace(`/`);
+          window.location.replace(`/`);
         }
 
         return Promise.reject(error);

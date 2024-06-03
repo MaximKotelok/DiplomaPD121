@@ -233,7 +233,6 @@ const UpsertProductComponent = () => {
 
   useEffect(()=>{
     setFormDataAttribute("categoryID", category);
-    console.log(data.formData)
   },[category])
 
   function fillNullValues(originalObject, fillObject) {

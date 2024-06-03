@@ -55,8 +55,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\images\attribute\" />
     <Folder Include="wwwroot\images\brand\" />
-    <Folder Include="wwwroot\images\group\" />
+    <Folder Include="wwwroot\images\product\" />
+    <Folder Include="wwwroot\images\user\" />
   </ItemGroup>
 
   <ItemGroup>

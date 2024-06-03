@@ -10,7 +10,6 @@ const BtnSocialComponenent = ({ icon, text, href }) => {
       if (googleLoginWindow.closed) {
         clearInterval(interval);
         const urlParams = new URLSearchParams(googleLoginWindow.location)
-        console.log(urlParams)
       }
     }, 1000);
   };

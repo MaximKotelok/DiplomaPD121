@@ -16,11 +16,14 @@ const CardCartContainerComponent = ({ data }) => {
             <h1 className={`${styles["h-container"]}`}>
               {data.title}
               {"  "}
+              <Link to={`/PharmacyInfo/${data.id}`}>
               <img
                 style={{ height: "24px", cursor: "pointer" }}
                 src={btnOcloko}
                 alt="Картинка"
-              />{" "}
+                />
+                </Link>
+                {" "}
             </h1>
 
             <p
@@ -77,7 +80,7 @@ const CardCartContainerComponent = ({ data }) => {
                 <div className="col-12 col-md-6 ps-2 pe-2 d-flex">
                   <Link
                     className={` brn-form ${styles["card-btn-primary-500"]}  ${styles["btn-styled-standart"]}    `}
-                    href={`/map/pharmacies/${data.id}`}
+                    to={`/map/pharmacies/${data.id}`}
                   >
                     Продовжити підбір в цій аптеці
                   </Link>

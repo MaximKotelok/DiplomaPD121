@@ -3,6 +3,7 @@ import styles from "./ListProductItemComponent.module.css";
 import { ReactComponent as Geo } from "../../../../../../assets/images/geo.svg";
 import { addToCart } from "../../../../../../services/cartService";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const ListProductItemComponent = ({
   id,
@@ -51,7 +52,10 @@ const ListProductItemComponent = ({
       className={`${styles["card"]} ${isSelected && styles["active"]} ${className}`}
     >
       <p className={`${styles["pharma-name"]}`}>
-        {title} <i className={`bi bi-info-circle ${styles["info-icon"]}`}></i>
+        {`${title} `} 
+        <Link to={`/PharmacyInfo/${pharmacyId}`}>
+         <i className={`bi bi-info-circle ${styles["info-icon"]}`}></i>
+         </Link>
       </p>
       <div className={`${styles["pharma-info"]}`}>
         <p>

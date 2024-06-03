@@ -20,7 +20,6 @@ function BtnPharmacyModal({id}) {
     let res = await getPharmacyById(id);
     if(res.status === Success){
       setPharmacy(res.data);
-      console.log(res.data)    
     }
   }
 

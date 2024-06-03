@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import { ApiPath } from "../../../../../../../utils/Constants";
 import CustomImgComponent from "../../../../../../Common/CustomImgComponent/CustomImgComponent"
 
+import placeholder from "../../../../../../../assets/images/placeholder.png";
 
 const VisuallyHiddenInput = styled("input")({
     clip: "rgba(229, 229, 234, 1)",

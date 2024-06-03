@@ -17,11 +17,9 @@ function BtnEditPharmacyModal({id}) {
   },[show]);
 
   async function init(){
-    console.log(id)
     let res = await getBrandById(id);
     if(res.status === Success){
         setBrand(res.data);
-      console.log(res.data)    
     }
   }
 

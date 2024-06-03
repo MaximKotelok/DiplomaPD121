@@ -34,7 +34,6 @@ const MineBookeds = () => {
           reservedTime: formatDate(a.reservedTime),
         };
       });
-      console.log(groupBy(selected, "reservedTimeGroup"));
       setReservs(groupBy(selected, "reservedTimeGroup"));
     }
   }

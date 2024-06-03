@@ -4,8 +4,9 @@ import placeholder from "../../../assets/images/placeholder.png";
 import { ApiPath } from '../../../utils/Constants';
 
 import styles from "./ImageUploader.module.css"
+import CustomImgComponent from '../CustomImgComponent/CustomImgComponent';
 
-const ImageUploaderComponent = ({selectedImage, setSelectedImage, imageUrl}) => {
+const ImageUploaderComponent = ({ selectedImage, setSelectedImage, imageUrl }) => {
   const fileInputRef = useRef(null);
   const [preview, setPreview] = useState(null);
   const handleImageChange = (event) => {
@@ -31,12 +32,15 @@ const ImageUploaderComponent = ({selectedImage, setSelectedImage, imageUrl}) => 
         style={{ display: 'none' }}
         ref={fileInputRef}
       />
-      <img    
-        src={preview || (imageUrl && ApiPath + imageUrl) || placeholder}
-        alt="Selected"
-        className={`${styles["image-upload"]}`}    
-        onClick={() => fileInputRef.current.click()}
-      />
+      <div
+        onClick={() => fileInputRef.current.click()}>
+
+        <CustomImgComponent
+          src={preview || (imageUrl && ApiPath + imageUrl)}
+          alt="Selected"
+          className={`${styles["image-upload"]}`}
+        />
+      </div>
     </div>
   );
 };

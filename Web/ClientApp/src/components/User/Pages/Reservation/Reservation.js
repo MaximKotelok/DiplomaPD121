@@ -1,6 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
 import { checkIsAuth } from "../../../../services/user";
-import { useNavigate, useNavigation, useParams } from "react-router-dom";
+import { Link, useNavigate, useNavigation, useParams } from "react-router-dom";
 
 import { changeCountInCart, getCart } from "../../../../services/cartService";
 
@@ -168,11 +168,14 @@ export const Reservation = () => {
         >
           <h4 className={`${styles["head-text-info"]}`}>
             {`${productFormData.pharmacyName} `}
+            <Link to={`/PharmacyInfo/${pharmacyId}`}>
+              
             <img
               style={{ height: "24px", cursor: "pointer" }}
               src={btnOcloko}
               alt="Картинка"
-            />
+              />
+              </Link>
           </h4>
           <p className={`mt-4 mb-2 ${styles["p-text-info"]}`}>
             {productFormData.isOpen

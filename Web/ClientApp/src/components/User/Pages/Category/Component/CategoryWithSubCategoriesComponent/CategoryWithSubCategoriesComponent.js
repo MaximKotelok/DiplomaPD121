@@ -55,7 +55,7 @@ export const CategoryWithSubCategoriesComponent = () => {
         startNumber: startNumber,
         endNumber: endNumber
     };
-}
+  }
 
   async function loadCategoryProducts(){   
     let res = calculateRange(currentPage, categoriesPerPage);
@@ -73,8 +73,8 @@ export const CategoryWithSubCategoriesComponent = () => {
     return <>Error</>
   }
   
-  function isCustomFavorite(id){
-      isFavoriteProduct(id, favs);
+  function isCustomFavorite(id) {
+    return isFavoriteProduct(id);
   }
 
   return (

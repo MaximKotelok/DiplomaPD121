@@ -89,7 +89,6 @@ const PharmacyInfo = (props) => {
     setIsFavoriteState(state);
   }
 
-  console.log(city);
   if (loading !== StateInfos.LOADED) return "Loading";
   return (
     <div>

@@ -22,12 +22,14 @@ namespace Web.Controllers
     {
         private readonly IUserService _userService;
         private readonly IPharmaCompanyService _pharmaCompanyService;
+        private readonly IPharmacyService _pharmacyService;
         private readonly IEmailService _emailService;
 
-        public UserController(IUserService userService, IPharmaCompanyService pharmaCompanyService, IEmailService emailService)
+        public UserController(IUserService userService, IPharmaCompanyService pharmaCompanyService, IEmailService emailService, IPharmacyService pharmacyService)
         {
             _userService = userService;
             _pharmaCompanyService = pharmaCompanyService;
+			_pharmacyService = pharmacyService;
 			_emailService = emailService;
         }
 
@@ -108,16 +110,6 @@ namespace Web.Controllers
             {
                 return NoContent();
             }
-            var roles = await _userService.GetRolesAsync(user.Id);
-            string role = "";
-
-            if (roles.Any(a => a == SD.Role_Admin))
-                role = "адміністратор";
-            else if (roles.Any(a => a == SD.Role_PharmaCompany))
-                role = "представник компанії";
-			else if (roles.Any(a => a == SD.Role_Pharmacist))
-				role = "фармацевт";
-
 
 
 			return Ok(new MyInfoViewModel
@@ -126,12 +118,69 @@ namespace Web.Controllers
                 LastName = user.LastName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                Role = role,
 				PathToPhoto = user.PathToPhoto
 
 			});
 
         }
+
+        [HttpGet("getMyInfoForAdmin")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> GetMyInfoForAdmin()
+        {
+            var user = await _userService.GetUserByName(User.Identity.Name);
+
+
+            if (user == null)
+            {
+                return NoContent();
+            }
+            var roles = await _userService.GetRolesAsync(user.Id);
+            string role = "";
+
+            if (roles.Any(a => a == SD.Role_Admin))
+                role = "адміністратор";
+            else if (roles.Any(a => a == SD.Role_PharmaCompany))
+            {
+                if (_pharmaCompanyService.GetPharmaCompany(a => a.UserID == user.Id) is not null)
+                {
+                    role = "представник компанії";
+                }
+                else
+                {
+					return StatusCode(403);
+				}
+            }
+            else if (roles.Any(a => a == SD.Role_Pharmacist))
+            {
+                if (_pharmacyService.GetPharmacy(a => a.UserID == user.Id) is not null)
+                {
+                    role = "фармацевт";
+                }
+                else
+                {
+					return StatusCode(403);
+				}
+            }
+            else
+            {
+				return StatusCode(403);
+			}
+
+
+
+			return Ok(new MyInfoViewModel
+			{
+				FirstName = user.FirstName,
+				LastName = user.LastName,
+				Email = user.Email,
+				PhoneNumber = user.PhoneNumber,
+				Role = role,
+				PathToPhoto = user.PathToPhoto
+
+			});
+
+		}
 
 		[HttpPost("updatePhoto")]
 		[Authorize(AuthenticationSchemes = "Bearer")]
