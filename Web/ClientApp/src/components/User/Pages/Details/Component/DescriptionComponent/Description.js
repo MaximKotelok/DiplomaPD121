@@ -15,7 +15,7 @@ export const Description = ({ children, separeteBy }) => {
   const isMobile = width <= 768;
 
   // export const Description({ children, separeteBy }) {
-  if (!separeteBy) return <div>{children}</div>;
+    if (!separeteBy) return <div dangerouslySetInnerHTML={{ __html: children }} />;
 
   const html = wrapTagIntoDiv(children, separeteBy, "description-item");
 
